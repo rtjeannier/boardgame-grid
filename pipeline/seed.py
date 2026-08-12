@@ -9,6 +9,7 @@ replace all of this with current BGG data.
 Each row: (id, name, year, rank, weight, best_counts, signals)
 """
 
+from .buckets import peak_count
 from .model import Game
 
 _SEED = [
@@ -79,5 +80,5 @@ _SEED = [
 
 
 def seed_games() -> list[Game]:
-    return [Game(id, name, year, rank, weight, best, signals)
+    return [Game(id, name, year, rank, weight, best, peak_count(best), signals)
             for (id, name, year, rank, weight, best, signals) in _SEED]

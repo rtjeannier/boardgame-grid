@@ -78,6 +78,7 @@ class BggClient:
         if rank in (None, "Not Ranked"):
             return None  # unranked games have no place on the grid
 
+        best_counts, best_count = _player_counts(item)
         name_el = item.find("name[@type='primary']")
         return Game(
             id=int(item.get("id")),
@@ -85,7 +86,8 @@ class BggClient:
             year=int(item.find("yearpublished").get("value", 0)),
             rank=int(rank),
             weight=float(ratings.find("averageweight").get("value")),
-            best_counts=_best_player_counts(item),
+            best_counts=best_counts,
+            best_count=best_count,
             signals=_signals(item),
         )
 
@@ -112,12 +114,18 @@ class BggClient:
         raise RuntimeError(f"BGG did not return data for {url}")
 
 
-def _best_player_counts(item: ET.Element) -> list[int]:
-    """Counts the community voted "Best" for, from the suggested-players poll."""
+def _player_counts(item: ET.Element) -> tuple[list[int], int | None]:
+    """Parse the suggested-players poll.
+
+    Returns (best_counts, peak): every count the community rates "Best" (Best
+    votes win and outnumber "Not Recommended"), plus the single peak — the
+    qualifying count with the most "Best" votes, ties broken toward fewer
+    players. Peak decides the game's column; the list is kept for display.
+    """
     poll = item.find("poll[@name='suggested_numplayers']")
     if poll is None:
-        return []
-    counts: list[int] = []
+        return [], None
+    best_votes: dict[int, int] = {}
     for results in poll.findall("results"):
         label = results.get("numplayers", "").rstrip("+")
         if not label.isdigit():
@@ -126,8 +134,12 @@ def _best_player_counts(item: ET.Element) -> list[int]:
         best = votes.get("Best", 0)
         not_rec = votes.get("Not Recommended", 0)
         if best > 0 and best >= not_rec:
-            counts.append(int(label))
-    return counts
+            best_votes[int(label)] = best
+    if not best_votes:
+        return [], None
+    counts = sorted(best_votes)
+    peak = max(counts, key=lambda n: (best_votes[n], -n))
+    return counts, peak
 
 
 def _signals(item: ET.Element) -> list[str]:

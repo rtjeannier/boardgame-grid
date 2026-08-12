@@ -12,19 +12,33 @@ from .model import Game
 
 # --- Columns: player count --------------------------------------------------
 
-def player_columns_for(game: Game) -> list[str]:
-    """Which player-count columns this game belongs in.
+def player_column_for(game: Game) -> str | None:
+    """The single player-count column this game lives in.
 
-    A game can span several columns (a 2-4 player game shows up at 2, 3 and 4).
-    We use the community "best/recommended" counts when we have them.
+    Each game gets exactly one home: the column containing its peak player
+    count (the count the community most often rates "Best"). Returns None if we
+    have no player-count signal for the game.
     """
-    counts = game.best_counts or []
-    labels = []
+    peak = game.best_count
+    if not peak:
+        return None
     for col in PLAYER_COLUMNS:
         lo, hi = col["lo"], col["hi"]
-        if any(lo <= c and (hi is None or c <= hi) for c in counts):
-            labels.append(col["label"])
-    return labels
+        if lo <= peak and (hi is None or peak <= hi):
+            return col["label"]
+    return None
+
+
+def peak_count(best_counts: list[int]) -> int | None:
+    """Fallback peak when we only have a list of "best" counts, not their votes.
+
+    Used by the offline seed data: take the middle of the sorted list as a
+    stand-in for the true poll peak. The live client computes the real peak
+    from vote counts instead.
+    """
+    if not best_counts:
+        return None
+    return sorted(best_counts)[len(best_counts) // 2]
 
 
 # --- Rows: weight quantiles -------------------------------------------------

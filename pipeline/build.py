@@ -32,13 +32,15 @@ def build(live: bool, limit: int):
     games = load_games(live, limit)
     weight_rows = buckets.build_weight_rows([g.weight for g in games], WEIGHT_ROW_COUNT)
 
-    # Fan every game out into the cells it belongs to. A game spans several
-    # columns (its best player counts) but exactly one weight row.
+    # Drop each game into its single home cell: one weight row (its weight) and
+    # one player column (its peak player count).
     cells = defaultdict(list)
     for game in games:
+        col = buckets.player_column_for(game)
+        if not col:
+            continue  # no player-count signal — nothing to place
         row = buckets.weight_row_index(game.weight, weight_rows)
-        for col in buckets.player_columns_for(game):
-            cells[(col, row)].append(game)
+        cells[(col, row)].append(game)
 
     results = assign_grid(cells, GreedyAssigner(), ALTERNATES_PER_CELL)
 
