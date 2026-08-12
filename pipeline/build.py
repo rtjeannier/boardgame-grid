@@ -1,35 +1,26 @@
-"""Build the grid and write it to JSON for the frontend.
+"""Build the grid from a dataset and write it to JSON for the frontend.
 
-Flow:  load games -> mine weight rows from the population -> drop each game
-into every (player column, weight row) cell it qualifies for -> ask the
-assigner to pick one game per archetype per cell -> serialise.
+    python -m pipeline.build                              # seed proxy dataset
+    python -m pipeline.build --dataset data/games.json    # live capture
 
-    python -m pipeline.build                 # offline seed data
-    python -m pipeline.build --live          # fetch live from BGG
-    python -m pipeline.build --live --limit 300
+Flow: load a dataset -> mine weight rows from the population -> drop each game
+into its one home cell (its weight row × its peak-player-count column) -> ask
+the assigner to pick one game per archetype per cell -> serialise. The build
+never fetches anything; it only ever consumes a dataset file.
 """
 
 import argparse
 import json
 from collections import defaultdict
-from datetime import datetime, timezone
 
-from . import buckets
+from . import buckets, dataset
 from .archetypes import ARCHETYPES
 from .assign import GreedyAssigner, assign_grid
-from .config import ALTERNATES_PER_CELL, OUTPUT_JSON, PLAYER_COLUMNS, WEIGHT_ROW_COUNT
+from .config import ALTERNATES_PER_CELL, OUTPUT_JSON, PLAYER_COLUMNS, SEED_DATASET, WEIGHT_ROW_COUNT
 
 
-def load_games(live: bool, limit: int):
-    if live:
-        from .client import BggClient
-        return BggClient().top_games(limit)
-    from .seed import seed_games
-    return seed_games()
-
-
-def build(live: bool, limit: int):
-    games = load_games(live, limit)
+def build(dataset_path):
+    source, generated_at, games = dataset.load_dataset(dataset_path)
     weight_rows = buckets.build_weight_rows([g.weight for g in games], WEIGHT_ROW_COUNT)
 
     # Drop each game into its single home cell: one weight row (its weight) and
@@ -46,8 +37,8 @@ def build(live: bool, limit: int):
 
     payload = {
         "meta": {
-            "source": "live" if live else "seed",
-            "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "source": source,
+            "generatedAt": generated_at,
             "gameCount": len(games),
             "playerColumns": [c["label"] for c in PLAYER_COLUMNS],
             "weightRows": weight_rows,
@@ -70,17 +61,16 @@ def build(live: bool, limit: int):
 
     OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_JSON.write_text(json.dumps(payload, indent=2))
-    print(f"Wrote {OUTPUT_JSON.relative_to(OUTPUT_JSON.parents[2])} "
-          f"— {len(games)} games, {len(payload['cells'])} filled cells "
-          f"({payload['meta']['source']} data)")
+    print(f"Wrote {OUTPUT_JSON.name} — {len(games)} games, "
+          f"{len(payload['cells'])} filled cells ({source} data)")
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Build the board-game grid JSON.")
-    parser.add_argument("--live", action="store_true", help="fetch live data from BGG")
-    parser.add_argument("--limit", type=int, default=500, help="how many top games to fetch (live only)")
+    parser = argparse.ArgumentParser(description="Build the board-game grid JSON from a dataset.")
+    parser.add_argument("--dataset", default=str(SEED_DATASET),
+                        help="dataset file to build from (default: the seed proxy)")
     args = parser.parse_args()
-    build(args.live, args.limit)
+    build(args.dataset)
 
 
 if __name__ == "__main__":

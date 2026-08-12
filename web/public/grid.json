@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "seed",
-    "generatedAt": "2026-08-12T21:02:42+00:00",
+    "generatedAt": "2026-08-12",
     "gameCount": 54,
     "playerColumns": [
       "1",
@@ -63,6 +63,34 @@
     ]
   },
   "cells": [
+    {
+      "column": "1",
+      "row": 0,
+      "candidateCount": 1,
+      "assignments": [
+        {
+          "archetype": "Roll & Write",
+          "game": {
+            "id": 244522,
+            "name": "That's Pretty Clever!",
+            "year": 2018,
+            "rank": 160,
+            "weight": 1.4,
+            "best_counts": [
+              1,
+              2
+            ],
+            "best_count": 1,
+            "signals": [
+              "Roll / Spin and Write",
+              "Push Your Luck"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/244522"
+          }
+        }
+      ],
+      "alternates": []
+    },
     {
       "column": "1",
       "row": 1,
@@ -168,6 +196,26 @@
           }
         },
         {
+          "archetype": "Dexterity",
+          "game": {
+            "id": 521,
+            "name": "Crokinole",
+            "year": 1876,
+            "rank": 80,
+            "weight": 1.1,
+            "best_counts": [
+              2,
+              4
+            ],
+            "best_count": 2,
+            "signals": [
+              "Flicking",
+              "Action / Dexterity"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/521"
+          }
+        },
+        {
           "archetype": "Drafting",
           "game": {
             "id": 54043,
@@ -185,26 +233,6 @@
             ],
             "url": "https://boardgamegeek.com/boardgame/54043"
           }
-        },
-        {
-          "archetype": "Roll & Write",
-          "game": {
-            "id": 244522,
-            "name": "That's Pretty Clever!",
-            "year": 2018,
-            "rank": 160,
-            "weight": 1.4,
-            "best_counts": [
-              1,
-              2
-            ],
-            "best_count": 2,
-            "signals": [
-              "Roll / Spin and Write",
-              "Push Your Luck"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/244522"
-          }
         }
       ],
       "alternates": []
@@ -212,7 +240,7 @@
     {
       "column": "2",
       "row": 1,
-      "candidateCount": 2,
+      "candidateCount": 3,
       "assignments": [
         {
           "archetype": "Tile Placement",
@@ -231,6 +259,27 @@
               "Open Drafting"
             ],
             "url": "https://boardgamegeek.com/boardgame/295947"
+          }
+        },
+        {
+          "archetype": "Drafting",
+          "game": {
+            "id": 230802,
+            "name": "Azul",
+            "year": 2017,
+            "rank": 50,
+            "weight": 1.8,
+            "best_counts": [
+              2,
+              4
+            ],
+            "best_count": 2,
+            "signals": [
+              "Tile Placement",
+              "Open Drafting",
+              "Pattern Building"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/230802"
           }
         },
         {
@@ -258,7 +307,7 @@
     {
       "column": "2",
       "row": 2,
-      "candidateCount": 2,
+      "candidateCount": 4,
       "assignments": [
         {
           "archetype": "Drafting",
@@ -282,30 +331,89 @@
         {
           "archetype": "Engine Building",
           "game": {
-            "id": 269385,
-            "name": "Res Arcana",
+            "id": 266192,
+            "name": "Wingspan",
             "year": 2019,
-            "rank": 90,
-            "weight": 2.5,
+            "rank": 30,
+            "weight": 2.4,
             "best_counts": [
-              2
+              2,
+              3
             ],
             "best_count": 2,
             "signals": [
               "Engine Building",
-              "Hand Management"
+              "Open Drafting",
+              "Set Collection"
             ],
-            "url": "https://boardgamegeek.com/boardgame/269385"
+            "url": "https://boardgamegeek.com/boardgame/266192"
+          }
+        },
+        {
+          "archetype": "Deck Building",
+          "game": {
+            "id": 36218,
+            "name": "Dominion",
+            "year": 2008,
+            "rank": 42,
+            "weight": 2.4,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Deck, Bag, and Pool Building"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/36218"
           }
         }
       ],
-      "alternates": []
+      "alternates": [
+        {
+          "id": 269385,
+          "name": "Res Arcana",
+          "year": 2019,
+          "rank": 90,
+          "weight": 2.5,
+          "best_counts": [
+            2
+          ],
+          "best_count": 2,
+          "signals": [
+            "Engine Building",
+            "Hand Management"
+          ],
+          "url": "https://boardgamegeek.com/boardgame/269385"
+        }
+      ]
     },
     {
       "column": "2",
       "row": 3,
-      "candidateCount": 2,
+      "candidateCount": 4,
       "assignments": [
+        {
+          "archetype": "Drafting",
+          "game": {
+            "id": 342942,
+            "name": "Ark Nova",
+            "year": 2021,
+            "rank": 3,
+            "weight": 3.7,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Open Drafting",
+              "Set Collection",
+              "End Game Bonuses"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/342942"
+          }
+        },
         {
           "archetype": "Tile Placement",
           "game": {
@@ -323,6 +431,26 @@
               "Dice Rolling"
             ],
             "url": "https://boardgamegeek.com/boardgame/84876"
+          }
+        },
+        {
+          "archetype": "Deck Building",
+          "game": {
+            "id": 312484,
+            "name": "Lost Ruins of Arnak",
+            "year": 2020,
+            "rank": 26,
+            "weight": 2.9,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Deck, Bag, and Pool Building",
+              "Worker Placement"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/312484"
           }
         },
         {
@@ -351,8 +479,29 @@
     {
       "column": "2",
       "row": 4,
-      "candidateCount": 1,
+      "candidateCount": 2,
       "assignments": [
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 174430,
+            "name": "Gloomhaven",
+            "year": 2017,
+            "rank": 1,
+            "weight": 3.9,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Cooperative Game",
+              "Hand Management",
+              "Modular Board"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/174430"
+          }
+        },
         {
           "archetype": "Area Control",
           "game": {
@@ -429,78 +578,9 @@
     },
     {
       "column": "3",
-      "row": 2,
-      "candidateCount": 2,
-      "assignments": [
-        {
-          "archetype": "Engine Building",
-          "game": {
-            "id": 266192,
-            "name": "Wingspan",
-            "year": 2019,
-            "rank": 30,
-            "weight": 2.4,
-            "best_counts": [
-              2,
-              3
-            ],
-            "best_count": 3,
-            "signals": [
-              "Engine Building",
-              "Open Drafting",
-              "Set Collection"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/266192"
-          }
-        },
-        {
-          "archetype": "Deck Building",
-          "game": {
-            "id": 36218,
-            "name": "Dominion",
-            "year": 2008,
-            "rank": 42,
-            "weight": 2.4,
-            "best_counts": [
-              2,
-              3
-            ],
-            "best_count": 3,
-            "signals": [
-              "Deck, Bag, and Pool Building"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/36218"
-          }
-        }
-      ],
-      "alternates": []
-    },
-    {
-      "column": "3",
       "row": 3,
-      "candidateCount": 4,
+      "candidateCount": 3,
       "assignments": [
-        {
-          "archetype": "Drafting",
-          "game": {
-            "id": 342942,
-            "name": "Ark Nova",
-            "year": 2021,
-            "rank": 3,
-            "weight": 3.7,
-            "best_counts": [
-              2,
-              3
-            ],
-            "best_count": 3,
-            "signals": [
-              "Open Drafting",
-              "Set Collection",
-              "End Game Bonuses"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/342942"
-          }
-        },
         {
           "archetype": "Engine Building",
           "game": {
@@ -510,7 +590,8 @@
             "rank": 4,
             "weight": 3.2,
             "best_counts": [
-              3
+              3,
+              4
             ],
             "best_count": 3,
             "signals": [
@@ -522,23 +603,23 @@
           }
         },
         {
-          "archetype": "Deck Building",
+          "archetype": "Worker Placement",
           "game": {
-            "id": 312484,
-            "name": "Lost Ruins of Arnak",
-            "year": 2020,
-            "rank": 26,
-            "weight": 2.9,
+            "id": 199792,
+            "name": "Everdell",
+            "year": 2018,
+            "rank": 22,
+            "weight": 2.8,
             "best_counts": [
               2,
               3
             ],
             "best_count": 3,
             "signals": [
-              "Deck, Bag, and Pool Building",
-              "Worker Placement"
+              "Worker Placement",
+              "Hand Management"
             ],
-            "url": "https://boardgamegeek.com/boardgame/312484"
+            "url": "https://boardgamegeek.com/boardgame/199792"
           }
         },
         {
@@ -568,29 +649,8 @@
     {
       "column": "3",
       "row": 4,
-      "candidateCount": 4,
+      "candidateCount": 3,
       "assignments": [
-        {
-          "archetype": "Cooperative",
-          "game": {
-            "id": 174430,
-            "name": "Gloomhaven",
-            "year": 2017,
-            "rank": 1,
-            "weight": 3.9,
-            "best_counts": [
-              2,
-              3
-            ],
-            "best_count": 3,
-            "signals": [
-              "Cooperative Game",
-              "Hand Management",
-              "Modular Board"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/174430"
-          }
-        },
         {
           "archetype": "Area Control",
           "game": {
@@ -641,7 +701,8 @@
             "rank": 14,
             "weight": 3.9,
             "best_counts": [
-              3
+              3,
+              4
             ],
             "best_count": 3,
             "signals": [
@@ -656,58 +717,9 @@
     },
     {
       "column": "4",
-      "row": 0,
-      "candidateCount": 1,
-      "assignments": [
-        {
-          "archetype": "Dexterity",
-          "game": {
-            "id": 521,
-            "name": "Crokinole",
-            "year": 1876,
-            "rank": 80,
-            "weight": 1.1,
-            "best_counts": [
-              2,
-              4
-            ],
-            "best_count": 4,
-            "signals": [
-              "Flicking",
-              "Action / Dexterity"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/521"
-          }
-        }
-      ],
-      "alternates": []
-    },
-    {
-      "column": "4",
       "row": 1,
-      "candidateCount": 4,
+      "candidateCount": 3,
       "assignments": [
-        {
-          "archetype": "Tile Placement",
-          "game": {
-            "id": 230802,
-            "name": "Azul",
-            "year": 2017,
-            "rank": 50,
-            "weight": 1.8,
-            "best_counts": [
-              2,
-              4
-            ],
-            "best_count": 4,
-            "signals": [
-              "Tile Placement",
-              "Open Drafting",
-              "Pattern Building"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/230802"
-          }
-        },
         {
           "archetype": "Cooperative",
           "game": {
@@ -804,6 +816,7 @@
             "rank": 110,
             "weight": 2.4,
             "best_counts": [
+              3,
               4
             ],
             "best_count": 4,
@@ -859,7 +872,7 @@
     {
       "column": "4",
       "row": 3,
-      "candidateCount": 5,
+      "candidateCount": 3,
       "assignments": [
         {
           "archetype": "Deck Building",
@@ -899,47 +912,6 @@
               "Network and Route Building"
             ],
             "url": "https://boardgamegeek.com/boardgame/193738"
-          }
-        },
-        {
-          "archetype": "Worker Placement",
-          "game": {
-            "id": 199792,
-            "name": "Everdell",
-            "year": 2018,
-            "rank": 22,
-            "weight": 2.8,
-            "best_counts": [
-              3,
-              4
-            ],
-            "best_count": 4,
-            "signals": [
-              "Worker Placement",
-              "Hand Management"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/199792"
-          }
-        },
-        {
-          "archetype": "Set Collection",
-          "game": {
-            "id": 3076,
-            "name": "Puerto Rico",
-            "year": 2002,
-            "rank": 48,
-            "weight": 3.3,
-            "best_counts": [
-              3,
-              4,
-              5
-            ],
-            "best_count": 4,
-            "signals": [
-              "Set Collection",
-              "Variable Phase Order"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/3076"
           }
         },
         {
@@ -1015,7 +987,7 @@
     {
       "column": "5",
       "row": 0,
-      "candidateCount": 2,
+      "candidateCount": 3,
       "assignments": [
         {
           "archetype": "Drafting",
@@ -1035,6 +1007,27 @@
               "Set Collection"
             ],
             "url": "https://boardgamegeek.com/boardgame/192291"
+          }
+        },
+        {
+          "archetype": "Push Your Luck",
+          "game": {
+            "id": 12942,
+            "name": "No Thanks!",
+            "year": 2004,
+            "rank": 210,
+            "weight": 1.1,
+            "best_counts": [
+              5,
+              6,
+              7
+            ],
+            "best_count": 5,
+            "signals": [
+              "Push Your Luck",
+              "Set Collection"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/12942"
           }
         },
         {
@@ -1063,7 +1056,7 @@
     {
       "column": "5",
       "row": 3,
-      "candidateCount": 1,
+      "candidateCount": 2,
       "assignments": [
         {
           "archetype": "Engine Building",
@@ -1083,6 +1076,27 @@
               "Engine Building"
             ],
             "url": "https://boardgamegeek.com/boardgame/169786"
+          }
+        },
+        {
+          "archetype": "Set Collection",
+          "game": {
+            "id": 3076,
+            "name": "Puerto Rico",
+            "year": 2002,
+            "rank": 48,
+            "weight": 3.3,
+            "best_counts": [
+              3,
+              4,
+              5
+            ],
+            "best_count": 5,
+            "signals": [
+              "Set Collection",
+              "Variable Phase Order"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/3076"
           }
         }
       ],
@@ -1106,7 +1120,7 @@
               7,
               8
             ],
-            "best_count": 7,
+            "best_count": 6,
             "signals": [
               "Word Game",
               "Party Game"
@@ -1139,44 +1153,47 @@
         {
           "archetype": "Push Your Luck",
           "game": {
-            "id": 12942,
-            "name": "No Thanks!",
-            "year": 2004,
-            "rank": 210,
-            "weight": 1.1,
+            "id": 92415,
+            "name": "Skull",
+            "year": 2011,
+            "rank": 230,
+            "weight": 1.3,
             "best_counts": [
               5,
-              6,
-              7
+              6
             ],
             "best_count": 6,
             "signals": [
               "Push Your Luck",
-              "Set Collection"
+              "Bluffing"
             ],
-            "url": "https://boardgamegeek.com/boardgame/12942"
+            "url": "https://boardgamegeek.com/boardgame/92415"
+          }
+        },
+        {
+          "archetype": "Social Deduction",
+          "game": {
+            "id": 147949,
+            "name": "One Night Ultimate Werewolf",
+            "year": 2014,
+            "rank": 240,
+            "weight": 1.3,
+            "best_counts": [
+              7,
+              8,
+              9,
+              10
+            ],
+            "best_count": 8,
+            "signals": [
+              "Hidden Roles",
+              "Deduction"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/147949"
           }
         }
       ],
-      "alternates": [
-        {
-          "id": 92415,
-          "name": "Skull",
-          "year": 2011,
-          "rank": 230,
-          "weight": 1.3,
-          "best_counts": [
-            5,
-            6
-          ],
-          "best_count": 6,
-          "signals": [
-            "Push Your Luck",
-            "Bluffing"
-          ],
-          "url": "https://boardgamegeek.com/boardgame/92415"
-        }
-      ]
+      "alternates": []
     },
     {
       "column": "6-8",
@@ -1192,7 +1209,9 @@
             "rank": 135,
             "weight": 1.8,
             "best_counts": [
-              6
+              6,
+              7,
+              8
             ],
             "best_count": 6,
             "signals": [
@@ -1267,7 +1286,7 @@
     {
       "column": "8+",
       "row": 0,
-      "candidateCount": 3,
+      "candidateCount": 2,
       "assignments": [
         {
           "archetype": "Social Deduction",
@@ -1283,7 +1302,7 @@
               9,
               10
             ],
-            "best_count": 9,
+            "best_count": 10,
             "signals": [
               "Hidden Roles",
               "Voting"
@@ -1310,25 +1329,6 @@
             "Voting"
           ],
           "url": "https://boardgamegeek.com/boardgame/223040"
-        },
-        {
-          "id": 147949,
-          "name": "One Night Ultimate Werewolf",
-          "year": 2014,
-          "rank": 240,
-          "weight": 1.3,
-          "best_counts": [
-            7,
-            8,
-            9,
-            10
-          ],
-          "best_count": 9,
-          "signals": [
-            "Hidden Roles",
-            "Deduction"
-          ],
-          "url": "https://boardgamegeek.com/boardgame/147949"
         }
       ]
     }

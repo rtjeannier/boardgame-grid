@@ -16,41 +16,55 @@ The output is an interactive static site you can host on GitHub Pages.
 ## How it fits together
 
 ```
-pipeline/            Python: BGG data -> grid.json
+pipeline/            Python — two independent steps joined by a dataset file
+  fetch.py           live BGG capture  -> data/games.json      (touches network)
+  build.py           dataset           -> web/public/grid.json (no network)
+  dataset.py         the dataset file format (load/save)
+  client.py          live BGG XML API2 client (cached), used by fetch
   config.py          the two axes + tunables (edit me first)
   archetypes.py      the "type" taxonomy (mechanic/category -> archetype)
   buckets.py         player-count columns + quantile weight rows
   assign.py          swappable per-cell de-duplication (GreedyAssigner)
-  client.py          live BGG XML API2 client (cached)
-  seed.py            offline curated dataset for a no-network first pass
-  build.py           orchestrator -> web/public/grid.json
+data/
+  games.seed.json    committed proxy dataset (same shape as a live capture)
+  games.json         live capture (git-ignored, made by fetch)
 web/                 Vite + React explorer, builds into ../docs
 docs/                the built site GitHub Pages serves
 ```
 
-Data flows one way: `Game` objects (from `seed.py` **or** `client.py`) →
-bucketed onto the axes → assigned one-per-archetype per cell → serialised to
-`grid.json`. The frontend just renders that JSON, so nothing in the UI depends
-on where the data came from.
+The pipeline is two decoupled stages with a **dataset** in the middle:
+
+```
+fetch.py ──▶ data/games.json ─┐
+                              ├─▶ build.py ──▶ grid.json ──▶ web
+data/games.seed.json ─────────┘
+```
+
+`build.py` only ever *consumes a dataset* — it has no idea whether the games
+came from a live capture or the seed proxy. Both files share one schema
+(`source`, `generatedAt`, `games[]`), so switching data sources is nothing more
+than pointing the build at a different file. The seed proxy carries every field
+a live capture would, `best_count` included, so no stage has to guess.
 
 ## Run it
 
-**Build the grid (offline seed data — no dependencies):**
+**Build the grid from the committed seed proxy (no network, no dependencies):**
 
 ```bash
-python -m pipeline.build
+python -m pipeline.build            # reads data/games.seed.json -> grid.json
 ```
 
-**Build from live BoardGameGeek data:**
+**Refresh from live BoardGameGeek data (two steps):**
 
 ```bash
 pip install -r requirements.txt
-python -m pipeline.build --live --limit 500
+python -m pipeline.fetch --limit 500            # -> data/games.json
+python -m pipeline.build --dataset data/games.json
 ```
 
-This reads BGG's ranked listing, hydrates each game via the XML API2 (weight,
-the community best-player-count poll, mechanics, categories), caches every
-response under `data/cache/`, and writes `web/public/grid.json`.
+`fetch` reads BGG's ranked listing, hydrates each game via the XML API2
+(weight, the community best-player-count poll, mechanics, categories) and
+caches every response under `data/cache/`. `build` is unchanged either way.
 
 **Build the site:**
 
@@ -90,7 +104,8 @@ trivially parallelisable across cells.
 
 ## Note on the current data
 
-The committed grid is built from `pipeline/seed.py` — a hand-entered slice of
-well-known top games with **approximate** weights and player counts, marked
-`seed data` in the header. Run `python -m pipeline.build --live` on a networked
-machine to replace it with current BGG numbers; the UI is unchanged.
+The committed grid is built from `data/games.seed.json` — a hand-entered slice
+of well-known top games with **approximate** weights and player counts, marked
+`seed data` in the header. On a networked machine, run `python -m pipeline.fetch`
+then `python -m pipeline.build --dataset data/games.json` to replace it with
+current BGG numbers; the UI is unchanged.

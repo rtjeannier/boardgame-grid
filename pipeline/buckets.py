@@ -29,18 +29,6 @@ def player_column_for(game: Game) -> str | None:
     return None
 
 
-def peak_count(best_counts: list[int]) -> int | None:
-    """Fallback peak when we only have a list of "best" counts, not their votes.
-
-    Used by the offline seed data: take the middle of the sorted list as a
-    stand-in for the true poll peak. The live client computes the real peak
-    from vote counts instead.
-    """
-    if not best_counts:
-        return None
-    return sorted(best_counts)[len(best_counts) // 2]
-
-
 # --- Rows: weight quantiles -------------------------------------------------
 
 def weight_row_edges(weights: list[float], row_count: int) -> list[float]:

@@ -14,6 +14,12 @@ ROOT = Path(__file__).resolve().parent.parent
 OUTPUT_JSON = ROOT / "web" / "public" / "grid.json"
 CACHE_DIR = ROOT / "data" / "cache"  # raw BGG responses, keyed by id
 
+# Datasets are the hand-off between fetching and building. Both files share one
+# schema (see pipeline/dataset.py); the build consumes whichever it's pointed
+# at. `games.seed.json` is a committed proxy; `games.json` is the live capture.
+SEED_DATASET = ROOT / "data" / "games.seed.json"
+LIVE_DATASET = ROOT / "data" / "games.json"
+
 # --- Axis 1: player count (columns) -----------------------------------------
 #
 # A game lands in a column when the community's "best/recommended player count"

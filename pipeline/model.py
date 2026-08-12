@@ -1,10 +1,11 @@
 """The one data type that flows through the whole pipeline: `Game`.
 
-Both the live BGG client and the offline seed data produce `Game` objects, so
-everything downstream (bucketing, assignment, rendering) is source-agnostic.
+Games come from a dataset file (see pipeline/dataset.py) — either the live BGG
+capture or the committed seed proxy. Everything downstream (bucketing,
+assignment, rendering) is identical regardless of which dataset was loaded.
 """
 
-from dataclasses import dataclass, asdict
+from dataclasses import dataclass
 
 
 @dataclass
@@ -22,7 +23,22 @@ class Game:
     def url(self) -> str:
         return f"https://boardgamegeek.com/boardgame/{self.id}"
 
+    @classmethod
+    def from_dict(cls, d: dict) -> "Game":
+        return cls(
+            id=d["id"], name=d["name"], year=d["year"], rank=d["rank"],
+            weight=d["weight"], best_counts=d["best_counts"],
+            best_count=d["best_count"], signals=d["signals"],
+        )
+
+    def record(self) -> dict:
+        """Canonical serialisable fields — what gets stored in a dataset."""
+        return {
+            "id": self.id, "name": self.name, "year": self.year, "rank": self.rank,
+            "weight": self.weight, "best_counts": self.best_counts,
+            "best_count": self.best_count, "signals": self.signals,
+        }
+
     def to_dict(self) -> dict:
-        d = asdict(self)
-        d["url"] = self.url
-        return d
+        """Record plus the derived URL — what the frontend consumes."""
+        return {**self.record(), "url": self.url}
