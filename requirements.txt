@@ -1,0 +1,3 @@
+# Only needed for the live BGG fetch (python -m pipeline.build --live).
+# The offline seed build uses the standard library alone.
+requests>=2.31

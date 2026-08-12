@@ -1,0 +1,73 @@
+import React from 'react'
+import { colorFor } from './colors.js'
+
+// The grid itself: player count across the top, complexity down the side.
+// Rows are drawn heaviest-first so complexity rises as you scan upward.
+export default function Grid({ data, active, selected, onSelect }) {
+  const { playerColumns, weightRows } = data.meta
+  const rowsTopDown = [...weightRows].reverse()
+
+  // Fast lookup from (column, row) to its cell payload.
+  const byKey = new Map(data.cells.map((c) => [`${c.column}:${c.row}`, c]))
+
+  // One header column for the row labels, then one per player count.
+  const template = `minmax(6.5rem, auto) repeat(${playerColumns.length}, minmax(9rem, 1fr))`
+
+  return (
+    <div className="grid-scroll">
+      <div className="grid" style={{ gridTemplateColumns: template }}>
+        <div className="grid__corner">
+          <span>weight ↑</span>
+          <span>players →</span>
+        </div>
+        {playerColumns.map((label) => (
+          <div key={label} className="grid__colhead">
+            {label}
+          </div>
+        ))}
+
+        {rowsTopDown.map((row) => (
+          <React.Fragment key={row.index}>
+            <div className="grid__rowhead">
+              <strong>{row.name}</strong>
+              <span className="muted">{row.lo}–{row.hi}</span>
+            </div>
+            {playerColumns.map((col) => {
+              const cell = byKey.get(`${col}:${row.index}`)
+              const isSelected = selected && selected.column === col && selected.row === row.index
+              return (
+                <Cell
+                  key={col}
+                  cell={cell}
+                  active={active}
+                  selected={isSelected}
+                  onSelect={() => cell && onSelect({ column: col, row: row.index })}
+                />
+              )
+            })}
+          </React.Fragment>
+        ))}
+      </div>
+    </div>
+  )
+}
+
+function Cell({ cell, active, selected, onSelect }) {
+  if (!cell) return <div className="cell cell--empty" />
+
+  const extra = cell.candidateCount - cell.assignments.length
+  return (
+    <button className={`cell ${selected ? 'cell--selected' : ''}`} onClick={onSelect}>
+      {cell.assignments.map(({ archetype, game }) => {
+        const dim = active.size > 0 && !active.has(archetype)
+        return (
+          <span key={game.id} className={`pick ${dim ? 'pick--dim' : ''}`} title={`${archetype} · weight ${game.weight}`}>
+            <span className="dot" style={{ background: colorFor(archetype) }} />
+            <span className="pick__name">{game.name}</span>
+          </span>
+        )
+      })}
+      {extra > 0 && <span className="cell__more">+{extra} more</span>}
+    </button>
+  )
+}
