@@ -178,7 +178,7 @@ body {
 /* Individual-games view: one set of bars per game (colored inline), faded to
    thin arc outlines when a selection spotlights other games; the
    collection/cell total stays behind them as a dashed arc reference. */
-.radar__game { fill-opacity: 0.2; stroke-width: 0.004; stroke-opacity: 0.9; stroke-linejoin: round; pointer-events: none; }
+.radar__game { fill-opacity: 0.55; stroke-width: 0.0025; stroke-opacity: 0.9; stroke-linejoin: round; pointer-events: none; }
 .radar__game--faded { fill: none; stroke: var(--muted); stroke-width: 0.003; stroke-opacity: 0.35; }
 .radar__context { fill: none; stroke: var(--accent); stroke-opacity: 0.5; stroke-width: 0.003; stroke-dasharray: 0.012 0.008; }
 

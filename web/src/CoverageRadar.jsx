@@ -30,8 +30,10 @@ export default function CoverageRadar({ dimensions, baseLayers, games, selected,
     }
   } else {
     // Dashed arc reference of the whole, then faded games (arc outlines only),
-    // then spotlit games as filled bars on top. With nothing selected every
-    // game is spotlit.
+    // then spotlit games as grouped bars: each sector is split evenly among
+    // the spotlit games, side by side — one selection gets the full width,
+    // and every added game makes the bars skinnier. With nothing selected
+    // every game is spotlit.
     const spotlight = chosen.length > 0
     const faded = [], lit = []
     games.forEach((g, i) => {
@@ -43,6 +45,7 @@ export default function CoverageRadar({ dimensions, baseLayers, games, selected,
                    style: { fill: gameColor(i), stroke: gameColor(i) } })
       }
     })
+    lit.forEach((s, j) => { s.slot = [j, lit.length] })
     series.push({ ...baseLayers[0], key: 'context', className: 'radar__context', outline: true }, ...faded, ...lit)
   }
 
@@ -51,7 +54,7 @@ export default function CoverageRadar({ dimensions, baseLayers, games, selected,
     chosen.length === 0
       ? mode === 'combined'
         ? idleCaption
-        : 'each shape is one game — click games in the list to spotlight them'
+        : 'each bar is one game — click games in the list to spotlight them'
       : mode === 'combined'
         ? <>combined coverage of <strong>{names.length <= 3 ? names.join(', ') : `${names.length} games`}</strong> · click a game again to remove it</>
         : <>spotlighting <strong>{names.length <= 3 ? names.join(', ') : `${names.length} games`}</strong> · click a game again to remove it</>

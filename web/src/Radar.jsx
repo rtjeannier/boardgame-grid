@@ -14,8 +14,10 @@ const label = (dim) => {
 // covering two distant genres reads as two solid bars instead of spikes
 // through the middle. Adjacent sectors touch; the shared radial edges keep
 // the categories legible. `series` are drawn back to front; each is
-// {values, className, style, outline} — `outline` renders only the top arc
-// (used for dashed references and faded games) instead of a filled bar.
+// {values, className, style, outline, slot} — `outline` renders only the top
+// arc (used for dashed references and faded games) instead of a filled bar,
+// and `slot: [k, m]` places the series' bars side by side as bar k of m
+// within each sector (grouped bars), defaulting to the sector's full width.
 export default function Radar({ dimensions, series }) {
   const n = dimensions.length
   const cx = 0.5, cy = 0.5, R = 0.33, HOLE = 0.06
@@ -26,9 +28,13 @@ export default function Radar({ dimensions, series }) {
 
   const arc = (i, v) =>
     `M ${pt(angle(i) - half, rad(v))} A ${rad(v)} ${rad(v)} 0 0 1 ${pt(angle(i) + half, rad(v))}`
-  const bar = (i, v) =>
-    `M ${pt(angle(i) - half, HOLE)} L ${arc(i, v).slice(2)} ` +
-    `L ${pt(angle(i) + half, HOLE)} A ${HOLE} ${HOLE} 0 0 0 ${pt(angle(i) - half, HOLE)} Z`
+  const bar = (i, v, [k, m] = [0, 1]) => {
+    const a0 = angle(i) - half + 2 * half * (k / m)
+    const a1 = angle(i) - half + 2 * half * ((k + 1) / m)
+    return `M ${pt(a0, HOLE)} L ${pt(a0, rad(v))} ` +
+      `A ${rad(v)} ${rad(v)} 0 0 1 ${pt(a1, rad(v))} ` +
+      `L ${pt(a1, HOLE)} A ${HOLE} ${HOLE} 0 0 0 ${pt(a0, HOLE)} Z`
+  }
 
   return (
     <svg className="radar" viewBox="0 0 1 1">
@@ -37,10 +43,10 @@ export default function Radar({ dimensions, series }) {
         <circle key={r} cx={cx} cy={cy} r={rad(r)} className="radar__ring" />
       ))}
 
-      {series.map(({ key, values, className, style, outline }) => (
+      {series.map(({ key, values, className, style, outline, slot }) => (
         <g key={key} className={className} style={style}>
           {values.map((v, i) =>
-            v > 0.01 ? <path key={i} d={outline ? arc(i, v) : bar(i, v)} /> : null,
+            v > 0.01 ? <path key={i} d={outline ? arc(i, v) : bar(i, v, slot)} /> : null,
           )}
         </g>
       ))}
