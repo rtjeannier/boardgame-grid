@@ -8,32 +8,36 @@ const label = (dim) => {
   return SHORT[first] || first
 }
 
-// The radar frame: one spoke per latent genre dimension, 0 at the center,
-// fully covered (1.0) at the rim. Every shape is a polygon drawn from the
-// origin; `polygons` are rendered back to front, each with its own class
-// and/or inline style. All composition (what to draw, in which mode) lives in
-// the callers — this component only knows geometry.
-export default function Radar({ dimensions, polygons }) {
+// A polar bar chart: each genre dimension owns an angular sector, and a value
+// fills that sector from the center out to an arc at its radius — bars, not a
+// connected polygon, so a shape covering two distant genres reads as two solid
+// bars instead of spikes through the middle. `series` are drawn back to front;
+// each is {values, className, style, outline} — `outline` renders only the top
+// arc (used for dashed references and faded games) instead of a filled bar.
+export default function Radar({ dimensions, series }) {
   const n = dimensions.length
   const cx = 0.5, cy = 0.5, R = 0.33
+  const half = (Math.PI / n) * 0.82 // bar half-width; the rest is the gap between bars
   const angle = (i) => (2 * Math.PI * i) / n - Math.PI / 2
-  const point = (i, r) => `${cx + R * r * Math.cos(angle(i))},${cy + R * r * Math.sin(angle(i))}`
-  const outline = (values) => values.map((v, i) => point(i, v)).join(' ')
+  const pt = (a, r) => `${cx + R * r * Math.cos(a)},${cy + R * r * Math.sin(a)}`
+
+  const arc = (i, v) =>
+    `M ${pt(angle(i) - half, v)} A ${R * v} ${R * v} 0 0 1 ${pt(angle(i) + half, v)}`
+  const bar = (i, v) => `M ${cx},${cy} L ${arc(i, v).slice(2)} Z`
 
   return (
     <svg className="radar" viewBox="0 0 1 1">
       {/* rings at 25/50/75/100% coverage */}
       {[0.25, 0.5, 0.75, 1].map((r) => (
-        <polygon key={r} points={outline(Array(n).fill(r))} className="radar__ring" />
-      ))}
-      {dimensions.map((dim, i) => (
-        <line key={dim} x1={cx} y1={cy}
-          x2={cx + R * Math.cos(angle(i))} y2={cy + R * Math.sin(angle(i))}
-          className="radar__spoke" />
+        <circle key={r} cx={cx} cy={cy} r={R * r} className="radar__ring" />
       ))}
 
-      {polygons.map(({ key, values, className, style }) => (
-        <polygon key={key} points={outline(values)} className={className} style={style} />
+      {series.map(({ key, values, className, style, outline }) => (
+        <g key={key} className={className} style={style}>
+          {values.map((v, i) =>
+            v > 0.01 ? <path key={i} d={outline ? arc(i, v) : bar(i, v)} /> : null,
+          )}
+        </g>
       ))}
 
       {dimensions.map((dim, i) => {

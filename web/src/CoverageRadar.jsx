@@ -3,15 +3,14 @@ import Radar from './Radar.jsx'
 import { axisCoverage } from './coverage.js'
 import { gameColor } from './colors.js'
 
-// The radar with its two views, both drawn from the origin:
+// The polar-bar radar with its two views:
 //
-// - Combined: the base shapes (full coverage, anchors) with one extra polygon
-//   for the union coverage of whichever games are selected — multi-select in
-//   the list to build up a sub-collection and see what it covers together.
-// - Individual: every game as its own radar polygon overlaid on the others.
-//   Selecting games spotlights them (their palette colour, matching the list
-//   row) and fades the rest to outlines; the base shape stays as a dashed
-//   reference so "the whole" is always visible behind "the parts".
+// - Combined: the base bars (full coverage, anchors) with one extra set of
+//   bars for the union coverage of whichever games are selected — multi-select
+//   in the list to build up a sub-collection and see what it covers together.
+// - Individual: every game's bars overlaid on the others. Selecting games
+//   spotlights them (their palette colour, matching the list row) and fades
+//   the rest to arc outlines; the whole stays behind as a dashed reference.
 //
 // Selection lives in the parent (it owns the list rows); the mode toggle is
 // rendered here beside the chart it controls.
@@ -19,31 +18,32 @@ export default function CoverageRadar({ dimensions, baseLayers, games, selected,
   const n = dimensions.length
   const chosen = games.filter((g) => selected.has(g.id))
 
-  const polygons = []
+  const series = []
   if (mode === 'combined') {
-    polygons.push(...baseLayers)
+    series.push(...baseLayers)
     if (chosen.length) {
-      polygons.push({
+      series.push({
         key: 'selection',
         values: axisCoverage(chosen.map((g) => g.coverage), n),
         className: 'radar__highlight',
       })
     }
   } else {
-    // Dashed reference of the whole, then faded games, then spotlit games on
-    // top. With nothing selected every game is spotlit.
+    // Dashed arc reference of the whole, then faded games (arc outlines only),
+    // then spotlit games as filled bars on top. With nothing selected every
+    // game is spotlit.
     const spotlight = chosen.length > 0
     const faded = [], lit = []
     games.forEach((g, i) => {
       if (!g.coverage) return
       if (spotlight && !selected.has(g.id)) {
-        faded.push({ key: g.id, values: g.coverage, className: 'radar__game radar__game--faded' })
+        faded.push({ key: g.id, values: g.coverage, className: 'radar__game--faded', outline: true })
       } else {
         lit.push({ key: g.id, values: g.coverage, className: 'radar__game',
                    style: { fill: gameColor(i), stroke: gameColor(i) } })
       }
     })
-    polygons.push({ ...baseLayers[0], key: 'context', className: 'radar__context' }, ...faded, ...lit)
+    series.push({ ...baseLayers[0], key: 'context', className: 'radar__context', outline: true }, ...faded, ...lit)
   }
 
   const names = chosen.map((g) => g.name)
@@ -67,7 +67,7 @@ export default function CoverageRadar({ dimensions, baseLayers, games, selected,
           </button>
         ))}
       </div>
-      <Radar dimensions={dimensions} polygons={polygons} />
+      <Radar dimensions={dimensions} series={series} />
       <p className="muted collection__caption">{caption}</p>
     </>
   )
