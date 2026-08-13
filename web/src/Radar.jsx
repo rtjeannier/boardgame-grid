@@ -21,19 +21,24 @@ export default function Radar({ dimensions, layers, highlight }) {
   const point = (i, r) => at(i, r).join(',')
   const polygon = (values) => values.map((v, i) => point(i, v)).join(' ')
 
-  // A game's contribution to one axis, drawn as a filled wedge out to its
-  // value. Wedges (rather than a polygon through every axis) keep each covered
-  // axis a solid area instead of collapsing to a spike when the neighbouring
-  // axes are empty.
+  // A game's contribution to one axis, drawn as a filled kite peaking at the
+  // value on the spoke. The side vertices sit at the sector's half-angles at
+  // radius v·cos(π/n) — the same outline a regular radar polygon of value v
+  // traces through this sector — so the tip is a point on the spoke (matching
+  // the chart's straight-edged geometry, no arcs) and wedges on adjacent axes
+  // tile seamlessly. Per-axis kites (rather than one polygon through every
+  // axis) keep each covered axis a solid area instead of collapsing to a
+  // spike when the neighbouring axes are empty.
   const wedge = (i, v) => {
     const half = Math.PI / n
-    const steps = 6
-    const pts = [`${cx},${cy}`]
-    for (let s = 0; s <= steps; s++) {
-      const a = angle(i) - half + (2 * half * s) / steps
-      pts.push(`${cx + R * v * Math.cos(a)},${cy + R * v * Math.sin(a)}`)
-    }
-    return pts.join(' ')
+    const side = v * Math.cos(half)
+    const a = angle(i)
+    return [
+      `${cx},${cy}`,
+      `${cx + R * side * Math.cos(a - half)},${cy + R * side * Math.sin(a - half)}`,
+      point(i, v),
+      `${cx + R * side * Math.cos(a + half)},${cy + R * side * Math.sin(a + half)}`,
+    ].join(' ')
   }
 
   return (
