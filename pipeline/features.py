@@ -33,6 +33,7 @@ from .model import Game
 @dataclass
 class FeatureSpace:
     vectors: dict[int, np.ndarray]        # game id -> full feature vector
+    loadings: dict[int, np.ndarray]       # game id -> genre loadings only (the radar axes)
     projection: dict[int, tuple[float, float]]  # game id -> global 2-D (x, y)
     top_genres: dict[int, list[tuple[str, float]]]  # id -> [(dim name, loading)]
     dimension_names: list[str]            # one per latent genre dimension
@@ -60,6 +61,7 @@ def build_feature_space(games: list[Game]) -> FeatureSpace:
     }
     return FeatureSpace(
         vectors={gid: matrix[i] for i, gid in enumerate(ids)},
+        loadings={gid: loadings[i] for i, gid in enumerate(ids)},
         projection={gid: (round(float(x), 3), round(float(y), 3)) for gid, (x, y) in zip(ids, xy)},
         top_genres=top,
         dimension_names=dim_names,

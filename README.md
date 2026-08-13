@@ -11,8 +11,10 @@ Curate a board-game collection as a 2-D grid:
 Games live in an n-dimensional feature space: latent **genre dimensions**
 factored out of BGG's mechanic/category data (a game isn't "a deck builder",
 it's 0.7 deck-building / 0.4 worker-placement), plus weight and playtime.
-Selection maximises spread in that space, so every cell shows the best game of
-each *kind* without anyone hand-defining the kinds.
+Selection fills a radar chart over those genre axes, so every cell shows the
+best game of each *kind* without anyone hand-defining the kinds — and the same
+math powers a **collection builder**: anchor games you love, fill the rest by
+coverage, and see the gaps.
 
 The output is an interactive static site you can host on GitHub Pages.
 
@@ -28,7 +30,9 @@ pipeline/            Python — two independent steps joined by a dataset file
   client.py          live BGG XML API2 client (cached), used by fetch
   config.py          the two axes + tunables (edit me first)
   features.py        the continuous feature space (IDF -> NMF genres -> vectors)
-  assign.py          swappable per-cell selection (MmrAssigner, GreedyAssigner)
+  coverage.py        probabilistic radar-chart coverage (shared math)
+  assign.py          swappable per-cell selection (Coverage/Mmr/GreedyAssigner)
+  collection.py      whole-collection builder: anchors, gap analysis
   archetypes.py      display-label taxonomy (mechanic/category -> archetype)
   buckets.py         player-count columns + quantile weight rows
 data/
@@ -59,7 +63,15 @@ a live capture would, `best_count` included, so no stage has to guess.
 ```bash
 pip install -r requirements.txt     # numpy + scikit-learn power the feature space
 python -m pipeline.build            # reads data/games.seed.json -> grid.json
+python -m pipeline.build --assigner mmr      # distance-based alternative
 python -m pipeline.build --assigner greedy   # archetype-taxonomy baseline
+```
+
+**Build or evaluate a collection (the Collection tab):**
+
+```bash
+python -m pipeline.collection --anchors "CATAN" --size 15   # fill around anchors
+python -m pipeline.collection --anchors "CATAN" --evaluate  # gaps only, no filling
 ```
 
 **Refresh from live BoardGameGeek data (two steps):**
@@ -103,11 +115,44 @@ pick this branch and the **`/docs`** folder. The site goes live at
    log-playtime. A global 2-D PCA of these vectors feeds the per-cell
    similarity scatter in the site's detail drawer.
 
-`MmrAssigner` (default) picks each cell's games by maximal marginal relevance:
-start with the best-ranked game, then repeatedly add the game with the best
-blend of rank and distance from everything already picked
-(`λ·quality + (1-λ)·spread`). The archetype taxonomy in `archetypes.py` is now
-display-only — it colors the dots and legend, but never drives selection.
+### Coverage selection (the default)
+
+Picture a radar chart with one spoke per genre dimension. Each game covers
+every axis with "probability" `quality × loading`, and a set of games covers
+an axis unless all of them miss it:
+
+```
+coverage(axis) = 1 − ∏(1 − wᵢ)
+```
+
+So Dominion (0.7 deck-building) covers that axis to 0.7; adding Star Realms
+(0.6) only lifts it to 0.88 — near-duplicates have tiny marginal value.
+Selection is greedy: the best-ranked game leads, then whatever fills the most
+still-empty radar area, stopping when nothing left would add much
+(`GAIN_FLOOR`) — so rich cells naturally get more picks than thin ones.
+Coverage functions are submodular, which makes this greedy provably
+near-optimal (≥ 1−1/e of the best possible set).
+
+`--assigner mmr` (maximal marginal relevance: rank blended with distance from
+picks) and `--assigner greedy` (one game per archetype) remain as
+alternatives. The archetype taxonomy in `archetypes.py` is display-only — it
+colors the dots and legend, but never drives selection.
+
+### The collection builder
+
+`pipeline/collection.py` runs the same coverage math across the *whole*
+dataset instead of one cell:
+
+- **Anchors** are games you own or love — locked in first (even if
+  suboptimal), so the greedy fill builds *around* them with complements
+  instead of replacements.
+- **Gaps**: any genre axis still under 50% covered is reported with the three
+  best games to fill it. `--evaluate` skips the filling and just audits the
+  anchors — "what does my shelf cover, what's missing?"
+- **Unique contribution** (shown as a bar in the Collection tab): how much
+  total coverage would vanish if a game were removed. There is deliberately
+  no hard guard against later picks crowding out an anchor — instead the
+  anchor's shrinking bar makes the redundancy visible, and you decide.
 
 ## Tuning it
 
@@ -118,8 +163,9 @@ Everything lives in `pipeline/config.py`:
   actual population, so they stay balanced whatever you pick.
 - **Feature space** — `NMF_COMPONENTS` (genre dimensions), `WEIGHT_SCALE` /
   `PLAYTIME_SCALE` (how much the continuous stats matter vs genre).
-- **Selection** — `MMR_LAMBDA` (1.0 = pure rank, 0.0 = pure spread) and
-  `PICKS_PER_CELL`.
+- **Coverage** — `QUALITY_FLOOR` (how much a badly-ranked game still covers),
+  `GAIN_FLOOR` (when to stop picking), `COLLECTION_SIZE`, `PICKS_PER_CELL`.
+- **MMR** — `MMR_LAMBDA` (1.0 = pure rank, 0.0 = pure spread).
 
 ### Swapping the selection algorithm
 

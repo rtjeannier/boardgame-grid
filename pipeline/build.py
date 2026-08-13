@@ -2,6 +2,7 @@
 
     python -m pipeline.build                              # seed proxy dataset
     python -m pipeline.build --dataset data/games.json    # live capture
+    python -m pipeline.build --assigner mmr               # distance-based selection
     python -m pipeline.build --assigner greedy            # taxonomy baseline
 
 Flow: load a dataset -> embed every game in the continuous feature space ->
@@ -17,7 +18,7 @@ from collections import defaultdict
 
 from . import buckets, dataset
 from .archetypes import ARCHETYPES
-from .assign import GreedyAssigner, MmrAssigner, assign_grid
+from .assign import CoverageAssigner, GreedyAssigner, MmrAssigner, assign_grid
 from .config import ALTERNATES_PER_CELL, OUTPUT_JSON, PLAYER_COLUMNS, SEED_DATASET, WEIGHT_ROW_COUNT
 from .features import build_feature_space
 
@@ -37,8 +38,11 @@ def build(dataset_path, assigner_name):
         row = buckets.weight_row_index(game.weight, weight_rows)
         cells[(col, row)].append(game)
 
-    assigner = (MmrAssigner(space.vectors) if assigner_name == "mmr"
-                else GreedyAssigner())
+    assigner = {
+        "coverage": lambda: CoverageAssigner(space.loadings),
+        "mmr": lambda: MmrAssigner(space.vectors),
+        "greedy": lambda: GreedyAssigner(),
+    }[assigner_name]()
     results = assign_grid(cells, assigner, ALTERNATES_PER_CELL)
 
     def game_json(g):
@@ -64,7 +68,7 @@ def build(dataset_path, assigner_name):
                 "row": row,
                 "candidateCount": len(cells[(col, row)]),
                 "assignments": [
-                    {"archetype": a.archetype, "game": game_json(a.game)}
+                    {"archetype": a.archetype, "game": game_json(a.game), "gain": a.gain}
                     for a in result.assignments
                 ],
                 "alternates": [game_json(g) for g in result.alternates],
@@ -83,8 +87,8 @@ def main():
     parser = argparse.ArgumentParser(description="Build the board-game grid JSON from a dataset.")
     parser.add_argument("--dataset", default=str(SEED_DATASET),
                         help="dataset file to build from (default: the seed proxy)")
-    parser.add_argument("--assigner", choices=["mmr", "greedy"], default="mmr",
-                        help="per-cell selection strategy (default: mmr coverage)")
+    parser.add_argument("--assigner", choices=["coverage", "mmr", "greedy"], default="coverage",
+                        help="per-cell selection strategy (default: probabilistic coverage)")
     args = parser.parse_args()
     build(args.dataset, args.assigner)
 

@@ -4,8 +4,9 @@ This is the interesting, swappable part of the pipeline. Given the games that
 qualify for a single cell, an *assigner* picks a diverse subset — so a cell
 never shows five near-identical worker-placement games.
 
-Two strategies live here:
-* `MmrAssigner` (default) — coverage in the continuous feature space.
+Three strategies live here:
+* `CoverageAssigner` (default) — probabilistic radar-chart coverage.
+* `MmrAssigner` — maximal marginal relevance (pairwise distance).
 * `GreedyAssigner` — the original one-game-per-archetype taxonomy walk.
 
 Design notes
@@ -23,6 +24,7 @@ from typing import Protocol
 
 import numpy as np
 
+from . import coverage
 from .archetypes import archetypes_for, primary_archetype
 from .config import MMR_LAMBDA, PICKS_PER_CELL
 from .model import Game
@@ -32,6 +34,7 @@ from .model import Game
 class Assignment:
     archetype: str
     game: Game
+    gain: float | None = None   # coverage added when picked (CoverageAssigner only)
 
 
 @dataclass
@@ -44,6 +47,32 @@ class Assigner(Protocol):
     def assign(self, games: list[Game], alternates_limit: int) -> CellResult:
         """Choose one game per archetype from the games qualifying for a cell."""
         ...
+
+
+class CoverageAssigner:
+    """Fill the cell's genre radar chart (see pipeline/coverage.py).
+
+    Every game covers each genre axis with probability quality × loading;
+    greedy adds whatever covers the most still-empty area and stops when
+    nothing left would add much — so a rich cell gets more picks than a thin
+    one, and a near-duplicate of an earlier pick never makes the cut.
+    """
+
+    def __init__(self, loadings: dict[int, "np.ndarray"]):
+        self.loadings = loadings  # from features.build_feature_space
+
+    def assign(self, games: list[Game], alternates_limit: int) -> CellResult:
+        ranks = [g.rank for g in games]
+        candidates = [
+            (g, coverage.quality(g.rank, ranks) * self.loadings[g.id])
+            for g in games
+        ]
+        picks = coverage.greedy_fill(candidates, seed=[], max_picks=PICKS_PER_CELL)
+
+        assignments = [Assignment(_display_label(p.game), p.game, p.gain) for p in picks]
+        chosen = {p.game.id for p in picks}
+        leftovers = sorted((g for g in games if g.id not in chosen), key=lambda g: g.rank)
+        return CellResult(assignments, leftovers[:alternates_limit])
 
 
 class MmrAssigner:

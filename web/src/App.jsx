@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react'
 import Grid from './Grid.jsx'
 import Detail from './Detail.jsx'
+import Collection from './Collection.jsx'
 import { colorFor } from './colors.js'
 
-// Top-level app: load the generated grid, hold the two pieces of UI state
-// (which archetypes are highlighted, which cell is open) and lay out the page.
+// Top-level app: two tabs — the per-cell Grid and the anchored Collection
+// builder. Grid state (highlighted archetypes, open cell) lives here.
 export default function App() {
+  const [tab, setTab] = useState('grid')
   const [data, setData] = useState(null)
   const [active, setActive] = useState(() => new Set()) // empty = show everything
   const [selected, setSelected] = useState(null)        // {column, row} or null
@@ -31,15 +33,31 @@ export default function App() {
   return (
     <div className="app">
       <Header meta={data.meta} />
-      <Legend archetypes={data.meta.archetypes} active={active} onToggle={toggle} />
-      <Grid data={data} active={active} selected={selected} onSelect={setSelected} />
-      {selectedCell && (
-        <Detail
-          cell={selectedCell}
-          meta={data.meta}
-          active={active}
-          onClose={() => setSelected(null)}
-        />
+      <nav className="tabs">
+        {[['grid', 'Grid'], ['collection', 'Collection']].map(([key, label]) => (
+          <button key={key}
+            className={`tabs__tab ${tab === key ? 'tabs__tab--on' : ''}`}
+            onClick={() => setTab(key)}>
+            {label}
+          </button>
+        ))}
+      </nav>
+
+      {tab === 'grid' ? (
+        <>
+          <Legend archetypes={data.meta.archetypes} active={active} onToggle={toggle} />
+          <Grid data={data} active={active} selected={selected} onSelect={setSelected} />
+          {selectedCell && (
+            <Detail
+              cell={selectedCell}
+              meta={data.meta}
+              active={active}
+              onClose={() => setSelected(null)}
+            />
+          )}
+        </>
+      ) : (
+        <Collection />
       )}
     </div>
   )

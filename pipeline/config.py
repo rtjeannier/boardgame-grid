@@ -74,3 +74,11 @@ PLAYTIME_SCALE = 0.25
 # favours rank; lower λ favours spreading across the space.
 MMR_LAMBDA = 0.5
 PICKS_PER_CELL = 8        # stop after this many picks per cell
+
+# Probabilistic coverage selection (the default; see pipeline/coverage.py).
+# A game covers each genre axis with "probability" quality × loading; a set's
+# coverage per axis is 1-∏(1-w); greedy adds whatever fills the most empty
+# radar-chart area, stopping when the best remaining gain is below the floor.
+QUALITY_FLOOR = 0.4       # worst-ranked game still covers this fraction of its loadings
+GAIN_FLOOR = 0.15         # stop picking when the best marginal gain drops below this
+COLLECTION_SIZE = 15      # default target size for the collection builder

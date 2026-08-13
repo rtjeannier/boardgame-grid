@@ -21,14 +21,17 @@ export default function Detail({ cell, meta, active, onClose }) {
       <Scatter assignments={cell.assignments} alternates={cell.alternates} />
 
       <ul className="detail__list">
-        {cell.assignments.map(({ archetype, game }) => {
+        {cell.assignments.map(({ archetype, game, gain }) => {
           const dim = active.size > 0 && !active.has(archetype)
           return (
             <li key={game.id} className={dim ? 'row--dim' : ''}>
               <span className="dot" style={{ background: colorFor(archetype) }} />
               <div className="detail__game">
                 <a href={game.url} target="_blank" rel="noreferrer">{game.name}</a>
-                <span className="muted">{archetype}</span>
+                <span className="muted">
+                  {archetype}
+                  {gain != null && ` · +${gain.toFixed(2)} coverage`}
+                </span>
                 <Genres genres={game.genres} />
               </div>
               <Stats game={game} />
