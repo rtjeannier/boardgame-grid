@@ -16,7 +16,7 @@ import argparse
 import json
 from collections import defaultdict
 
-from . import buckets, dataset
+from . import buckets, coverage, dataset
 from .archetypes import ARCHETYPES
 from .assign import CoverageAssigner, GreedyAssigner, MmrAssigner, assign_grid
 from .config import ALTERNATES_PER_CELL, OUTPUT_JSON, PLAYER_COLUMNS, SEED_DATASET, WEIGHT_ROW_COUNT
@@ -45,11 +45,44 @@ def build(dataset_path, assigner_name):
     }[assigner_name]()
     results = assign_grid(cells, assigner, ALTERNATES_PER_CELL)
 
-    def game_json(g):
-        """Game record + its place in the feature space, for the frontend."""
+    def game_json(g, weight=None):
+        """Game record + its place in the feature space, for the frontend.
+
+        `weight` is the game's quality-scaled genre-loading vector within its
+        cell (quality × loading, one entry per genre dimension) — the same
+        per-axis "probability" the coverage model uses. Serialised as
+        `coverage` so the frontend radar can draw one cell's picks and
+        highlight a single game's contribution to it.
+        """
         x, y = space.projection[g.id]
-        return {**g.to_dict(), "x": x, "y": y,
-                "genres": [{"name": n, "value": v} for n, v in space.top_genres[g.id]]}
+        record = {**g.to_dict(), "x": x, "y": y,
+                  "genres": [{"name": n, "value": v} for n, v in space.top_genres[g.id]]}
+        if weight is not None:
+            record["coverage"] = [round(float(w), 3) for w in weight]
+        return record
+
+    def cell_json(col, row, result):
+        """One cell: its picks and alternates, each carrying a coverage vector.
+
+        Quality is percentile *within this cell's* candidate pool, so a game's
+        radar contribution matches the coverage the assigner saw when filling
+        the cell (see pipeline/coverage.quality)."""
+        pool = cells[(col, row)]
+        ranks = [g.rank for g in pool]
+
+        def weight(g):
+            return coverage.quality(g.rank, ranks) * space.loadings[g.id]
+
+        return {
+            "column": col,
+            "row": row,
+            "candidateCount": len(pool),
+            "assignments": [
+                {"archetype": a.archetype, "game": game_json(a.game, weight(a.game)), "gain": a.gain}
+                for a in result.assignments
+            ],
+            "alternates": [game_json(g, weight(g)) for g in result.alternates],
+        }
 
     payload = {
         "meta": {
@@ -63,16 +96,7 @@ def build(dataset_path, assigner_name):
             "genreDimensions": space.dimension_names,
         },
         "cells": [
-            {
-                "column": col,
-                "row": row,
-                "candidateCount": len(cells[(col, row)]),
-                "assignments": [
-                    {"archetype": a.archetype, "game": game_json(a.game), "gain": a.gain}
-                    for a in result.assignments
-                ],
-                "alternates": [game_json(g) for g in result.alternates],
-            }
+            cell_json(col, row, result)
             for (col, row), result in sorted(results.items())
         ],
     }

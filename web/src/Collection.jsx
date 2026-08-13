@@ -8,6 +8,7 @@ import Radar from './Radar.jsx'
 export default function Collection() {
   const [data, setData] = useState(null)
   const [missing, setMissing] = useState(false)
+  const [highlightId, setHighlightId] = useState(null) // game whose contribution is shown
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}collection.json`)
@@ -29,30 +30,46 @@ export default function Collection() {
   const hasAnchors = meta.anchors.length > 0
   const covered = data.fullCoverage.reduce((a, b) => a + b, 0)
 
+  const highlighted = games.find((g) => g.id === highlightId) || null
+  const toggle = (id) => setHighlightId((cur) => (cur === id ? null : id))
+
+  const layers = [{ key: 'full', values: data.fullCoverage, className: 'radar__full' }]
+  if (hasAnchors) layers.push({ key: 'anchor', values: data.anchorCoverage, className: 'radar__anchor' })
+
   return (
     <div className="collection">
       <div className="collection__radar">
         <Radar
           dimensions={meta.dimensions}
-          anchorCoverage={data.anchorCoverage}
-          fullCoverage={data.fullCoverage}
-          hasAnchors={hasAnchors}
+          layers={layers}
+          highlight={highlighted && highlighted.coverage
+            ? { values: highlighted.coverage, name: highlighted.name }
+            : null}
         />
         <p className="muted collection__caption">
-          {covered.toFixed(1)} of {meta.dimensions.length} axes covered ·{' '}
-          {hasAnchors
-            ? <>inner shape: anchors ({meta.anchors.join(', ')}) · outer: full collection</>
-            : 'coverage of the built collection'}
+          {highlighted
+            ? <>highlighting <strong>{highlighted.name}</strong>’s contribution · click it again to clear</>
+            : <>
+                {covered.toFixed(1)} of {meta.dimensions.length} axes covered ·{' '}
+                {hasAnchors
+                  ? <>inner shape: anchors ({meta.anchors.join(', ')}) · outer: full collection</>
+                  : 'coverage of the built collection'}
+              </>}
         </p>
       </div>
 
       <div className="collection__list">
         <h2>{meta.size} games</h2>
+        <p className="muted collection__hint">Click a game to highlight its contribution on the radar.</p>
         <ul>
           {games.map((g) => (
-            <li key={g.id}>
+            <li key={g.id}
+              className={`collection__row ${highlightId === g.id ? 'is-highlit' : ''}`}
+              onClick={() => toggle(g.id)}
+              role="button" tabIndex={0} aria-pressed={highlightId === g.id}
+              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(g.id) } }}>
               <div className="collection__game">
-                <a href={g.url} target="_blank" rel="noreferrer">{g.name}</a>
+                <a href={g.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{g.name}</a>
                 {g.anchored
                   ? <span className="badge badge--anchor">anchor</span>
                   : <span className="muted">+{g.gain.toFixed(2)} coverage</span>}

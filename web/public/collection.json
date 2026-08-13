@@ -78,6 +78,18 @@
           "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
           "value": 0.32
         }
+      ],
+      "coverage": [
+        0.101,
+        0.013,
+        0.0,
+        0.156,
+        0.344,
+        0.0,
+        0.0,
+        0.029,
+        0.0,
+        0.295
       ]
     },
     {
@@ -114,6 +126,18 @@
           "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
           "value": 0.18
         }
+      ],
+      "coverage": [
+        0.679,
+        0.0,
+        0.0,
+        0.175,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.705,
+        0.047
       ]
     },
     {
@@ -149,6 +173,18 @@
           "name": "Set Collection / Engine Building / Open Drafting",
           "value": 0.43
         }
+      ],
+      "coverage": [
+        0.0,
+        0.0,
+        0.584,
+        0.0,
+        0.587,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.395
       ]
     },
     {
@@ -184,6 +220,18 @@
           "name": "Hidden Roles / Deduction / Bluffing",
           "value": 0.32
         }
+      ],
+      "coverage": [
+        0.0,
+        0.0,
+        0.0,
+        0.808,
+        0.0,
+        0.0,
+        0.0,
+        0.311,
+        0.414,
+        0.073
       ]
     },
     {
@@ -216,6 +264,18 @@
           "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
           "value": 0.36
         }
+      ],
+      "coverage": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.276,
+        0.0,
+        0.726,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     {
@@ -243,6 +303,18 @@
           "name": "Action / Dexterity / Children's Game / Stacking and Balancing",
           "value": 1.0
         }
+      ],
+      "coverage": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.797,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     {
@@ -272,6 +344,18 @@
           "name": "Party Game / Team-Based Game / Word Game",
           "value": 1.0
         }
+      ],
+      "coverage": [
+        0.0,
+        0.793,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     {
@@ -304,6 +388,18 @@
           "name": "Tile Placement / Pattern Building / Open Drafting",
           "value": 0.69
         }
+      ],
+      "coverage": [
+        0.0,
+        0.0,
+        0.686,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.71
       ]
     },
     {
@@ -334,6 +430,18 @@
           "name": "Hidden Roles / Deduction / Bluffing",
           "value": 1.0
         }
+      ],
+      "coverage": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.76,
+        0.0,
+        0.0
       ]
     },
     {
@@ -369,6 +477,18 @@
           "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
           "value": 0.21
         }
+      ],
+      "coverage": [
+        0.658,
+        0.0,
+        0.0,
+        0.159,
+        0.172,
+        0.0,
+        0.0,
+        0.0,
+        0.199,
+        0.573
       ]
     },
     {
@@ -404,6 +524,18 @@
           "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
           "value": 0.18
         }
+      ],
+      "coverage": [
+        0.0,
+        0.0,
+        0.0,
+        0.61,
+        0.703,
+        0.0,
+        0.0,
+        0.0,
+        0.167,
+        0.093
       ]
     },
     {
@@ -432,6 +564,18 @@
           "name": "Paper-and-Pencil / Flip and Write / City Building",
           "value": 1.0
         }
+      ],
+      "coverage": [
+        0.0,
+        0.0,
+        0.001,
+        0.0,
+        0.0,
+        0.0,
+        0.71,
+        0.0,
+        0.0,
+        0.0
       ]
     },
     {
@@ -467,6 +611,18 @@
           "name": "Hidden Roles / Deduction / Bluffing",
           "value": 0.25
         }
+      ],
+      "coverage": [
+        0.0,
+        0.561,
+        0.0,
+        0.0,
+        0.031,
+        0.0,
+        0.0,
+        0.156,
+        0.233,
+        0.0
       ]
     }
   ],

@@ -8,6 +8,7 @@
   --muted: #6b7280;
   --border: #e4e7eb;
   --accent: #2a7de1;
+  --highlight: #e8833a;
   --shadow: 0 6px 24px rgba(20, 24, 31, 0.12);
   --radius: 10px;
 }
@@ -21,6 +22,7 @@
     --muted: #9aa4b2;
     --border: #29313a;
     --accent: #5aa2f0;
+    --highlight: #f6a15c;
     --shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
   }
 }
@@ -121,6 +123,11 @@ body {
 }
 .detail__close:hover { color: var(--text); }
 
+/* --- cell radar (in the detail drawer) ------------------------------------ */
+.detail__radar { margin: 18px 0 4px; }
+.detail__radar .radar { max-width: 300px; margin: 0 auto; }
+.detail__radar .collection__caption { text-align: center; margin: 2px 0 0; }
+
 /* --- similarity scatter --------------------------------------------------- */
 .scatter { margin: 16px 0 0; }
 .scatter svg {
@@ -163,8 +170,25 @@ body {
 .radar__anchor { fill: #b5838d; opacity: 0.45; stroke: #b5838d; stroke-width: 0.004; }
 .radar__label { font-size: 0.026px; fill: var(--muted); dominant-baseline: middle; }
 
+/* One game's own coverage, overlaid when it's clicked in the list. */
+.radar__highlight { fill: var(--highlight); opacity: 0.5; stroke: var(--highlight); stroke-width: 0.006; }
+.radar__highlight-dot { fill: var(--highlight); stroke: var(--surface); stroke-width: 0.003; }
+.radar__highlight-group { pointer-events: none; }
+
+.collection__hint { font-size: 12px; margin: -4px 0 8px; }
+
 .collection__list ul, .collection__gaps ul { list-style: none; margin: 0; padding: 0; }
 .collection__list li { padding: 10px 0; border-top: 1px solid var(--border); }
+
+/* Clickable game rows — click to highlight the game's contribution on the
+   radar. Applies to both the Collection list and the cell detail lists. */
+.collection__row, .detail__row { cursor: pointer; transition: background 0.12s; }
+.collection__row { border-radius: 6px; padding-left: 8px; padding-right: 8px; margin: 0 -8px; }
+.collection__row:hover, .detail__row:hover { background: var(--surface-2); }
+.collection__row:focus-visible, .detail__row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.is-highlit { background: color-mix(in srgb, var(--highlight) 16%, transparent) !important; }
+.collection__row.is-highlit { box-shadow: inset 3px 0 0 var(--highlight); }
+.detail__row.is-highlit { box-shadow: inset 3px 0 0 var(--highlight); }
 .collection__game { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .collection__game a { color: var(--text); font-weight: 600; text-decoration: none; }
 .collection__game a:hover { color: var(--accent); text-decoration: underline; }

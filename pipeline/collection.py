@@ -108,6 +108,10 @@ def build_collection(dataset_path, anchor_tokens, size, evaluate_only):
                 "gain": gains[i],
                 "uniqueContribution": coverage.unique_contribution(i, member_weights),
                 "genres": [{"name": n, "value": v} for n, v in space.top_genres[g.id]],
+                # Quality-scaled genre-loading vector (one per dimension): the
+                # game's own "shadow" on the radar, used to highlight its
+                # contribution when clicked in the Collection list.
+                "coverage": [round(float(w), 3) for w in member_weights[i]],
             }
             for i, g in enumerate(members)
         ],
