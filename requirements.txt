@@ -1,3 +1,5 @@
-# Only needed for the live BGG fetch (python -m pipeline.build --live).
-# The offline seed build uses the standard library alone.
+# Feature space + selection (pipeline.build): numpy, scikit-learn.
+# Live BGG fetch (pipeline.fetch) additionally needs requests.
+numpy>=1.26
+scikit-learn>=1.4
 requests>=2.31

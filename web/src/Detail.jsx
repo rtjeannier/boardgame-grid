@@ -1,4 +1,5 @@
 import React from 'react'
+import Scatter from './Scatter.jsx'
 import { colorFor } from './colors.js'
 
 // Slide-in panel for a single cell: the full list of archetype picks plus the
@@ -17,6 +18,8 @@ export default function Detail({ cell, meta, active, onClose }) {
         <button className="detail__close" onClick={onClose} aria-label="Close">×</button>
       </div>
 
+      <Scatter assignments={cell.assignments} alternates={cell.alternates} />
+
       <ul className="detail__list">
         {cell.assignments.map(({ archetype, game }) => {
           const dim = active.size > 0 && !active.has(archetype)
@@ -26,6 +29,7 @@ export default function Detail({ cell, meta, active, onClose }) {
               <div className="detail__game">
                 <a href={game.url} target="_blank" rel="noreferrer">{game.name}</a>
                 <span className="muted">{archetype}</span>
+                <Genres genres={game.genres} />
               </div>
               <Stats game={game} />
             </li>
@@ -56,7 +60,18 @@ export default function Detail({ cell, meta, active, onClose }) {
 function Stats({ game }) {
   return (
     <span className="detail__stats muted">
-      #{game.rank} · w{game.weight} · best {game.best_counts.join(', ') || '—'}
+      #{game.rank} · w{game.weight} · {game.playtime}′ · best {game.best_counts.join(', ') || '—'}
+    </span>
+  )
+}
+
+// A game's strongest latent genre dimensions, e.g. "0.71 tile-laying · 0.30
+// set-collection" — the continuous "what kind of game is this" signal.
+function Genres({ genres }) {
+  if (!genres?.length) return null
+  return (
+    <span className="detail__genres muted">
+      {genres.map(({ name, value }) => `${value} ${name.split(' / ')[0].toLowerCase()}`).join(' · ')}
     </span>
   )
 }

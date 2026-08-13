@@ -1,8 +1,9 @@
 {
   "meta": {
     "source": "seed",
-    "generatedAt": "2026-08-12",
-    "gameCount": 54,
+    "generatedAt": "2026-08-13",
+    "gameCount": 146,
+    "assigner": "mmr",
     "playerColumns": [
       "1",
       "2",
@@ -16,31 +17,31 @@
       {
         "index": 0,
         "lo": 1.1,
-        "hi": 1.7,
+        "hi": 1.5,
         "name": "Gateway"
       },
       {
         "index": 1,
-        "lo": 1.7,
-        "hi": 2.0,
+        "lo": 1.5,
+        "hi": 1.9,
         "name": "Light"
       },
       {
         "index": 2,
-        "lo": 2.0,
-        "hi": 2.5,
+        "lo": 1.9,
+        "hi": 2.6,
         "name": "Medium"
       },
       {
         "index": 3,
-        "lo": 2.5,
-        "hi": 3.7,
+        "lo": 2.6,
+        "hi": 3.6,
         "name": "Medium-Heavy"
       },
       {
         "index": 4,
-        "lo": 3.7,
-        "hi": 4.4,
+        "lo": 3.6,
+        "hi": 4.7,
         "name": "Heavy"
       }
     ],
@@ -60,13 +61,25 @@
       "Cooperative",
       "Word / Party",
       "Set Collection"
+    ],
+    "genreDimensions": [
+      "Economic / Auction/Bidding / Network and Route Building",
+      "Party Game / Team-Based Game / Word Game",
+      "Tile Placement / Pattern Building / Open Drafting",
+      "Variable Player Powers / Area Majority / Influence / Grid Movement",
+      "Dice Rolling / Science Fiction / Roll / Spin and Write",
+      "Action / Dexterity / Children's Game / Stacking and Balancing",
+      "Paper-and-Pencil / Flip and Write / City Building",
+      "Hidden Roles / Deduction / Bluffing",
+      "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+      "Set Collection / Engine Building / Open Drafting"
     ]
   },
   "cells": [
     {
       "column": "1",
       "row": 0,
-      "candidateCount": 1,
+      "candidateCount": 2,
       "assignments": [
         {
           "archetype": "Roll & Write",
@@ -76,6 +89,7 @@
             "year": 2018,
             "rank": 160,
             "weight": 1.4,
+            "playtime": 30,
             "best_counts": [
               1,
               2
@@ -83,35 +97,60 @@
             "best_count": 1,
             "signals": [
               "Roll / Spin and Write",
+              "Dice Rolling",
               "Push Your Luck"
             ],
-            "url": "https://boardgamegeek.com/boardgame/244522"
+            "url": "https://boardgamegeek.com/boardgame/244522",
+            "x": -0.332,
+            "y": -0.054,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 1.0
+              },
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 0.07
+              }
+            ]
           }
-        }
-      ],
-      "alternates": []
-    },
-    {
-      "column": "1",
-      "row": 1,
-      "candidateCount": 1,
-      "assignments": [
+        },
         {
-          "archetype": "Deck Building",
+          "archetype": "Cooperative",
           "game": {
-            "id": 37046,
-            "name": "Friday",
-            "year": 2011,
-            "rank": 260,
-            "weight": 2.0,
+            "id": 156336,
+            "name": "Onirim",
+            "year": 2010,
+            "rank": 750,
+            "weight": 1.4,
+            "playtime": 15,
             "best_counts": [
-              1
+              1,
+              2
             ],
             "best_count": 1,
             "signals": [
-              "Deck, Bag, and Pool Building"
+              "Cooperative Game",
+              "Hand Management",
+              "Set Collection"
             ],
-            "url": "https://boardgamegeek.com/boardgame/37046"
+            "url": "https://boardgamegeek.com/boardgame/156336",
+            "x": -0.094,
+            "y": -0.054,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.77
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.64
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.05
+              }
+            ]
           }
         }
       ],
@@ -120,25 +159,138 @@
     {
       "column": "1",
       "row": 2,
-      "candidateCount": 1,
+      "candidateCount": 3,
       "assignments": [
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 277659,
+            "name": "Final Girl",
+            "year": 2021,
+            "rank": 170,
+            "weight": 2.4,
+            "playtime": 60,
+            "best_counts": [
+              1
+            ],
+            "best_count": 1,
+            "signals": [
+              "Cooperative Game",
+              "Dice Rolling",
+              "Horror"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/277659",
+            "x": -0.189,
+            "y": 0.354,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.9
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.43
+              }
+            ]
+          }
+        },
         {
           "archetype": "Roll & Write",
           "game": {
             "id": 306735,
             "name": "Under Falling Skies",
             "year": 2020,
-            "rank": 180,
+            "rank": 182,
             "weight": 2.1,
+            "playtime": 40,
             "best_counts": [
               1
             ],
             "best_count": 1,
             "signals": [
               "Roll / Spin and Write",
-              "Dice Rolling"
+              "Dice Rolling",
+              "Science Fiction"
             ],
-            "url": "https://boardgamegeek.com/boardgame/306735"
+            "url": "https://boardgamegeek.com/boardgame/306735",
+            "x": -0.225,
+            "y": 0.028,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 1.0
+              },
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 0.05
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Deck Building",
+          "game": {
+            "id": 37046,
+            "name": "Friday",
+            "year": 2011,
+            "rank": 260,
+            "weight": 2.0,
+            "playtime": 25,
+            "best_counts": [
+              1
+            ],
+            "best_count": 1,
+            "signals": [
+              "Deck, Bag, and Pool Building",
+              "Hand Management",
+              "Solo / Solitaire Game"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/37046",
+            "x": -0.365,
+            "y": 0.523,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 1.0
+              }
+            ]
+          }
+        }
+      ],
+      "alternates": []
+    },
+    {
+      "column": "1",
+      "row": 3,
+      "candidateCount": 1,
+      "assignments": [
+        {
+          "archetype": "Roll & Write",
+          "game": {
+            "id": 304783,
+            "name": "Hadrian's Wall",
+            "year": 2021,
+            "rank": 150,
+            "weight": 3.4,
+            "playtime": 60,
+            "best_counts": [
+              1,
+              2
+            ],
+            "best_count": 1,
+            "signals": [
+              "Flip and Write",
+              "Paper-and-Pencil"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/304783",
+            "x": -0.048,
+            "y": 0.03,
+            "genres": [
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 1.0
+              }
+            ]
           }
         }
       ],
@@ -147,7 +299,7 @@
     {
       "column": "1",
       "row": 4,
-      "candidateCount": 1,
+      "candidateCount": 2,
       "assignments": [
         {
           "archetype": "Deck Building",
@@ -157,6 +309,7 @@
             "year": 2011,
             "rank": 25,
             "weight": 4.2,
+            "playtime": 240,
             "best_counts": [
               1
             ],
@@ -164,9 +317,55 @@
             "signals": [
               "Deck, Bag, and Pool Building",
               "Hand Management",
-              "Hexagon Grid"
+              "Modular Board"
             ],
-            "url": "https://boardgamegeek.com/boardgame/96848"
+            "url": "https://boardgamegeek.com/boardgame/96848",
+            "x": 0.148,
+            "y": 0.899,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 192135,
+            "name": "Too Many Bones",
+            "year": 2017,
+            "rank": 48,
+            "weight": 3.9,
+            "playtime": 120,
+            "best_counts": [
+              1,
+              2
+            ],
+            "best_count": 1,
+            "signals": [
+              "Cooperative Game",
+              "Dice Rolling",
+              "Variable Player Powers"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/192135",
+            "x": 0.16,
+            "y": 0.622,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.68
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.64
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.36
+              }
+            ]
           }
         }
       ],
@@ -175,26 +374,8 @@
     {
       "column": "2",
       "row": 0,
-      "candidateCount": 3,
+      "candidateCount": 5,
       "assignments": [
-        {
-          "archetype": "Tile Placement",
-          "game": {
-            "id": 163412,
-            "name": "Patchwork",
-            "year": 2014,
-            "rank": 75,
-            "weight": 1.6,
-            "best_counts": [
-              2
-            ],
-            "best_count": 2,
-            "signals": [
-              "Tile Placement"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/163412"
-          }
-        },
         {
           "archetype": "Dexterity",
           "game": {
@@ -203,6 +384,7 @@
             "year": 1876,
             "rank": 80,
             "weight": 1.1,
+            "playtime": 30,
             "best_counts": [
               2,
               4
@@ -212,7 +394,15 @@
               "Flicking",
               "Action / Dexterity"
             ],
-            "url": "https://boardgamegeek.com/boardgame/521"
+            "url": "https://boardgamegeek.com/boardgame/521",
+            "x": -0.45,
+            "y": -0.231,
+            "genres": [
+              {
+                "name": "Action / Dexterity / Children's Game / Stacking and Balancing",
+                "value": 1.0
+              }
+            ]
           }
         },
         {
@@ -223,15 +413,144 @@
             "year": 2009,
             "rank": 100,
             "weight": 1.5,
+            "playtime": 30,
             "best_counts": [
               2
             ],
             "best_count": 2,
             "signals": [
               "Open Drafting",
-              "Set Collection"
+              "Set Collection",
+              "Hand Management",
+              "Trading"
             ],
-            "url": "https://boardgamegeek.com/boardgame/54043"
+            "url": "https://boardgamegeek.com/boardgame/54043",
+            "x": 0.302,
+            "y": -0.636,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.98
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.19
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.07
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 224037,
+            "name": "Codenames: Duet",
+            "year": 2017,
+            "rank": 210,
+            "weight": 1.4,
+            "playtime": 20,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Cooperative Game",
+              "Word Game",
+              "Deduction"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/224037",
+            "x": -0.77,
+            "y": -0.098,
+            "genres": [
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.89
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.37
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.25
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Push Your Luck",
+          "game": {
+            "id": 50,
+            "name": "Lost Cities",
+            "year": 1999,
+            "rank": 360,
+            "weight": 1.5,
+            "playtime": 30,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Hand Management",
+              "Set Collection",
+              "Push Your Luck"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/50",
+            "x": 0.198,
+            "y": -0.351,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.88
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.35
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.32
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Dexterity",
+          "game": {
+            "id": 165722,
+            "name": "Klask",
+            "year": 2014,
+            "rank": 455,
+            "weight": 1.1,
+            "playtime": 20,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Action / Dexterity",
+              "Real-Time"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/165722",
+            "x": -0.572,
+            "y": -0.28,
+            "genres": [
+              {
+                "name": "Action / Dexterity / Children's Game / Stacking and Balancing",
+                "value": 0.99
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.13
+              },
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.07
+              }
+            ]
           }
         }
       ],
@@ -240,7 +559,7 @@
     {
       "column": "2",
       "row": 1,
-      "candidateCount": 3,
+      "candidateCount": 8,
       "assignments": [
         {
           "archetype": "Tile Placement",
@@ -250,25 +569,127 @@
             "year": 2021,
             "rank": 35,
             "weight": 1.9,
+            "playtime": 45,
             "best_counts": [
               2
             ],
             "best_count": 2,
             "signals": [
               "Tile Placement",
-              "Open Drafting"
+              "Open Drafting",
+              "Pattern Building",
+              "Animals"
             ],
-            "url": "https://boardgamegeek.com/boardgame/295947"
+            "url": "https://boardgamegeek.com/boardgame/295947",
+            "x": -0.111,
+            "y": -0.164,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 1.0
+              }
+            ]
           }
         },
         {
-          "archetype": "Drafting",
+          "archetype": "Other",
+          "game": {
+            "id": 194655,
+            "name": "Santorini",
+            "year": 2016,
+            "rank": 240,
+            "weight": 1.7,
+            "playtime": 20,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Abstract Strategy",
+              "Grid Movement",
+              "Variable Player Powers"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/194655",
+            "x": -0.18,
+            "y": 0.084,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Tile Placement",
+          "game": {
+            "id": 163412,
+            "name": "Patchwork",
+            "year": 2014,
+            "rank": 78,
+            "weight": 1.6,
+            "playtime": 30,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Tile Placement",
+              "Pattern Building",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/163412",
+            "x": -0.179,
+            "y": -0.206,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.98
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.19
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Deck Building",
+          "game": {
+            "id": 147020,
+            "name": "Star Realms",
+            "year": 2014,
+            "rank": 330,
+            "weight": 1.9,
+            "playtime": 25,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Deck, Bag, and Pool Building",
+              "Hand Management"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/147020",
+            "x": -0.363,
+            "y": 0.504,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Tile Placement",
           "game": {
             "id": 230802,
             "name": "Azul",
             "year": 2017,
             "rank": 50,
             "weight": 1.8,
+            "playtime": 45,
             "best_counts": [
               2,
               4
@@ -279,7 +700,19 @@
               "Open Drafting",
               "Pattern Building"
             ],
-            "url": "https://boardgamegeek.com/boardgame/230802"
+            "url": "https://boardgamegeek.com/boardgame/230802",
+            "x": -0.097,
+            "y": -0.194,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 1.0
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.07
+              }
+            ]
           }
         },
         {
@@ -288,8 +721,9 @@
             "id": 822,
             "name": "Carcassonne",
             "year": 2000,
-            "rank": 170,
+            "rank": 175,
             "weight": 1.9,
+            "playtime": 45,
             "best_counts": [
               2
             ],
@@ -298,7 +732,94 @@
               "Tile Placement",
               "Area Majority / Influence"
             ],
-            "url": "https://boardgamegeek.com/boardgame/822"
+            "url": "https://boardgamegeek.com/boardgame/822",
+            "x": -0.05,
+            "y": 0.015,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.79
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.61
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Drafting",
+          "game": {
+            "id": 199561,
+            "name": "Sagrada",
+            "year": 2017,
+            "rank": 220,
+            "weight": 1.9,
+            "playtime": 40,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Dice Rolling",
+              "Pattern Building",
+              "Open Drafting"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/199561",
+            "x": -0.059,
+            "y": -0.199,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.9
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.41
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.16
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Other",
+          "game": {
+            "id": 160477,
+            "name": "Onitama",
+            "year": 2014,
+            "rank": 292,
+            "weight": 1.7,
+            "playtime": 20,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Abstract Strategy",
+              "Grid Movement",
+              "Hand Management"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/160477",
+            "x": -0.158,
+            "y": 0.226,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.94
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.33
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.1
+              }
+            ]
           }
         }
       ],
@@ -307,7 +828,7 @@
     {
       "column": "2",
       "row": 2,
-      "candidateCount": 4,
+      "candidateCount": 12,
       "assignments": [
         {
           "archetype": "Drafting",
@@ -317,36 +838,29 @@
             "year": 2015,
             "rank": 16,
             "weight": 2.2,
+            "playtime": 30,
             "best_counts": [
               2
             ],
             "best_count": 2,
             "signals": [
               "Open Drafting",
-              "Set Collection"
+              "Set Collection",
+              "Civilization"
             ],
-            "url": "https://boardgamegeek.com/boardgame/173346"
-          }
-        },
-        {
-          "archetype": "Engine Building",
-          "game": {
-            "id": 266192,
-            "name": "Wingspan",
-            "year": 2019,
-            "rank": 30,
-            "weight": 2.4,
-            "best_counts": [
-              2,
-              3
-            ],
-            "best_count": 2,
-            "signals": [
-              "Engine Building",
-              "Open Drafting",
-              "Set Collection"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/266192"
+            "url": "https://boardgamegeek.com/boardgame/173346",
+            "x": 0.37,
+            "y": -0.617,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.95
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.31
+              }
+            ]
           }
         },
         {
@@ -357,61 +871,378 @@
             "year": 2008,
             "rank": 42,
             "weight": 2.4,
+            "playtime": 30,
             "best_counts": [
               2,
               3
             ],
             "best_count": 2,
             "signals": [
-              "Deck, Bag, and Pool Building"
+              "Deck, Bag, and Pool Building",
+              "Hand Management"
             ],
-            "url": "https://boardgamegeek.com/boardgame/36218"
+            "url": "https://boardgamegeek.com/boardgame/36218",
+            "x": -0.29,
+            "y": 0.56,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 373106,
+            "name": "Sky Team",
+            "year": 2023,
+            "rank": 75,
+            "weight": 2.0,
+            "playtime": 20,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Cooperative Game",
+              "Dice Rolling",
+              "Aviation / Flight"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/373106",
+            "x": -0.369,
+            "y": 0.226,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.9
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.43
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Other",
+          "game": {
+            "id": 2655,
+            "name": "Hive",
+            "year": 2001,
+            "rank": 260,
+            "weight": 2.3,
+            "playtime": 20,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Abstract Strategy",
+              "Grid Movement"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/2655",
+            "x": -0.12,
+            "y": 0.132,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Engine Building",
+          "game": {
+            "id": 266192,
+            "name": "Wingspan",
+            "year": 2019,
+            "rank": 30,
+            "weight": 2.4,
+            "playtime": 70,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Engine Building",
+              "Open Drafting",
+              "Set Collection",
+              "Dice Rolling"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/266192",
+            "x": 0.472,
+            "y": -0.474,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.94
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.32
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.16
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Tile Placement",
+          "game": {
+            "id": 283155,
+            "name": "Calico",
+            "year": 2020,
+            "rank": 235,
+            "weight": 2.2,
+            "playtime": 30,
+            "best_counts": [
+              1,
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Tile Placement",
+              "Set Collection",
+              "Pattern Building"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/283155",
+            "x": -0.043,
+            "y": -0.257,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.98
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.18
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Engine Building",
+          "game": {
+            "id": 269385,
+            "name": "Res Arcana",
+            "year": 2019,
+            "rank": 90,
+            "weight": 2.5,
+            "playtime": 60,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Engine Building",
+              "Hand Management",
+              "Fantasy"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/269385",
+            "x": 0.476,
+            "y": -0.444,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.99
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.13
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Other",
+          "game": {
+            "id": 274364,
+            "name": "Watergate",
+            "year": 2019,
+            "rank": 310,
+            "weight": 2.4,
+            "playtime": 45,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Hand Management",
+              "Political",
+              "Tug of War"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/274364",
+            "x": -0.326,
+            "y": 0.324,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.79
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.58
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.15
+              }
+            ]
           }
         }
       ],
       "alternates": [
         {
-          "id": 269385,
-          "name": "Res Arcana",
-          "year": 2019,
-          "rank": 90,
-          "weight": 2.5,
+          "id": 118048,
+          "name": "Targi",
+          "year": 2012,
+          "rank": 200,
+          "weight": 2.4,
+          "playtime": 60,
           "best_counts": [
             2
           ],
           "best_count": 2,
           "signals": [
-            "Engine Building",
-            "Hand Management"
+            "Worker Placement",
+            "Set Collection"
           ],
-          "url": "https://boardgamegeek.com/boardgame/269385"
+          "url": "https://boardgamegeek.com/boardgame/118048",
+          "x": 0.483,
+          "y": -0.539,
+          "genres": [
+            {
+              "name": "Set Collection / Engine Building / Open Drafting",
+              "value": 1.0
+            }
+          ]
+        },
+        {
+          "id": 268864,
+          "name": "Undaunted: Normandy",
+          "year": 2019,
+          "rank": 270,
+          "weight": 2.3,
+          "playtime": 60,
+          "best_counts": [
+            2
+          ],
+          "best_count": 2,
+          "signals": [
+            "Deck, Bag, and Pool Building",
+            "Wargame"
+          ],
+          "url": "https://boardgamegeek.com/boardgame/268864",
+          "x": -0.223,
+          "y": 0.624,
+          "genres": [
+            {
+              "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+              "value": 1.0
+            }
+          ]
+        },
+        {
+          "id": 266524,
+          "name": "PARKS",
+          "year": 2019,
+          "rank": 280,
+          "weight": 2.2,
+          "playtime": 50,
+          "best_counts": [
+            2,
+            3
+          ],
+          "best_count": 2,
+          "signals": [
+            "Set Collection",
+            "Point to Point Movement"
+          ],
+          "url": "https://boardgamegeek.com/boardgame/266524",
+          "x": 0.44,
+          "y": -0.575,
+          "genres": [
+            {
+              "name": "Set Collection / Engine Building / Open Drafting",
+              "value": 1.0
+            }
+          ]
+        },
+        {
+          "id": 246192,
+          "name": "Gizmos",
+          "year": 2018,
+          "rank": 400,
+          "weight": 2.0,
+          "playtime": 45,
+          "best_counts": [
+            2,
+            3
+          ],
+          "best_count": 2,
+          "signals": [
+            "Engine Building",
+            "Set Collection"
+          ],
+          "url": "https://boardgamegeek.com/boardgame/246192",
+          "x": 0.406,
+          "y": -0.6,
+          "genres": [
+            {
+              "name": "Set Collection / Engine Building / Open Drafting",
+              "value": 1.0
+            }
+          ]
         }
       ]
     },
     {
       "column": "2",
       "row": 3,
-      "candidateCount": 4,
+      "candidateCount": 8,
       "assignments": [
         {
-          "archetype": "Drafting",
+          "archetype": "Area Control",
           "game": {
-            "id": 342942,
-            "name": "Ark Nova",
-            "year": 2021,
-            "rank": 3,
-            "weight": 3.7,
+            "id": 12333,
+            "name": "Twilight Struggle",
+            "year": 2005,
+            "rank": 10,
+            "weight": 3.6,
+            "playtime": 180,
             "best_counts": [
-              2,
-              3
+              2
             ],
             "best_count": 2,
             "signals": [
-              "Open Drafting",
-              "Set Collection",
-              "End Game Bonuses"
+              "Area Majority / Influence",
+              "Hand Management",
+              "Political"
             ],
-            "url": "https://boardgamegeek.com/boardgame/342942"
+            "url": "https://boardgamegeek.com/boardgame/12333",
+            "x": 0.161,
+            "y": 0.571,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.84
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.43
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.32
+              }
+            ]
           }
         },
         {
@@ -422,15 +1253,33 @@
             "year": 2011,
             "rank": 24,
             "weight": 3.0,
+            "playtime": 90,
             "best_counts": [
               2
             ],
             "best_count": 2,
             "signals": [
               "Tile Placement",
-              "Dice Rolling"
+              "Dice Rolling",
+              "Set Collection"
             ],
-            "url": "https://boardgamegeek.com/boardgame/84876"
+            "url": "https://boardgamegeek.com/boardgame/84876",
+            "x": 0.293,
+            "y": -0.139,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.64
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.64
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.43
+              }
+            ]
           }
         },
         {
@@ -441,6 +1290,7 @@
             "year": 2020,
             "rank": 26,
             "weight": 2.9,
+            "playtime": 120,
             "best_counts": [
               2,
               3
@@ -450,7 +1300,19 @@
               "Deck, Bag, and Pool Building",
               "Worker Placement"
             ],
-            "url": "https://boardgamegeek.com/boardgame/312484"
+            "url": "https://boardgamegeek.com/boardgame/312484",
+            "x": 0.085,
+            "y": 0.577,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.97
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.25
+              }
+            ]
           }
         },
         {
@@ -461,6 +1323,7 @@
             "year": 2007,
             "rank": 45,
             "weight": 3.0,
+            "playtime": 60,
             "best_counts": [
               2
             ],
@@ -468,27 +1331,33 @@
             "signals": [
               "Engine Building",
               "Open Drafting",
-              "Set Collection"
+              "Set Collection",
+              "Hand Management"
             ],
-            "url": "https://boardgamegeek.com/boardgame/28143"
+            "url": "https://boardgamegeek.com/boardgame/28143",
+            "x": 0.545,
+            "y": -0.478,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.99
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.14
+              }
+            ]
           }
-        }
-      ],
-      "alternates": []
-    },
-    {
-      "column": "2",
-      "row": 4,
-      "candidateCount": 2,
-      "assignments": [
+        },
         {
           "archetype": "Cooperative",
           "game": {
-            "id": 174430,
-            "name": "Gloomhaven",
-            "year": 2017,
-            "rank": 1,
-            "weight": 3.9,
+            "id": 291457,
+            "name": "Gloomhaven: Jaws of the Lion",
+            "year": 2020,
+            "rank": 28,
+            "weight": 3.6,
+            "playtime": 120,
             "best_counts": [
               2,
               3
@@ -499,7 +1368,227 @@
               "Hand Management",
               "Modular Board"
             ],
-            "url": "https://boardgamegeek.com/boardgame/174430"
+            "url": "https://boardgamegeek.com/boardgame/291457",
+            "x": -0.003,
+            "y": 0.789,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Area Control",
+          "game": {
+            "id": 157354,
+            "name": "Five Tribes",
+            "year": 2014,
+            "rank": 140,
+            "weight": 2.9,
+            "playtime": 80,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Auction/Bidding",
+              "Set Collection",
+              "Area Majority / Influence"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/157354",
+            "x": 0.512,
+            "y": -0.101,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.63
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.6
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.49
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Deck Building",
+          "game": {
+            "id": 205637,
+            "name": "Arkham Horror: The Card Game",
+            "year": 2016,
+            "rank": 29,
+            "weight": 3.4,
+            "playtime": 120,
+            "best_counts": [
+              1,
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Cooperative Game",
+              "Deck, Bag, and Pool Building",
+              "Hand Management"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/205637",
+            "x": -0.023,
+            "y": 0.773,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Engine Building",
+          "game": {
+            "id": 111960,
+            "name": "Suburbia",
+            "year": 2012,
+            "rank": 250,
+            "weight": 2.8,
+            "playtime": 90,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Tile Placement",
+              "Engine Building",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/111960",
+            "x": 0.496,
+            "y": -0.346,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.68
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.65
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.34
+              }
+            ]
+          }
+        }
+      ],
+      "alternates": []
+    },
+    {
+      "column": "2",
+      "row": 4,
+      "candidateCount": 8,
+      "assignments": [
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 174430,
+            "name": "Gloomhaven",
+            "year": 2017,
+            "rank": 1,
+            "weight": 3.9,
+            "playtime": 120,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Cooperative Game",
+              "Hand Management",
+              "Modular Board"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/174430",
+            "x": 0.027,
+            "y": 0.813,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Engine Building",
+          "game": {
+            "id": 342942,
+            "name": "Ark Nova",
+            "year": 2021,
+            "rank": 3,
+            "weight": 3.7,
+            "playtime": 150,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Open Drafting",
+              "Set Collection",
+              "Hand Management",
+              "Engine Building"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/342942",
+            "x": 0.735,
+            "y": -0.34,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.99
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.14
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Area Control",
+          "game": {
+            "id": 187645,
+            "name": "Star Wars: Rebellion",
+            "year": 2016,
+            "rank": 11,
+            "weight": 3.7,
+            "playtime": 240,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Area Majority / Influence",
+              "Dice Rolling",
+              "Variable Player Powers"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/187645",
+            "x": 0.317,
+            "y": 0.483,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.89
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.45
+              }
+            ]
           }
         },
         {
@@ -510,6 +1599,7 @@
             "year": 2017,
             "rank": 6,
             "weight": 4.0,
+            "playtime": 120,
             "best_counts": [
               1,
               2,
@@ -519,9 +1609,239 @@
             "signals": [
               "Cooperative Game",
               "Area Majority / Influence",
-              "Variable Player Powers"
+              "Variable Player Powers",
+              "Hand Management"
             ],
-            "url": "https://boardgamegeek.com/boardgame/162886"
+            "url": "https://boardgamegeek.com/boardgame/162886",
+            "x": 0.209,
+            "y": 0.717,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.86
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.51
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Area Control",
+          "game": {
+            "id": 115746,
+            "name": "War of the Ring: Second Edition",
+            "year": 2012,
+            "rank": 13,
+            "weight": 4.2,
+            "playtime": 180,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Area Majority / Influence",
+              "Dice Rolling",
+              "Hand Management"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/115746",
+            "x": 0.329,
+            "y": 0.525,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.74
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.64
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.18
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 295770,
+            "name": "Frosthaven",
+            "year": 2023,
+            "rank": 15,
+            "weight": 4.3,
+            "playtime": 120,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Cooperative Game",
+              "Hand Management",
+              "Modular Board"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/295770",
+            "x": 0.067,
+            "y": 0.844,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 35677,
+            "name": "Le Havre",
+            "year": 2008,
+            "rank": 120,
+            "weight": 3.8,
+            "playtime": 200,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Worker Placement",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/35677",
+            "x": 0.7,
+            "y": -0.091,
+            "genres": [
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.75
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.66
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.06
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Area Control",
+          "game": {
+            "id": 102680,
+            "name": "Trajan",
+            "year": 2011,
+            "rank": 170,
+            "weight": 3.7,
+            "playtime": 100,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Set Collection",
+              "Area Majority / Influence",
+              "Ancient"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/102680",
+            "x": 0.611,
+            "y": -0.064,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.71
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.71
+              }
+            ]
+          }
+        }
+      ],
+      "alternates": []
+    },
+    {
+      "column": "3",
+      "row": 0,
+      "candidateCount": 2,
+      "assignments": [
+        {
+          "archetype": "Drafting",
+          "game": {
+            "id": 296151,
+            "name": "Point Salad",
+            "year": 2019,
+            "rank": 420,
+            "weight": 1.2,
+            "playtime": 30,
+            "best_counts": [
+              2,
+              3,
+              4
+            ],
+            "best_count": 3,
+            "signals": [
+              "Open Drafting",
+              "Set Collection"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/296151",
+            "x": 0.264,
+            "y": -0.69,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.93
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.36
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 244992,
+            "name": "The Mind",
+            "year": 2018,
+            "rank": 480,
+            "weight": 1.1,
+            "playtime": 20,
+            "best_counts": [
+              3
+            ],
+            "best_count": 3,
+            "signals": [
+              "Cooperative Game",
+              "Hand Management",
+              "Real-Time"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/244992",
+            "x": -0.635,
+            "y": 0.299,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.92
+              },
+              {
+                "name": "Action / Dexterity / Children's Game / Stacking and Balancing",
+                "value": 0.26
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.24
+              }
+            ]
           }
         }
       ],
@@ -530,7 +1850,7 @@
     {
       "column": "3",
       "row": 1,
-      "candidateCount": 2,
+      "candidateCount": 4,
       "assignments": [
         {
           "archetype": "Roll & Write",
@@ -540,6 +1860,7 @@
             "year": 2019,
             "rank": 95,
             "weight": 1.9,
+            "playtime": 45,
             "best_counts": [
               2,
               3,
@@ -548,9 +1869,21 @@
             "best_count": 3,
             "signals": [
               "Roll / Spin and Write",
-              "Open Drafting"
+              "Paper-and-Pencil"
             ],
-            "url": "https://boardgamegeek.com/boardgame/253344"
+            "url": "https://boardgamegeek.com/boardgame/253344",
+            "x": -0.239,
+            "y": -0.076,
+            "genres": [
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 0.93
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.36
+              }
+            ]
           }
         },
         {
@@ -561,6 +1894,7 @@
             "year": 2014,
             "rank": 120,
             "weight": 1.8,
+            "playtime": 30,
             "best_counts": [
               2,
               3
@@ -568,9 +1902,204 @@
             "best_count": 3,
             "signals": [
               "Engine Building",
+              "Set Collection",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/148228",
+            "x": 0.358,
+            "y": -0.632,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.97
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.23
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Deck Building",
+          "game": {
+            "id": 217372,
+            "name": "The Quest for El Dorado",
+            "year": 2017,
+            "rank": 230,
+            "weight": 1.9,
+            "playtime": 60,
+            "best_counts": [
+              2,
+              3,
+              4
+            ],
+            "best_count": 3,
+            "signals": [
+              "Deck, Bag, and Pool Building",
+              "Racing"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/217372",
+            "x": -0.264,
+            "y": 0.6,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.99
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.17
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Engine Building",
+          "game": {
+            "id": 209685,
+            "name": "Century: Spice Road",
+            "year": 2017,
+            "rank": 350,
+            "weight": 1.8,
+            "playtime": 45,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 3,
+            "signals": [
+              "Engine Building",
+              "Hand Management",
               "Set Collection"
             ],
-            "url": "https://boardgamegeek.com/boardgame/148228"
+            "url": "https://boardgamegeek.com/boardgame/209685",
+            "x": 0.378,
+            "y": -0.563,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 1.0
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.08
+              }
+            ]
+          }
+        }
+      ],
+      "alternates": []
+    },
+    {
+      "column": "3",
+      "row": 2,
+      "candidateCount": 3,
+      "assignments": [
+        {
+          "archetype": "Deck Building",
+          "game": {
+            "id": 201808,
+            "name": "Clank!: A Deck-Building Adventure",
+            "year": 2016,
+            "rank": 185,
+            "weight": 2.2,
+            "playtime": 60,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 3,
+            "signals": [
+              "Deck, Bag, and Pool Building",
+              "Push Your Luck",
+              "Adventure"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/201808",
+            "x": -0.234,
+            "y": 0.619,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.96
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.27
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Tile Placement",
+          "game": {
+            "id": 155426,
+            "name": "Castles of Mad King Ludwig",
+            "year": 2014,
+            "rank": 195,
+            "weight": 2.6,
+            "playtime": 90,
+            "best_counts": [
+              2,
+              3,
+              4
+            ],
+            "best_count": 3,
+            "signals": [
+              "Tile Placement",
+              "Auction/Bidding"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/155426",
+            "x": 0.107,
+            "y": -0.013,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.87
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.5
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Auction",
+          "game": {
+            "id": 12,
+            "name": "Ra",
+            "year": 1999,
+            "rank": 250,
+            "weight": 2.4,
+            "playtime": 60,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 3,
+            "signals": [
+              "Auction/Bidding",
+              "Set Collection",
+              "Push Your Luck"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/12",
+            "x": 0.399,
+            "y": -0.341,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.72
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.57
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.4
+              }
+            ]
           }
         }
       ],
@@ -579,7 +2108,7 @@
     {
       "column": "3",
       "row": 3,
-      "candidateCount": 3,
+      "candidateCount": 7,
       "assignments": [
         {
           "archetype": "Engine Building",
@@ -589,6 +2118,7 @@
             "year": 2016,
             "rank": 4,
             "weight": 3.2,
+            "playtime": 120,
             "best_counts": [
               3,
               4
@@ -599,27 +2129,19 @@
               "Open Drafting",
               "Tile Placement"
             ],
-            "url": "https://boardgamegeek.com/boardgame/167791"
-          }
-        },
-        {
-          "archetype": "Worker Placement",
-          "game": {
-            "id": 199792,
-            "name": "Everdell",
-            "year": 2018,
-            "rank": 22,
-            "weight": 2.8,
-            "best_counts": [
-              2,
-              3
-            ],
-            "best_count": 3,
-            "signals": [
-              "Worker Placement",
-              "Hand Management"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/199792"
+            "url": "https://boardgamegeek.com/boardgame/167791",
+            "x": 0.541,
+            "y": -0.32,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.72
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.69
+              }
+            ]
           }
         },
         {
@@ -630,6 +2152,7 @@
             "year": 2012,
             "rank": 40,
             "weight": 3.2,
+            "playtime": 120,
             "best_counts": [
               1,
               3,
@@ -640,7 +2163,194 @@
               "Cooperative Game",
               "Dice Rolling"
             ],
-            "url": "https://boardgamegeek.com/boardgame/121921"
+            "url": "https://boardgamegeek.com/boardgame/121921",
+            "x": -0.027,
+            "y": 0.506,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.88
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.48
+              },
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.05
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 199792,
+            "name": "Everdell",
+            "year": 2018,
+            "rank": 22,
+            "weight": 2.8,
+            "playtime": 80,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 3,
+            "signals": [
+              "Worker Placement",
+              "Hand Management",
+              "Engine Building"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/199792",
+            "x": 0.533,
+            "y": -0.355,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.98
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.19
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Deck Building",
+          "game": {
+            "id": 164928,
+            "name": "Orl\u00e9ans",
+            "year": 2014,
+            "rank": 60,
+            "weight": 3.1,
+            "playtime": 120,
+            "best_counts": [
+              2,
+              3,
+              4
+            ],
+            "best_count": 3,
+            "signals": [
+              "Deck, Bag, and Pool Building",
+              "Worker Placement"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/164928",
+            "x": 0.105,
+            "y": 0.593,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.97
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.25
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 31260,
+            "name": "Agricola",
+            "year": 2007,
+            "rank": 38,
+            "weight": 3.6,
+            "playtime": 150,
+            "best_counts": [
+              2,
+              3,
+              4
+            ],
+            "best_count": 3,
+            "signals": [
+              "Worker Placement",
+              "Hand Management",
+              "Set Collection"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/31260",
+            "x": 0.679,
+            "y": -0.18,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.97
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.26
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 171623,
+            "name": "The Voyages of Marco Polo",
+            "year": 2015,
+            "rank": 125,
+            "weight": 3.2,
+            "playtime": 100,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 3,
+            "signals": [
+              "Worker Placement",
+              "Dice Rolling",
+              "Set Collection"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/171623",
+            "x": 0.482,
+            "y": -0.249,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.77
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.63
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 247763,
+            "name": "Underwater Cities",
+            "year": 2018,
+            "rank": 100,
+            "weight": 3.6,
+            "playtime": 130,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 3,
+            "signals": [
+              "Worker Placement",
+              "Engine Building",
+              "Hand Management"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/247763",
+            "x": 0.676,
+            "y": -0.248,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.98
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.19
+              }
+            ]
           }
         }
       ],
@@ -649,7 +2359,7 @@
     {
       "column": "3",
       "row": 4,
-      "candidateCount": 3,
+      "candidateCount": 8,
       "assignments": [
         {
           "archetype": "Area Control",
@@ -659,6 +2369,7 @@
             "year": 2017,
             "rank": 8,
             "weight": 4.4,
+            "playtime": 150,
             "best_counts": [
               2,
               3
@@ -667,9 +2378,26 @@
             "signals": [
               "Area Majority / Influence",
               "Tile Placement",
-              "Network and Route Building"
+              "Network and Route Building",
+              "Variable Player Powers"
             ],
-            "url": "https://boardgamegeek.com/boardgame/220308"
+            "url": "https://boardgamegeek.com/boardgame/220308",
+            "x": 0.395,
+            "y": 0.422,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.89
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.42
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.15
+              }
+            ]
           }
         },
         {
@@ -680,6 +2408,7 @@
             "year": 2015,
             "rank": 12,
             "weight": 4.4,
+            "playtime": 240,
             "best_counts": [
               3
             ],
@@ -689,7 +2418,23 @@
               "Hand Management",
               "Auction/Bidding"
             ],
-            "url": "https://boardgamegeek.com/boardgame/182028"
+            "url": "https://boardgamegeek.com/boardgame/182028",
+            "x": 0.861,
+            "y": -0.102,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.91
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.38
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.16
+              }
+            ]
           }
         },
         {
@@ -700,6 +2445,7 @@
             "year": 2016,
             "rank": 14,
             "weight": 3.9,
+            "playtime": 120,
             "best_counts": [
               3,
               4
@@ -709,7 +2455,415 @@
               "Worker Placement",
               "Tile Placement"
             ],
-            "url": "https://boardgamegeek.com/boardgame/177736"
+            "url": "https://boardgamegeek.com/boardgame/177736",
+            "x": 0.321,
+            "y": 0.041,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.97
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.22
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.09
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Route Building",
+          "game": {
+            "id": 175914,
+            "name": "Food Chain Magnate",
+            "year": 2015,
+            "rank": 90,
+            "weight": 4.2,
+            "playtime": 120,
+            "best_counts": [
+              3,
+              4,
+              5
+            ],
+            "best_count": 3,
+            "signals": [
+              "Network and Route Building",
+              "Hand Management",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/175914",
+            "x": 0.32,
+            "y": 0.449,
+            "genres": [
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.91
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.39
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.08
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 185343,
+            "name": "Anachrony",
+            "year": 2017,
+            "rank": 105,
+            "weight": 4.0,
+            "playtime": 130,
+            "best_counts": [
+              3
+            ],
+            "best_count": 3,
+            "signals": [
+              "Worker Placement",
+              "Science Fiction"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/185343",
+            "x": 0.352,
+            "y": 0.067,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.92
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.39
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 102794,
+            "name": "Caverna: The Cave Farmers",
+            "year": 2013,
+            "rank": 70,
+            "weight": 3.8,
+            "playtime": 210,
+            "best_counts": [
+              1,
+              2,
+              3
+            ],
+            "best_count": 3,
+            "signals": [
+              "Worker Placement",
+              "Tile Placement"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/102794",
+            "x": 0.385,
+            "y": 0.084,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.97
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.22
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.09
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 184267,
+            "name": "On Mars",
+            "year": 2019,
+            "rank": 140,
+            "weight": 4.7,
+            "playtime": 150,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 3,
+            "signals": [
+              "Worker Placement",
+              "Tile Placement",
+              "Science Fiction"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/184267",
+            "x": 0.357,
+            "y": 0.184,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.77
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.63
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.14
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Tile Placement",
+          "game": {
+            "id": 161533,
+            "name": "Lisboa",
+            "year": 2017,
+            "rank": 155,
+            "weight": 4.6,
+            "playtime": 120,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 3,
+            "signals": [
+              "Hand Management",
+              "Tile Placement",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/161533",
+            "x": 0.304,
+            "y": 0.359,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.86
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.42
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.29
+              }
+            ]
+          }
+        }
+      ],
+      "alternates": []
+    },
+    {
+      "column": "4",
+      "row": 0,
+      "candidateCount": 6,
+      "assignments": [
+        {
+          "archetype": "Tile Placement",
+          "game": {
+            "id": 204583,
+            "name": "Kingdomino",
+            "year": 2016,
+            "rank": 312,
+            "weight": 1.2,
+            "playtime": 20,
+            "best_counts": [
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Tile Placement",
+              "Open Drafting",
+              "Pattern Building"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/204583",
+            "x": -0.261,
+            "y": -0.313,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 1.0
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.07
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Route Building",
+          "game": {
+            "id": 245654,
+            "name": "Railroad Ink: Deep Blue Edition",
+            "year": 2018,
+            "rank": 380,
+            "weight": 1.3,
+            "playtime": 30,
+            "best_counts": [
+              2,
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Roll / Spin and Write",
+              "Dice Rolling",
+              "Network and Route Building"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/245654",
+            "x": -0.305,
+            "y": -0.052,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.98
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.18
+              },
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 0.1
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Other",
+          "game": {
+            "id": 129622,
+            "name": "Love Letter",
+            "year": 2012,
+            "rank": 450,
+            "weight": 1.2,
+            "playtime": 20,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Deduction",
+              "Hand Management",
+              "Player Elimination"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/129622",
+            "x": -0.721,
+            "y": -0.238,
+            "genres": [
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.95
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.28
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.08
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Dexterity",
+          "game": {
+            "id": 193042,
+            "name": "Junk Art",
+            "year": 2016,
+            "rank": 520,
+            "weight": 1.2,
+            "playtime": 30,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Stacking and Balancing",
+              "Action / Dexterity"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/193042",
+            "x": -0.44,
+            "y": -0.223,
+            "genres": [
+              {
+                "name": "Action / Dexterity / Children's Game / Stacking and Balancing",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Dexterity",
+          "game": {
+            "id": 250458,
+            "name": "Rhino Hero: Super Battle",
+            "year": 2017,
+            "rank": 610,
+            "weight": 1.1,
+            "playtime": 15,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Stacking and Balancing",
+              "Action / Dexterity",
+              "Children's Game"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/250458",
+            "x": -0.537,
+            "y": -0.291,
+            "genres": [
+              {
+                "name": "Action / Dexterity / Children's Game / Stacking and Balancing",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Dexterity",
+          "game": {
+            "id": 192457,
+            "name": "ICECOOL",
+            "year": 2016,
+            "rank": 700,
+            "weight": 1.1,
+            "playtime": 30,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Flicking",
+              "Action / Dexterity",
+              "Children's Game"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/192457",
+            "x": -0.45,
+            "y": -0.231,
+            "genres": [
+              {
+                "name": "Action / Dexterity / Children's Game / Stacking and Balancing",
+                "value": 1.0
+              }
+            ]
           }
         }
       ],
@@ -718,7 +2872,7 @@
     {
       "column": "4",
       "row": 1,
-      "candidateCount": 3,
+      "candidateCount": 5,
       "assignments": [
         {
           "archetype": "Cooperative",
@@ -728,6 +2882,7 @@
             "year": 2019,
             "rank": 70,
             "weight": 1.9,
+            "playtime": 20,
             "best_counts": [
               3,
               4
@@ -735,29 +2890,22 @@
             "best_count": 4,
             "signals": [
               "Cooperative Game",
-              "Trick-taking"
+              "Trick-taking",
+              "Hand Management"
             ],
-            "url": "https://boardgamegeek.com/boardgame/314491"
-          }
-        },
-        {
-          "archetype": "Roll & Write",
-          "game": {
-            "id": 233867,
-            "name": "Welcome To...",
-            "year": 2018,
-            "rank": 140,
-            "weight": 1.8,
-            "best_counts": [
-              3,
-              4
-            ],
-            "best_count": 4,
-            "signals": [
-              "Flip and Write",
-              "Paper-and-Pencil"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/233867"
+            "url": "https://boardgamegeek.com/boardgame/314491",
+            "x": -0.398,
+            "y": 0.515,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.99
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.09
+              }
+            ]
           }
         },
         {
@@ -768,15 +2916,126 @@
             "year": 2004,
             "rank": 150,
             "weight": 1.8,
+            "playtime": 60,
             "best_counts": [
               4
             ],
             "best_count": 4,
             "signals": [
               "Network and Route Building",
-              "Set Collection"
+              "Set Collection",
+              "Trains"
             ],
-            "url": "https://boardgamegeek.com/boardgame/9209"
+            "url": "https://boardgamegeek.com/boardgame/9209",
+            "x": 0.361,
+            "y": -0.394,
+            "genres": [
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.73
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.68
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Roll & Write",
+          "game": {
+            "id": 233867,
+            "name": "Welcome To...",
+            "year": 2018,
+            "rank": 145,
+            "weight": 1.8,
+            "playtime": 25,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Flip and Write",
+              "Paper-and-Pencil",
+              "City Building"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/233867",
+            "x": -0.32,
+            "y": -0.174,
+            "genres": [
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Tile Placement",
+          "game": {
+            "id": 265736,
+            "name": "Tiny Towns",
+            "year": 2019,
+            "rank": 340,
+            "weight": 1.9,
+            "playtime": 45,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Tile Placement",
+              "Pattern Building",
+              "City Building"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/265736",
+            "x": -0.153,
+            "y": -0.164,
+            "genres": [
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.9
+              },
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 0.43
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 98778,
+            "name": "Hanabi",
+            "year": 2010,
+            "rank": 430,
+            "weight": 1.7,
+            "playtime": 25,
+            "best_counts": [
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Cooperative Game",
+              "Hand Management",
+              "Memory"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/98778",
+            "x": -0.442,
+            "y": 0.473,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.99
+              },
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.16
+              }
+            ]
           }
         }
       ],
@@ -785,7 +3044,7 @@
     {
       "column": "4",
       "row": 2,
-      "candidateCount": 4,
+      "candidateCount": 6,
       "assignments": [
         {
           "archetype": "Deck Building",
@@ -795,6 +3054,7 @@
             "year": 2018,
             "rank": 60,
             "weight": 2.4,
+            "playtime": 45,
             "best_counts": [
               3,
               4
@@ -804,27 +3064,19 @@
               "Deck, Bag, and Pool Building",
               "Push Your Luck"
             ],
-            "url": "https://boardgamegeek.com/boardgame/244521"
-          }
-        },
-        {
-          "archetype": "Cooperative",
-          "game": {
-            "id": 30549,
-            "name": "Pandemic",
-            "year": 2008,
-            "rank": 110,
-            "weight": 2.4,
-            "best_counts": [
-              3,
-              4
-            ],
-            "best_count": 4,
-            "signals": [
-              "Cooperative Game",
-              "Set Collection"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/30549"
+            "url": "https://boardgamegeek.com/boardgame/244521",
+            "x": -0.251,
+            "y": 0.605,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.95
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.32
+              }
+            ]
           }
         },
         {
@@ -835,6 +3087,7 @@
             "year": 2019,
             "rank": 130,
             "weight": 2.3,
+            "playtime": 45,
             "best_counts": [
               4
             ],
@@ -843,7 +3096,119 @@
               "Closed Drafting",
               "Engine Building"
             ],
-            "url": "https://boardgamegeek.com/boardgame/271324"
+            "url": "https://boardgamegeek.com/boardgame/271324",
+            "x": 0.404,
+            "y": -0.577,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.98
+              },
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 0.22
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 30549,
+            "name": "Pandemic",
+            "year": 2008,
+            "rank": 110,
+            "weight": 2.4,
+            "playtime": 45,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Cooperative Game",
+              "Set Collection",
+              "Hand Management"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/30549",
+            "x": 0.145,
+            "y": 0.121,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.77
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.64
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.05
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Area Control",
+          "game": {
+            "id": 345972,
+            "name": "Cat in the Box: Deluxe Edition",
+            "year": 2022,
+            "rank": 290,
+            "weight": 2.0,
+            "playtime": 45,
+            "best_counts": [
+              4,
+              5
+            ],
+            "best_count": 4,
+            "signals": [
+              "Trick-taking",
+              "Area Majority / Influence"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/345972",
+            "x": -0.063,
+            "y": 0.281,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.99
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.16
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 110327,
+            "name": "Lords of Waterdeep",
+            "year": 2012,
+            "rank": 190,
+            "weight": 2.5,
+            "playtime": 90,
+            "best_counts": [
+              4,
+              5
+            ],
+            "best_count": 4,
+            "signals": [
+              "Worker Placement",
+              "Set Collection"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/110327",
+            "x": 0.545,
+            "y": -0.495,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 1.0
+              }
+            ]
           }
         },
         {
@@ -854,6 +3219,7 @@
             "year": 1995,
             "rank": 400,
             "weight": 2.3,
+            "playtime": 90,
             "best_counts": [
               4
             ],
@@ -861,9 +3227,26 @@
             "signals": [
               "Network and Route Building",
               "Dice Rolling",
+              "Negotiation",
               "Trading"
             ],
-            "url": "https://boardgamegeek.com/boardgame/13"
+            "url": "https://boardgamegeek.com/boardgame/13",
+            "x": 0.328,
+            "y": -0.162,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.7
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.6
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.32
+              }
+            ]
           }
         }
       ],
@@ -872,7 +3255,7 @@
     {
       "column": "4",
       "row": 3,
-      "candidateCount": 3,
+      "candidateCount": 6,
       "assignments": [
         {
           "archetype": "Deck Building",
@@ -882,6 +3265,7 @@
             "year": 2020,
             "rank": 7,
             "weight": 3.0,
+            "playtime": 120,
             "best_counts": [
               3,
               4
@@ -891,27 +3275,19 @@
               "Deck, Bag, and Pool Building",
               "Worker Placement"
             ],
-            "url": "https://boardgamegeek.com/boardgame/316554"
-          }
-        },
-        {
-          "archetype": "Route Building",
-          "game": {
-            "id": 193738,
-            "name": "Great Western Trail",
-            "year": 2016,
-            "rank": 15,
-            "weight": 3.7,
-            "best_counts": [
-              3,
-              4
-            ],
-            "best_count": 4,
-            "signals": [
-              "Deck, Bag, and Pool Building",
-              "Network and Route Building"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/193738"
+            "url": "https://boardgamegeek.com/boardgame/316554",
+            "x": 0.095,
+            "y": 0.585,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.97
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.25
+              }
+            ]
           }
         },
         {
@@ -922,6 +3298,7 @@
             "year": 2016,
             "rank": 55,
             "weight": 2.8,
+            "playtime": 90,
             "best_counts": [
               4
             ],
@@ -930,7 +3307,162 @@
               "Area Majority / Influence",
               "Closed Drafting"
             ],
-            "url": "https://boardgamegeek.com/boardgame/155821"
+            "url": "https://boardgamegeek.com/boardgame/155821",
+            "x": 0.305,
+            "y": 0.038,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.83
+              },
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 0.41
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.38
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 161936,
+            "name": "Pandemic Legacy: Season 1",
+            "year": 2015,
+            "rank": 9,
+            "weight": 2.8,
+            "playtime": 60,
+            "best_counts": [
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Cooperative Game",
+              "Set Collection",
+              "Hand Management",
+              "Legacy Game"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/161936",
+            "x": 0.204,
+            "y": 0.216,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.8
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.6
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Deck Building",
+          "game": {
+            "id": 124361,
+            "name": "Concordia",
+            "year": 2013,
+            "rank": 33,
+            "weight": 3.0,
+            "playtime": 100,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Deck, Bag, and Pool Building",
+              "Network and Route Building",
+              "Hand Management"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/124361",
+            "x": -0.025,
+            "y": 0.725,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.96
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.27
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.08
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 183394,
+            "name": "Viticulture Essential Edition",
+            "year": 2015,
+            "rank": 55,
+            "weight": 2.9,
+            "playtime": 90,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Worker Placement",
+              "Hand Management"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/183394",
+            "x": 0.407,
+            "y": 0.043,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.79
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.61
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Engine Building",
+          "game": {
+            "id": 216132,
+            "name": "Clans of Caledonia",
+            "year": 2017,
+            "rank": 180,
+            "weight": 3.4,
+            "playtime": 120,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Engine Building",
+              "Network and Route Building",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/216132",
+            "x": 0.645,
+            "y": -0.268,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.77
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.63
+              }
+            ]
           }
         }
       ],
@@ -939,7 +3471,7 @@
     {
       "column": "4",
       "row": 4,
-      "candidateCount": 2,
+      "candidateCount": 8,
       "assignments": [
         {
           "archetype": "Route Building",
@@ -949,6 +3481,7 @@
             "year": 2018,
             "rank": 2,
             "weight": 3.9,
+            "playtime": 120,
             "best_counts": [
               3,
               4
@@ -956,9 +3489,59 @@
             "best_count": 4,
             "signals": [
               "Network and Route Building",
+              "Hand Management",
+              "Market"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/224517",
+            "x": 0.226,
+            "y": 0.658,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.71
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.68
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.18
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Area Control",
+          "game": {
+            "id": 237182,
+            "name": "Root",
+            "year": 2018,
+            "rank": 32,
+            "weight": 3.9,
+            "playtime": 90,
+            "best_counts": [
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Area Majority / Influence",
+              "Variable Player Powers",
               "Hand Management"
             ],
-            "url": "https://boardgamegeek.com/boardgame/224517"
+            "url": "https://boardgamegeek.com/boardgame/237182",
+            "x": 0.226,
+            "y": 0.482,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.99
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.16
+              }
+            ]
           }
         },
         {
@@ -969,6 +3552,7 @@
             "year": 2019,
             "rank": 20,
             "weight": 3.9,
+            "playtime": 120,
             "best_counts": [
               3,
               4
@@ -978,7 +3562,187 @@
               "Worker Placement",
               "Network and Route Building"
             ],
-            "url": "https://boardgamegeek.com/boardgame/251247"
+            "url": "https://boardgamegeek.com/boardgame/251247",
+            "x": 0.619,
+            "y": 0.055,
+            "genres": [
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.71
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.62
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.21
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Area Control",
+          "game": {
+            "id": 246900,
+            "name": "Eclipse: Second Dawn for the Galaxy",
+            "year": 2020,
+            "rank": 58,
+            "weight": 3.7,
+            "playtime": 200,
+            "best_counts": [
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Area Majority / Influence",
+              "Dice Rolling",
+              "Science Fiction"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/246900",
+            "x": 0.204,
+            "y": 0.386,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.93
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.37
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Deck Building",
+          "game": {
+            "id": 193738,
+            "name": "Great Western Trail",
+            "year": 2016,
+            "rank": 15,
+            "weight": 3.7,
+            "playtime": 150,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Deck, Bag, and Pool Building",
+              "Network and Route Building",
+              "Hand Management"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/193738",
+            "x": 0.098,
+            "y": 0.817,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.96
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.27
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.08
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 126163,
+            "name": "Tzolk'in: The Mayan Calendar",
+            "year": 2012,
+            "rank": 80,
+            "weight": 3.7,
+            "playtime": 90,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Worker Placement",
+              "Set Collection"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/126163",
+            "x": 0.665,
+            "y": -0.4,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Area Control",
+          "game": {
+            "id": 120677,
+            "name": "Terra Mystica",
+            "year": 2012,
+            "rank": 40,
+            "weight": 3.9,
+            "playtime": 150,
+            "best_counts": [
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Area Majority / Influence",
+              "Network and Route Building",
+              "Variable Player Powers"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/120677",
+            "x": 0.325,
+            "y": 0.438,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.99
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.16
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Route Building",
+          "game": {
+            "id": 4098,
+            "name": "Age of Steam",
+            "year": 2002,
+            "rank": 130,
+            "weight": 3.9,
+            "playtime": 120,
+            "best_counts": [
+              4,
+              5
+            ],
+            "best_count": 4,
+            "signals": [
+              "Network and Route Building",
+              "Auction/Bidding",
+              "Trains"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/4098",
+            "x": 0.287,
+            "y": 0.191,
+            "genres": [
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 1.0
+              }
+            ]
           }
         }
       ],
@@ -987,7 +3751,7 @@
     {
       "column": "5",
       "row": 0,
-      "candidateCount": 3,
+      "candidateCount": 4,
       "assignments": [
         {
           "archetype": "Drafting",
@@ -997,37 +3761,29 @@
             "year": 2016,
             "rank": 190,
             "weight": 1.5,
+            "playtime": 20,
             "best_counts": [
               4,
               5
             ],
             "best_count": 5,
             "signals": [
-              "Open Drafting",
+              "Closed Drafting",
               "Set Collection"
             ],
-            "url": "https://boardgamegeek.com/boardgame/192291"
-          }
-        },
-        {
-          "archetype": "Push Your Luck",
-          "game": {
-            "id": 12942,
-            "name": "No Thanks!",
-            "year": 2004,
-            "rank": 210,
-            "weight": 1.1,
-            "best_counts": [
-              5,
-              6,
-              7
-            ],
-            "best_count": 5,
-            "signals": [
-              "Push Your Luck",
-              "Set Collection"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/12942"
+            "url": "https://boardgamegeek.com/boardgame/192291",
+            "x": 0.205,
+            "y": -0.708,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.96
+              },
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 0.28
+              }
+            ]
           }
         },
         {
@@ -1038,6 +3794,7 @@
             "year": 2012,
             "rank": 220,
             "weight": 1.4,
+            "playtime": 15,
             "best_counts": [
               4,
               5
@@ -1045,9 +3802,427 @@
             "best_count": 5,
             "signals": [
               "Hidden Roles",
+              "Bluffing",
               "Player Elimination"
             ],
-            "url": "https://boardgamegeek.com/boardgame/131357"
+            "url": "https://boardgamegeek.com/boardgame/131357",
+            "x": -0.76,
+            "y": -0.383,
+            "genres": [
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Push Your Luck",
+          "game": {
+            "id": 169654,
+            "name": "Deep Sea Adventure",
+            "year": 2014,
+            "rank": 550,
+            "weight": 1.2,
+            "playtime": 30,
+            "best_counts": [
+              4,
+              5,
+              6
+            ],
+            "best_count": 5,
+            "signals": [
+              "Push Your Luck",
+              "Dice Rolling"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/169654",
+            "x": -0.35,
+            "y": -0.066,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Auction",
+          "game": {
+            "id": 172,
+            "name": "For Sale",
+            "year": 1997,
+            "rank": 470,
+            "weight": 1.2,
+            "playtime": 30,
+            "best_counts": [
+              5,
+              6
+            ],
+            "best_count": 5,
+            "signals": [
+              "Auction/Bidding",
+              "Set Collection",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/172",
+            "x": 0.146,
+            "y": -0.444,
+            "genres": [
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.83
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.55
+              }
+            ]
+          }
+        }
+      ],
+      "alternates": []
+    },
+    {
+      "column": "5",
+      "row": 1,
+      "candidateCount": 5,
+      "assignments": [
+        {
+          "archetype": "Other",
+          "game": {
+            "id": 150145,
+            "name": "Skull King",
+            "year": 2013,
+            "rank": 315,
+            "weight": 1.9,
+            "playtime": 45,
+            "best_counts": [
+              4,
+              5,
+              6
+            ],
+            "best_count": 5,
+            "signals": [
+              "Trick-taking",
+              "Betting and Bluffing"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/150145",
+            "x": -0.225,
+            "y": 0.365,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.85
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.45
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.26
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Cooperative",
+          "game": {
+            "id": 181304,
+            "name": "Mysterium",
+            "year": 2015,
+            "rank": 335,
+            "weight": 1.9,
+            "playtime": 45,
+            "best_counts": [
+              5,
+              6
+            ],
+            "best_count": 5,
+            "signals": [
+              "Cooperative Game",
+              "Deduction",
+              "Party Game"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/181304",
+            "x": -0.675,
+            "y": 0.001,
+            "genres": [
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.74
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.54
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.4
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Set Collection",
+          "game": {
+            "id": 11,
+            "name": "Bohnanza",
+            "year": 1997,
+            "rank": 460,
+            "weight": 1.7,
+            "playtime": 45,
+            "best_counts": [
+              5,
+              6
+            ],
+            "best_count": 5,
+            "signals": [
+              "Negotiation",
+              "Set Collection",
+              "Hand Management",
+              "Trading"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/11",
+            "x": 0.36,
+            "y": -0.532,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.98
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.17
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.08
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Auction",
+          "game": {
+            "id": 266083,
+            "name": "QE",
+            "year": 2019,
+            "rank": 485,
+            "weight": 1.6,
+            "playtime": 45,
+            "best_counts": [
+              4,
+              5
+            ],
+            "best_count": 5,
+            "signals": [
+              "Auction/Bidding",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/266083",
+            "x": -0.069,
+            "y": -0.079,
+            "genres": [
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Set Collection",
+          "game": {
+            "id": 157969,
+            "name": "Sheriff of Nottingham",
+            "year": 2014,
+            "rank": 440,
+            "weight": 1.6,
+            "playtime": 60,
+            "best_counts": [
+              5
+            ],
+            "best_count": 5,
+            "signals": [
+              "Bluffing",
+              "Negotiation",
+              "Set Collection"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/157969",
+            "x": 0.063,
+            "y": -0.523,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.75
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.62
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.23
+              }
+            ]
+          }
+        }
+      ],
+      "alternates": []
+    },
+    {
+      "column": "5",
+      "row": 2,
+      "candidateCount": 4,
+      "assignments": [
+        {
+          "archetype": "Other",
+          "game": {
+            "id": 39463,
+            "name": "Cosmic Encounter",
+            "year": 2008,
+            "rank": 150,
+            "weight": 2.5,
+            "playtime": 90,
+            "best_counts": [
+              5
+            ],
+            "best_count": 5,
+            "signals": [
+              "Negotiation",
+              "Variable Player Powers",
+              "Bluffing",
+              "Hand Management"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/39463",
+            "x": 0.034,
+            "y": 0.064,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.79
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.53
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.29
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Auction",
+          "game": {
+            "id": 118,
+            "name": "Modern Art",
+            "year": 1992,
+            "rank": 390,
+            "weight": 2.2,
+            "playtime": 45,
+            "best_counts": [
+              4,
+              5
+            ],
+            "best_count": 5,
+            "signals": [
+              "Auction/Bidding",
+              "Hand Management",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/118",
+            "x": -0.013,
+            "y": 0.122,
+            "genres": [
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.96
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.28
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Set Collection",
+          "game": {
+            "id": 47,
+            "name": "Chinatown",
+            "year": 1999,
+            "rank": 355,
+            "weight": 2.4,
+            "playtime": 60,
+            "best_counts": [
+              5
+            ],
+            "best_count": 5,
+            "signals": [
+              "Negotiation",
+              "Set Collection",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/47",
+            "x": 0.468,
+            "y": -0.466,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.91
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.35
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.18
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Social Deduction",
+          "game": {
+            "id": 478,
+            "name": "Citadels",
+            "year": 2000,
+            "rank": 500,
+            "weight": 2.1,
+            "playtime": 60,
+            "best_counts": [
+              5,
+              6,
+              7
+            ],
+            "best_count": 5,
+            "signals": [
+              "Closed Drafting",
+              "Hidden Roles",
+              "City Building"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/478",
+            "x": -0.32,
+            "y": -0.255,
+            "genres": [
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 0.73
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.66
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.14
+              }
+            ]
           }
         }
       ],
@@ -1056,7 +4231,7 @@
     {
       "column": "5",
       "row": 3,
-      "candidateCount": 2,
+      "candidateCount": 6,
       "assignments": [
         {
           "archetype": "Engine Building",
@@ -1066,6 +4241,7 @@
             "year": 2016,
             "rank": 18,
             "weight": 3.4,
+            "playtime": 115,
             "best_counts": [
               4,
               5
@@ -1073,9 +4249,61 @@
             "best_count": 5,
             "signals": [
               "Area Majority / Influence",
-              "Engine Building"
+              "Engine Building",
+              "Variable Player Powers"
             ],
-            "url": "https://boardgamegeek.com/boardgame/169786"
+            "url": "https://boardgamegeek.com/boardgame/169786",
+            "x": 0.498,
+            "y": 0.076,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.87
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.5
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Social Deduction",
+          "game": {
+            "id": 167355,
+            "name": "Nemesis",
+            "year": 2018,
+            "rank": 52,
+            "weight": 3.4,
+            "playtime": 180,
+            "best_counts": [
+              4,
+              5
+            ],
+            "best_count": 5,
+            "signals": [
+              "Cooperative Game",
+              "Hidden Roles",
+              "Dice Rolling",
+              "Science Fiction"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/167355",
+            "x": -0.111,
+            "y": 0.277,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.81
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.55
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.19
+              }
+            ]
           }
         },
         {
@@ -1086,6 +4314,7 @@
             "year": 2002,
             "rank": 48,
             "weight": 3.3,
+            "playtime": 120,
             "best_counts": [
               3,
               4,
@@ -1094,9 +4323,169 @@
             "best_count": 5,
             "signals": [
               "Set Collection",
+              "Economic",
               "Variable Phase Order"
             ],
-            "url": "https://boardgamegeek.com/boardgame/3076"
+            "url": "https://boardgamegeek.com/boardgame/3076",
+            "x": 0.656,
+            "y": -0.307,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.83
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.56
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Route Building",
+          "game": {
+            "id": 2651,
+            "name": "Power Grid",
+            "year": 2004,
+            "rank": 95,
+            "weight": 3.3,
+            "playtime": 120,
+            "best_counts": [
+              4,
+              5,
+              6
+            ],
+            "best_count": 5,
+            "signals": [
+              "Network and Route Building",
+              "Auction/Bidding",
+              "Economic"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/2651",
+            "x": 0.228,
+            "y": 0.143,
+            "genres": [
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Area Control",
+          "game": {
+            "id": 43015,
+            "name": "Hansa Teutonica",
+            "year": 2009,
+            "rank": 110,
+            "weight": 3.1,
+            "playtime": 90,
+            "best_counts": [
+              4,
+              5
+            ],
+            "best_count": 5,
+            "signals": [
+              "Network and Route Building",
+              "Area Majority / Influence"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/43015",
+            "x": 0.207,
+            "y": 0.32,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.92
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.38
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Area Control",
+          "game": {
+            "id": 93,
+            "name": "El Grande",
+            "year": 1995,
+            "rank": 165,
+            "weight": 3.1,
+            "playtime": 120,
+            "best_counts": [
+              5
+            ],
+            "best_count": 5,
+            "signals": [
+              "Area Majority / Influence",
+              "Auction/Bidding",
+              "Hand Management"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/93",
+            "x": 0.223,
+            "y": 0.515,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.77
+              },
+              {
+                "name": "Economic / Auction/Bidding / Network and Route Building",
+                "value": 0.55
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.32
+              }
+            ]
+          }
+        }
+      ],
+      "alternates": []
+    },
+    {
+      "column": "5",
+      "row": 4,
+      "candidateCount": 1,
+      "assignments": [
+        {
+          "archetype": "Worker Placement",
+          "game": {
+            "id": 34635,
+            "name": "Dominant Species",
+            "year": 2010,
+            "rank": 160,
+            "weight": 4.0,
+            "playtime": 240,
+            "best_counts": [
+              4,
+              5
+            ],
+            "best_count": 5,
+            "signals": [
+              "Area Majority / Influence",
+              "Worker Placement",
+              "Animals"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/34635",
+            "x": 0.523,
+            "y": 0.295,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.78
+              },
+              {
+                "name": "Tile Placement / Pattern Building / Open Drafting",
+                "value": 0.58
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.23
+              }
+            ]
           }
         }
       ],
@@ -1105,7 +4494,7 @@
     {
       "column": "6-8",
       "row": 0,
-      "candidateCount": 4,
+      "candidateCount": 12,
       "assignments": [
         {
           "archetype": "Word / Party",
@@ -1115,6 +4504,7 @@
             "year": 2015,
             "rank": 85,
             "weight": 1.3,
+            "playtime": 15,
             "best_counts": [
               6,
               7,
@@ -1123,9 +4513,164 @@
             "best_count": 6,
             "signals": [
               "Word Game",
+              "Party Game",
+              "Team-Based Game"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/178900",
+            "x": -0.726,
+            "y": -0.344,
+            "genres": [
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Social Deduction",
+          "game": {
+            "id": 147949,
+            "name": "One Night Ultimate Werewolf",
+            "year": 2014,
+            "rank": 242,
+            "weight": 1.3,
+            "playtime": 10,
+            "best_counts": [
+              7,
+              8,
+              9,
+              10
+            ],
+            "best_count": 8,
+            "signals": [
+              "Hidden Roles",
+              "Deduction",
+              "Real-Time"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/147949",
+            "x": -0.849,
+            "y": -0.425,
+            "genres": [
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.99
+              },
+              {
+                "name": "Action / Dexterity / Children's Game / Stacking and Balancing",
+                "value": 0.12
+              },
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.06
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Other",
+          "game": {
+            "id": 432,
+            "name": "6 nimmt!",
+            "year": 1994,
+            "rank": 410,
+            "weight": 1.2,
+            "playtime": 45,
+            "best_counts": [
+              5,
+              6,
+              7
+            ],
+            "best_count": 6,
+            "signals": [
+              "Hand Management",
+              "Simultaneous Action Selection"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/432",
+            "x": -0.139,
+            "y": 0.294,
+            "genres": [
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.93
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.35
+              },
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.05
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Other",
+          "game": {
+            "id": 153938,
+            "name": "Camel Up",
+            "year": 2014,
+            "rank": 405,
+            "weight": 1.5,
+            "playtime": 30,
+            "best_counts": [
+              5,
+              6
+            ],
+            "best_count": 6,
+            "signals": [
+              "Dice Rolling",
+              "Betting and Bluffing",
+              "Racing"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/153938",
+            "x": -0.32,
+            "y": -0.043,
+            "genres": [
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Push Your Luck",
+          "game": {
+            "id": 92415,
+            "name": "Skull",
+            "year": 2011,
+            "rank": 230,
+            "weight": 1.3,
+            "playtime": 30,
+            "best_counts": [
+              5,
+              6
+            ],
+            "best_count": 6,
+            "signals": [
+              "Bluffing",
+              "Push Your Luck",
               "Party Game"
             ],
-            "url": "https://boardgamegeek.com/boardgame/178900"
+            "url": "https://boardgamegeek.com/boardgame/92415",
+            "x": -0.769,
+            "y": -0.329,
+            "genres": [
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.78
+              },
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.55
+              },
+              {
+                "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
+                "value": 0.28
+              }
+            ]
           }
         },
         {
@@ -1136,6 +4681,7 @@
             "year": 2018,
             "rank": 145,
             "weight": 1.1,
+            "playtime": 20,
             "best_counts": [
               5,
               6,
@@ -1147,58 +4693,232 @@
               "Party Game",
               "Word Game"
             ],
-            "url": "https://boardgamegeek.com/boardgame/254640"
+            "url": "https://boardgamegeek.com/boardgame/254640",
+            "x": -0.723,
+            "y": -0.158,
+            "genres": [
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.96
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.26
+              }
+            ]
           }
         },
         {
-          "archetype": "Push Your Luck",
+          "archetype": "Word / Party",
           "game": {
-            "id": 92415,
-            "name": "Skull",
-            "year": 2011,
-            "rank": 230,
-            "weight": 1.3,
+            "id": 156546,
+            "name": "Monikers",
+            "year": 2015,
+            "rank": 320,
+            "weight": 1.2,
+            "playtime": 60,
             "best_counts": [
-              5,
-              6
-            ],
-            "best_count": 6,
-            "signals": [
-              "Push Your Luck",
-              "Bluffing"
-            ],
-            "url": "https://boardgamegeek.com/boardgame/92415"
-          }
-        },
-        {
-          "archetype": "Social Deduction",
-          "game": {
-            "id": 147949,
-            "name": "One Night Ultimate Werewolf",
-            "year": 2014,
-            "rank": 240,
-            "weight": 1.3,
-            "best_counts": [
+              6,
               7,
               8,
-              9,
               10
             ],
             "best_count": 8,
             "signals": [
-              "Hidden Roles",
+              "Party Game",
+              "Word Game",
+              "Acting",
+              "Team-Based Game"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/156546",
+            "x": -0.559,
+            "y": -0.23,
+            "genres": [
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Word / Party",
+          "game": {
+            "id": 262543,
+            "name": "Wavelength",
+            "year": 2019,
+            "rank": 332,
+            "weight": 1.2,
+            "playtime": 45,
+            "best_counts": [
+              6,
+              7,
+              8
+            ],
+            "best_count": 6,
+            "signals": [
+              "Party Game",
+              "Team-Based Game",
               "Deduction"
             ],
-            "url": "https://boardgamegeek.com/boardgame/147949"
+            "url": "https://boardgamegeek.com/boardgame/262543",
+            "x": -0.676,
+            "y": -0.295,
+            "genres": [
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.97
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.25
+              }
+            ]
           }
         }
       ],
-      "alternates": []
+      "alternates": [
+        {
+          "id": 46213,
+          "name": "Telestrations",
+          "year": 2009,
+          "rank": 490,
+          "weight": 1.1,
+          "playtime": 30,
+          "best_counts": [
+            6,
+            7,
+            8
+          ],
+          "best_count": 8,
+          "signals": [
+            "Party Game",
+            "Line Drawing",
+            "Memory"
+          ],
+          "url": "https://boardgamegeek.com/boardgame/46213",
+          "x": -0.678,
+          "y": -0.223,
+          "genres": [
+            {
+              "name": "Party Game / Team-Based Game / Word Game",
+              "value": 0.99
+            },
+            {
+              "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+              "value": 0.13
+            }
+          ]
+        },
+        {
+          "id": 166384,
+          "name": "Spyfall",
+          "year": 2014,
+          "rank": 525,
+          "weight": 1.3,
+          "playtime": 15,
+          "best_counts": [
+            6,
+            7,
+            8
+          ],
+          "best_count": 6,
+          "signals": [
+            "Hidden Roles",
+            "Bluffing",
+            "Party Game"
+          ],
+          "url": "https://boardgamegeek.com/boardgame/166384",
+          "x": -0.821,
+          "y": -0.41,
+          "genres": [
+            {
+              "name": "Hidden Roles / Deduction / Bluffing",
+              "value": 0.98
+            },
+            {
+              "name": "Party Game / Team-Based Game / Word Game",
+              "value": 0.18
+            }
+          ]
+        },
+        {
+          "id": 11971,
+          "name": "Cockroach Poker",
+          "year": 2004,
+          "rank": 600,
+          "weight": 1.1,
+          "playtime": 20,
+          "best_counts": [
+            5,
+            6
+          ],
+          "best_count": 6,
+          "signals": [
+            "Bluffing",
+            "Party Game"
+          ],
+          "url": "https://boardgamegeek.com/boardgame/11971",
+          "x": -0.849,
+          "y": -0.422,
+          "genres": [
+            {
+              "name": "Hidden Roles / Deduction / Bluffing",
+              "value": 0.82
+            },
+            {
+              "name": "Party Game / Team-Based Game / Word Game",
+              "value": 0.57
+            },
+            {
+              "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+              "value": 0.05
+            }
+          ]
+        },
+        {
+          "id": 198773,
+          "name": "Werewords",
+          "year": 2017,
+          "rank": 650,
+          "weight": 1.3,
+          "playtime": 10,
+          "best_counts": [
+            6,
+            7,
+            8
+          ],
+          "best_count": 7,
+          "signals": [
+            "Hidden Roles",
+            "Word Game",
+            "Party Game",
+            "Real-Time"
+          ],
+          "url": "https://boardgamegeek.com/boardgame/198773",
+          "x": -0.938,
+          "y": -0.462,
+          "genres": [
+            {
+              "name": "Party Game / Team-Based Game / Word Game",
+              "value": 0.79
+            },
+            {
+              "name": "Hidden Roles / Deduction / Bluffing",
+              "value": 0.6
+            },
+            {
+              "name": "Action / Dexterity / Children's Game / Stacking and Balancing",
+              "value": 0.11
+            }
+          ]
+        }
+      ]
     },
     {
       "column": "6-8",
       "row": 1,
-      "candidateCount": 1,
+      "candidateCount": 2,
       "assignments": [
         {
           "archetype": "Word / Party",
@@ -1208,6 +4928,7 @@
             "year": 2018,
             "rank": 135,
             "weight": 1.8,
+            "playtime": 45,
             "best_counts": [
               6,
               7,
@@ -1217,9 +4938,57 @@
             "signals": [
               "Word Game",
               "Deduction",
+              "Party Game",
+              "Team-Based Game"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/225694",
+            "x": -0.567,
+            "y": -0.223,
+            "genres": [
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 1.0
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.09
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Social Deduction",
+          "game": {
+            "id": 156129,
+            "name": "Deception: Murder in Hong Kong",
+            "year": 2014,
+            "rank": 285,
+            "weight": 1.6,
+            "playtime": 30,
+            "best_counts": [
+              6,
+              7,
+              8
+            ],
+            "best_count": 6,
+            "signals": [
+              "Hidden Roles",
+              "Deduction",
               "Party Game"
             ],
-            "url": "https://boardgamegeek.com/boardgame/225694"
+            "url": "https://boardgamegeek.com/boardgame/156129",
+            "x": -0.741,
+            "y": -0.341,
+            "genres": [
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.94
+              },
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.35
+              }
+            ]
           }
         }
       ],
@@ -1228,7 +4997,7 @@
     {
       "column": "6-8",
       "row": 2,
-      "candidateCount": 1,
+      "candidateCount": 2,
       "assignments": [
         {
           "archetype": "Drafting",
@@ -1238,6 +5007,7 @@
             "year": 2010,
             "rank": 65,
             "weight": 2.3,
+            "playtime": 30,
             "best_counts": [
               4,
               5,
@@ -1246,10 +5016,64 @@
             ],
             "best_count": 6,
             "signals": [
-              "Open Drafting",
-              "Set Collection"
+              "Closed Drafting",
+              "Set Collection",
+              "Hand Management"
             ],
-            "url": "https://boardgamegeek.com/boardgame/68448"
+            "url": "https://boardgamegeek.com/boardgame/68448",
+            "x": 0.327,
+            "y": -0.493,
+            "genres": [
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.96
+              },
+              {
+                "name": "Paper-and-Pencil / Flip and Write / City Building",
+                "value": 0.24
+              },
+              {
+                "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+                "value": 0.17
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Other",
+          "game": {
+            "id": 171131,
+            "name": "Captain Sonar",
+            "year": 2016,
+            "rank": 380,
+            "weight": 2.1,
+            "playtime": 45,
+            "best_counts": [
+              8
+            ],
+            "best_count": 8,
+            "signals": [
+              "Real-Time",
+              "Team-Based Game",
+              "Deduction"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/171131",
+            "x": -0.644,
+            "y": -0.253,
+            "genres": [
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.89
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.43
+              },
+              {
+                "name": "Action / Dexterity / Children's Game / Stacking and Balancing",
+                "value": 0.16
+              }
+            ]
           }
         }
       ],
@@ -1268,16 +5092,29 @@
             "year": 2017,
             "rank": 5,
             "weight": 4.3,
+            "playtime": 480,
             "best_counts": [
               6
             ],
             "best_count": 6,
             "signals": [
               "Area Majority / Influence",
-              "Auction/Bidding",
-              "Negotiation"
+              "Negotiation",
+              "Variable Player Powers"
             ],
-            "url": "https://boardgamegeek.com/boardgame/233078"
+            "url": "https://boardgamegeek.com/boardgame/233078",
+            "x": 0.537,
+            "y": 0.514,
+            "genres": [
+              {
+                "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
+                "value": 0.99
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.1
+              }
+            ]
           }
         }
       ],
@@ -1286,7 +5123,55 @@
     {
       "column": "8+",
       "row": 0,
-      "candidateCount": 2,
+      "candidateCount": 1,
+      "assignments": [
+        {
+          "archetype": "Social Deduction",
+          "game": {
+            "id": 134352,
+            "name": "Two Rooms and a Boom",
+            "year": 2013,
+            "rank": 705,
+            "weight": 1.3,
+            "playtime": 30,
+            "best_counts": [
+              10,
+              12,
+              14
+            ],
+            "best_count": 12,
+            "signals": [
+              "Hidden Roles",
+              "Party Game",
+              "Team-Based Game",
+              "Negotiation"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/134352",
+            "x": -0.686,
+            "y": -0.398,
+            "genres": [
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.81
+              },
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.56
+              },
+              {
+                "name": "Set Collection / Engine Building / Open Drafting",
+                "value": 0.13
+              }
+            ]
+          }
+        }
+      ],
+      "alternates": []
+    },
+    {
+      "column": "8+",
+      "row": 1,
+      "candidateCount": 3,
       "assignments": [
         {
           "archetype": "Social Deduction",
@@ -1296,6 +5181,7 @@
             "year": 2012,
             "rank": 105,
             "weight": 1.7,
+            "playtime": 30,
             "best_counts": [
               7,
               8,
@@ -1305,32 +5191,129 @@
             "best_count": 10,
             "signals": [
               "Hidden Roles",
+              "Deduction",
               "Voting"
             ],
-            "url": "https://boardgamegeek.com/boardgame/128882"
+            "url": "https://boardgamegeek.com/boardgame/128882",
+            "x": -0.644,
+            "y": -0.301,
+            "genres": [
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Social Deduction",
+          "game": {
+            "id": 223040,
+            "name": "Secret Hitler",
+            "year": 2016,
+            "rank": 158,
+            "weight": 1.7,
+            "playtime": 45,
+            "best_counts": [
+              8,
+              9,
+              10
+            ],
+            "best_count": 9,
+            "signals": [
+              "Hidden Roles",
+              "Voting",
+              "Political"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/223040",
+            "x": -0.593,
+            "y": -0.255,
+            "genres": [
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 1.0
+              }
+            ]
+          }
+        },
+        {
+          "archetype": "Social Deduction",
+          "game": {
+            "id": 41114,
+            "name": "The Resistance",
+            "year": 2009,
+            "rank": 300,
+            "weight": 1.6,
+            "playtime": 30,
+            "best_counts": [
+              7,
+              8,
+              9,
+              10
+            ],
+            "best_count": 9,
+            "signals": [
+              "Hidden Roles",
+              "Deduction",
+              "Voting"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/41114",
+            "x": -0.654,
+            "y": -0.309,
+            "genres": [
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 1.0
+              }
+            ]
           }
         }
       ],
-      "alternates": [
+      "alternates": []
+    },
+    {
+      "column": "8+",
+      "row": 3,
+      "candidateCount": 1,
+      "assignments": [
         {
-          "id": 223040,
-          "name": "Secret Hitler",
-          "year": 2016,
-          "rank": 155,
-          "weight": 1.7,
-          "best_counts": [
-            8,
-            9,
-            10
-          ],
-          "best_count": 9,
-          "signals": [
-            "Hidden Roles",
-            "Voting"
-          ],
-          "url": "https://boardgamegeek.com/boardgame/223040"
+          "archetype": "Social Deduction",
+          "game": {
+            "id": 240980,
+            "name": "Blood on the Clocktower",
+            "year": 2022,
+            "rank": 180,
+            "weight": 2.7,
+            "playtime": 120,
+            "best_counts": [
+              10,
+              12,
+              15
+            ],
+            "best_count": 12,
+            "signals": [
+              "Hidden Roles",
+              "Deduction",
+              "Party Game",
+              "Bluffing"
+            ],
+            "url": "https://boardgamegeek.com/boardgame/240980",
+            "x": -0.423,
+            "y": -0.12,
+            "genres": [
+              {
+                "name": "Hidden Roles / Deduction / Bluffing",
+                "value": 0.98
+              },
+              {
+                "name": "Party Game / Team-Based Game / Word Game",
+                "value": 0.21
+              }
+            ]
+          }
         }
-      ]
+      ],
+      "alternates": []
     }
   ]
 }

@@ -1,8 +1,12 @@
-"""Filling each cell with one game per archetype (the de-duplication step).
+"""Choosing which of a cell's games to show (the coverage/de-duplication step).
 
 This is the interesting, swappable part of the pipeline. Given the games that
-qualify for a single cell, an *assigner* decides which game claims each
-archetype slot, so a cell never shows two worker-placement games.
+qualify for a single cell, an *assigner* picks a diverse subset — so a cell
+never shows five near-identical worker-placement games.
+
+Two strategies live here:
+* `MmrAssigner` (default) — coverage in the continuous feature space.
+* `GreedyAssigner` — the original one-game-per-archetype taxonomy walk.
 
 Design notes
 ------------
@@ -17,7 +21,10 @@ Design notes
 from dataclasses import dataclass
 from typing import Protocol
 
-from .archetypes import archetypes_for
+import numpy as np
+
+from .archetypes import archetypes_for, primary_archetype
+from .config import MMR_LAMBDA, PICKS_PER_CELL
 from .model import Game
 
 
@@ -37,6 +44,56 @@ class Assigner(Protocol):
     def assign(self, games: list[Game], alternates_limit: int) -> CellResult:
         """Choose one game per archetype from the games qualifying for a cell."""
         ...
+
+
+class MmrAssigner:
+    """Maximal-marginal-relevance coverage in the continuous feature space.
+
+    Start with the best-ranked game, then repeatedly add the game with the best
+    blend of quality and distance from everything already picked:
+
+        score = λ·quality + (1-λ)·min-distance-to-picks
+
+    with quality and distances normalised to [0, 1] within the cell. Two
+    near-identical games can't both get picked early, however well-ranked —
+    which is the whole "one worker placement per cell" idea, but grounded in
+    geometry instead of hand-made labels. Labels (each pick's primary
+    archetype) are kept purely for display and may legitimately repeat.
+    """
+
+    def __init__(self, vectors: dict[int, np.ndarray]):
+        self.vectors = vectors  # from features.build_feature_space
+
+    def assign(self, games: list[Game], alternates_limit: int) -> CellResult:
+        ranked = sorted(games, key=lambda g: g.rank)
+        points = np.stack([self.vectors[g.id] for g in ranked])
+
+        # Quality: best rank in the cell -> 1.0, worst -> 0.0.
+        ranks = np.array([g.rank for g in ranked], dtype=float)
+        quality = 1.0 - (ranks - ranks.min()) / max(ranks.max() - ranks.min(), 1.0)
+
+        # Pairwise distances, normalised by the cell's own diameter so λ blends
+        # two like-scaled quantities.
+        diffs = points[:, None, :] - points[None, :, :]
+        dist = np.linalg.norm(diffs, axis=2)
+        dist /= max(dist.max(), 1e-9)
+
+        picked = [0]  # the best-ranked game always leads
+        while len(picked) < min(PICKS_PER_CELL, len(ranked)):
+            remaining = [i for i in range(len(ranked)) if i not in picked]
+            spread = dist[np.ix_(remaining, picked)].min(axis=1)
+            scores = MMR_LAMBDA * quality[remaining] + (1 - MMR_LAMBDA) * spread
+            picked.append(remaining[int(np.argmax(scores))])
+
+        assignments = [Assignment(_display_label(ranked[i]), ranked[i]) for i in picked]
+        leftovers = [g for i, g in enumerate(ranked) if i not in picked]
+        return CellResult(assignments, leftovers[:alternates_limit])
+
+
+def _display_label(game: Game) -> str:
+    """Cosmetic type label for a pick — selection never depends on it."""
+    arch = primary_archetype(game.signals)
+    return arch.label if arch else "Other"
 
 
 class GreedyAssigner:

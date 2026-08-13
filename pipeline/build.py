@@ -2,11 +2,13 @@
 
     python -m pipeline.build                              # seed proxy dataset
     python -m pipeline.build --dataset data/games.json    # live capture
+    python -m pipeline.build --assigner greedy            # taxonomy baseline
 
-Flow: load a dataset -> mine weight rows from the population -> drop each game
-into its one home cell (its weight row × its peak-player-count column) -> ask
-the assigner to pick one game per archetype per cell -> serialise. The build
-never fetches anything; it only ever consumes a dataset file.
+Flow: load a dataset -> embed every game in the continuous feature space ->
+mine weight rows from the population -> drop each game into its one home cell
+(its weight row × its peak-player-count column) -> ask the assigner for a
+diverse subset per cell -> serialise. The build never fetches anything; it
+only ever consumes a dataset file.
 """
 
 import argparse
@@ -15,12 +17,14 @@ from collections import defaultdict
 
 from . import buckets, dataset
 from .archetypes import ARCHETYPES
-from .assign import GreedyAssigner, assign_grid
+from .assign import GreedyAssigner, MmrAssigner, assign_grid
 from .config import ALTERNATES_PER_CELL, OUTPUT_JSON, PLAYER_COLUMNS, SEED_DATASET, WEIGHT_ROW_COUNT
+from .features import build_feature_space
 
 
-def build(dataset_path):
+def build(dataset_path, assigner_name):
     source, generated_at, games = dataset.load_dataset(dataset_path)
+    space = build_feature_space(games)
     weight_rows = buckets.build_weight_rows([g.weight for g in games], WEIGHT_ROW_COUNT)
 
     # Drop each game into its single home cell: one weight row (its weight) and
@@ -33,16 +37,26 @@ def build(dataset_path):
         row = buckets.weight_row_index(game.weight, weight_rows)
         cells[(col, row)].append(game)
 
-    results = assign_grid(cells, GreedyAssigner(), ALTERNATES_PER_CELL)
+    assigner = (MmrAssigner(space.vectors) if assigner_name == "mmr"
+                else GreedyAssigner())
+    results = assign_grid(cells, assigner, ALTERNATES_PER_CELL)
+
+    def game_json(g):
+        """Game record + its place in the feature space, for the frontend."""
+        x, y = space.projection[g.id]
+        return {**g.to_dict(), "x": x, "y": y,
+                "genres": [{"name": n, "value": v} for n, v in space.top_genres[g.id]]}
 
     payload = {
         "meta": {
             "source": source,
             "generatedAt": generated_at,
             "gameCount": len(games),
+            "assigner": assigner_name,
             "playerColumns": [c["label"] for c in PLAYER_COLUMNS],
             "weightRows": weight_rows,
             "archetypes": [a.label for a in ARCHETYPES],
+            "genreDimensions": space.dimension_names,
         },
         "cells": [
             {
@@ -50,10 +64,10 @@ def build(dataset_path):
                 "row": row,
                 "candidateCount": len(cells[(col, row)]),
                 "assignments": [
-                    {"archetype": a.archetype, "game": a.game.to_dict()}
+                    {"archetype": a.archetype, "game": game_json(a.game)}
                     for a in result.assignments
                 ],
-                "alternates": [g.to_dict() for g in result.alternates],
+                "alternates": [game_json(g) for g in result.alternates],
             }
             for (col, row), result in sorted(results.items())
         ],
@@ -62,15 +76,17 @@ def build(dataset_path):
     OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT_JSON.write_text(json.dumps(payload, indent=2))
     print(f"Wrote {OUTPUT_JSON.name} — {len(games)} games, "
-          f"{len(payload['cells'])} filled cells ({source} data)")
+          f"{len(payload['cells'])} filled cells ({source} data, {assigner_name} assigner)")
 
 
 def main():
     parser = argparse.ArgumentParser(description="Build the board-game grid JSON from a dataset.")
     parser.add_argument("--dataset", default=str(SEED_DATASET),
                         help="dataset file to build from (default: the seed proxy)")
+    parser.add_argument("--assigner", choices=["mmr", "greedy"], default="mmr",
+                        help="per-cell selection strategy (default: mmr coverage)")
     args = parser.parse_args()
-    build(args.dataset)
+    build(args.dataset, args.assigner)
 
 
 if __name__ == "__main__":

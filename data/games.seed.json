@@ -1,6 +1,6 @@
 {
   "source": "seed",
-  "generatedAt": "2026-08-12",
+  "generatedAt": "2026-08-13",
   "games": [
     {
       "id": 174430,
@@ -8,6 +8,7 @@
       "year": 2017,
       "rank": 1,
       "weight": 3.9,
+      "playtime": 120,
       "best_counts": [
         2,
         3
@@ -25,6 +26,7 @@
       "year": 2018,
       "rank": 2,
       "weight": 3.9,
+      "playtime": 120,
       "best_counts": [
         3,
         4
@@ -32,7 +34,8 @@
       "best_count": 4,
       "signals": [
         "Network and Route Building",
-        "Hand Management"
+        "Hand Management",
+        "Market"
       ]
     },
     {
@@ -41,6 +44,7 @@
       "year": 2021,
       "rank": 3,
       "weight": 3.7,
+      "playtime": 150,
       "best_counts": [
         2,
         3
@@ -49,7 +53,8 @@
       "signals": [
         "Open Drafting",
         "Set Collection",
-        "End Game Bonuses"
+        "Hand Management",
+        "Engine Building"
       ]
     },
     {
@@ -58,14 +63,15 @@
       "year": 2017,
       "rank": 5,
       "weight": 4.3,
+      "playtime": 480,
       "best_counts": [
         6
       ],
       "best_count": 6,
       "signals": [
         "Area Majority / Influence",
-        "Auction/Bidding",
-        "Negotiation"
+        "Negotiation",
+        "Variable Player Powers"
       ]
     },
     {
@@ -74,6 +80,7 @@
       "year": 2017,
       "rank": 8,
       "weight": 4.4,
+      "playtime": 150,
       "best_counts": [
         2,
         3
@@ -82,7 +89,8 @@
       "signals": [
         "Area Majority / Influence",
         "Tile Placement",
-        "Network and Route Building"
+        "Network and Route Building",
+        "Variable Player Powers"
       ]
     },
     {
@@ -91,6 +99,7 @@
       "year": 2015,
       "rank": 12,
       "weight": 4.4,
+      "playtime": 240,
       "best_counts": [
         3
       ],
@@ -107,6 +116,7 @@
       "year": 2016,
       "rank": 14,
       "weight": 3.9,
+      "playtime": 120,
       "best_counts": [
         3,
         4
@@ -123,6 +133,7 @@
       "year": 2019,
       "rank": 20,
       "weight": 3.9,
+      "playtime": 120,
       "best_counts": [
         3,
         4
@@ -139,6 +150,7 @@
       "year": 2011,
       "rank": 25,
       "weight": 4.2,
+      "playtime": 240,
       "best_counts": [
         1
       ],
@@ -146,7 +158,7 @@
       "signals": [
         "Deck, Bag, and Pool Building",
         "Hand Management",
-        "Hexagon Grid"
+        "Modular Board"
       ]
     },
     {
@@ -155,6 +167,7 @@
       "year": 2017,
       "rank": 6,
       "weight": 4.0,
+      "playtime": 120,
       "best_counts": [
         1,
         2,
@@ -164,6 +177,361 @@
       "signals": [
         "Cooperative Game",
         "Area Majority / Influence",
+        "Variable Player Powers",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 12333,
+      "name": "Twilight Struggle",
+      "year": 2005,
+      "rank": 10,
+      "weight": 3.6,
+      "playtime": 180,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Area Majority / Influence",
+        "Hand Management",
+        "Political"
+      ]
+    },
+    {
+      "id": 187645,
+      "name": "Star Wars: Rebellion",
+      "year": 2016,
+      "rank": 11,
+      "weight": 3.7,
+      "playtime": 240,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Area Majority / Influence",
+        "Dice Rolling",
+        "Variable Player Powers"
+      ]
+    },
+    {
+      "id": 115746,
+      "name": "War of the Ring: Second Edition",
+      "year": 2012,
+      "rank": 13,
+      "weight": 4.2,
+      "playtime": 180,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Area Majority / Influence",
+        "Dice Rolling",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 295770,
+      "name": "Frosthaven",
+      "year": 2023,
+      "rank": 15,
+      "weight": 4.3,
+      "playtime": 120,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Cooperative Game",
+        "Hand Management",
+        "Modular Board"
+      ]
+    },
+    {
+      "id": 237182,
+      "name": "Root",
+      "year": 2018,
+      "rank": 32,
+      "weight": 3.9,
+      "playtime": 90,
+      "best_counts": [
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Area Majority / Influence",
+        "Variable Player Powers",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 31260,
+      "name": "Agricola",
+      "year": 2007,
+      "rank": 38,
+      "weight": 3.6,
+      "playtime": 150,
+      "best_counts": [
+        2,
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Worker Placement",
+        "Hand Management",
+        "Set Collection"
+      ]
+    },
+    {
+      "id": 102794,
+      "name": "Caverna: The Cave Farmers",
+      "year": 2013,
+      "rank": 70,
+      "weight": 3.8,
+      "playtime": 210,
+      "best_counts": [
+        1,
+        2,
+        3
+      ],
+      "best_count": 3,
+      "signals": [
+        "Worker Placement",
+        "Tile Placement"
+      ]
+    },
+    {
+      "id": 35677,
+      "name": "Le Havre",
+      "year": 2008,
+      "rank": 120,
+      "weight": 3.8,
+      "playtime": 200,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Worker Placement",
+        "Economic"
+      ]
+    },
+    {
+      "id": 164928,
+      "name": "Orl\u00e9ans",
+      "year": 2014,
+      "rank": 60,
+      "weight": 3.1,
+      "playtime": 120,
+      "best_counts": [
+        2,
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Deck, Bag, and Pool Building",
+        "Worker Placement"
+      ]
+    },
+    {
+      "id": 185343,
+      "name": "Anachrony",
+      "year": 2017,
+      "rank": 105,
+      "weight": 4.0,
+      "playtime": 130,
+      "best_counts": [
+        3
+      ],
+      "best_count": 3,
+      "signals": [
+        "Worker Placement",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": 184267,
+      "name": "On Mars",
+      "year": 2019,
+      "rank": 140,
+      "weight": 4.7,
+      "playtime": 150,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 3,
+      "signals": [
+        "Worker Placement",
+        "Tile Placement",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": 175914,
+      "name": "Food Chain Magnate",
+      "year": 2015,
+      "rank": 90,
+      "weight": 4.2,
+      "playtime": 120,
+      "best_counts": [
+        3,
+        4,
+        5
+      ],
+      "best_count": 3,
+      "signals": [
+        "Network and Route Building",
+        "Hand Management",
+        "Economic"
+      ]
+    },
+    {
+      "id": 34635,
+      "name": "Dominant Species",
+      "year": 2010,
+      "rank": 160,
+      "weight": 4.0,
+      "playtime": 240,
+      "best_counts": [
+        4,
+        5
+      ],
+      "best_count": 5,
+      "signals": [
+        "Area Majority / Influence",
+        "Worker Placement",
+        "Animals"
+      ]
+    },
+    {
+      "id": 246900,
+      "name": "Eclipse: Second Dawn for the Galaxy",
+      "year": 2020,
+      "rank": 58,
+      "weight": 3.7,
+      "playtime": 200,
+      "best_counts": [
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Area Majority / Influence",
+        "Dice Rolling",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": 120677,
+      "name": "Terra Mystica",
+      "year": 2012,
+      "rank": 40,
+      "weight": 3.9,
+      "playtime": 150,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Area Majority / Influence",
+        "Network and Route Building",
+        "Variable Player Powers"
+      ]
+    },
+    {
+      "id": 4098,
+      "name": "Age of Steam",
+      "year": 2002,
+      "rank": 130,
+      "weight": 3.9,
+      "playtime": 120,
+      "best_counts": [
+        4,
+        5
+      ],
+      "best_count": 4,
+      "signals": [
+        "Network and Route Building",
+        "Auction/Bidding",
+        "Trains"
+      ]
+    },
+    {
+      "id": 2651,
+      "name": "Power Grid",
+      "year": 2004,
+      "rank": 95,
+      "weight": 3.3,
+      "playtime": 120,
+      "best_counts": [
+        4,
+        5,
+        6
+      ],
+      "best_count": 5,
+      "signals": [
+        "Network and Route Building",
+        "Auction/Bidding",
+        "Economic"
+      ]
+    },
+    {
+      "id": 304783,
+      "name": "Hadrian's Wall",
+      "year": 2021,
+      "rank": 150,
+      "weight": 3.4,
+      "playtime": 60,
+      "best_counts": [
+        1,
+        2
+      ],
+      "best_count": 1,
+      "signals": [
+        "Flip and Write",
+        "Paper-and-Pencil"
+      ]
+    },
+    {
+      "id": 161533,
+      "name": "Lisboa",
+      "year": 2017,
+      "rank": 155,
+      "weight": 4.6,
+      "playtime": 120,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 3,
+      "signals": [
+        "Hand Management",
+        "Tile Placement",
+        "Economic"
+      ]
+    },
+    {
+      "id": 192135,
+      "name": "Too Many Bones",
+      "year": 2017,
+      "rank": 48,
+      "weight": 3.9,
+      "playtime": 120,
+      "best_counts": [
+        1,
+        2
+      ],
+      "best_count": 1,
+      "signals": [
+        "Cooperative Game",
+        "Dice Rolling",
         "Variable Player Powers"
       ]
     },
@@ -173,6 +541,7 @@
       "year": 2016,
       "rank": 4,
       "weight": 3.2,
+      "playtime": 120,
       "best_counts": [
         3,
         4
@@ -190,6 +559,7 @@
       "year": 2016,
       "rank": 15,
       "weight": 3.7,
+      "playtime": 150,
       "best_counts": [
         3,
         4
@@ -197,7 +567,8 @@
       "best_count": 4,
       "signals": [
         "Deck, Bag, and Pool Building",
-        "Network and Route Building"
+        "Network and Route Building",
+        "Hand Management"
       ]
     },
     {
@@ -206,6 +577,7 @@
       "year": 2016,
       "rank": 18,
       "weight": 3.4,
+      "playtime": 115,
       "best_counts": [
         4,
         5
@@ -213,7 +585,8 @@
       "best_count": 5,
       "signals": [
         "Area Majority / Influence",
-        "Engine Building"
+        "Engine Building",
+        "Variable Player Powers"
       ]
     },
     {
@@ -222,6 +595,7 @@
       "year": 2020,
       "rank": 7,
       "weight": 3.0,
+      "playtime": 120,
       "best_counts": [
         3,
         4
@@ -238,6 +612,7 @@
       "year": 2018,
       "rank": 22,
       "weight": 2.8,
+      "playtime": 80,
       "best_counts": [
         2,
         3
@@ -245,7 +620,8 @@
       "best_count": 3,
       "signals": [
         "Worker Placement",
-        "Hand Management"
+        "Hand Management",
+        "Engine Building"
       ]
     },
     {
@@ -254,13 +630,15 @@
       "year": 2011,
       "rank": 24,
       "weight": 3.0,
+      "playtime": 90,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
         "Tile Placement",
-        "Dice Rolling"
+        "Dice Rolling",
+        "Set Collection"
       ]
     },
     {
@@ -269,6 +647,7 @@
       "year": 2012,
       "rank": 40,
       "weight": 3.2,
+      "playtime": 120,
       "best_counts": [
         1,
         3,
@@ -286,6 +665,7 @@
       "year": 2007,
       "rank": 45,
       "weight": 3.0,
+      "playtime": 60,
       "best_counts": [
         2
       ],
@@ -293,7 +673,8 @@
       "signals": [
         "Engine Building",
         "Open Drafting",
-        "Set Collection"
+        "Set Collection",
+        "Hand Management"
       ]
     },
     {
@@ -302,6 +683,7 @@
       "year": 2002,
       "rank": 48,
       "weight": 3.3,
+      "playtime": 120,
       "best_counts": [
         3,
         4,
@@ -310,7 +692,467 @@
       "best_count": 5,
       "signals": [
         "Set Collection",
+        "Economic",
         "Variable Phase Order"
+      ]
+    },
+    {
+      "id": 124361,
+      "name": "Concordia",
+      "year": 2013,
+      "rank": 33,
+      "weight": 3.0,
+      "playtime": 100,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Deck, Bag, and Pool Building",
+        "Network and Route Building",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 126163,
+      "name": "Tzolk'in: The Mayan Calendar",
+      "year": 2012,
+      "rank": 80,
+      "weight": 3.7,
+      "playtime": 90,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Worker Placement",
+        "Set Collection"
+      ]
+    },
+    {
+      "id": 102680,
+      "name": "Trajan",
+      "year": 2011,
+      "rank": 170,
+      "weight": 3.7,
+      "playtime": 100,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Set Collection",
+        "Area Majority / Influence",
+        "Ancient"
+      ]
+    },
+    {
+      "id": 43015,
+      "name": "Hansa Teutonica",
+      "year": 2009,
+      "rank": 110,
+      "weight": 3.1,
+      "playtime": 90,
+      "best_counts": [
+        4,
+        5
+      ],
+      "best_count": 5,
+      "signals": [
+        "Network and Route Building",
+        "Area Majority / Influence"
+      ]
+    },
+    {
+      "id": 216132,
+      "name": "Clans of Caledonia",
+      "year": 2017,
+      "rank": 180,
+      "weight": 3.4,
+      "playtime": 120,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Engine Building",
+        "Network and Route Building",
+        "Economic"
+      ]
+    },
+    {
+      "id": 247763,
+      "name": "Underwater Cities",
+      "year": 2018,
+      "rank": 100,
+      "weight": 3.6,
+      "playtime": 130,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 3,
+      "signals": [
+        "Worker Placement",
+        "Engine Building",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 171623,
+      "name": "The Voyages of Marco Polo",
+      "year": 2015,
+      "rank": 125,
+      "weight": 3.2,
+      "playtime": 100,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Worker Placement",
+        "Dice Rolling",
+        "Set Collection"
+      ]
+    },
+    {
+      "id": 183394,
+      "name": "Viticulture Essential Edition",
+      "year": 2015,
+      "rank": 55,
+      "weight": 2.9,
+      "playtime": 90,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Worker Placement",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 12,
+      "name": "Ra",
+      "year": 1999,
+      "rank": 250,
+      "weight": 2.4,
+      "playtime": 60,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Auction/Bidding",
+        "Set Collection",
+        "Push Your Luck"
+      ]
+    },
+    {
+      "id": 93,
+      "name": "El Grande",
+      "year": 1995,
+      "rank": 165,
+      "weight": 3.1,
+      "playtime": 120,
+      "best_counts": [
+        5
+      ],
+      "best_count": 5,
+      "signals": [
+        "Area Majority / Influence",
+        "Auction/Bidding",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 39463,
+      "name": "Cosmic Encounter",
+      "year": 2008,
+      "rank": 150,
+      "weight": 2.5,
+      "playtime": 90,
+      "best_counts": [
+        5
+      ],
+      "best_count": 5,
+      "signals": [
+        "Negotiation",
+        "Variable Player Powers",
+        "Bluffing",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 205637,
+      "name": "Arkham Horror: The Card Game",
+      "year": 2016,
+      "rank": 29,
+      "weight": 3.4,
+      "playtime": 120,
+      "best_counts": [
+        1,
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Cooperative Game",
+        "Deck, Bag, and Pool Building",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 167355,
+      "name": "Nemesis",
+      "year": 2018,
+      "rank": 52,
+      "weight": 3.4,
+      "playtime": 180,
+      "best_counts": [
+        4,
+        5
+      ],
+      "best_count": 5,
+      "signals": [
+        "Cooperative Game",
+        "Hidden Roles",
+        "Dice Rolling",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": 240980,
+      "name": "Blood on the Clocktower",
+      "year": 2022,
+      "rank": 180,
+      "weight": 2.7,
+      "playtime": 120,
+      "best_counts": [
+        10,
+        12,
+        15
+      ],
+      "best_count": 12,
+      "signals": [
+        "Hidden Roles",
+        "Deduction",
+        "Party Game",
+        "Bluffing"
+      ]
+    },
+    {
+      "id": 118,
+      "name": "Modern Art",
+      "year": 1992,
+      "rank": 390,
+      "weight": 2.2,
+      "playtime": 45,
+      "best_counts": [
+        4,
+        5
+      ],
+      "best_count": 5,
+      "signals": [
+        "Auction/Bidding",
+        "Hand Management",
+        "Economic"
+      ]
+    },
+    {
+      "id": 110327,
+      "name": "Lords of Waterdeep",
+      "year": 2012,
+      "rank": 190,
+      "weight": 2.5,
+      "playtime": 90,
+      "best_counts": [
+        4,
+        5
+      ],
+      "best_count": 4,
+      "signals": [
+        "Worker Placement",
+        "Set Collection"
+      ]
+    },
+    {
+      "id": 155426,
+      "name": "Castles of Mad King Ludwig",
+      "year": 2014,
+      "rank": 195,
+      "weight": 2.6,
+      "playtime": 90,
+      "best_counts": [
+        2,
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Tile Placement",
+        "Auction/Bidding"
+      ]
+    },
+    {
+      "id": 111960,
+      "name": "Suburbia",
+      "year": 2012,
+      "rank": 250,
+      "weight": 2.8,
+      "playtime": 90,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Tile Placement",
+        "Engine Building",
+        "Economic"
+      ]
+    },
+    {
+      "id": 157354,
+      "name": "Five Tribes",
+      "year": 2014,
+      "rank": 140,
+      "weight": 2.9,
+      "playtime": 80,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Auction/Bidding",
+        "Set Collection",
+        "Area Majority / Influence"
+      ]
+    },
+    {
+      "id": 2655,
+      "name": "Hive",
+      "year": 2001,
+      "rank": 260,
+      "weight": 2.3,
+      "playtime": 20,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Abstract Strategy",
+        "Grid Movement"
+      ]
+    },
+    {
+      "id": 30549,
+      "name": "Pandemic",
+      "year": 2008,
+      "rank": 110,
+      "weight": 2.4,
+      "playtime": 45,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Cooperative Game",
+        "Set Collection",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 161936,
+      "name": "Pandemic Legacy: Season 1",
+      "year": 2015,
+      "rank": 9,
+      "weight": 2.8,
+      "playtime": 60,
+      "best_counts": [
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Cooperative Game",
+        "Set Collection",
+        "Hand Management",
+        "Legacy Game"
+      ]
+    },
+    {
+      "id": 155821,
+      "name": "Inis",
+      "year": 2016,
+      "rank": 55,
+      "weight": 2.8,
+      "playtime": 90,
+      "best_counts": [
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Area Majority / Influence",
+        "Closed Drafting"
+      ]
+    },
+    {
+      "id": 291457,
+      "name": "Gloomhaven: Jaws of the Lion",
+      "year": 2020,
+      "rank": 28,
+      "weight": 3.6,
+      "playtime": 120,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Cooperative Game",
+        "Hand Management",
+        "Modular Board"
+      ]
+    },
+    {
+      "id": 274364,
+      "name": "Watergate",
+      "year": 2019,
+      "rank": 310,
+      "weight": 2.4,
+      "playtime": 45,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Hand Management",
+        "Political",
+        "Tug of War"
+      ]
+    },
+    {
+      "id": 118048,
+      "name": "Targi",
+      "year": 2012,
+      "rank": 200,
+      "weight": 2.4,
+      "playtime": 60,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Worker Placement",
+        "Set Collection"
       ]
     },
     {
@@ -319,6 +1161,7 @@
       "year": 2019,
       "rank": 30,
       "weight": 2.4,
+      "playtime": 70,
       "best_counts": [
         2,
         3
@@ -327,7 +1170,8 @@
       "signals": [
         "Engine Building",
         "Open Drafting",
-        "Set Collection"
+        "Set Collection",
+        "Dice Rolling"
       ]
     },
     {
@@ -336,6 +1180,7 @@
       "year": 2020,
       "rank": 26,
       "weight": 2.9,
+      "playtime": 120,
       "best_counts": [
         2,
         3
@@ -352,44 +1197,15 @@
       "year": 2008,
       "rank": 42,
       "weight": 2.4,
+      "playtime": 30,
       "best_counts": [
         2,
         3
       ],
       "best_count": 2,
       "signals": [
-        "Deck, Bag, and Pool Building"
-      ]
-    },
-    {
-      "id": 30549,
-      "name": "Pandemic",
-      "year": 2008,
-      "rank": 110,
-      "weight": 2.4,
-      "best_counts": [
-        3,
-        4
-      ],
-      "best_count": 4,
-      "signals": [
-        "Cooperative Game",
-        "Set Collection"
-      ]
-    },
-    {
-      "id": 155821,
-      "name": "Inis",
-      "year": 2016,
-      "rank": 55,
-      "weight": 2.8,
-      "best_counts": [
-        4
-      ],
-      "best_count": 4,
-      "signals": [
-        "Area Majority / Influence",
-        "Closed Drafting"
+        "Deck, Bag, and Pool Building",
+        "Hand Management"
       ]
     },
     {
@@ -398,13 +1214,15 @@
       "year": 2019,
       "rank": 90,
       "weight": 2.5,
+      "playtime": 60,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
         "Engine Building",
-        "Hand Management"
+        "Hand Management",
+        "Fantasy"
       ]
     },
     {
@@ -413,6 +1231,7 @@
       "year": 2018,
       "rank": 60,
       "weight": 2.4,
+      "playtime": 45,
       "best_counts": [
         3,
         4
@@ -429,6 +1248,7 @@
       "year": 2019,
       "rank": 130,
       "weight": 2.3,
+      "playtime": 45,
       "best_counts": [
         4
       ],
@@ -444,6 +1264,7 @@
       "year": 2010,
       "rank": 65,
       "weight": 2.3,
+      "playtime": 30,
       "best_counts": [
         4,
         5,
@@ -452,8 +1273,9 @@
       ],
       "best_count": 6,
       "signals": [
-        "Open Drafting",
-        "Set Collection"
+        "Closed Drafting",
+        "Set Collection",
+        "Hand Management"
       ]
     },
     {
@@ -462,6 +1284,7 @@
       "year": 1995,
       "rank": 400,
       "weight": 2.3,
+      "playtime": 90,
       "best_counts": [
         4
       ],
@@ -469,7 +1292,394 @@
       "signals": [
         "Network and Route Building",
         "Dice Rolling",
+        "Negotiation",
         "Trading"
+      ]
+    },
+    {
+      "id": 201808,
+      "name": "Clank!: A Deck-Building Adventure",
+      "year": 2016,
+      "rank": 185,
+      "weight": 2.2,
+      "playtime": 60,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Deck, Bag, and Pool Building",
+        "Push Your Luck",
+        "Adventure"
+      ]
+    },
+    {
+      "id": 217372,
+      "name": "The Quest for El Dorado",
+      "year": 2017,
+      "rank": 230,
+      "weight": 1.9,
+      "playtime": 60,
+      "best_counts": [
+        2,
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Deck, Bag, and Pool Building",
+        "Racing"
+      ]
+    },
+    {
+      "id": 147020,
+      "name": "Star Realms",
+      "year": 2014,
+      "rank": 330,
+      "weight": 1.9,
+      "playtime": 25,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Deck, Bag, and Pool Building",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 268864,
+      "name": "Undaunted: Normandy",
+      "year": 2019,
+      "rank": 270,
+      "weight": 2.3,
+      "playtime": 60,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Deck, Bag, and Pool Building",
+        "Wargame"
+      ]
+    },
+    {
+      "id": 246192,
+      "name": "Gizmos",
+      "year": 2018,
+      "rank": 400,
+      "weight": 2.0,
+      "playtime": 45,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Engine Building",
+        "Set Collection"
+      ]
+    },
+    {
+      "id": 181304,
+      "name": "Mysterium",
+      "year": 2015,
+      "rank": 335,
+      "weight": 1.9,
+      "playtime": 45,
+      "best_counts": [
+        5,
+        6
+      ],
+      "best_count": 5,
+      "signals": [
+        "Cooperative Game",
+        "Deduction",
+        "Party Game"
+      ]
+    },
+    {
+      "id": 157969,
+      "name": "Sheriff of Nottingham",
+      "year": 2014,
+      "rank": 440,
+      "weight": 1.6,
+      "playtime": 60,
+      "best_counts": [
+        5
+      ],
+      "best_count": 5,
+      "signals": [
+        "Bluffing",
+        "Negotiation",
+        "Set Collection"
+      ]
+    },
+    {
+      "id": 478,
+      "name": "Citadels",
+      "year": 2000,
+      "rank": 500,
+      "weight": 2.1,
+      "playtime": 60,
+      "best_counts": [
+        5,
+        6,
+        7
+      ],
+      "best_count": 5,
+      "signals": [
+        "Closed Drafting",
+        "Hidden Roles",
+        "City Building"
+      ]
+    },
+    {
+      "id": 171131,
+      "name": "Captain Sonar",
+      "year": 2016,
+      "rank": 380,
+      "weight": 2.1,
+      "playtime": 45,
+      "best_counts": [
+        8
+      ],
+      "best_count": 8,
+      "signals": [
+        "Real-Time",
+        "Team-Based Game",
+        "Deduction"
+      ]
+    },
+    {
+      "id": 150145,
+      "name": "Skull King",
+      "year": 2013,
+      "rank": 315,
+      "weight": 1.9,
+      "playtime": 45,
+      "best_counts": [
+        4,
+        5,
+        6
+      ],
+      "best_count": 5,
+      "signals": [
+        "Trick-taking",
+        "Betting and Bluffing"
+      ]
+    },
+    {
+      "id": 345972,
+      "name": "Cat in the Box: Deluxe Edition",
+      "year": 2022,
+      "rank": 290,
+      "weight": 2.0,
+      "playtime": 45,
+      "best_counts": [
+        4,
+        5
+      ],
+      "best_count": 4,
+      "signals": [
+        "Trick-taking",
+        "Area Majority / Influence"
+      ]
+    },
+    {
+      "id": 314491,
+      "name": "The Crew: The Quest for Planet Nine",
+      "year": 2019,
+      "rank": 70,
+      "weight": 1.9,
+      "playtime": 20,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Cooperative Game",
+        "Trick-taking",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 199561,
+      "name": "Sagrada",
+      "year": 2017,
+      "rank": 220,
+      "weight": 1.9,
+      "playtime": 40,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Dice Rolling",
+        "Pattern Building",
+        "Open Drafting"
+      ]
+    },
+    {
+      "id": 283155,
+      "name": "Calico",
+      "year": 2020,
+      "rank": 235,
+      "weight": 2.2,
+      "playtime": 30,
+      "best_counts": [
+        1,
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Tile Placement",
+        "Set Collection",
+        "Pattern Building"
+      ]
+    },
+    {
+      "id": 266524,
+      "name": "PARKS",
+      "year": 2019,
+      "rank": 280,
+      "weight": 2.2,
+      "playtime": 50,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Set Collection",
+        "Point to Point Movement"
+      ]
+    },
+    {
+      "id": 209685,
+      "name": "Century: Spice Road",
+      "year": 2017,
+      "rank": 350,
+      "weight": 1.8,
+      "playtime": 45,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Engine Building",
+        "Hand Management",
+        "Set Collection"
+      ]
+    },
+    {
+      "id": 265736,
+      "name": "Tiny Towns",
+      "year": 2019,
+      "rank": 340,
+      "weight": 1.9,
+      "playtime": 45,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Tile Placement",
+        "Pattern Building",
+        "City Building"
+      ]
+    },
+    {
+      "id": 245654,
+      "name": "Railroad Ink: Deep Blue Edition",
+      "year": 2018,
+      "rank": 380,
+      "weight": 1.3,
+      "playtime": 30,
+      "best_counts": [
+        2,
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Roll / Spin and Write",
+        "Dice Rolling",
+        "Network and Route Building"
+      ]
+    },
+    {
+      "id": 98778,
+      "name": "Hanabi",
+      "year": 2010,
+      "rank": 430,
+      "weight": 1.7,
+      "playtime": 25,
+      "best_counts": [
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Cooperative Game",
+        "Hand Management",
+        "Memory"
+      ]
+    },
+    {
+      "id": 277659,
+      "name": "Final Girl",
+      "year": 2021,
+      "rank": 170,
+      "weight": 2.4,
+      "playtime": 60,
+      "best_counts": [
+        1
+      ],
+      "best_count": 1,
+      "signals": [
+        "Cooperative Game",
+        "Dice Rolling",
+        "Horror"
+      ]
+    },
+    {
+      "id": 373106,
+      "name": "Sky Team",
+      "year": 2023,
+      "rank": 75,
+      "weight": 2.0,
+      "playtime": 20,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Cooperative Game",
+        "Dice Rolling",
+        "Aviation / Flight"
+      ]
+    },
+    {
+      "id": 224037,
+      "name": "Codenames: Duet",
+      "year": 2017,
+      "rank": 210,
+      "weight": 1.4,
+      "playtime": 20,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Cooperative Game",
+        "Word Game",
+        "Deduction"
       ]
     },
     {
@@ -478,13 +1688,15 @@
       "year": 2015,
       "rank": 16,
       "weight": 2.2,
+      "playtime": 30,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
         "Open Drafting",
-        "Set Collection"
+        "Set Collection",
+        "Civilization"
       ]
     },
     {
@@ -493,6 +1705,7 @@
       "year": 2017,
       "rank": 50,
       "weight": 1.8,
+      "playtime": 45,
       "best_counts": [
         2,
         4
@@ -510,6 +1723,7 @@
       "year": 2014,
       "rank": 120,
       "weight": 1.8,
+      "playtime": 30,
       "best_counts": [
         2,
         3
@@ -517,7 +1731,8 @@
       "best_count": 3,
       "signals": [
         "Engine Building",
-        "Set Collection"
+        "Set Collection",
+        "Economic"
       ]
     },
     {
@@ -526,21 +1741,24 @@
       "year": 2004,
       "rank": 150,
       "weight": 1.8,
+      "playtime": 60,
       "best_counts": [
         4
       ],
       "best_count": 4,
       "signals": [
         "Network and Route Building",
-        "Set Collection"
+        "Set Collection",
+        "Trains"
       ]
     },
     {
       "id": 822,
       "name": "Carcassonne",
       "year": 2000,
-      "rank": 170,
+      "rank": 175,
       "weight": 1.9,
+      "playtime": 45,
       "best_counts": [
         2
       ],
@@ -556,13 +1774,16 @@
       "year": 2021,
       "rank": 35,
       "weight": 1.9,
+      "playtime": 45,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
         "Tile Placement",
-        "Open Drafting"
+        "Open Drafting",
+        "Pattern Building",
+        "Animals"
       ]
     },
     {
@@ -571,6 +1792,7 @@
       "year": 2019,
       "rank": 95,
       "weight": 1.9,
+      "playtime": 45,
       "best_counts": [
         2,
         3,
@@ -579,15 +1801,16 @@
       "best_count": 3,
       "signals": [
         "Roll / Spin and Write",
-        "Open Drafting"
+        "Paper-and-Pencil"
       ]
     },
     {
       "id": 233867,
       "name": "Welcome To...",
       "year": 2018,
-      "rank": 140,
+      "rank": 145,
       "weight": 1.8,
+      "playtime": 25,
       "best_counts": [
         3,
         4
@@ -595,23 +1818,393 @@
       "best_count": 4,
       "signals": [
         "Flip and Write",
-        "Paper-and-Pencil"
+        "Paper-and-Pencil",
+        "City Building"
       ]
     },
     {
-      "id": 314491,
-      "name": "The Crew: The Quest for Planet Nine",
+      "id": 163412,
+      "name": "Patchwork",
+      "year": 2014,
+      "rank": 78,
+      "weight": 1.6,
+      "playtime": 30,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Tile Placement",
+        "Pattern Building",
+        "Economic"
+      ]
+    },
+    {
+      "id": 54043,
+      "name": "Jaipur",
+      "year": 2009,
+      "rank": 100,
+      "weight": 1.5,
+      "playtime": 30,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Open Drafting",
+        "Set Collection",
+        "Hand Management",
+        "Trading"
+      ]
+    },
+    {
+      "id": 244522,
+      "name": "That's Pretty Clever!",
+      "year": 2018,
+      "rank": 160,
+      "weight": 1.4,
+      "playtime": 30,
+      "best_counts": [
+        1,
+        2
+      ],
+      "best_count": 1,
+      "signals": [
+        "Roll / Spin and Write",
+        "Dice Rolling",
+        "Push Your Luck"
+      ]
+    },
+    {
+      "id": 306735,
+      "name": "Under Falling Skies",
+      "year": 2020,
+      "rank": 182,
+      "weight": 2.1,
+      "playtime": 40,
+      "best_counts": [
+        1
+      ],
+      "best_count": 1,
+      "signals": [
+        "Roll / Spin and Write",
+        "Dice Rolling",
+        "Science Fiction"
+      ]
+    },
+    {
+      "id": 37046,
+      "name": "Friday",
+      "year": 2011,
+      "rank": 260,
+      "weight": 2.0,
+      "playtime": 25,
+      "best_counts": [
+        1
+      ],
+      "best_count": 1,
+      "signals": [
+        "Deck, Bag, and Pool Building",
+        "Hand Management",
+        "Solo / Solitaire Game"
+      ]
+    },
+    {
+      "id": 156336,
+      "name": "Onirim",
+      "year": 2010,
+      "rank": 750,
+      "weight": 1.4,
+      "playtime": 15,
+      "best_counts": [
+        1,
+        2
+      ],
+      "best_count": 1,
+      "signals": [
+        "Cooperative Game",
+        "Hand Management",
+        "Set Collection"
+      ]
+    },
+    {
+      "id": 192291,
+      "name": "Sushi Go Party!",
+      "year": 2016,
+      "rank": 190,
+      "weight": 1.5,
+      "playtime": 20,
+      "best_counts": [
+        4,
+        5
+      ],
+      "best_count": 5,
+      "signals": [
+        "Closed Drafting",
+        "Set Collection"
+      ]
+    },
+    {
+      "id": 296151,
+      "name": "Point Salad",
       "year": 2019,
-      "rank": 70,
-      "weight": 1.9,
+      "rank": 420,
+      "weight": 1.2,
+      "playtime": 30,
+      "best_counts": [
+        2,
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Open Drafting",
+        "Set Collection"
+      ]
+    },
+    {
+      "id": 204583,
+      "name": "Kingdomino",
+      "year": 2016,
+      "rank": 312,
+      "weight": 1.2,
+      "playtime": 20,
+      "best_counts": [
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Tile Placement",
+        "Open Drafting",
+        "Pattern Building"
+      ]
+    },
+    {
+      "id": 194655,
+      "name": "Santorini",
+      "year": 2016,
+      "rank": 240,
+      "weight": 1.7,
+      "playtime": 20,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Abstract Strategy",
+        "Grid Movement",
+        "Variable Player Powers"
+      ]
+    },
+    {
+      "id": 160477,
+      "name": "Onitama",
+      "year": 2014,
+      "rank": 292,
+      "weight": 1.7,
+      "playtime": 20,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Abstract Strategy",
+        "Grid Movement",
+        "Hand Management"
+      ]
+    },
+    {
+      "id": 50,
+      "name": "Lost Cities",
+      "year": 1999,
+      "rank": 360,
+      "weight": 1.5,
+      "playtime": 30,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Hand Management",
+        "Set Collection",
+        "Push Your Luck"
+      ]
+    },
+    {
+      "id": 129622,
+      "name": "Love Letter",
+      "year": 2012,
+      "rank": 450,
+      "weight": 1.2,
+      "playtime": 20,
       "best_counts": [
         3,
         4
       ],
       "best_count": 4,
       "signals": [
+        "Deduction",
+        "Hand Management",
+        "Player Elimination"
+      ]
+    },
+    {
+      "id": 244992,
+      "name": "The Mind",
+      "year": 2018,
+      "rank": 480,
+      "weight": 1.1,
+      "playtime": 20,
+      "best_counts": [
+        3
+      ],
+      "best_count": 3,
+      "signals": [
         "Cooperative Game",
-        "Trick-taking"
+        "Hand Management",
+        "Real-Time"
+      ]
+    },
+    {
+      "id": 153938,
+      "name": "Camel Up",
+      "year": 2014,
+      "rank": 405,
+      "weight": 1.5,
+      "playtime": 30,
+      "best_counts": [
+        5,
+        6
+      ],
+      "best_count": 6,
+      "signals": [
+        "Dice Rolling",
+        "Betting and Bluffing",
+        "Racing"
+      ]
+    },
+    {
+      "id": 169654,
+      "name": "Deep Sea Adventure",
+      "year": 2014,
+      "rank": 550,
+      "weight": 1.2,
+      "playtime": 30,
+      "best_counts": [
+        4,
+        5,
+        6
+      ],
+      "best_count": 5,
+      "signals": [
+        "Push Your Luck",
+        "Dice Rolling"
+      ]
+    },
+    {
+      "id": 11971,
+      "name": "Cockroach Poker",
+      "year": 2004,
+      "rank": 600,
+      "weight": 1.1,
+      "playtime": 20,
+      "best_counts": [
+        5,
+        6
+      ],
+      "best_count": 6,
+      "signals": [
+        "Bluffing",
+        "Party Game"
+      ]
+    },
+    {
+      "id": 172,
+      "name": "For Sale",
+      "year": 1997,
+      "rank": 470,
+      "weight": 1.2,
+      "playtime": 30,
+      "best_counts": [
+        5,
+        6
+      ],
+      "best_count": 5,
+      "signals": [
+        "Auction/Bidding",
+        "Set Collection",
+        "Economic"
+      ]
+    },
+    {
+      "id": 432,
+      "name": "6 nimmt!",
+      "year": 1994,
+      "rank": 410,
+      "weight": 1.2,
+      "playtime": 45,
+      "best_counts": [
+        5,
+        6,
+        7
+      ],
+      "best_count": 6,
+      "signals": [
+        "Hand Management",
+        "Simultaneous Action Selection"
+      ]
+    },
+    {
+      "id": 11,
+      "name": "Bohnanza",
+      "year": 1997,
+      "rank": 460,
+      "weight": 1.7,
+      "playtime": 45,
+      "best_counts": [
+        5,
+        6
+      ],
+      "best_count": 5,
+      "signals": [
+        "Negotiation",
+        "Set Collection",
+        "Hand Management",
+        "Trading"
+      ]
+    },
+    {
+      "id": 47,
+      "name": "Chinatown",
+      "year": 1999,
+      "rank": 355,
+      "weight": 2.4,
+      "playtime": 60,
+      "best_counts": [
+        5
+      ],
+      "best_count": 5,
+      "signals": [
+        "Negotiation",
+        "Set Collection",
+        "Economic"
+      ]
+    },
+    {
+      "id": 266083,
+      "name": "QE",
+      "year": 2019,
+      "rank": 485,
+      "weight": 1.6,
+      "playtime": 45,
+      "best_counts": [
+        4,
+        5
+      ],
+      "best_count": 5,
+      "signals": [
+        "Auction/Bidding",
+        "Economic"
       ]
     },
     {
@@ -620,6 +2213,7 @@
       "year": 1876,
       "rank": 80,
       "weight": 1.1,
+      "playtime": 30,
       "best_counts": [
         2,
         4
@@ -631,110 +2225,72 @@
       ]
     },
     {
-      "id": 163412,
-      "name": "Patchwork",
+      "id": 165722,
+      "name": "Klask",
       "year": 2014,
-      "rank": 75,
-      "weight": 1.6,
-      "best_counts": [
-        2
-      ],
-      "best_count": 2,
-      "signals": [
-        "Tile Placement"
-      ]
-    },
-    {
-      "id": 54043,
-      "name": "Jaipur",
-      "year": 2009,
-      "rank": 100,
-      "weight": 1.5,
-      "best_counts": [
-        2
-      ],
-      "best_count": 2,
-      "signals": [
-        "Open Drafting",
-        "Set Collection"
-      ]
-    },
-    {
-      "id": 244522,
-      "name": "That's Pretty Clever!",
-      "year": 2018,
-      "rank": 160,
-      "weight": 1.4,
-      "best_counts": [
-        1,
-        2
-      ],
-      "best_count": 1,
-      "signals": [
-        "Roll / Spin and Write",
-        "Push Your Luck"
-      ]
-    },
-    {
-      "id": 306735,
-      "name": "Under Falling Skies",
-      "year": 2020,
-      "rank": 180,
-      "weight": 2.1,
-      "best_counts": [
-        1
-      ],
-      "best_count": 1,
-      "signals": [
-        "Roll / Spin and Write",
-        "Dice Rolling"
-      ]
-    },
-    {
-      "id": 37046,
-      "name": "Friday",
-      "year": 2011,
-      "rank": 260,
-      "weight": 2.0,
-      "best_counts": [
-        1
-      ],
-      "best_count": 1,
-      "signals": [
-        "Deck, Bag, and Pool Building"
-      ]
-    },
-    {
-      "id": 192291,
-      "name": "Sushi Go Party!",
-      "year": 2016,
-      "rank": 190,
-      "weight": 1.5,
-      "best_counts": [
-        4,
-        5
-      ],
-      "best_count": 5,
-      "signals": [
-        "Open Drafting",
-        "Set Collection"
-      ]
-    },
-    {
-      "id": 12942,
-      "name": "No Thanks!",
-      "year": 2004,
-      "rank": 210,
+      "rank": 455,
       "weight": 1.1,
+      "playtime": 20,
       "best_counts": [
-        5,
-        6,
-        7
+        2
       ],
-      "best_count": 5,
+      "best_count": 2,
       "signals": [
-        "Push Your Luck",
-        "Set Collection"
+        "Action / Dexterity",
+        "Real-Time"
+      ]
+    },
+    {
+      "id": 193042,
+      "name": "Junk Art",
+      "year": 2016,
+      "rank": 520,
+      "weight": 1.2,
+      "playtime": 30,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Stacking and Balancing",
+        "Action / Dexterity"
+      ]
+    },
+    {
+      "id": 250458,
+      "name": "Rhino Hero: Super Battle",
+      "year": 2017,
+      "rank": 610,
+      "weight": 1.1,
+      "playtime": 15,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Stacking and Balancing",
+        "Action / Dexterity",
+        "Children's Game"
+      ]
+    },
+    {
+      "id": 192457,
+      "name": "ICECOOL",
+      "year": 2016,
+      "rank": 700,
+      "weight": 1.1,
+      "playtime": 30,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Flicking",
+        "Action / Dexterity",
+        "Children's Game"
       ]
     },
     {
@@ -743,14 +2299,16 @@
       "year": 2011,
       "rank": 230,
       "weight": 1.3,
+      "playtime": 30,
       "best_counts": [
         5,
         6
       ],
       "best_count": 6,
       "signals": [
+        "Bluffing",
         "Push Your Luck",
-        "Bluffing"
+        "Party Game"
       ]
     },
     {
@@ -759,6 +2317,7 @@
       "year": 2018,
       "rank": 145,
       "weight": 1.1,
+      "playtime": 20,
       "best_counts": [
         5,
         6,
@@ -777,6 +2336,7 @@
       "year": 2015,
       "rank": 85,
       "weight": 1.3,
+      "playtime": 15,
       "best_counts": [
         6,
         7,
@@ -785,7 +2345,8 @@
       "best_count": 6,
       "signals": [
         "Word Game",
-        "Party Game"
+        "Party Game",
+        "Team-Based Game"
       ]
     },
     {
@@ -794,6 +2355,7 @@
       "year": 2018,
       "rank": 135,
       "weight": 1.8,
+      "playtime": 45,
       "best_counts": [
         6,
         7,
@@ -803,7 +2365,8 @@
       "signals": [
         "Word Game",
         "Deduction",
-        "Party Game"
+        "Party Game",
+        "Team-Based Game"
       ]
     },
     {
@@ -812,6 +2375,7 @@
       "year": 2012,
       "rank": 220,
       "weight": 1.4,
+      "playtime": 15,
       "best_counts": [
         4,
         5
@@ -819,6 +2383,7 @@
       "best_count": 5,
       "signals": [
         "Hidden Roles",
+        "Bluffing",
         "Player Elimination"
       ]
     },
@@ -828,6 +2393,7 @@
       "year": 2012,
       "rank": 105,
       "weight": 1.7,
+      "playtime": 30,
       "best_counts": [
         7,
         8,
@@ -837,6 +2403,27 @@
       "best_count": 10,
       "signals": [
         "Hidden Roles",
+        "Deduction",
+        "Voting"
+      ]
+    },
+    {
+      "id": 41114,
+      "name": "The Resistance",
+      "year": 2009,
+      "rank": 300,
+      "weight": 1.6,
+      "playtime": 30,
+      "best_counts": [
+        7,
+        8,
+        9,
+        10
+      ],
+      "best_count": 9,
+      "signals": [
+        "Hidden Roles",
+        "Deduction",
         "Voting"
       ]
     },
@@ -844,8 +2431,9 @@
       "id": 223040,
       "name": "Secret Hitler",
       "year": 2016,
-      "rank": 155,
+      "rank": 158,
       "weight": 1.7,
+      "playtime": 45,
       "best_counts": [
         8,
         9,
@@ -854,15 +2442,17 @@
       "best_count": 9,
       "signals": [
         "Hidden Roles",
-        "Voting"
+        "Voting",
+        "Political"
       ]
     },
     {
       "id": 147949,
       "name": "One Night Ultimate Werewolf",
       "year": 2014,
-      "rank": 240,
+      "rank": 242,
       "weight": 1.3,
+      "playtime": 10,
       "best_counts": [
         7,
         8,
@@ -872,7 +2462,145 @@
       "best_count": 8,
       "signals": [
         "Hidden Roles",
+        "Deduction",
+        "Real-Time"
+      ]
+    },
+    {
+      "id": 156129,
+      "name": "Deception: Murder in Hong Kong",
+      "year": 2014,
+      "rank": 285,
+      "weight": 1.6,
+      "playtime": 30,
+      "best_counts": [
+        6,
+        7,
+        8
+      ],
+      "best_count": 6,
+      "signals": [
+        "Hidden Roles",
+        "Deduction",
+        "Party Game"
+      ]
+    },
+    {
+      "id": 166384,
+      "name": "Spyfall",
+      "year": 2014,
+      "rank": 525,
+      "weight": 1.3,
+      "playtime": 15,
+      "best_counts": [
+        6,
+        7,
+        8
+      ],
+      "best_count": 6,
+      "signals": [
+        "Hidden Roles",
+        "Bluffing",
+        "Party Game"
+      ]
+    },
+    {
+      "id": 198773,
+      "name": "Werewords",
+      "year": 2017,
+      "rank": 650,
+      "weight": 1.3,
+      "playtime": 10,
+      "best_counts": [
+        6,
+        7,
+        8
+      ],
+      "best_count": 7,
+      "signals": [
+        "Hidden Roles",
+        "Word Game",
+        "Party Game",
+        "Real-Time"
+      ]
+    },
+    {
+      "id": 134352,
+      "name": "Two Rooms and a Boom",
+      "year": 2013,
+      "rank": 705,
+      "weight": 1.3,
+      "playtime": 30,
+      "best_counts": [
+        10,
+        12,
+        14
+      ],
+      "best_count": 12,
+      "signals": [
+        "Hidden Roles",
+        "Party Game",
+        "Team-Based Game",
+        "Negotiation"
+      ]
+    },
+    {
+      "id": 262543,
+      "name": "Wavelength",
+      "year": 2019,
+      "rank": 332,
+      "weight": 1.2,
+      "playtime": 45,
+      "best_counts": [
+        6,
+        7,
+        8
+      ],
+      "best_count": 6,
+      "signals": [
+        "Party Game",
+        "Team-Based Game",
         "Deduction"
+      ]
+    },
+    {
+      "id": 156546,
+      "name": "Monikers",
+      "year": 2015,
+      "rank": 320,
+      "weight": 1.2,
+      "playtime": 60,
+      "best_counts": [
+        6,
+        7,
+        8,
+        10
+      ],
+      "best_count": 8,
+      "signals": [
+        "Party Game",
+        "Word Game",
+        "Acting",
+        "Team-Based Game"
+      ]
+    },
+    {
+      "id": 46213,
+      "name": "Telestrations",
+      "year": 2009,
+      "rank": 490,
+      "weight": 1.1,
+      "playtime": 30,
+      "best_counts": [
+        6,
+        7,
+        8
+      ],
+      "best_count": 8,
+      "signals": [
+        "Party Game",
+        "Line Drawing",
+        "Memory"
       ]
     }
   ]

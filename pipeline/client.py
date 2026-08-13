@@ -86,6 +86,7 @@ class BggClient:
             year=int(item.find("yearpublished").get("value", 0)),
             rank=int(rank),
             weight=float(ratings.find("averageweight").get("value")),
+            playtime=int(item.find("playingtime").get("value", 0)),
             best_counts=best_counts,
             best_count=best_count,
             signals=_signals(item),

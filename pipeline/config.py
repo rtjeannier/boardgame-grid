@@ -53,3 +53,24 @@ WEIGHT_ROW_LADDER = ["Gateway", "Light", "Medium", "Medium-Heavy", "Heavy", "Bra
 # How many extra "runner-up" games to keep per cell for exploration. These are
 # the games that lost their archetype slot but are still worth seeing.
 ALTERNATES_PER_CELL = 6
+
+# --- Feature space & coverage selection --------------------------------------
+#
+# Games are embedded in a continuous space (see pipeline/features.py): latent
+# genre dimensions factored out of the mechanic/category matrix, plus weight
+# and playtime. Per-cell selection then maximises coverage of that space.
+
+NMF_COMPONENTS = 10       # how many latent genre dimensions to factor out
+GENRE_TOP_SIGNALS = 3     # signals used to name a dimension for display
+
+# Contribution of the continuous stats to distances, relative to genre loadings
+# (which are L2-normalised per game). Within a cell weight is nearly constant,
+# so genre naturally dominates; these keep playtime/weight as mild tiebreakers.
+WEIGHT_SCALE = 0.25
+PLAYTIME_SCALE = 0.25
+
+# MMR (maximal marginal relevance) selection: each step scores every remaining
+# game as  λ·quality + (1-λ)·distance-to-picks  and takes the best. Higher λ
+# favours rank; lower λ favours spreading across the space.
+MMR_LAMBDA = 0.5
+PICKS_PER_CELL = 8        # stop after this many picks per cell
