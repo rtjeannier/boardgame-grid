@@ -8,28 +8,33 @@ const label = (dim) => {
   return SHORT[first] || first
 }
 
-// A polar bar chart: each genre dimension owns an angular sector, and a value
-// fills that sector from the center out to an arc at its radius — bars, not a
-// connected polygon, so a shape covering two distant genres reads as two solid
-// bars instead of spikes through the middle. `series` are drawn back to front;
-// each is {values, className, style, outline} — `outline` renders only the top
-// arc (used for dashed references and faded games) instead of a filled bar.
+// A polar bar chart in a donut: each genre dimension owns an angular sector,
+// and a value fills that sector as an annular bar from the central hole out
+// to an arc at its radius — bars, not a connected polygon, so a shape
+// covering two distant genres reads as two solid bars instead of spikes
+// through the middle. Adjacent sectors touch; the shared radial edges keep
+// the categories legible. `series` are drawn back to front; each is
+// {values, className, style, outline} — `outline` renders only the top arc
+// (used for dashed references and faded games) instead of a filled bar.
 export default function Radar({ dimensions, series }) {
   const n = dimensions.length
-  const cx = 0.5, cy = 0.5, R = 0.33
-  const half = (Math.PI / n) * 0.82 // bar half-width; the rest is the gap between bars
+  const cx = 0.5, cy = 0.5, R = 0.33, HOLE = 0.06
+  const half = Math.PI / n
   const angle = (i) => (2 * Math.PI * i) / n - Math.PI / 2
-  const pt = (a, r) => `${cx + R * r * Math.cos(a)},${cy + R * r * Math.sin(a)}`
+  const rad = (v) => HOLE + (R - HOLE) * v // 0 sits on the hole's rim, 1 on the outer rim
+  const pt = (a, r) => `${cx + r * Math.cos(a)},${cy + r * Math.sin(a)}`
 
   const arc = (i, v) =>
-    `M ${pt(angle(i) - half, v)} A ${R * v} ${R * v} 0 0 1 ${pt(angle(i) + half, v)}`
-  const bar = (i, v) => `M ${cx},${cy} L ${arc(i, v).slice(2)} Z`
+    `M ${pt(angle(i) - half, rad(v))} A ${rad(v)} ${rad(v)} 0 0 1 ${pt(angle(i) + half, rad(v))}`
+  const bar = (i, v) =>
+    `M ${pt(angle(i) - half, HOLE)} L ${arc(i, v).slice(2)} ` +
+    `L ${pt(angle(i) + half, HOLE)} A ${HOLE} ${HOLE} 0 0 0 ${pt(angle(i) - half, HOLE)} Z`
 
   return (
     <svg className="radar" viewBox="0 0 1 1">
-      {/* rings at 25/50/75/100% coverage */}
-      {[0.25, 0.5, 0.75, 1].map((r) => (
-        <circle key={r} cx={cx} cy={cy} r={R * r} className="radar__ring" />
+      {/* the hole's rim, then rings at 25/50/75/100% coverage */}
+      {[0, 0.25, 0.5, 0.75, 1].map((r) => (
+        <circle key={r} cx={cx} cy={cy} r={rad(r)} className="radar__ring" />
       ))}
 
       {series.map(({ key, values, className, style, outline }) => (
