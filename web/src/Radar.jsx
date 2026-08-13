@@ -9,15 +9,15 @@ const label = (dim) => {
 }
 
 // A polar bar chart in a donut: each genre dimension owns an angular sector,
-// and a value fills that sector as an annular bar from the central hole out
-// to an arc at its radius — bars, not a connected polygon, so a shape
-// covering two distant genres reads as two solid bars instead of spikes
-// through the middle. Adjacent sectors touch; the shared radial edges keep
-// the categories legible. `series` are drawn back to front; each is
-// {values, className, style, outline, slot} — `outline` renders only the top
-// arc (used for dashed references and faded games) instead of a filled bar,
-// and `slot: [k, m]` places the series' bars side by side as bar k of m
-// within each sector (grouped bars), defaulting to the sector's full width.
+// and a value fills that sector as an annular bar out to an arc at its
+// radius — bars, not a connected polygon, so a shape covering two distant
+// genres reads as two solid bars instead of spikes through the middle.
+// Adjacent sectors touch; the shared radial edges keep the categories
+// legible. `series` are drawn back to front; each is {values, base,
+// className, style, outline} — `base` gives each bar's inner edge (default
+// the hole's rim), so series can stack as segments of one bar, and `outline`
+// renders only the top arc (used for dashed references and faded games)
+// instead of a filled bar.
 export default function Radar({ dimensions, series }) {
   const n = dimensions.length
   const cx = 0.5, cy = 0.5, R = 0.33, HOLE = 0.06
@@ -28,12 +28,11 @@ export default function Radar({ dimensions, series }) {
 
   const arc = (i, v) =>
     `M ${pt(angle(i) - half, rad(v))} A ${rad(v)} ${rad(v)} 0 0 1 ${pt(angle(i) + half, rad(v))}`
-  const bar = (i, v, [k, m] = [0, 1]) => {
-    const a0 = angle(i) - half + 2 * half * (k / m)
-    const a1 = angle(i) - half + 2 * half * ((k + 1) / m)
-    return `M ${pt(a0, HOLE)} L ${pt(a0, rad(v))} ` +
-      `A ${rad(v)} ${rad(v)} 0 0 1 ${pt(a1, rad(v))} ` +
-      `L ${pt(a1, HOLE)} A ${HOLE} ${HOLE} 0 0 0 ${pt(a0, HOLE)} Z`
+  const bar = (i, v0, v1) => {
+    const a0 = angle(i) - half, a1 = angle(i) + half
+    const r0 = rad(v0), r1 = rad(v1)
+    return `M ${pt(a0, r0)} L ${pt(a0, r1)} A ${r1} ${r1} 0 0 1 ${pt(a1, r1)} ` +
+      `L ${pt(a1, r0)} A ${r0} ${r0} 0 0 0 ${pt(a0, r0)} Z`
   }
 
   return (
@@ -43,11 +42,13 @@ export default function Radar({ dimensions, series }) {
         <circle key={r} cx={cx} cy={cy} r={rad(r)} className="radar__ring" />
       ))}
 
-      {series.map(({ key, values, className, style, outline, slot }) => (
+      {series.map(({ key, values, base, className, style, outline }) => (
         <g key={key} className={className} style={style}>
-          {values.map((v, i) =>
-            v > 0.01 ? <path key={i} d={outline ? arc(i, v) : bar(i, v, slot)} /> : null,
-          )}
+          {values.map((v, i) => {
+            const v0 = base?.[i] ?? 0
+            if (outline) return v > 0.01 ? <path key={i} d={arc(i, v)} /> : null
+            return v - v0 > 0.005 ? <path key={i} d={bar(i, v0, v)} /> : null
+          })}
         </g>
       ))}
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import Scatter from './Scatter.jsx'
 import CoverageRadar from './CoverageRadar.jsx'
-import { axisCoverage } from './coverage.js'
 import { colorFor, gameColor } from './colors.js'
 
 // Slide-in panel for a single cell: a genre-coverage radar for the cell's
@@ -15,9 +14,12 @@ export default function Detail({ cell, meta, active, onClose }) {
   const [selected, setSelected] = useState(() => new Set())
   const [mode, setMode] = useState('combined')
 
+  // Picks make up the blue stack; alternates only appear on the radar when
+  // selected, stacking above the cell's total since they add coverage it
+  // didn't have. Selected rows carry the same colour as their segment/bars.
   const picks = cell.assignments.map((a) => a.game)
   const games = [...picks, ...cell.alternates]
-  const cellCoverage = axisCoverage(picks.map((g) => g.coverage), dims.length)
+  const baseIds = new Set(picks.map((g) => g.id))
 
   const toggle = (id) =>
     setSelected((prev) => {
@@ -26,11 +28,11 @@ export default function Detail({ cell, meta, active, onClose }) {
       return next
     })
 
-  const rowColor = (game) =>
-    mode === 'individual' ? gameColor(games.findIndex((g) => g.id === game.id)) : 'var(--highlight)'
   const rowProps = (game) => ({
     className: `detail__row ${selected.has(game.id) ? 'is-highlit' : ''}`,
-    style: selected.has(game.id) ? { boxShadow: `inset 3px 0 0 ${rowColor(game)}` } : undefined,
+    style: selected.has(game.id)
+      ? { boxShadow: `inset 3px 0 0 ${gameColor(games.findIndex((g) => g.id === game.id))}` }
+      : undefined,
     onClick: () => toggle(game.id),
     role: 'button', tabIndex: 0, 'aria-pressed': selected.has(game.id),
     onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(game.id) } },
@@ -49,8 +51,8 @@ export default function Detail({ cell, meta, active, onClose }) {
       <div className="detail__radar">
         <CoverageRadar
           dimensions={dims}
-          baseLayers={[{ key: 'cell', values: cellCoverage, className: 'radar__full' }]}
           games={games}
+          baseIds={baseIds}
           selected={selected}
           mode={mode}
           onMode={setMode}

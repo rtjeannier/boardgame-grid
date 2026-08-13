@@ -22,12 +22,13 @@ export const ARCHETYPE_COLORS = {
 
 export const colorFor = (archetype) => ARCHETYPE_COLORS[archetype] || '#8d99ae'
 
-// Distinct colours for individual games on the radar's overlay view, assigned
-// by position in the list (stable within a render of the same data).
+// Distinct colours for individual games on the radar, assigned by position in
+// the list (stable within a render of the same data). Blues sit at the end so
+// early games never blend into the chart's blue base stack.
 export const GAME_PALETTE = [
-  '#4e79a7', '#e15759', '#59a14f', '#f28e2b', '#b07aa1',
-  '#76b7b2', '#edc948', '#ff9da7', '#9c755f', '#86bcb6',
-  '#d37295', '#8cd17d', '#fabfd2', '#b6992d', '#79706e',
+  '#e15759', '#f28e2b', '#59a14f', '#edc948', '#b07aa1',
+  '#ff9da7', '#9c755f', '#d37295', '#8cd17d', '#b6992d',
+  '#4e79a7', '#76b7b2', '#fabfd2', '#86bcb6', '#79706e',
 ]
 
 export const gameColor = (index) => GAME_PALETTE[index % GAME_PALETTE.length]

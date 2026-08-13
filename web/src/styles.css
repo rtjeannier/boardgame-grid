@@ -166,19 +166,16 @@ body {
 .radar { width: 100%; display: block; overflow: visible; padding: 0 10px; box-sizing: border-box; }
 .radar__ring { fill: none; stroke: var(--border); stroke-width: 0.002; }
 .radar__full { fill: var(--accent); opacity: 0.25; stroke: var(--accent); stroke-width: 0.003; }
-.radar__anchor { fill: #b5838d; opacity: 0.45; stroke: #b5838d; stroke-width: 0.003; }
 .radar__label { font-size: 0.026px; fill: var(--muted); dominant-baseline: middle; }
 
-/* Combined coverage of the selected games — bars over the base bars. */
-.radar__highlight {
-  fill: var(--highlight); fill-opacity: 0.5; stroke: var(--highlight);
-  stroke-width: 0.004; stroke-linejoin: round; pointer-events: none;
-}
+/* Combined view: one selected game's segment of the stacked bar (colored
+   inline to match its list row). */
+.radar__segment { fill-opacity: 0.75; stroke-width: 0.002; stroke-linejoin: round; pointer-events: none; }
 
 /* Individual-games view: one set of bars per game (colored inline), faded to
    thin arc outlines when a selection spotlights other games; the
    collection/cell total stays behind them as a dashed arc reference. */
-.radar__game { fill-opacity: 0.55; stroke-width: 0.0025; stroke-opacity: 0.9; stroke-linejoin: round; pointer-events: none; }
+.radar__game { fill-opacity: 0.2; stroke-width: 0.004; stroke-opacity: 0.9; stroke-linejoin: round; pointer-events: none; }
 .radar__game--faded { fill: none; stroke: var(--muted); stroke-width: 0.003; stroke-opacity: 0.35; }
 .radar__context { fill: none; stroke: var(--accent); stroke-opacity: 0.5; stroke-width: 0.003; stroke-dasharray: 0.012 0.008; }
 

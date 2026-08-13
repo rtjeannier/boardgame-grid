@@ -43,30 +43,24 @@ export default function Collection() {
       return next
     })
 
-  const baseLayers = [{ key: 'full', values: data.fullCoverage, className: 'radar__full' }]
-  if (hasAnchors) baseLayers.push({ key: 'anchor', values: data.anchorCoverage, className: 'radar__anchor' })
-
-  // Selected rows carry the same colour as their radar polygon in the
-  // individual view; the combined view marks them all with the one
-  // highlight colour its polygon uses.
-  const rowColor = (index) => (mode === 'individual' ? gameColor(index) : 'var(--highlight)')
+  // Every game in the collection contributes to the blue stack; selected
+  // rows carry the same colour as their segment/bars on the radar.
+  const baseIds = new Set(games.map((g) => g.id))
 
   return (
     <div className="collection">
       <div className="collection__radar">
         <CoverageRadar
           dimensions={meta.dimensions}
-          baseLayers={baseLayers}
           games={games}
+          baseIds={baseIds}
           selected={selected}
           mode={mode}
           onMode={setMode}
           idleCaption={
             <>
-              {covered.toFixed(1)} of {meta.dimensions.length} axes covered ·{' '}
-              {hasAnchors
-                ? <>inner shape: anchors ({meta.anchors.join(', ')}) · outer: full collection</>
-                : 'coverage of the built collection'}
+              {covered.toFixed(1)} of {meta.dimensions.length} axes covered
+              {hasAnchors && <> · anchors: {meta.anchors.join(', ')}</>}
             </>
           }
         />
@@ -79,7 +73,7 @@ export default function Collection() {
           {games.map((g, i) => (
             <li key={g.id}
               className={`collection__row ${selected.has(g.id) ? 'is-highlit' : ''}`}
-              style={selected.has(g.id) ? { boxShadow: `inset 3px 0 0 ${rowColor(i)}` } : undefined}
+              style={selected.has(g.id) ? { boxShadow: `inset 3px 0 0 ${gameColor(i)}` } : undefined}
               onClick={() => toggle(g.id)}
               role="button" tabIndex={0} aria-pressed={selected.has(g.id)}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(g.id) } }}>
