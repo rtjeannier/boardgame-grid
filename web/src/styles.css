@@ -170,9 +170,12 @@ body {
 .radar__anchor { fill: #b5838d; opacity: 0.45; stroke: #b5838d; stroke-width: 0.004; }
 .radar__label { font-size: 0.026px; fill: var(--muted); dominant-baseline: middle; }
 
-/* One game's own coverage, overlaid as a filled wedge per axis it reaches. */
-.radar__highlight { fill: var(--highlight); opacity: 0.55; stroke: var(--highlight); stroke-width: 0.004; stroke-linejoin: round; }
-.radar__highlight-group { pointer-events: none; }
+/* One game's slice of the chart: the band between the cumulative coverage
+   before and after it, so it always sits inside the final shape. */
+.radar__highlight {
+  fill: var(--highlight); opacity: 0.6; stroke: var(--highlight);
+  stroke-width: 0.003; stroke-linejoin: round; pointer-events: none;
+}
 
 .collection__hint { font-size: 12px; margin: -4px 0 8px; }
 

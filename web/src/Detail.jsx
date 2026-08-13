@@ -1,16 +1,8 @@
 import React, { useState } from 'react'
 import Scatter from './Scatter.jsx'
 import Radar from './Radar.jsx'
+import { axisCoverage, contributionBand } from './coverage.js'
 import { colorFor } from './colors.js'
-
-// Combine per-game coverage vectors into the set's per-axis coverage:
-// an axis is covered unless every game misses it — 1 − ∏(1 − wᵢ). Mirrors
-// pipeline/coverage.axis_coverage so the cell radar matches the collection one.
-function axisCoverage(vectors, n) {
-  return Array.from({ length: n }, (_, i) =>
-    1 - vectors.reduce((acc, v) => acc * (1 - (v?.[i] ?? 0)), 1),
-  )
-}
 
 // Slide-in panel for a single cell: a genre-coverage radar for the cell's
 // picks (click a game to see its contribution), the similarity scatter, the
@@ -20,12 +12,22 @@ export default function Detail({ cell, meta, active, onClose }) {
   const dims = meta.genreDimensions
   const [highlightId, setHighlightId] = useState(null)
 
-  // The radar shows what the cell's shown picks cover; alternates aren't drawn
-  // in the chart, but any game in the panel can be highlighted against it.
+  // The radar shows what the cell's picks cover. A highlighted pick shows its
+  // marginal band inside that shape (picks are in greedy order, so bands
+  // stack to the full polygon); a highlighted alternate isn't part of the
+  // shape, so its band is what it *would* add on top of the current coverage.
   const picks = cell.assignments.map((a) => a.game)
-  const cellCoverage = axisCoverage(picks.map((g) => g.coverage), dims.length)
-  const highlighted =
-    [...picks, ...cell.alternates].find((g) => g.id === highlightId) || null
+  const pickVectors = picks.map((g) => g.coverage)
+  const cellCoverage = axisCoverage(pickVectors, dims.length)
+
+  const pickIndex = picks.findIndex((g) => g.id === highlightId)
+  const alternate = cell.alternates.find((g) => g.id === highlightId) || null
+  const highlighted = pickIndex >= 0 ? picks[pickIndex] : alternate
+  const band = pickIndex >= 0
+    ? contributionBand(pickVectors, pickIndex, dims.length)
+    : alternate && alternate.coverage
+      ? { inner: cellCoverage, outer: axisCoverage([...pickVectors, alternate.coverage], dims.length) }
+      : null
   const toggle = (id) => setHighlightId((cur) => (cur === id ? null : id))
 
   return (
@@ -42,13 +44,13 @@ export default function Detail({ cell, meta, active, onClose }) {
         <Radar
           dimensions={dims}
           layers={[{ key: 'cell', values: cellCoverage, className: 'radar__full' }]}
-          highlight={highlighted && highlighted.coverage
-            ? { values: highlighted.coverage, name: highlighted.name }
-            : null}
+          band={band}
         />
         <p className="muted collection__caption">
           {highlighted
-            ? <>highlighting <strong>{highlighted.name}</strong>’s contribution · click it again to clear</>
+            ? alternate
+              ? <>what <strong>{highlighted.name}</strong> would add · click it again to clear</>
+              : <>highlighting <strong>{highlighted.name}</strong>’s contribution · click it again to clear</>
             : 'Genre coverage of this cell — click a game to see its contribution'}
         </p>
       </div>

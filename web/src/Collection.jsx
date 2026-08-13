@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Radar from './Radar.jsx'
+import { contributionBand } from './coverage.js'
 
 // The Collection tab: a radar chart of genre coverage, the collection itself
 // (anchors locked in, greedy coverage fills around them), and any gaps with
@@ -30,7 +31,14 @@ export default function Collection() {
   const hasAnchors = meta.anchors.length > 0
   const covered = data.fullCoverage.reduce((a, b) => a + b, 0)
 
-  const highlighted = games.find((g) => g.id === highlightId) || null
+  // games[] is in pick order (anchors first, then greedy fills) — the same
+  // order the gains were attributed in, so each game's band is its marginal
+  // slice of the final shape and the bands stack to the full polygon.
+  const highlightIndex = games.findIndex((g) => g.id === highlightId)
+  const highlighted = highlightIndex >= 0 ? games[highlightIndex] : null
+  const band = highlighted && highlighted.coverage
+    ? contributionBand(games.map((g) => g.coverage), highlightIndex, meta.dimensions.length)
+    : null
   const toggle = (id) => setHighlightId((cur) => (cur === id ? null : id))
 
   const layers = [{ key: 'full', values: data.fullCoverage, className: 'radar__full' }]
@@ -39,13 +47,7 @@ export default function Collection() {
   return (
     <div className="collection">
       <div className="collection__radar">
-        <Radar
-          dimensions={meta.dimensions}
-          layers={layers}
-          highlight={highlighted && highlighted.coverage
-            ? { values: highlighted.coverage, name: highlighted.name }
-            : null}
-        />
+        <Radar dimensions={meta.dimensions} layers={layers} band={band} />
         <p className="muted collection__caption">
           {highlighted
             ? <>highlighting <strong>{highlighted.name}</strong>’s contribution · click it again to clear</>
