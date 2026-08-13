@@ -21,6 +21,21 @@ export default function Radar({ dimensions, layers, highlight }) {
   const point = (i, r) => at(i, r).join(',')
   const polygon = (values) => values.map((v, i) => point(i, v)).join(' ')
 
+  // A game's contribution to one axis, drawn as a filled wedge out to its
+  // value. Wedges (rather than a polygon through every axis) keep each covered
+  // axis a solid area instead of collapsing to a spike when the neighbouring
+  // axes are empty.
+  const wedge = (i, v) => {
+    const half = Math.PI / n
+    const steps = 6
+    const pts = [`${cx},${cy}`]
+    for (let s = 0; s <= steps; s++) {
+      const a = angle(i) - half + (2 * half * s) / steps
+      pts.push(`${cx + R * v * Math.cos(a)},${cy + R * v * Math.sin(a)}`)
+    }
+    return pts.join(' ')
+  }
+
   return (
     <svg className="radar" viewBox="0 0 1 1">
       {/* rings at 25/50/75/100% coverage */}
@@ -37,15 +52,13 @@ export default function Radar({ dimensions, layers, highlight }) {
         <polygon key={layer.key} points={polygon(layer.values)} className={layer.className} />
       ))}
 
-      {/* One game's own coverage, drawn on top with a marker at each axis it
-          reaches — reads as "this slice of the covered area is this game". */}
+      {/* One game's own coverage, drawn on top as a filled wedge per axis it
+          reaches — reads as "this area of the chart is this game". */}
       {highlight && (
         <g className="radar__highlight-group">
-          <polygon points={polygon(highlight.values)} className="radar__highlight" />
           {highlight.values.map((v, i) =>
             v > 0.02 ? (
-              <circle key={i} cx={at(i, v)[0]} cy={at(i, v)[1]} r={0.011}
-                className="radar__highlight-dot" />
+              <polygon key={i} points={wedge(i, v)} className="radar__highlight" />
             ) : null,
           )}
         </g>
