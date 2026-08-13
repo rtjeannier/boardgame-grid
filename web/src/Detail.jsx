@@ -1,34 +1,40 @@
 import React, { useState } from 'react'
 import Scatter from './Scatter.jsx'
-import Radar from './Radar.jsx'
-import { axisCoverage, contributionBand } from './coverage.js'
-import { colorFor } from './colors.js'
+import CoverageRadar from './CoverageRadar.jsx'
+import { axisCoverage } from './coverage.js'
+import { colorFor, gameColor } from './colors.js'
 
 // Slide-in panel for a single cell: a genre-coverage radar for the cell's
-// picks (click a game to see its contribution), the similarity scatter, the
-// full list of picks, and the runner-up games that lost their slot.
+// games, the similarity scatter, the full list of picks, and the runner-up
+// games that lost their slot. Games (picks and alternates alike) are
+// multi-selectable: the radar draws the selection's combined coverage from
+// the origin, or each game as its own overlaid polygon.
 export default function Detail({ cell, meta, active, onClose }) {
   const row = meta.weightRows.find((r) => r.index === cell.row)
   const dims = meta.genreDimensions
-  const [highlightId, setHighlightId] = useState(null)
+  const [selected, setSelected] = useState(() => new Set())
+  const [mode, setMode] = useState('combined')
 
-  // The radar shows what the cell's picks cover. A highlighted pick shows its
-  // marginal band inside that shape (picks are in greedy order, so bands
-  // stack to the full polygon); a highlighted alternate isn't part of the
-  // shape, so its band is what it *would* add on top of the current coverage.
   const picks = cell.assignments.map((a) => a.game)
-  const pickVectors = picks.map((g) => g.coverage)
-  const cellCoverage = axisCoverage(pickVectors, dims.length)
+  const games = [...picks, ...cell.alternates]
+  const cellCoverage = axisCoverage(picks.map((g) => g.coverage), dims.length)
 
-  const pickIndex = picks.findIndex((g) => g.id === highlightId)
-  const alternate = cell.alternates.find((g) => g.id === highlightId) || null
-  const highlighted = pickIndex >= 0 ? picks[pickIndex] : alternate
-  const band = pickIndex >= 0
-    ? contributionBand(pickVectors, pickIndex, dims.length)
-    : alternate && alternate.coverage
-      ? { inner: cellCoverage, outer: axisCoverage([...pickVectors, alternate.coverage], dims.length) }
-      : null
-  const toggle = (id) => setHighlightId((cur) => (cur === id ? null : id))
+  const toggle = (id) =>
+    setSelected((prev) => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+
+  const rowColor = (game) =>
+    mode === 'individual' ? gameColor(games.findIndex((g) => g.id === game.id)) : 'var(--highlight)'
+  const rowProps = (game) => ({
+    className: `detail__row ${selected.has(game.id) ? 'is-highlit' : ''}`,
+    style: selected.has(game.id) ? { boxShadow: `inset 3px 0 0 ${rowColor(game)}` } : undefined,
+    onClick: () => toggle(game.id),
+    role: 'button', tabIndex: 0, 'aria-pressed': selected.has(game.id),
+    onKeyDown: (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(game.id) } },
+  })
 
   return (
     <aside className="detail">
@@ -41,18 +47,15 @@ export default function Detail({ cell, meta, active, onClose }) {
       </div>
 
       <div className="detail__radar">
-        <Radar
+        <CoverageRadar
           dimensions={dims}
-          layers={[{ key: 'cell', values: cellCoverage, className: 'radar__full' }]}
-          band={band}
+          baseLayers={[{ key: 'cell', values: cellCoverage, className: 'radar__full' }]}
+          games={games}
+          selected={selected}
+          mode={mode}
+          onMode={setMode}
+          idleCaption="Genre coverage of this cell — click games to chart them"
         />
-        <p className="muted collection__caption">
-          {highlighted
-            ? alternate
-              ? <>what <strong>{highlighted.name}</strong> would add · click it again to clear</>
-              : <>highlighting <strong>{highlighted.name}</strong>’s contribution · click it again to clear</>
-            : 'Genre coverage of this cell — click a game to see its contribution'}
-        </p>
       </div>
 
       <Scatter assignments={cell.assignments} alternates={cell.alternates} />
@@ -60,12 +63,10 @@ export default function Detail({ cell, meta, active, onClose }) {
       <ul className="detail__list">
         {cell.assignments.map(({ archetype, game, gain }) => {
           const dim = active.size > 0 && !active.has(archetype)
+          const props = rowProps(game)
           return (
-            <li key={game.id}
-              className={`detail__row ${dim ? 'row--dim' : ''} ${highlightId === game.id ? 'is-highlit' : ''}`}
-              onClick={() => toggle(game.id)}
-              role="button" tabIndex={0} aria-pressed={highlightId === game.id}
-              onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(game.id) } }}>
+            <li key={game.id} {...props}
+              className={`${props.className} ${dim ? 'row--dim' : ''}`}>
               <span className="dot" style={{ background: colorFor(archetype) }} />
               <div className="detail__game">
                 <a href={game.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{game.name}</a>
@@ -86,11 +87,7 @@ export default function Detail({ cell, meta, active, onClose }) {
           <h3>Also here</h3>
           <ul className="detail__list">
             {cell.alternates.map((game) => (
-              <li key={game.id}
-                className={`detail__row ${highlightId === game.id ? 'is-highlit' : ''}`}
-                onClick={() => toggle(game.id)}
-                role="button" tabIndex={0} aria-pressed={highlightId === game.id}
-                onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(game.id) } }}>
+              <li key={game.id} {...rowProps(game)}>
                 <span className="dot dot--muted" />
                 <div className="detail__game">
                   <a href={game.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{game.name}</a>

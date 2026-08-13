@@ -1,15 +1,20 @@
 import React, { useEffect, useState } from 'react'
-import Radar from './Radar.jsx'
-import { contributionBand } from './coverage.js'
+import CoverageRadar from './CoverageRadar.jsx'
+import { gameColor } from './colors.js'
 
 // The Collection tab: a radar chart of genre coverage, the collection itself
 // (anchors locked in, greedy coverage fills around them), and any gaps with
 // suggested games to fill them. Rendered from collection.json, produced by
 // `python -m pipeline.collection --anchors "CATAN" --size 15`.
+//
+// Games in the list are multi-selectable: the radar draws the selection's
+// combined coverage from the origin, or (in the "individual games" view) each
+// game as its own overlaid polygon.
 export default function Collection() {
   const [data, setData] = useState(null)
   const [missing, setMissing] = useState(false)
-  const [highlightId, setHighlightId] = useState(null) // game whose contribution is shown
+  const [selected, setSelected] = useState(() => new Set())
+  const [mode, setMode] = useState('combined')
 
   useEffect(() => {
     fetch(`${import.meta.env.BASE_URL}collection.json`)
@@ -31,44 +36,52 @@ export default function Collection() {
   const hasAnchors = meta.anchors.length > 0
   const covered = data.fullCoverage.reduce((a, b) => a + b, 0)
 
-  // games[] is in pick order (anchors first, then greedy fills) — the same
-  // order the gains were attributed in, so each game's band is its marginal
-  // slice of the final shape and the bands stack to the full polygon.
-  const highlightIndex = games.findIndex((g) => g.id === highlightId)
-  const highlighted = highlightIndex >= 0 ? games[highlightIndex] : null
-  const band = highlighted && highlighted.coverage
-    ? contributionBand(games.map((g) => g.coverage), highlightIndex, meta.dimensions.length)
-    : null
-  const toggle = (id) => setHighlightId((cur) => (cur === id ? null : id))
+  const toggle = (id) =>
+    setSelected((prev) => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
 
-  const layers = [{ key: 'full', values: data.fullCoverage, className: 'radar__full' }]
-  if (hasAnchors) layers.push({ key: 'anchor', values: data.anchorCoverage, className: 'radar__anchor' })
+  const baseLayers = [{ key: 'full', values: data.fullCoverage, className: 'radar__full' }]
+  if (hasAnchors) baseLayers.push({ key: 'anchor', values: data.anchorCoverage, className: 'radar__anchor' })
+
+  // Selected rows carry the same colour as their radar polygon in the
+  // individual view; the combined view marks them all with the one
+  // highlight colour its polygon uses.
+  const rowColor = (index) => (mode === 'individual' ? gameColor(index) : 'var(--highlight)')
 
   return (
     <div className="collection">
       <div className="collection__radar">
-        <Radar dimensions={meta.dimensions} layers={layers} band={band} />
-        <p className="muted collection__caption">
-          {highlighted
-            ? <>highlighting <strong>{highlighted.name}</strong>’s contribution · click it again to clear</>
-            : <>
-                {covered.toFixed(1)} of {meta.dimensions.length} axes covered ·{' '}
-                {hasAnchors
-                  ? <>inner shape: anchors ({meta.anchors.join(', ')}) · outer: full collection</>
-                  : 'coverage of the built collection'}
-              </>}
-        </p>
+        <CoverageRadar
+          dimensions={meta.dimensions}
+          baseLayers={baseLayers}
+          games={games}
+          selected={selected}
+          mode={mode}
+          onMode={setMode}
+          idleCaption={
+            <>
+              {covered.toFixed(1)} of {meta.dimensions.length} axes covered ·{' '}
+              {hasAnchors
+                ? <>inner shape: anchors ({meta.anchors.join(', ')}) · outer: full collection</>
+                : 'coverage of the built collection'}
+            </>
+          }
+        />
       </div>
 
       <div className="collection__list">
         <h2>{meta.size} games</h2>
-        <p className="muted collection__hint">Click a game to highlight its contribution on the radar.</p>
+        <p className="muted collection__hint">Click games to chart them — select several to combine.</p>
         <ul>
-          {games.map((g) => (
+          {games.map((g, i) => (
             <li key={g.id}
-              className={`collection__row ${highlightId === g.id ? 'is-highlit' : ''}`}
+              className={`collection__row ${selected.has(g.id) ? 'is-highlit' : ''}`}
+              style={selected.has(g.id) ? { boxShadow: `inset 3px 0 0 ${rowColor(i)}` } : undefined}
               onClick={() => toggle(g.id)}
-              role="button" tabIndex={0} aria-pressed={highlightId === g.id}
+              role="button" tabIndex={0} aria-pressed={selected.has(g.id)}
               onKeyDown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(g.id) } }}>
               <div className="collection__game">
                 <a href={g.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{g.name}</a>

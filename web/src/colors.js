@@ -21,3 +21,13 @@ export const ARCHETYPE_COLORS = {
 }
 
 export const colorFor = (archetype) => ARCHETYPE_COLORS[archetype] || '#8d99ae'
+
+// Distinct colours for individual games on the radar's overlay view, assigned
+// by position in the list (stable within a render of the same data).
+export const GAME_PALETTE = [
+  '#4e79a7', '#e15759', '#59a14f', '#f28e2b', '#b07aa1',
+  '#76b7b2', '#edc948', '#ff9da7', '#9c755f', '#86bcb6',
+  '#d37295', '#8cd17d', '#fabfd2', '#b6992d', '#79706e',
+]
+
+export const gameColor = (index) => GAME_PALETTE[index % GAME_PALETTE.length]
