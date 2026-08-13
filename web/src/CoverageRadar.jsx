@@ -26,9 +26,12 @@ export default function CoverageRadar({ dimensions, games, baseIds, selected, mo
 
   const series = []
   if (mode === 'combined') {
-    const rest = games.filter((g) => baseIds.has(g.id) && !selected.has(g.id))
-    let uncovered = axisCoverage(rest.map((g) => g.coverage), n).map((v) => 1 - v)
-    series.push({ key: 'rest', values: uncovered.map((u) => 1 - u), className: 'radar__full' })
+    // The stack always starts at the center: selected games' colored
+    // segments rise from the hole in list order, and the blue remainder —
+    // the unselected games' marginal coverage — is the outermost band, so
+    // the stack still tops out at the total. With nothing selected the blue
+    // is the whole bar.
+    let uncovered = Array(n).fill(1)
     games.forEach((g, i) => {
       if (!selected.has(g.id) || !g.coverage) return
       const next = uncovered.map((u, d) => u * (1 - (g.coverage[d] ?? 0)))
@@ -40,6 +43,14 @@ export default function CoverageRadar({ dimensions, games, baseIds, selected, mo
         style: { fill: gameColor(i), stroke: gameColor(i) },
       })
       uncovered = next
+    })
+    const rest = games.filter((g) => baseIds.has(g.id) && !selected.has(g.id))
+    const restUncov = axisCoverage(rest.map((g) => g.coverage), n).map((v) => 1 - v)
+    series.push({
+      key: 'rest',
+      base: uncovered.map((u) => 1 - u),
+      values: uncovered.map((u, d) => 1 - u * restUncov[d]),
+      className: 'radar__full',
     })
   } else {
     // Dashed arc reference of the whole, then faded games (arc outlines only),
