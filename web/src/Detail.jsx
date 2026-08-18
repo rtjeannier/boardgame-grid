@@ -77,8 +77,8 @@ export default function Detail({ cell, meta, active, onClose }) {
                   {gain != null && ` · +${gain.toFixed(2)} coverage`}
                 </span>
                 <Genres genres={game.genres} />
+                <Stats game={game} />
               </div>
-              <Stats game={game} />
             </li>
           )
         })}
@@ -93,8 +93,8 @@ export default function Detail({ cell, meta, active, onClose }) {
                 <span className="dot dot--muted" />
                 <div className="detail__game">
                   <a href={game.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{game.name}</a>
+                  <Stats game={game} />
                 </div>
-                <Stats game={game} />
               </li>
             ))}
           </ul>
@@ -107,9 +107,23 @@ export default function Detail({ cell, meta, active, onClose }) {
 function Stats({ game }) {
   return (
     <span className="detail__stats muted">
-      #{game.rank} · w{game.weight} · {game.playtime}′ · best {game.best_counts.join(', ') || '—'}
+      #{game.rank} · w{game.weight.toFixed(1)} · {game.playtime}′ · best {playerRange(game.best_counts)}
     </span>
   )
+}
+
+// "6, 7, 8, ... 18" is unreadable and squeezed the game name out of the row, so
+// collapse consecutive counts into ranges: [2,3,4,6] -> "2–4, 6".
+function playerRange(counts) {
+  if (!counts?.length) return '—'
+  const sorted = [...counts].sort((a, b) => a - b)
+  const runs = []
+  for (const n of sorted) {
+    const last = runs[runs.length - 1]
+    if (last && n === last[1] + 1) last[1] = n
+    else runs.push([n, n])
+  }
+  return runs.map(([lo, hi]) => (lo === hi ? `${lo}` : `${lo}–${hi}`)).join(', ')
 }
 
 // A game's strongest latent genre dimensions, e.g. "0.71 tile-laying · 0.30

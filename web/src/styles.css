@@ -138,17 +138,26 @@ body {
 .scatter figcaption { font-size: 12px; margin-top: 6px; min-height: 1.2em; }
 
 .detail__list { list-style: none; margin: 16px 0 0; padding: 0; }
+/* Two columns, not three: the stats line sits *under* the name rather than
+   beside it. As a third `auto` column it was `white-space: nowrap`, so a long
+   stats string took whatever width it wanted and squeezed the name down to a
+   few characters in a 380px drawer. */
 .detail__list li {
-  display: grid; grid-template-columns: 12px 1fr auto; align-items: center; gap: 10px;
+  display: grid; grid-template-columns: 12px minmax(0, 1fr); align-items: start; gap: 10px;
   padding: 9px 0; border-top: 1px solid var(--border);
 }
 .detail__list .dot { margin-top: 5px; align-self: start; }
-.detail__game { display: flex; flex-direction: column; }
-.detail__game a { color: var(--text); font-weight: 600; text-decoration: none; }
+/* min-width:0 lets the flex children shrink so long words ellipsize instead of
+   forcing the grid track wider than the drawer. */
+.detail__game { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
+.detail__game a {
+  color: var(--text); font-weight: 600; text-decoration: none;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
 .detail__game a:hover { color: var(--accent); text-decoration: underline; }
 .detail__game .muted { font-size: 12px; }
 .detail__genres { font-size: 11px; }
-.detail__stats { font-size: 12px; white-space: nowrap; }
+.detail__stats { font-size: 11px; font-variant-numeric: tabular-nums; }
 .row--dim { opacity: 0.35; }
 
 .detail__alts h3 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); margin: 22px 0 0; }
