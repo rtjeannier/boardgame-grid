@@ -18,7 +18,12 @@ from collections import defaultdict
 
 from . import buckets, coverage, dataset
 from .archetypes import ARCHETYPES
-from .assign import CoverageAssigner, GreedyAssigner, MmrAssigner, assign_grid
+from .assign import (
+    GreedyAssigner,
+    MmrAssigner,
+    assign_grid,
+    assign_grid_coverage,
+)
 from .config import ALTERNATES_PER_CELL, OUTPUT_JSON, PLAYER_COLUMNS, SEED_DATASET, WEIGHT_ROW_COUNT
 from .features import build_feature_space
 
@@ -28,22 +33,35 @@ def build(dataset_path, assigner_name):
     space = build_feature_space(games)
     weight_rows = buckets.build_weight_rows([g.weight for g in games], WEIGHT_ROW_COUNT)
 
-    # Drop each game into its single home cell: one weight row (its weight) and
-    # one player column (its peak player count).
+    # Where each game belongs, and how strongly. The coverage path treats this
+    # as a degree — a game good at 3-6 players is a candidate in all four
+    # columns — while mmr/greedy keep the older one-home-per-game placement.
     cells = defaultdict(list)
-    for game in games:
-        col = buckets.player_column_for(game)
-        if not col:
-            continue  # no player-count signal — nothing to place
-        row = buckets.weight_row_index(game.weight, weight_rows)
-        cells[(col, row)].append(game)
+    memberships: dict[tuple, float] = {}
+    if assigner_name == "coverage":
+        for game in games:
+            for key, membership in buckets.cell_memberships(game, weight_rows).items():
+                cells[key].append(game)
+                memberships[(key, game.id)] = membership
+    else:
+        for game in games:
+            col = buckets.player_column_for(game)
+            if not col:
+                continue  # no player-count signal — nothing to place
+            row = buckets.weight_row_index(game.weight, weight_rows)
+            cells[(col, row)].append(game)
 
-    assigner = {
-        "coverage": lambda: CoverageAssigner(space.loadings, space.similarity),
-        "mmr": lambda: MmrAssigner(space.vectors),
-        "greedy": lambda: GreedyAssigner(),
-    }[assigner_name]()
-    results = assign_grid(cells, assigner, ALTERNATES_PER_CELL)
+    if assigner_name == "coverage":
+        # Games belong to several cells, so allocation is grid-wide: a game is
+        # picked at most once, and contested games go to the cell they help most.
+        results = assign_grid_coverage(cells, memberships, space.loadings,
+                                       space.similarity, ALTERNATES_PER_CELL)
+    else:
+        assigner = {
+            "mmr": lambda: MmrAssigner(space.vectors),
+            "greedy": lambda: GreedyAssigner(),
+        }[assigner_name]()
+        results = assign_grid(cells, assigner, ALTERNATES_PER_CELL)
 
     def game_json(g, weight=None):
         """Game record + its place in the feature space, for the frontend.
@@ -71,7 +89,10 @@ def build(dataset_path, assigner_name):
         ranks = [g.rank for g in pool]
 
         def weight(g):
-            return coverage.quality(g.rank, ranks) * space.loadings[g.id]
+            # Mirrors the assigner exactly, membership included, so the radar the
+            # frontend draws is the one selection was actually scored against.
+            membership = memberships.get(((col, row), g.id), 1.0)
+            return membership * coverage.quality(g.rank, ranks) * space.loadings[g.id]
 
         return {
             "column": col,

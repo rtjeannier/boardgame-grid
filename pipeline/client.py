@@ -98,7 +98,9 @@ class BggClient:
         if rank in (None, "Not Ranked"):
             return None  # unranked games have no place on the grid
 
-        best_counts, best_count = _player_counts(item)
+        best_votes = _best_votes(item)
+        best_counts = sorted(best_votes)
+        best_count = max(best_votes, key=lambda n: (best_votes[n], -n)) if best_votes else None
         name_el = item.find("name[@type='primary']")
         return Game(
             id=int(item.get("id")),
@@ -111,6 +113,7 @@ class BggClient:
             best_count=best_count,
             signals=_signals(item),
             families=_families(item),
+            best_votes=best_votes,
         )
 
     # --- low-level HTTP with cache + backoff --------------------------------
@@ -149,17 +152,22 @@ class BggClient:
         raise RuntimeError(f"BGG did not return data for {url}")
 
 
-def _player_counts(item: ET.Element) -> tuple[list[int], int | None]:
-    """Parse the suggested-players poll.
+def _best_votes(item: ET.Element) -> dict[int, int]:
+    """The suggested-players poll as a distribution: count -> "Best" votes.
 
-    Returns (best_counts, peak): every count the community rates "Best" (Best
-    votes win and outnumber "Not Recommended"), plus the single peak — the
-    qualifying count with the most "Best" votes, ties broken toward fewer
-    players. Peak decides the game's column; the list is kept for display.
+    A count qualifies when Best votes exist and outnumber "Not Recommended" —
+    the same test BGG's own "Best: 3-6" display uses. Callers derive the peak
+    (most Best votes, ties toward fewer players) and soft column membership
+    from this; keeping the raw votes is what makes the latter possible.
+
+    Deliberately *not* `Best + Recommended > Not Recommended`: that only asks
+    whether more people tolerate a count than object to it, and rates Ricochet
+    Robots as playing well at 1-12 when BGG says 3-6. Nor do we bound by
+    minplayers/maxplayers — Ricochet Robots reports maxplayers 99.
     """
     poll = item.find("poll[@name='suggested_numplayers']")
     if poll is None:
-        return [], None
+        return {}
     best_votes: dict[int, int] = {}
     for results in poll.findall("results"):
         label = results.get("numplayers", "").rstrip("+")
@@ -170,11 +178,7 @@ def _player_counts(item: ET.Element) -> tuple[list[int], int | None]:
         not_rec = votes.get("Not Recommended", 0)
         if best > 0 and best >= not_rec:
             best_votes[int(label)] = best
-    if not best_votes:
-        return [], None
-    counts = sorted(best_votes)
-    peak = max(counts, key=lambda n: (best_votes[n], -n))
-    return counts, peak
+    return best_votes
 
 
 def _signals(item: ET.Element) -> list[str]:

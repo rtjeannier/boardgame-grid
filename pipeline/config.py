@@ -95,4 +95,25 @@ GAIN_FLOOR = 0.15         # stop picking when the best marginal gain drops below
 # editions cannot claim credit for space their sibling already covers. Measured
 # on the live top-500: exponent 1 costs 6 extra picks, 3 lets a duplicate back in.
 SIMILARITY_EXPONENT = 2
+
+# --- Soft cell membership ----------------------------------------------------
+#
+# A game does not sit in one cell; it belongs to several by degree. Columns come
+# from the player-count poll (see buckets.player_memberships), rows from a taper
+# around the quantile edges. Membership then scales the game's coverage
+# contribution, so a game centred in a cell outranks one that merely reaches it.
+
+# Column membership is *peak-relative*: the game's best column scores 1.0 and the
+# rest are measured against it. So a game uniformly great at 3-6 players scores
+# 1.0 in all four columns. Scoring by share-of-total would instead give it 0.25
+# each and let a mediocre 4-only game beat it, which penalises versatility.
+MEMBERSHIP_FLOOR = 0.25   # drop columns scoring below this fraction of the peak
+
+# Weight rows are quantile cuts, so a game at 2.89 is barely distinguishable from
+# one at 2.91. Membership stays 1.0 inside a row and tapers to 0 across this many
+# weight units past each edge, letting borderline games belong to both.
+WEIGHT_TAPER = 0.15
+
+# Cells below this combined (column x row) membership aren't worth considering.
+CELL_MEMBERSHIP_FLOOR = 0.05
 COLLECTION_SIZE = 15      # default target size for the collection builder

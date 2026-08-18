@@ -13,10 +13,12 @@ Design notes
 ------------
 * `Assigner` is a tiny protocol — swap in a different strategy (ILP, weighted
   matching, ML-ranked, ...) by writing one `assign()` method.
-* Each cell is assigned **independently** of every other cell, so the grid is
-  embarrassingly parallel: `assign_grid` maps the assigner over cells and could
-  be handed to a thread/process pool unchanged. We keep it sequential here
-  because the work is tiny; the independence is the point.
+* `MmrAssigner` and `GreedyAssigner` treat each cell **independently**, so
+  `assign_grid` maps over cells and is trivially parallelisable.
+* The default coverage path does **not**, and can't: games belong to several
+  cells by degree (see buckets.cell_memberships), so something has to decide
+  which cell gets a contested game and ensure no game is shown twice. That lives
+  in `assign_grid_coverage` below, which allocates across the whole grid at once.
 """
 
 from dataclasses import dataclass
@@ -26,7 +28,7 @@ import numpy as np
 
 from . import coverage
 from .archetypes import archetypes_for, primary_archetype
-from .config import MMR_LAMBDA, PICKS_PER_CELL
+from .config import GAIN_FLOOR, MMR_LAMBDA, PICKS_PER_CELL
 from .model import Game
 
 
@@ -163,3 +165,147 @@ def assign_grid(cells: dict, assigner: Assigner, alternates_limit: int) -> dict:
     map is trivially parallelisable if a strategy ever gets expensive.
     """
     return {key: assigner.assign(games, alternates_limit) for key, games in cells.items()}
+
+
+# --- Grid-wide coverage allocation (the default) -----------------------------
+
+def assign_grid_coverage(cells: dict, memberships: dict, loadings: dict,
+                         similarity: dict | None, alternates_limit: int) -> dict:
+    """Allocate games across the whole grid so each is picked at most once.
+
+    `cells` maps (col, row) -> [Game]; `memberships` maps ((col, row), game id)
+    -> how strongly that game belongs there. A game appears in several pools, so
+    per-cell greedy would show it in several cells at once.
+
+    Rounds, not one long greedy: every cell bids for its best remaining game,
+    a contested game goes to whichever cell gains most, and losers re-bid before
+    anything is committed. That way **every cell takes its first pick before any
+    cell takes its second**, so a thin cell can't be picked clean by a
+    well-stocked neighbour helping itself two or three times first. Allocating
+    strictly by highest-gain-anywhere scores marginally better on paper but
+    offers thin cells no such protection.
+
+    A game's coverage weight is `membership x quality x loadings`, so a game
+    centred in a cell counts fully and one that merely reaches it counts less --
+    reusing `quality` rather than inventing a parallel mechanism.
+    """
+    keys = sorted(cells)                     # deterministic: contests must not
+    n_axes = len(next(iter(loadings.values())))   # hinge on dict iteration order
+
+    weights, ranks_by_cell = {}, {}
+    for key in keys:
+        pool = cells[key]
+        ranks = [g.rank for g in pool]
+        ranks_by_cell[key] = ranks
+        for game in pool:
+            q = coverage.quality(game.rank, ranks)
+            weights[(key, game.id)] = memberships[(key, game.id)] * q * loadings[game.id]
+
+    uncovered = {key: np.ones(n_axes) for key in keys}
+    chosen: dict[tuple, list[Game]] = {key: [] for key in keys}
+    gains: dict[tuple, float] = {}
+    taken: set[int] = set()
+
+    for _ in range(PICKS_PER_CELL):
+        awards = _bid_round(keys, cells, memberships, weights, uncovered,
+                            chosen, taken, similarity)
+        if not awards:
+            break
+        for key, (game, gain) in awards.items():
+            taken.add(game.id)
+            gains[(key, game.id)] = gain
+            uncovered[key] *= 1.0 - weights[(key, game.id)]
+            chosen[key].append(game)
+
+    _repair(keys, cells, weights, uncovered, chosen, gains, similarity)
+
+    results = {}
+    for key in keys:
+        picked = {g.id for g in chosen[key]}
+        leftovers = sorted(
+            (g for g in cells[key] if g.id not in picked and g.id not in taken),
+            key=lambda g: g.rank,
+        )
+        results[key] = CellResult(
+            [Assignment(_display_label(g), g, round(gains[(key, g.id)], 3))
+             for g in chosen[key]],
+            leftovers[:alternates_limit],
+        )
+    return results
+
+
+def _gain(key, game, weights, uncovered, chosen, similarity) -> float:
+    raw = float(weights[(key, game.id)] @ uncovered[key])
+    return raw * coverage.novelty(game.id, [g.id for g in chosen[key]], similarity)
+
+
+def _bid_round(keys, cells, memberships, weights, uncovered, chosen, taken, similarity) -> dict:
+    """One round of deferred acceptance; returns {cell key: winning Game}."""
+    held: dict[int, tuple] = {}          # game id -> (cell key, gain, Game)
+    blocked: dict[tuple, set[int]] = {key: set() for key in keys}
+    pending = [k for k in keys if len(chosen[k]) < PICKS_PER_CELL]
+
+    while pending:
+        key = pending.pop(0)
+        best, best_gain = None, GAIN_FLOOR
+        for game in cells[key]:
+            if game.id in taken or game.id in blocked[key]:
+                continue
+            gain = _gain(key, game, weights, uncovered, chosen, similarity)
+            # Ties: prefer the game that belongs here more, then the better rank.
+            if gain > best_gain or (best is not None and gain == best_gain and (
+                    memberships[(key, game.id)], -game.rank)
+                    > (memberships[(key, best.id)], -best.id)):
+                best, best_gain = game, gain
+        if best is None:
+            continue                      # nothing left worth taking this round
+
+        incumbent = held.get(best.id)
+        if incumbent is None:
+            held[best.id] = (key, best_gain, best)
+        elif best_gain > incumbent[1]:
+            held[best.id] = (key, best_gain, best)
+            blocked[incumbent[0]].add(best.id)
+            pending.append(incumbent[0])  # displaced cell bids again
+        else:
+            blocked[key].add(best.id)
+            pending.append(key)
+
+    return {key: (game, gain) for _, (key, gain, game) in held.items()}
+
+
+def _repair(keys, cells, weights, uncovered, chosen, gains, similarity) -> None:
+    """Move a game if some cell with room would gain more from it.
+
+    A round commits its awards together, so a cell that valued a game more may
+    not have bid on it before it was claimed. Rare (one placement in a 238-pick
+    grid) but cheap to correct, and it makes the result order-independent.
+    """
+    for _ in range(len(keys)):            # bounded; converges in a pass or two
+        moved = False
+        for key in keys:
+            for game in list(chosen[key]):
+                here = _gain(key, game, weights, uncovered, chosen, similarity)
+                for other in keys:
+                    if other == key or len(chosen[other]) >= PICKS_PER_CELL:
+                        continue
+                    if (other, game.id) not in weights:
+                        continue
+                    there = _gain(other, game, weights, uncovered, chosen, similarity)
+                    if there > here + 1e-9:
+                        chosen[key].remove(game)
+                        gains.pop((key, game.id), None)
+                        uncovered[key] = np.ones(len(uncovered[key]))
+                        for kept in chosen[key]:
+                            uncovered[key] *= 1.0 - weights[(key, kept.id)]
+                        chosen[other].append(game)
+                        gains[(other, game.id)] = there
+                        uncovered[other] *= 1.0 - weights[(other, game.id)]
+                        moved = True
+                        break
+                if moved:
+                    break
+            if moved:
+                break
+        if not moved:
+            return

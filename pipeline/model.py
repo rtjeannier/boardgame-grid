@@ -25,6 +25,12 @@ class Game:
     # dimension names. Only the similarity space uses these. Defaults to empty so
     # the committed seed dataset, which predates the field, still loads.
     families: list[str] = field(default_factory=list)
+    # Raw "Best" votes per player count, for counts the community endorses. This
+    # is the distribution behind `best_count`: A Game of Thrones records 915 at
+    # six players, 100 at five, 48 at four. The grid uses it for soft column
+    # membership, so a game good at 3-6 appears in all of those columns instead
+    # of only its peak. Empty for the seed dataset, which predates the field.
+    best_votes: dict[int, int] = field(default_factory=dict)
 
     @property
     def url(self) -> str:
@@ -37,6 +43,8 @@ class Game:
             weight=d["weight"], playtime=d["playtime"],
             best_counts=d["best_counts"], best_count=d["best_count"],
             signals=d["signals"], families=d.get("families", []),
+            # JSON object keys are strings; the poll is keyed by player count.
+            best_votes={int(k): v for k, v in d.get("best_votes", {}).items()},
         )
 
     def record(self) -> dict:
@@ -46,6 +54,7 @@ class Game:
             "weight": self.weight, "playtime": self.playtime,
             "best_counts": self.best_counts, "best_count": self.best_count,
             "signals": self.signals, "families": self.families,
+            "best_votes": self.best_votes,
         }
 
     def to_dict(self) -> dict:
