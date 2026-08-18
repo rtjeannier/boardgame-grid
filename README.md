@@ -89,7 +89,7 @@ with `401`, and it has no "give me the top N" call:
    because it's 11 MB and BGG regenerates it regularly.
 
 ```bash
-python -m pipeline.fetch --limit 500            # -> data/games.json
+python -m pipeline.fetch --limit 1000           # -> data/games.json
 python -m pipeline.build --dataset data/games.json
 ```
 
@@ -127,6 +127,12 @@ pick this branch and the **`/docs`** folder. The site goes live at
    human-readable loadings; each dimension is named by its top signals
    (on the seed data they come out as recognisable genres — social deduction,
    dexterity, tile-laying, party/word — with no hand labelling).
+   Note that the dimensions follow the *corpus*, not some fixed genre map: NMF
+   spends them on whatever tag co-occurrence is most common, so the curated seed
+   set yields an `Action / Dexterity` axis while the rank-ordered live top 1000
+   does not — dexterity is only 9 games there, too few to form a factor. Genres
+   that never co-occur as a block (Push Your Luck, Trick-taking) get no axis at
+   any component count.
 3. A game's vector = normalised genre loadings + mildly scaled weight and
    log-playtime. A global 2-D PCA of these vectors feeds the per-cell
    similarity scatter in the site's detail drawer.
@@ -161,10 +167,11 @@ and 4th Edition once shared a cell. So each candidate's gain is scaled by
 
 Similarity is cosine in the **full tag space** (`features._similarity_space`),
 never the 10-dim NMF loadings — the bottleneck discards exactly the detail that
-separates a duplicate from a same-genre neighbour. Measured on the live top 500,
-Decrypto/Monikers (unrelated) score 0.972 in NMF space against Twilight Imperium
-3rd/4th at 0.967; in full space those become 0.234 and 0.807. BGG's `Game:`
-family links join that space and roughly double the separation. The penalty
+separates a duplicate from a same-genre neighbour. Measured on the live top 1000,
+Decrypto/Monikers (unrelated) score 0.955 in NMF space against Twilight Imperium
+3rd/4th at 0.997 — indistinguishable; in full space those become 0.230 and 0.817.
+BGG's `Game:` family links join that space and roughly double the separation.
+The penalty
 steers selection only — recorded gains and the coverage totals stay raw.
 
 `--assigner mmr` (maximal marginal relevance: rank blended with distance from
@@ -214,7 +221,7 @@ parallelisable across cells.
 
 ## Note on the current data
 
-The committed grid is built from a **live capture of BGG's top 500**, marked
+The committed grid is built from a **live capture of BGG's top 1000**, marked
 `live data` in the header. `data/games.seed.json` remains as a hand-entered
 proxy — approximate weights and player counts, no `Game:` families — so the
 pipeline still builds offline with `python -m pipeline.build` and no
