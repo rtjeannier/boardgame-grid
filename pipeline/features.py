@@ -5,7 +5,9 @@ with a dose of engine-building. We recover that structure from the data:
 
   1. Build a game × signal incidence matrix from BGG mechanic/category names,
      IDF-weighted so ubiquitous signals (Hand Management) count less than
-     distinctive ones (Hidden Roles, Flicking).
+     distinctive ones (Hidden Roles, Flicking). The weighting is sublinear:
+     BGG tags are polysemous, so an undamped IDF lets one rare tag hijack a
+     game's genre (see the note in `_genre_loadings`).
   2. Factor it with NMF into latent *genre dimensions*. NMF loadings are
      non-negative, so "this game is 0.7 of dimension 3" reads naturally, and
      each dimension is nameable by its top-loading signals.
@@ -37,6 +39,7 @@ class FeatureSpace:
     projection: dict[int, tuple[float, float]]  # game id -> global 2-D (x, y)
     top_genres: dict[int, list[tuple[str, float]]]  # id -> [(dim name, loading)]
     dimension_names: list[str]            # one per latent genre dimension
+    similarity: dict[int, np.ndarray]     # id -> unit-norm FULL-space tag vector
 
 
 def build_feature_space(games: list[Game]) -> FeatureSpace:
@@ -65,7 +68,37 @@ def build_feature_space(games: list[Game]) -> FeatureSpace:
         projection={gid: (round(float(x), 3), round(float(y), 3)) for gid, (x, y) in zip(ids, xy)},
         top_genres=top,
         dimension_names=dim_names,
+        similarity=_similarity_space(games),
     )
+
+
+def _similarity_space(games: list[Game]) -> dict[int, np.ndarray]:
+    """Unit-norm IDF-weighted tag vectors, in the FULL space — no NMF.
+
+    Used only to answer "are these two the same game?", never to place a game on
+    the radar. The distinction matters: cosine on the 10-dim NMF loadings cannot
+    tell a duplicate from a same-genre neighbour — Decrypto/Monikers (unrelated)
+    score 0.972 there, *above* Twilight Imperium 3rd/4th at 0.967, because the
+    bottleneck discards exactly the detail that separates them. In the full space
+    those become 0.234 and 0.807, which does separate them.
+
+    Families join the vocabulary here (and only here) because they roughly double
+    that separation.
+    """
+    tokens = {g.id: list(g.signals) + list(g.families) for g in games}
+    vocab = sorted({t for v in tokens.values() for t in v})
+    index = {t: j for j, t in enumerate(vocab)}
+
+    matrix = np.zeros((len(games), len(vocab)))
+    for i, g in enumerate(games):
+        for t in tokens[g.id]:
+            matrix[i, index[t]] = 1.0
+
+    matrix *= 1 + np.log1p(len(games) / matrix.sum(axis=0))   # same damped IDF
+    norms = np.linalg.norm(matrix, axis=1, keepdims=True)
+    norms[norms == 0] = 1.0
+    matrix /= norms
+    return {g.id: matrix[i] for i, g in enumerate(games)}
 
 
 def _genre_loadings(games: list[Game]) -> dict:
@@ -78,9 +111,16 @@ def _genre_loadings(games: list[Game]) -> dict:
         for s in g.signals:
             incidence[i, index[s]] = 1.0
 
-    # IDF: rare signals are more informative about what a game *is*.
+    # IDF: rare signals are more informative about what a game *is*. The curve
+    # is deliberately *sublinear* — plain log(n/df) let a single rare tag decide
+    # a game's whole identity, and BGG tags are polysemous: "Action Queue" means
+    # programming combat cards in Gloomhaven and column action selection in
+    # Wingspan. Weighted by plain IDF those two share a factor, and Wingspan's
+    # top genre came out as "Line of Sight / Miniatures". Damping keeps rare
+    # tags informative without letting them outvote everything a game actually
+    # is. Do not "simplify" this back to np.log.
     doc_freq = incidence.sum(axis=0)
-    idf = np.log(len(games) / doc_freq)
+    idf = 1 + np.log1p(len(games) / doc_freq)
     weighted = incidence * idf
 
     n_dims = min(NMF_COMPONENTS, len(vocab))
