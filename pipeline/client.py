@@ -2,9 +2,14 @@
 
 BGG's XML API2 has no "give me the top N" call, so we do it in two steps:
 
-  1. Read the ranked browse listing to get game ids *in rank order*.
+  1. Read the ranks dump to get game ids *in rank order*.
   2. Hydrate those ids in batches via /thing?stats=1 for weight, player-count
      polls, mechanics and categories.
+
+Step 1 used to scrape the HTML browse pages; Cloudflare now 403s those, so we
+read BGG's own ranks CSV instead (config.RANKS_CSV) — same ordering, no
+scraping. Step 2 needs an API token: the XML API answers unauthenticated
+requests with 401, so every call carries `Authorization: Bearer $BGG_API_TOKEN`.
 
 Everything is cached to disk (data/cache/) so re-runs are instant and polite.
 The XML API is rate-limited and answers big/queued requests with HTTP 202, so
@@ -12,17 +17,24 @@ we back off and retry. `requests` is imported lazily — the offline seed build
 never touches the network and needs no dependencies.
 """
 
+import csv
+import os
 import time
 import xml.etree.ElementTree as ET
 from pathlib import Path
 
-from .config import CACHE_DIR
+from .config import CACHE_DIR, RANKS_CSV
 from .model import Game
 
-BROWSE_URL = "https://boardgamegeek.com/browse/boardgame/page/{page}"
 THING_URL = "https://boardgamegeek.com/xmlapi2/thing"
 BATCH_SIZE = 20            # ids per /thing call
 REQUEST_PAUSE = 2.0       # seconds between calls; BGG asks for a light touch
+
+# Both come from the environment (the devcontainer forwards them from the host)
+# so no credential is ever committed. BGG asks that the agent string identify
+# the client and a contact address.
+TOKEN_ENV = "BGG_API_TOKEN"
+USER_AGENT = os.environ.get("BGG_USER_AGENT") or "boardgame-grid/0.1"
 
 
 class BggClient:
@@ -45,18 +57,26 @@ class BggClient:
     # --- step 1: ranked ids -------------------------------------------------
 
     def _ranked_ids(self, limit: int) -> list[int]:
-        import re
-        ids: list[int] = []
-        page = 1
-        while len(ids) < limit:
-            html = self._get_text(BROWSE_URL.format(page=page), cache_key=f"browse-{page}.html")
-            found = [int(m) for m in re.findall(r"/boardgame/(\d+)/", html)]
-            fresh = [i for i in dict.fromkeys(found) if i not in ids]  # keep order, de-dup
-            if not fresh:
-                break  # ran out of pages
-            ids.extend(fresh)
-            page += 1
-        return ids[:limit]
+        """The top `limit` ids in rank order, straight from the ranks dump.
+
+        Unranked rows carry rank 0 and expansions are ranked separately, so
+        filtering to a positive `rank` leaves exactly the base-game ladder the
+        grid wants.
+        """
+        if not RANKS_CSV.exists():
+            raise RuntimeError(
+                f"Ranks dump not found at {RANKS_CSV}. Download boardgames_ranks.csv "
+                "from https://boardgamegeek.com/data_dumps/bg_ranks (BGG account "
+                "required) and unzip it there."
+            )
+        with RANKS_CSV.open(newline="") as fh:
+            ranked = [
+                (int(row["rank"]), int(row["id"]))
+                for row in csv.DictReader(fh)
+                if row["rank"].isdigit() and int(row["rank"]) > 0
+            ]
+        ranked.sort()
+        return [game_id for _, game_id in ranked[:limit]]
 
     # --- step 2: hydrate ----------------------------------------------------
 
@@ -90,6 +110,7 @@ class BggClient:
             best_counts=best_counts,
             best_count=best_count,
             signals=_signals(item),
+            families=_families(item),
         )
 
     # --- low-level HTTP with cache + backoff --------------------------------
@@ -101,8 +122,17 @@ class BggClient:
 
         import requests
         if self._session is None:
+            token = os.environ.get(TOKEN_ENV)
+            if not token:
+                raise RuntimeError(
+                    f"{TOKEN_ENV} is not set. The XML API answers unauthenticated "
+                    "requests with 401 — create a token at "
+                    "https://boardgamegeek.com/using_the_xml_api and export it "
+                    "on the host so the devcontainer forwards it in."
+                )
             self._session = requests.Session()
-            self._session.headers["User-Agent"] = "boardgame-grid/0.1"
+            self._session.headers["User-Agent"] = USER_AGENT
+            self._session.headers["Authorization"] = f"Bearer {token}"
 
         for attempt in range(5):
             resp = self._session.get(url, timeout=30)
@@ -110,6 +140,10 @@ class BggClient:
                 cached.write_text(resp.text)
                 time.sleep(REQUEST_PAUSE)
                 return resp.text
+            if resp.status_code in (401, 403):
+                raise RuntimeError(  # a bad token never becomes a good one
+                    f"BGG rejected the request ({resp.status_code}): {resp.text[:120]}"
+                )
             # 202 = queued, 429 = slow down. Wait longer each time.
             time.sleep(REQUEST_PAUSE * (attempt + 1))
         raise RuntimeError(f"BGG did not return data for {url}")
@@ -147,3 +181,17 @@ def _signals(item: ET.Element) -> list[str]:
     """BGG mechanic + category names — the raw material for archetype matching."""
     wanted = {"boardgamemechanic", "boardgamecategory"}
     return [link.get("value") for link in item.findall("link") if link.get("type") in wanted]
+
+
+def _families(item: ET.Element) -> list[str]:
+    """BGG "Game: X" family links — the same-game marker.
+
+    BGG files a game under many families; only the `Game:` ones say "this is the
+    same game as that one" (Game: Twilight Imperium, Game: Wingspan). The rest
+    are production trivia — Crowdfunding: Kickstarter, Components: Sand Timers —
+    and including them measurably *hurts* duplicate detection, so filter here.
+    """
+    return [
+        link.get("value") for link in item.findall("link[@type='boardgamefamily']")
+        if link.get("value", "").startswith("Game:")
+    ]

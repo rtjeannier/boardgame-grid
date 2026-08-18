@@ -13,5 +13,11 @@ data/cache/
 # proxy dataset (data/games.seed.json) is committed.
 data/games.json
 
+# BGG's ranks dump — 11 MB, and BGG regenerates it regularly, so a committed
+# copy would go stale in the history. `pipeline.fetch` needs it and raises an
+# error naming the download page (boardgamegeek.com/data_dumps/bg_ranks) when
+# it's absent. See README, "Refresh from live BoardGameGeek data".
+data/boardgames_ranks.csv
+
 # The built site (docs/) and web/public/grid.json ARE committed on purpose:
 # GitHub Pages serves docs/, and the grid JSON is the reviewable output.

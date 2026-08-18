@@ -20,6 +20,11 @@ CACHE_DIR = ROOT / "data" / "cache"  # raw BGG responses, keyed by id
 SEED_DATASET = ROOT / "data" / "games.seed.json"
 LIVE_DATASET = ROOT / "data" / "games.json"
 
+# BGG's official ranks dump (https://boardgamegeek.com/data_dumps/bg_ranks) —
+# the id-in-rank-order source the live fetch walks. It replaces the old scrape
+# of the HTML browse pages, which Cloudflare now answers with 403.
+RANKS_CSV = ROOT / "data" / "boardgames_ranks.csv"
+
 # --- Axis 1: player count (columns) -----------------------------------------
 #
 # A game lands in a column when the community's "best/recommended player count"
@@ -81,4 +86,13 @@ PICKS_PER_CELL = 8        # stop after this many picks per cell
 # radar-chart area, stopping when the best remaining gain is below the floor.
 QUALITY_FLOOR = 0.4       # worst-ranked game still covers this fraction of its loadings
 GAIN_FLOOR = 0.15         # stop picking when the best marginal gain drops below this
+
+# Duplicate suppression. A candidate's gain is scaled by
+# (1 - similarity_to_nearest_pick ** SIMILARITY_EXPONENT), where similarity is
+# cosine in the full tag space (see features._similarity_space). The exponent is
+# the falloff sharpness: near-flat below 0.5 so genuinely different games in a
+# shared genre keep their value, collapsing above 0.8 so re-implementations and
+# editions cannot claim credit for space their sibling already covers. Measured
+# on the live top-500: exponent 1 costs 6 extra picks, 3 lets a duplicate back in.
+SIMILARITY_EXPONENT = 2
 COLLECTION_SIZE = 15      # default target size for the collection builder

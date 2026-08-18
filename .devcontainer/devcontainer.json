@@ -1,0 +1,50 @@
+{
+  "name": "boardgame-grid",
+  // Python drives the pipeline; the Node feature adds the toolchain the Vite
+  // site in web/ needs. One image covers both halves of the repo.
+  "image": "mcr.microsoft.com/devcontainers/python:3.12-bookworm",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "22"
+    }
+  },
+
+  // 5173 = vite dev, 4173 = vite preview.
+  "forwardPorts": [5173, 4173],
+  "portsAttributes": {
+    "5173": { "label": "vite dev", "onAutoForward": "notify" },
+    "4173": { "label": "vite preview", "onAutoForward": "silent" }
+  },
+
+  // Pulled from the host environment at attach time, so the secret itself
+  // never lands in this file. Unset on the host => empty string in here.
+  "remoteEnv": {
+    "BGG_API_TOKEN": "${localEnv:BGG_API_TOKEN}",
+    "BGG_USER_AGENT": "${localEnv:BGG_USER_AGENT}"
+  },
+
+  "postCreateCommand": "bash .devcontainer/post-create.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "anthropic.claude-code",
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "github.vscode-pull-request-github",
+        "janisdd.vscode-edit-csv",
+        "mechatroner.rainbow-csv",
+        "ms-azuretools.vscode-containers",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ritwickdey.liveserver"
+      ],
+      "settings": {
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "python.terminal.activateEnvironment": false
+      }
+    }
+  },
+
+  "remoteUser": "vscode"
+}
