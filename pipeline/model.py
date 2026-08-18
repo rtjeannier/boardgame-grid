@@ -5,7 +5,7 @@ capture or the committed seed proxy. Everything downstream (bucketing,
 assignment, rendering) is identical regardless of which dataset was loaded.
 """
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass
@@ -19,6 +19,12 @@ class Game:
     best_counts: list[int]   # every count the community rates "Best" (for display)
     best_count: int          # the single peak count — decides the game's column
     signals: list[str]       # BGG mechanic + category names (drive archetypes)
+    # BGG "Game: X" family links — the marker that two entries are the same game
+    # (editions, reimplementations, spin-offs). Kept out of `signals` on purpose:
+    # signals feed the NMF genre axes, where family tokens would pollute the
+    # dimension names. Only the similarity space uses these. Defaults to empty so
+    # the committed seed dataset, which predates the field, still loads.
+    families: list[str] = field(default_factory=list)
 
     @property
     def url(self) -> str:
@@ -30,7 +36,7 @@ class Game:
             id=d["id"], name=d["name"], year=d["year"], rank=d["rank"],
             weight=d["weight"], playtime=d["playtime"],
             best_counts=d["best_counts"], best_count=d["best_count"],
-            signals=d["signals"],
+            signals=d["signals"], families=d.get("families", []),
         )
 
     def record(self) -> dict:
@@ -39,7 +45,7 @@ class Game:
             "id": self.id, "name": self.name, "year": self.year, "rank": self.rank,
             "weight": self.weight, "playtime": self.playtime,
             "best_counts": self.best_counts, "best_count": self.best_count,
-            "signals": self.signals,
+            "signals": self.signals, "families": self.families,
         }
 
     def to_dict(self) -> dict:

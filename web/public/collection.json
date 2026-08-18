@@ -1,103 +1,53 @@
 {
   "meta": {
-    "source": "seed",
-    "generatedAt": "2026-08-13",
-    "size": 13,
-    "anchors": [
-      "CATAN"
-    ],
+    "source": "live",
+    "generatedAt": "2026-08-18T05:51:21+00:00",
+    "size": 10,
+    "anchors": [],
     "dimensions": [
-      "Economic / Auction/Bidding / Network and Route Building",
-      "Party Game / Team-Based Game / Word Game",
-      "Tile Placement / Pattern Building / Open Drafting",
-      "Variable Player Powers / Area Majority / Influence / Grid Movement",
-      "Dice Rolling / Science Fiction / Roll / Spin and Write",
-      "Action / Dexterity / Children's Game / Stacking and Balancing",
-      "Paper-and-Pencil / Flip and Write / City Building",
-      "Hidden Roles / Deduction / Bluffing",
-      "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
-      "Set Collection / Engine Building / Open Drafting"
+      "Science Fiction / Space Exploration / Civilization",
+      "Adventure / Cooperative Game / Scenario / Mission / Campaign Game",
+      "Card Game / Hand Management / Tags",
+      "Area Majority / Influence / Wargame / Area Movement",
+      "Deduction / Party Game / Traitor Game",
+      "Tile Placement / Pattern Building / Square Grid",
+      "Dice / Dice Rolling / Worker Placement with Dice Workers",
+      "Network and Route Building / Economic / Income",
+      "Worker Placement / Contracts / Economic",
+      "Deck, Bag, and Pool Building / Delayed Purchase / Open Drafting"
     ]
   },
   "anchorCoverage": [
-    0.101,
-    0.013,
-    0.0,
-    0.156,
-    0.344,
     0.0,
     0.0,
-    0.029,
     0.0,
-    0.295
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
   ],
   "fullCoverage": [
-    0.902,
-    0.91,
-    0.87,
-    0.956,
-    0.953,
-    0.797,
-    0.921,
-    0.865,
-    0.911,
-    0.958
+    0.955,
+    0.951,
+    0.897,
+    0.974,
+    0.951,
+    0.88,
+    0.9,
+    0.998,
+    0.944,
+    0.927
   ],
   "games": [
-    {
-      "id": 13,
-      "name": "CATAN",
-      "year": 1995,
-      "rank": 400,
-      "weight": 2.3,
-      "playtime": 90,
-      "best_counts": [
-        4
-      ],
-      "best_count": 4,
-      "signals": [
-        "Network and Route Building",
-        "Dice Rolling",
-        "Negotiation",
-        "Trading"
-      ],
-      "url": "https://boardgamegeek.com/boardgame/13",
-      "anchored": true,
-      "gain": null,
-      "uniqueContribution": 0.067,
-      "genres": [
-        {
-          "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
-          "value": 0.7
-        },
-        {
-          "name": "Set Collection / Engine Building / Open Drafting",
-          "value": 0.6
-        },
-        {
-          "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
-          "value": 0.32
-        }
-      ],
-      "coverage": [
-        0.101,
-        0.013,
-        0.0,
-        0.156,
-        0.344,
-        0.0,
-        0.0,
-        0.029,
-        0.0,
-        0.295
-      ]
-    },
     {
       "id": 224517,
       "name": "Brass: Birmingham",
       "year": 2018,
-      "rank": 2,
-      "weight": 3.9,
+      "rank": 1,
+      "weight": 3.8593,
       "playtime": 120,
       "best_counts": [
         3,
@@ -105,524 +55,631 @@
       ],
       "best_count": 4,
       "signals": [
-        "Network and Route Building",
+        "Age of Reason",
+        "Economic",
+        "Industry / Manufacturing",
+        "Post-Napoleonic",
+        "Trains",
+        "Transportation",
+        "Chaining",
+        "End Game Bonuses",
         "Hand Management",
-        "Market"
+        "Income",
+        "Loans",
+        "Market",
+        "Multi-Use Cards",
+        "Network and Route Building",
+        "Ownership",
+        "Tags",
+        "Tech Trees / Tech Tracks",
+        "Tile Placement",
+        "Turn Order: Stat-Based",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Brass"
       ],
       "url": "https://boardgamegeek.com/boardgame/224517",
       "anchored": false,
-      "gain": 1.497,
-      "uniqueContribution": 0.432,
+      "gain": 1.065,
+      "uniqueContribution": 0.732,
       "genres": [
         {
-          "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
-          "value": 0.71
+          "name": "Network and Route Building / Economic / Income",
+          "value": 1.0
         },
         {
-          "name": "Economic / Auction/Bidding / Network and Route Building",
+          "name": "Card Game / Hand Management / Tags",
+          "value": 0.07
+        }
+      ],
+      "coverage": [
+        0.0,
+        0.0,
+        0.067,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.998,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": 266192,
+      "name": "Wingspan",
+      "year": 2019,
+      "rank": 38,
+      "weight": 2.4807,
+      "playtime": 70,
+      "best_counts": [
+        2,
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Animals",
+        "Card Game",
+        "Educational",
+        "Action Queue",
+        "Dice Rolling",
+        "End Game Bonuses",
+        "Hand Management",
+        "Once-Per-Game Abilities",
+        "Open Drafting",
+        "Set Collection",
+        "Solo / Solitaire Game",
+        "Turn Order: Progressive"
+      ],
+      "families": [
+        "Game: Wingspan"
+      ],
+      "url": "https://boardgamegeek.com/boardgame/266192",
+      "anchored": false,
+      "gain": 2.105,
+      "uniqueContribution": 0.37,
+      "genres": [
+        {
+          "name": "Card Game / Hand Management / Tags",
+          "value": 0.61
+        },
+        {
+          "name": "Dice / Dice Rolling / Worker Placement with Dice Workers",
+          "value": 0.46
+        },
+        {
+          "name": "Tile Placement / Pattern Building / Square Grid",
+          "value": 0.45
+        }
+      ],
+      "coverage": [
+        0.0,
+        0.122,
+        0.579,
+        0.0,
+        0.0,
+        0.428,
+        0.441,
+        0.0,
+        0.389,
+        0.185
+      ]
+    },
+    {
+      "id": 162886,
+      "name": "Spirit Island",
+      "year": 2017,
+      "rank": 11,
+      "weight": 4.0745,
+      "playtime": 120,
+      "best_counts": [
+        1,
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Environmental",
+        "Fantasy",
+        "Mythology",
+        "Territory Building",
+        "Action Retrieval",
+        "Area Majority / Influence",
+        "Automatic Resource Growth",
+        "Campaign / Battle Card Driven",
+        "Cooperative Game",
+        "Deck, Bag, and Pool Building",
+        "Hand Management",
+        "Modular Board",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game",
+        "Tags",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Spirit Island"
+      ],
+      "url": "https://boardgamegeek.com/boardgame/162886",
+      "anchored": false,
+      "gain": 1.736,
+      "uniqueContribution": 0.26,
+      "genres": [
+        {
+          "name": "Deck, Bag, and Pool Building / Delayed Purchase / Open Drafting",
           "value": 0.68
         },
         {
-          "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
-          "value": 0.18
+          "name": "Area Majority / Influence / Wargame / Area Movement",
+          "value": 0.57
+        },
+        {
+          "name": "Adventure / Cooperative Game / Scenario / Mission / Campaign Game",
+          "value": 0.33
         }
       ],
       "coverage": [
-        0.679,
+        0.075,
+        0.328,
+        0.115,
+        0.558,
+        0.0,
+        0.096,
         0.0,
         0.0,
-        0.175,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.705,
-        0.047
+        0.269,
+        0.675
       ]
     },
     {
-      "id": 84876,
-      "name": "The Castles of Burgundy",
-      "year": 2011,
-      "rank": 24,
-      "weight": 3.0,
-      "playtime": 90,
+      "id": 233078,
+      "name": "Twilight Imperium: Fourth Edition",
+      "year": 2017,
+      "rank": 7,
+      "weight": 4.3611,
+      "playtime": 480,
       "best_counts": [
-        2
-      ],
-      "best_count": 2,
-      "signals": [
-        "Tile Placement",
-        "Dice Rolling",
-        "Set Collection"
-      ],
-      "url": "https://boardgamegeek.com/boardgame/84876",
-      "anchored": false,
-      "gain": 1.234,
-      "uniqueContribution": 0.277,
-      "genres": [
-        {
-          "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
-          "value": 0.64
-        },
-        {
-          "name": "Tile Placement / Pattern Building / Open Drafting",
-          "value": 0.64
-        },
-        {
-          "name": "Set Collection / Engine Building / Open Drafting",
-          "value": 0.43
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.0,
-        0.584,
-        0.0,
-        0.587,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.395
-      ]
-    },
-    {
-      "id": 12333,
-      "name": "Twilight Struggle",
-      "year": 2005,
-      "rank": 10,
-      "weight": 3.6,
-      "playtime": 180,
-      "best_counts": [
-        2
-      ],
-      "best_count": 2,
-      "signals": [
-        "Area Majority / Influence",
-        "Hand Management",
-        "Political"
-      ],
-      "url": "https://boardgamegeek.com/boardgame/12333",
-      "anchored": false,
-      "gain": 1.017,
-      "uniqueContribution": 0.312,
-      "genres": [
-        {
-          "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
-          "value": 0.84
-        },
-        {
-          "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
-          "value": 0.43
-        },
-        {
-          "name": "Hidden Roles / Deduction / Bluffing",
-          "value": 0.32
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.0,
-        0.0,
-        0.808,
-        0.0,
-        0.0,
-        0.0,
-        0.311,
-        0.414,
-        0.073
-      ]
-    },
-    {
-      "id": 253344,
-      "name": "Cartographers",
-      "year": 2019,
-      "rank": 95,
-      "weight": 1.9,
-      "playtime": 45,
-      "best_counts": [
-        2,
-        3,
-        4
-      ],
-      "best_count": 3,
-      "signals": [
-        "Roll / Spin and Write",
-        "Paper-and-Pencil"
-      ],
-      "url": "https://boardgamegeek.com/boardgame/253344",
-      "anchored": false,
-      "gain": 0.801,
-      "uniqueContribution": 0.228,
-      "genres": [
-        {
-          "name": "Paper-and-Pencil / Flip and Write / City Building",
-          "value": 0.93
-        },
-        {
-          "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
-          "value": 0.36
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.276,
-        0.0,
-        0.726,
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "id": 521,
-      "name": "Crokinole",
-      "year": 1876,
-      "rank": 80,
-      "weight": 1.1,
-      "playtime": 30,
-      "best_counts": [
-        2,
-        4
-      ],
-      "best_count": 2,
-      "signals": [
-        "Flicking",
-        "Action / Dexterity"
-      ],
-      "url": "https://boardgamegeek.com/boardgame/521",
-      "anchored": false,
-      "gain": 0.797,
-      "uniqueContribution": 0.797,
-      "genres": [
-        {
-          "name": "Action / Dexterity / Children's Game / Stacking and Balancing",
-          "value": 1.0
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.797,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "id": 178900,
-      "name": "Codenames",
-      "year": 2015,
-      "rank": 85,
-      "weight": 1.3,
-      "playtime": 15,
-      "best_counts": [
-        6,
-        7,
-        8
+        4,
+        5,
+        6
       ],
       "best_count": 6,
       "signals": [
-        "Word Game",
-        "Party Game",
-        "Team-Based Game"
-      ],
-      "url": "https://boardgamegeek.com/boardgame/178900",
-      "anchored": false,
-      "gain": 0.783,
-      "uniqueContribution": 0.344,
-      "genres": [
-        {
-          "name": "Party Game / Team-Based Game / Word Game",
-          "value": 1.0
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.793,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "id": 167791,
-      "name": "Terraforming Mars",
-      "year": 2016,
-      "rank": 4,
-      "weight": 3.2,
-      "playtime": 120,
-      "best_counts": [
-        3,
-        4
-      ],
-      "best_count": 3,
-      "signals": [
-        "Engine Building",
-        "Open Drafting",
-        "Tile Placement"
-      ],
-      "url": "https://boardgamegeek.com/boardgame/167791",
-      "anchored": false,
-      "gain": 0.553,
-      "uniqueContribution": 0.389,
-      "genres": [
-        {
-          "name": "Set Collection / Engine Building / Open Drafting",
-          "value": 0.72
-        },
-        {
-          "name": "Tile Placement / Pattern Building / Open Drafting",
-          "value": 0.69
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.0,
-        0.686,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.71
-      ]
-    },
-    {
-      "id": 128882,
-      "name": "The Resistance: Avalon",
-      "year": 2012,
-      "rank": 105,
-      "weight": 1.7,
-      "playtime": 30,
-      "best_counts": [
-        7,
-        8,
-        9,
-        10
-      ],
-      "best_count": 10,
-      "signals": [
-        "Hidden Roles",
-        "Deduction",
+        "Civilization",
+        "Economic",
+        "Exploration",
+        "Negotiation",
+        "Political",
+        "Science Fiction",
+        "Space Exploration",
+        "Territory Building",
+        "Wargame",
+        "Action Drafting",
+        "Area-Impulse",
+        "Dice Rolling",
+        "Follow",
+        "Grid Movement",
+        "Hexagon Grid",
+        "Increase Value of Unchosen Resources",
+        "King of the Hill",
+        "Modular Board",
+        "Movement Points",
+        "Race",
+        "Tech Trees / Tech Tracks",
+        "Trading",
+        "Variable Phase Order",
+        "Variable Player Powers",
+        "Variable Set-up",
         "Voting"
       ],
-      "url": "https://boardgamegeek.com/boardgame/128882",
+      "families": [
+        "Game: Twilight Imperium"
+      ],
+      "url": "https://boardgamegeek.com/boardgame/233078",
       "anchored": false,
-      "gain": 0.508,
-      "uniqueContribution": 0.429,
+      "gain": 1.293,
+      "uniqueContribution": 0.369,
       "genres": [
         {
-          "name": "Hidden Roles / Deduction / Bluffing",
-          "value": 1.0
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.76,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "id": 251247,
-      "name": "Barrage",
-      "year": 2019,
-      "rank": 20,
-      "weight": 3.9,
-      "playtime": 120,
-      "best_counts": [
-        3,
-        4
-      ],
-      "best_count": 4,
-      "signals": [
-        "Worker Placement",
-        "Network and Route Building"
-      ],
-      "url": "https://boardgamegeek.com/boardgame/251247",
-      "anchored": false,
-      "gain": 0.341,
-      "uniqueContribution": 0.286,
-      "genres": [
-        {
-          "name": "Economic / Auction/Bidding / Network and Route Building",
-          "value": 0.71
+          "name": "Science Fiction / Space Exploration / Civilization",
+          "value": 0.88
         },
         {
-          "name": "Set Collection / Engine Building / Open Drafting",
-          "value": 0.62
-        },
-        {
-          "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
-          "value": 0.21
-        }
-      ],
-      "coverage": [
-        0.658,
-        0.0,
-        0.0,
-        0.159,
-        0.172,
-        0.0,
-        0.0,
-        0.0,
-        0.199,
-        0.573
-      ]
-    },
-    {
-      "id": 115746,
-      "name": "War of the Ring: Second Edition",
-      "year": 2012,
-      "rank": 13,
-      "weight": 4.2,
-      "playtime": 180,
-      "best_counts": [
-        2
-      ],
-      "best_count": 2,
-      "signals": [
-        "Area Majority / Influence",
-        "Dice Rolling",
-        "Hand Management"
-      ],
-      "url": "https://boardgamegeek.com/boardgame/115746",
-      "anchored": false,
-      "gain": 0.21,
-      "uniqueContribution": 0.201,
-      "genres": [
-        {
-          "name": "Dice Rolling / Science Fiction / Roll / Spin and Write",
-          "value": 0.74
-        },
-        {
-          "name": "Variable Player Powers / Area Majority / Influence / Grid Movement",
-          "value": 0.64
-        },
-        {
-          "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
-          "value": 0.18
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.0,
-        0.0,
-        0.61,
-        0.703,
-        0.0,
-        0.0,
-        0.0,
-        0.167,
-        0.093
-      ]
-    },
-    {
-      "id": 233867,
-      "name": "Welcome To...",
-      "year": 2018,
-      "rank": 145,
-      "weight": 1.8,
-      "playtime": 25,
-      "best_counts": [
-        3,
-        4
-      ],
-      "best_count": 4,
-      "signals": [
-        "Flip and Write",
-        "Paper-and-Pencil",
-        "City Building"
-      ],
-      "url": "https://boardgamegeek.com/boardgame/233867",
-      "anchored": false,
-      "gain": 0.195,
-      "uniqueContribution": 0.195,
-      "genres": [
-        {
-          "name": "Paper-and-Pencil / Flip and Write / City Building",
-          "value": 1.0
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.0,
-        0.001,
-        0.0,
-        0.0,
-        0.0,
-        0.71,
-        0.0,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "id": 224037,
-      "name": "Codenames: Duet",
-      "year": 2017,
-      "rank": 210,
-      "weight": 1.4,
-      "playtime": 20,
-      "best_counts": [
-        2
-      ],
-      "best_count": 2,
-      "signals": [
-        "Cooperative Game",
-        "Word Game",
-        "Deduction"
-      ],
-      "url": "https://boardgamegeek.com/boardgame/224037",
-      "anchored": false,
-      "gain": 0.168,
-      "uniqueContribution": 0.168,
-      "genres": [
-        {
-          "name": "Party Game / Team-Based Game / Word Game",
-          "value": 0.89
-        },
-        {
-          "name": "Deck, Bag, and Pool Building / Cooperative Game / Hand Management",
+          "name": "Area Majority / Influence / Wargame / Area Movement",
           "value": 0.37
         },
         {
-          "name": "Hidden Roles / Deduction / Bluffing",
-          "value": 0.25
+          "name": "Deduction / Party Game / Traitor Game",
+          "value": 0.23
         }
       ],
       "coverage": [
-        0.0,
-        0.561,
-        0.0,
-        0.0,
-        0.031,
+        0.877,
         0.0,
         0.0,
-        0.156,
-        0.233,
+        0.372,
+        0.225,
+        0.0,
+        0.165,
+        0.0,
+        0.0,
         0.0
+      ]
+    },
+    {
+      "id": 167355,
+      "name": "Nemesis",
+      "year": 2018,
+      "rank": 25,
+      "weight": 3.4905,
+      "playtime": 180,
+      "best_counts": [
+        3,
+        4,
+        5
+      ],
+      "best_count": 4,
+      "signals": [
+        "Adventure",
+        "Horror",
+        "Miniatures",
+        "Science Fiction",
+        "Action Points",
+        "Campaign / Battle Card Driven",
+        "Cooperative Game",
+        "Dice Rolling",
+        "Hand Management",
+        "Hidden Roles",
+        "Interrupts",
+        "Modular Board",
+        "Player Elimination",
+        "Scenario / Mission / Campaign Game",
+        "Semi-Cooperative Game",
+        "Solo / Solitaire Game",
+        "Team-Based Game",
+        "Traitor Game",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Nemesis"
+      ],
+      "url": "https://boardgamegeek.com/boardgame/167355",
+      "anchored": false,
+      "gain": 0.975,
+      "uniqueContribution": 0.224,
+      "genres": [
+        {
+          "name": "Adventure / Cooperative Game / Scenario / Mission / Campaign Game",
+          "value": 0.73
+        },
+        {
+          "name": "Deduction / Party Game / Traitor Game",
+          "value": 0.68
+        },
+        {
+          "name": "Dice / Dice Rolling / Worker Placement with Dice Workers",
+          "value": 0.08
+        }
+      ],
+      "coverage": [
+        0.017,
+        0.711,
+        0.0,
+        0.033,
+        0.656,
+        0.0,
+        0.073,
+        0.0,
+        0.004,
+        0.0
+      ]
+    },
+    {
+      "id": 342942,
+      "name": "Ark Nova",
+      "year": 2021,
+      "rank": 2,
+      "weight": 3.7984,
+      "playtime": 150,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Animals",
+        "Card Game",
+        "Environmental",
+        "Contracts",
+        "End Game Bonuses",
+        "Events",
+        "Grid Coverage",
+        "Hand Management",
+        "Hexagon Grid",
+        "Income",
+        "Increase Value of Unchosen Resources",
+        "Open Drafting",
+        "Race",
+        "Set Collection",
+        "Solo / Solitaire Game",
+        "Tags",
+        "Tile Placement",
+        "Track Movement",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Ark Nova"
+      ],
+      "url": "https://boardgamegeek.com/boardgame/342942",
+      "anchored": false,
+      "gain": 0.867,
+      "uniqueContribution": 0.499,
+      "genres": [
+        {
+          "name": "Tile Placement / Pattern Building / Square Grid",
+          "value": 0.74
+        },
+        {
+          "name": "Worker Placement / Contracts / Economic",
+          "value": 0.52
+        },
+        {
+          "name": "Card Game / Hand Management / Tags",
+          "value": 0.31
+        }
+      ],
+      "coverage": [
+        0.049,
+        0.0,
+        0.311,
+        0.0,
+        0.0,
+        0.743,
+        0.245,
+        0.0,
+        0.524,
+        0.115
+      ]
+    },
+    {
+      "id": 187645,
+      "name": "Star Wars: Rebellion",
+      "year": 2016,
+      "rank": 10,
+      "weight": 3.7529,
+      "playtime": 240,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Civil War",
+        "Movies / TV / Radio theme",
+        "Science Fiction",
+        "Space Exploration",
+        "Wargame",
+        "Area Majority / Influence",
+        "Area Movement",
+        "Card Play Conflict Resolution",
+        "Contracts",
+        "Delayed Purchase",
+        "Dice Rolling",
+        "Die Icon Resolution",
+        "Events",
+        "Hand Management",
+        "Hidden Movement",
+        "Income",
+        "Once-Per-Game Abilities",
+        "Tags",
+        "Take That",
+        "Team-Based Game",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Worker Placement, Different Worker Types"
+      ],
+      "families": [],
+      "url": "https://boardgamegeek.com/boardgame/187645",
+      "anchored": false,
+      "gain": 0.529,
+      "uniqueContribution": 0.23,
+      "genres": [
+        {
+          "name": "Area Majority / Influence / Wargame / Area Movement",
+          "value": 0.76
+        },
+        {
+          "name": "Deck, Bag, and Pool Building / Delayed Purchase / Open Drafting",
+          "value": 0.43
+        },
+        {
+          "name": "Dice / Dice Rolling / Worker Placement with Dice Workers",
+          "value": 0.39
+        }
+      ],
+      "coverage": [
+        0.112,
+        0.0,
+        0.041,
+        0.753,
+        0.11,
+        0.0,
+        0.389,
+        0.0,
+        0.234,
+        0.423
+      ]
+    },
+    {
+      "id": 418059,
+      "name": "SETI: Search for Extraterrestrial Intelligence",
+      "year": 2024,
+      "rank": 14,
+      "weight": 3.8338,
+      "playtime": 160,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 3,
+      "signals": [
+        "Science Fiction",
+        "Space Exploration",
+        "Area Majority / Influence",
+        "End Game Bonuses",
+        "Income",
+        "Multi-Use Cards",
+        "Resource to Move",
+        "Solo / Solitaire Game",
+        "Turn Order: Progressive",
+        "Variable Set-up"
+      ],
+      "families": [],
+      "url": "https://boardgamegeek.com/boardgame/418059",
+      "anchored": false,
+      "gain": 0.336,
+      "uniqueContribution": 0.292,
+      "genres": [
+        {
+          "name": "Worker Placement / Contracts / Economic",
+          "value": 0.66
+        },
+        {
+          "name": "Dice / Dice Rolling / Worker Placement with Dice Workers",
+          "value": 0.51
+        },
+        {
+          "name": "Science Fiction / Space Exploration / Civilization",
+          "value": 0.33
+        }
+      ],
+      "coverage": [
+        0.328,
+        0.0,
+        0.237,
+        0.126,
+        0.0,
+        0.097,
+        0.499,
+        0.274,
+        0.653,
+        0.172
+      ]
+    },
+    {
+      "id": 284083,
+      "name": "The Crew: The Quest for Planet Nine",
+      "year": 2019,
+      "rank": 96,
+      "weight": 1.9653,
+      "playtime": 20,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Card Game",
+        "Science Fiction",
+        "Space Exploration",
+        "Communication Limits",
+        "Cooperative Game",
+        "Hand Management",
+        "Scenario / Mission / Campaign Game",
+        "Trick-taking"
+      ],
+      "families": [
+        "Game: The Crew"
+      ],
+      "url": "https://boardgamegeek.com/boardgame/284083",
+      "anchored": false,
+      "gain": 0.296,
+      "uniqueContribution": 0.193,
+      "genres": [
+        {
+          "name": "Adventure / Cooperative Game / Scenario / Mission / Campaign Game",
+          "value": 0.73
+        },
+        {
+          "name": "Deduction / Party Game / Traitor Game",
+          "value": 0.56
+        },
+        {
+          "name": "Card Game / Hand Management / Tags",
+          "value": 0.26
+        }
+      ],
+      "coverage": [
+        0.226,
+        0.649,
+        0.232,
+        0.0,
+        0.493,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.124
+      ]
+    },
+    {
+      "id": 124742,
+      "name": "Android: Netrunner",
+      "year": 2012,
+      "rank": 84,
+      "weight": 3.4164,
+      "playtime": 45,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Bluffing",
+        "Card Game",
+        "Collectible Components",
+        "Science Fiction",
+        "Action Points",
+        "Deck Construction",
+        "Hand Management",
+        "Race",
+        "Secret Unit Deployment",
+        "Take That",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Android \u2013 Netrunner (LCG)"
+      ],
+      "url": "https://boardgamegeek.com/boardgame/124742",
+      "anchored": false,
+      "gain": 0.174,
+      "uniqueContribution": 0.174,
+      "genres": [
+        {
+          "name": "Deduction / Party Game / Traitor Game",
+          "value": 0.65
+        },
+        {
+          "name": "Area Majority / Influence / Wargame / Area Movement",
+          "value": 0.61
+        },
+        {
+          "name": "Deck, Bag, and Pool Building / Delayed Purchase / Open Drafting",
+          "value": 0.28
+        }
+      ],
+      "coverage": [
+        0.088,
+        0.183,
+        0.235,
+        0.55,
+        0.589,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.252
       ]
     }
   ],

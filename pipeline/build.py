@@ -39,7 +39,7 @@ def build(dataset_path, assigner_name):
         cells[(col, row)].append(game)
 
     assigner = {
-        "coverage": lambda: CoverageAssigner(space.loadings),
+        "coverage": lambda: CoverageAssigner(space.loadings, space.similarity),
         "mmr": lambda: MmrAssigner(space.vectors),
         "greedy": lambda: GreedyAssigner(),
     }[assigner_name]()

@@ -65,6 +65,9 @@ def build_collection(dataset_path, anchor_tokens, size, evaluate_only):
         candidates = [(g, weights(g)) for g in games if g.id not in anchor_ids]
         picks = coverage.greedy_fill(
             candidates, seed=anchor_weights, max_picks=max(size - len(anchors), 0),
+            # Anchors repel duplicates too: anchor Wingspan and Wyrmspan stops
+            # being a candidate, rather than filling a slot next to it.
+            similarity=space.similarity, seed_ids=[g.id for g in anchors],
         )
 
     members = anchors + [p.game for p in picks]

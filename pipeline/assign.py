@@ -58,8 +58,10 @@ class CoverageAssigner:
     one, and a near-duplicate of an earlier pick never makes the cut.
     """
 
-    def __init__(self, loadings: dict[int, "np.ndarray"]):
-        self.loadings = loadings  # from features.build_feature_space
+    def __init__(self, loadings: dict[int, "np.ndarray"],
+                 similarity: dict[int, "np.ndarray"] | None = None):
+        self.loadings = loadings      # from features.build_feature_space
+        self.similarity = similarity  # full-space vectors; suppresses duplicates
 
     def assign(self, games: list[Game], alternates_limit: int) -> CellResult:
         ranks = [g.rank for g in games]
@@ -67,7 +69,8 @@ class CoverageAssigner:
             (g, coverage.quality(g.rank, ranks) * self.loadings[g.id])
             for g in games
         ]
-        picks = coverage.greedy_fill(candidates, seed=[], max_picks=PICKS_PER_CELL)
+        picks = coverage.greedy_fill(candidates, seed=[], max_picks=PICKS_PER_CELL,
+                                     similarity=self.similarity)
 
         assignments = [Assignment(_display_label(p.game), p.game, p.gain) for p in picks]
         chosen = {p.game.id for p in picks}

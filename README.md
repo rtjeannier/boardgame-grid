@@ -18,7 +18,7 @@ coverage, and see the gaps.
 
 The output is an interactive static site you can host on GitHub Pages.
 
-![grid preview](docs/preview.png)
+![grid preview](web/public/preview.png)
 
 ## How it fits together
 
@@ -76,14 +76,27 @@ python -m pipeline.collection --anchors "CATAN" --evaluate  # gaps only, no fill
 
 **Refresh from live BoardGameGeek data (two steps):**
 
+Two one-time prerequisites — the XML API now answers unauthenticated requests
+with `401`, and it has no "give me the top N" call:
+
+1. Create an API token at [using_the_xml_api](https://boardgamegeek.com/using_the_xml_api)
+   and export `BGG_API_TOKEN` (plus `BGG_USER_AGENT` identifying you and a
+   contact address). The devcontainer forwards both from the host, so the
+   secret never lands in the repo.
+2. Download `boardgames_ranks.csv` from
+   [data_dumps/bg_ranks](https://boardgamegeek.com/data_dumps/bg_ranks) and
+   unzip it into `data/`. It supplies the ids *in rank order*; it's git-ignored
+   because it's 11 MB and BGG regenerates it regularly.
+
 ```bash
 python -m pipeline.fetch --limit 500            # -> data/games.json
 python -m pipeline.build --dataset data/games.json
 ```
 
-`fetch` reads BGG's ranked listing, hydrates each game via the XML API2
-(weight, the community best-player-count poll, mechanics, categories) and
-caches every response under `data/cache/`. `build` is unchanged either way.
+`fetch` reads the ranks dump, hydrates each game via the XML API2 (weight, the
+community best-player-count poll, mechanics, categories, `Game:` families) and
+caches every response under `data/cache/` — so a re-run re-parses from disk
+without touching the network. `build` is unchanged either way.
 
 **Build the site:**
 
@@ -106,7 +119,10 @@ pick this branch and the **`/docs`** folder. The site goes live at
 
 1. Game × signal incidence matrix from BGG mechanic/category names,
    IDF-weighted so ubiquitous signals (Hand Management) count less than
-   distinctive ones (Hidden Roles, Flicking).
+   distinctive ones (Hidden Roles, Flicking). The weighting is *sublinear*:
+   BGG tags are polysemous — "Action Queue" means programming combat cards in
+   Gloomhaven and column action selection in Wingspan — and an undamped IDF
+   let one rare tag decide a game's whole genre.
 2. NMF factors it into ~10 latent genre dimensions with non-negative,
    human-readable loadings; each dimension is named by its top signals
    (on the seed data they come out as recognisable genres — social deduction,
@@ -132,6 +148,24 @@ still-empty radar area, stopping when nothing left would add much
 (`GAIN_FLOOR`) — so rich cells naturally get more picks than thin ones.
 Coverage functions are submodular, which makes this greedy provably
 near-optimal (≥ 1−1/e of the best possible set).
+
+**Duplicate suppression.** That formula treats each game's coverage as an
+*independent* event, which is wrong for two copies of one game — their coverage
+is perfectly correlated. A clone therefore collects credit on every axis its
+original only partly covers, worth `Σw − 1`, which is how Twilight Imperium 3rd
+and 4th Edition once shared a cell. So each candidate's gain is scaled by
+
+```
+1 − similarity_to_nearest_pick ^ SIMILARITY_EXPONENT
+```
+
+Similarity is cosine in the **full tag space** (`features._similarity_space`),
+never the 10-dim NMF loadings — the bottleneck discards exactly the detail that
+separates a duplicate from a same-genre neighbour. Measured on the live top 500,
+Decrypto/Monikers (unrelated) score 0.972 in NMF space against Twilight Imperium
+3rd/4th at 0.967; in full space those become 0.234 and 0.807. BGG's `Game:`
+family links join that space and roughly double the separation. The penalty
+steers selection only — recorded gains and the coverage totals stay raw.
 
 `--assigner mmr` (maximal marginal relevance: rank blended with distance from
 picks) and `--assigner greedy` (one game per archetype) remain as
@@ -165,6 +199,8 @@ Everything lives in `pipeline/config.py`:
   `PLAYTIME_SCALE` (how much the continuous stats matter vs genre).
 - **Coverage** — `QUALITY_FLOOR` (how much a badly-ranked game still covers),
   `GAIN_FLOOR` (when to stop picking), `COLLECTION_SIZE`, `PICKS_PER_CELL`.
+- **Duplicate suppression** — `SIMILARITY_EXPONENT` (falloff sharpness; higher
+  is more permissive to same-genre neighbours, lower prunes harder).
 - **MMR** — `MMR_LAMBDA` (1.0 = pure rank, 0.0 = pure spread).
 
 ### Swapping the selection algorithm
@@ -178,8 +214,10 @@ parallelisable across cells.
 
 ## Note on the current data
 
-The committed grid is built from `data/games.seed.json` — a hand-entered slice
-of well-known top games with **approximate** weights and player counts, marked
-`seed data` in the header. On a networked machine, run `python -m pipeline.fetch`
-then `python -m pipeline.build --dataset data/games.json` to replace it with
-current BGG numbers; the UI is unchanged.
+The committed grid is built from a **live capture of BGG's top 500**, marked
+`live data` in the header. `data/games.seed.json` remains as a hand-entered
+proxy — approximate weights and player counts, no `Game:` families — so the
+pipeline still builds offline with `python -m pipeline.build` and no
+credentials. Duplicate suppression degrades gracefully there: without families
+it falls back to mechanics and categories alone, which still separates
+duplicates, just less sharply.
