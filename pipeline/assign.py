@@ -206,9 +206,16 @@ def assign_grid_coverage(cells: dict, memberships: dict, loadings: dict,
     gains: dict[tuple, float] = {}
     taken: set[int] = set()
 
-    for _ in range(PICKS_PER_CELL):
+    for round_index in range(PICKS_PER_CELL):
+        # Round 1 bids by *rank*, later rounds by coverage gain. Against an empty
+        # radar the gain of a game is just the sum of its loadings, so a game
+        # sprawling over eight genre axes outscores a focused one however much
+        # better it is — that is how Brass: Birmingham (#1, 4 axes) lost its cell
+        # to Skat (#2489, 3 axes) by way of a pile of 8-axis generalists. The
+        # opening pick should answer "what is the best game here", and coverage
+        # takes over once there is something on the chart to complement.
         awards = _bid_round(keys, cells, memberships, weights, uncovered,
-                            chosen, taken, similarity)
+                            chosen, taken, similarity, by_rank=(round_index == 0))
         if not awards:
             break
         for key, (game, gain) in awards.items():
@@ -239,21 +246,33 @@ def _gain(key, game, weights, uncovered, chosen, similarity) -> float:
     return raw * coverage.novelty(game.id, [g.id for g in chosen[key]], similarity)
 
 
-def _bid_round(keys, cells, memberships, weights, uncovered, chosen, taken, similarity) -> dict:
-    """One round of deferred acceptance; returns {cell key: winning Game}."""
+def _bid_round(keys, cells, memberships, weights, uncovered, chosen, taken,
+               similarity, by_rank: bool = False) -> dict:
+    """One round of deferred acceptance; returns {cell key: (Game, gain)}.
+
+    `by_rank` makes cells bid for their best-ranked game rather than their
+    highest-gain one — used for the opening round only, see the caller.
+    """
     held: dict[int, tuple] = {}          # game id -> (cell key, gain, Game)
     blocked: dict[tuple, set[int]] = {key: set() for key in keys}
     pending = [k for k in keys if len(chosen[k]) < PICKS_PER_CELL]
 
     while pending:
         key = pending.pop(0)
-        best, best_gain = None, GAIN_FLOOR
+        best, best_gain, best_sort = None, GAIN_FLOOR, None
         for game in cells[key]:
             if game.id in taken or game.id in blocked[key]:
                 continue
             gain = _gain(key, game, weights, uncovered, chosen, similarity)
-            # Ties: prefer the game that belongs here more, then the better rank.
-            if gain > best_gain or (best is not None and gain == best_gain and (
+            if by_rank:
+                # Membership first so a game is not claimed by a cell it barely
+                # reaches, then rank. Gain still has to clear the floor.
+                if gain < GAIN_FLOOR:
+                    continue
+                sort = (memberships[(key, game.id)], -game.rank)
+                if best_sort is None or sort > best_sort:
+                    best, best_gain, best_sort = game, gain, sort
+            elif gain > best_gain or (best is not None and gain == best_gain and (
                     memberships[(key, game.id)], -game.rank)
                     > (memberships[(key, best.id)], -best.id)):
                 best, best_gain = game, gain
