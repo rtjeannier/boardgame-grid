@@ -85,7 +85,10 @@ PICKS_PER_CELL = 8        # stop after this many picks per cell
 # coverage per axis is 1-∏(1-w); greedy adds whatever fills the most empty
 # radar-chart area, stopping when the best remaining gain is below the floor.
 QUALITY_FLOOR = 0.4       # worst-ranked game still covers this fraction of its loadings
-GAIN_FLOOR = 0.15         # stop picking when the best marginal gain drops below this
+# Retuned from 0.15 when loadings moved from L2 to L1 normalisation: every game
+# now carries total mass 1.0 rather than ~2.2, so gains shrank by about that
+# factor and the floor follows them down.
+GAIN_FLOOR = 0.10         # stop picking when the best marginal gain drops below this
 
 # Duplicate suppression. A candidate's gain is scaled by
 # (1 - similarity_to_nearest_pick ** SIMILARITY_EXPONENT), where similarity is

@@ -134,11 +134,17 @@ def _genre_loadings(games: list[Game]) -> dict:
         best = np.argsort(row)[::-1][:GENRE_TOP_SIGNALS]
         names.append(" / ".join(vocab[j] for j in best if row[j] > 0))
 
-    # L2-normalise per game so every game's genre identity has equal footing in
-    # distances regardless of how many mechanics BGG lists for it.
-    norms = np.linalg.norm(loadings, axis=1, keepdims=True)
-    norms[norms == 0] = 1.0
-    return {"loadings": loadings / norms, "names": names}
+    # L1-normalise per game: every game carries the same *total* genre mass, so
+    # the vector says how a game divides itself between genres, not how much
+    # genre it has. This has to be L1 because coverage sums across axes. Under
+    # L2 the sum of squares is fixed, so total mass grows as sqrt(k) with the
+    # number of axes a game touches — 3.16x for a ten-axis sprawl, which exceeds
+    # the entire 2.5x range of `coverage.quality`. A bottom-ranked generalist
+    # then outscores a #1 specialist and rank can never catch up, which is how
+    # Brass: Birmingham lost its cell to a pile of eight-axis games.
+    mass = loadings.sum(axis=1, keepdims=True)
+    mass[mass == 0] = 1.0
+    return {"loadings": loadings / mass, "names": names}
 
 
 def _top_dims(row: np.ndarray, names: list[str], k: int = 3) -> list[tuple[str, float]]:
