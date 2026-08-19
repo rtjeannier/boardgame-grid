@@ -34,17 +34,17 @@
     0.0
   ],
   "fullCoverage": [
-    0.729,
-    0.745,
-    0.793,
-    0.748,
+    0.653,
+    0.776,
     0.692,
-    0.541,
-    0.521,
-    0.943,
-    0.584,
-    0.55,
-    0.682,
+    0.777,
+    0.787,
+    0.542,
+    0.531,
+    0.944,
+    0.615,
+    0.549,
+    0.705,
     0.987
   ],
   "games": [
@@ -112,15 +112,15 @@
       "url": "https://boardgamegeek.com/boardgame/224517",
       "anchored": false,
       "gain": 1.0,
-      "uniqueContribution": 0.653,
+      "uniqueContribution": 0.654,
       "genres": [
         {
           "name": "Economic \u00b7 Hand Management \u00b7 Set Collection",
-          "value": 0.47
+          "value": 0.49
         },
         {
           "name": "Network and Route Building \u00b7 Trains \u00b7 Transportation",
-          "value": 0.31
+          "value": 0.32
         },
         {
           "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
@@ -130,15 +130,15 @@
       "coverage": [
         0.016,
         0.0,
-        0.1,
+        0.069,
         0.0,
         0.0,
         0.0,
-        0.31,
+        0.32,
         0.0,
-        0.474,
+        0.49,
         0.0,
-        0.101,
+        0.104,
         0.0
       ]
     },
@@ -266,31 +266,31 @@
       "users_rated": 57702,
       "url": "https://boardgamegeek.com/boardgame/161936",
       "anchored": false,
-      "gain": 0.989,
-      "uniqueContribution": 0.406,
+      "gain": 0.991,
+      "uniqueContribution": 0.376,
       "genres": [
         {
           "name": "Variable Player Powers \u00b7 Cooperative Game \u00b7 Fantasy",
-          "value": 0.48
+          "value": 0.46
         },
         {
           "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
-          "value": 0.32
+          "value": 0.35
         },
         {
           "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-          "value": 0.12
+          "value": 0.13
         }
       ],
       "coverage": [
-        0.118,
-        0.475,
+        0.127,
+        0.462,
+        0.0,
+        0.348,
+        0.0,
         0.026,
-        0.323,
         0.0,
-        0.024,
-        0.0,
-        0.032,
+        0.034,
         0.0,
         0.0,
         0.0,
@@ -367,7 +367,7 @@
       "users_rated": 27935,
       "url": "https://boardgamegeek.com/boardgame/225694",
       "anchored": false,
-      "gain": 0.888,
+      "gain": 0.887,
       "uniqueContribution": 0.582,
       "genres": [
         {
@@ -457,31 +457,31 @@
       "users_rated": 36734,
       "url": "https://boardgamegeek.com/boardgame/187645",
       "anchored": false,
-      "gain": 0.803,
-      "uniqueContribution": 0.324,
+      "gain": 0.829,
+      "uniqueContribution": 0.331,
       "genres": [
         {
           "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Variable Player Powers",
-          "value": 0.35
+          "value": 0.41
         },
         {
           "name": "Wargame \u00b7 Simulation \u00b7 World War II",
-          "value": 0.29
+          "value": 0.25
         },
         {
           "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-          "value": 0.17
+          "value": 0.16
         }
       ],
       "coverage": [
-        0.149,
-        0.086,
-        0.279,
-        0.028,
-        0.345,
+        0.147,
+        0.09,
+        0.246,
+        0.0,
+        0.405,
         0.0,
         0.0,
-        0.065,
+        0.067,
         0.0,
         0.0,
         0.0,
@@ -551,34 +551,34 @@
       "users_rated": 62515,
       "url": "https://boardgamegeek.com/boardgame/342942",
       "anchored": false,
-      "gain": 0.677,
-      "uniqueContribution": 0.359,
+      "gain": 0.678,
+      "uniqueContribution": 0.366,
       "genres": [
         {
           "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
-          "value": 0.32
+          "value": 0.35
         },
         {
           "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
-          "value": 0.26
+          "value": 0.28
         },
         {
           "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-          "value": 0.22
+          "value": 0.19
         }
       ],
       "coverage": [
-        0.221,
-        0.089,
-        0.09,
-        0.321,
-        0.018,
+        0.191,
+        0.099,
+        0.058,
+        0.351,
+        0.019,
         0.0,
         0.0,
         0.0,
         0.0,
         0.0,
-        0.26,
+        0.282,
         0.0
       ]
     },
@@ -616,8 +616,8 @@
       "users_rated": 12476,
       "url": "https://boardgamegeek.com/boardgame/165722",
       "anchored": false,
-      "gain": 0.513,
-      "uniqueContribution": 0.519,
+      "gain": 0.512,
+      "uniqueContribution": 0.518,
       "genres": [
         {
           "name": "Real-time \u00b7 Action Timer",
@@ -641,6 +641,117 @@
         0.0,
         0.0,
         0.154
+      ]
+    },
+    {
+      "id": 233078,
+      "name": "Twilight Imperium: Fourth Edition",
+      "year": 2017,
+      "rank": 7,
+      "rating": 8.21738,
+      "weight": 4.3611,
+      "playtime": 480,
+      "best_counts": [
+        4,
+        5,
+        6
+      ],
+      "best_count": 6,
+      "signals": [
+        "Civilization",
+        "Economic",
+        "Exploration",
+        "Negotiation",
+        "Political",
+        "Science Fiction",
+        "Space Exploration",
+        "Territory Building",
+        "Wargame",
+        "Action Drafting",
+        "Area-Impulse",
+        "Dice Rolling",
+        "Follow",
+        "Grid Movement",
+        "Hexagon Grid",
+        "Increase Value of Unchosen Resources",
+        "King of the Hill",
+        "Modular Board",
+        "Movement Points",
+        "Race",
+        "Tech Trees / Tech Tracks",
+        "Trading",
+        "Variable Phase Order",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Voting"
+      ],
+      "families": [
+        "Game: Twilight Imperium"
+      ],
+      "player_poll": {
+        "1": [
+          2,
+          6,
+          482
+        ],
+        "2": [
+          2,
+          21,
+          469
+        ],
+        "3": [
+          24,
+          268,
+          242
+        ],
+        "4": [
+          177,
+          336,
+          81
+        ],
+        "5": [
+          129,
+          394,
+          58
+        ],
+        "6": [
+          491,
+          102,
+          32
+        ]
+      },
+      "users_rated": 28870,
+      "url": "https://boardgamegeek.com/boardgame/233078",
+      "anchored": false,
+      "gain": 0.505,
+      "uniqueContribution": 0.338,
+      "genres": [
+        {
+          "name": "Wargame \u00b7 Simulation \u00b7 World War II",
+          "value": 0.35
+        },
+        {
+          "name": "Variable Player Powers \u00b7 Cooperative Game \u00b7 Fantasy",
+          "value": 0.23
+        },
+        {
+          "name": "Economic \u00b7 Hand Management \u00b7 Set Collection",
+          "value": 0.18
+        }
+      ],
+      "coverage": [
+        0.0,
+        0.209,
+        0.353,
+        0.014,
+        0.057,
+        0.0,
+        0.0,
+        0.127,
+        0.166,
+        0.0,
+        0.033,
+        0.0
       ]
     },
     {
@@ -792,8 +903,8 @@
       "users_rated": 12126,
       "url": "https://boardgamegeek.com/boardgame/240980",
       "anchored": false,
-      "gain": 0.499,
-      "uniqueContribution": 0.441,
+      "gain": 0.433,
+      "uniqueContribution": 0.437,
       "genres": [
         {
           "name": "Bluffing \u00b7 Voting \u00b7 Hidden Roles",
@@ -808,9 +919,9 @@
         0.0,
         0.0,
         0.0,
-        0.883,
+        0.884,
         0.0,
-        0.001,
+        0.0,
         0.0,
         0.0
       ]
@@ -877,32 +988,32 @@
       "users_rated": 59430,
       "url": "https://boardgamegeek.com/boardgame/316554",
       "anchored": false,
-      "gain": 0.452,
-      "uniqueContribution": 0.335,
+      "gain": 0.398,
+      "uniqueContribution": 0.33,
       "genres": [
         {
           "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-          "value": 0.43
+          "value": 0.33
         },
         {
           "name": "Variable Player Powers \u00b7 Cooperative Game \u00b7 Fantasy",
-          "value": 0.19
+          "value": 0.26
         },
         {
           "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
-          "value": 0.16
+          "value": 0.22
         }
       ],
       "coverage": [
-        0.396,
-        0.174,
-        0.085,
-        0.151,
-        0.049,
+        0.306,
+        0.243,
+        0.041,
+        0.201,
+        0.054,
         0.0,
         0.0,
-        0.027,
-        0.048,
+        0.03,
+        0.054,
         0.0,
         0.0,
         0.0
@@ -966,12 +1077,12 @@
       "users_rated": 70278,
       "url": "https://boardgamegeek.com/boardgame/84876",
       "anchored": false,
-      "gain": 0.403,
-      "uniqueContribution": 0.416,
+      "gain": 0.374,
+      "uniqueContribution": 0.421,
       "genres": [
         {
           "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
-          "value": 0.62
+          "value": 0.65
         },
         {
           "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
@@ -983,128 +1094,17 @@
         }
       ],
       "coverage": [
-        0.068,
+        0.046,
         0.0,
-        0.1,
-        0.103,
-        0.0,
-        0.0,
+        0.094,
+        0.11,
         0.0,
         0.0,
-        0.042,
-        0.0,
-        0.506,
-        0.0
-      ]
-    },
-    {
-      "id": 233078,
-      "name": "Twilight Imperium: Fourth Edition",
-      "year": 2017,
-      "rank": 7,
-      "rating": 8.21738,
-      "weight": 4.3611,
-      "playtime": 480,
-      "best_counts": [
-        4,
-        5,
-        6
-      ],
-      "best_count": 6,
-      "signals": [
-        "Civilization",
-        "Economic",
-        "Exploration",
-        "Negotiation",
-        "Political",
-        "Science Fiction",
-        "Space Exploration",
-        "Territory Building",
-        "Wargame",
-        "Action Drafting",
-        "Area-Impulse",
-        "Dice Rolling",
-        "Follow",
-        "Grid Movement",
-        "Hexagon Grid",
-        "Increase Value of Unchosen Resources",
-        "King of the Hill",
-        "Modular Board",
-        "Movement Points",
-        "Race",
-        "Tech Trees / Tech Tracks",
-        "Trading",
-        "Variable Phase Order",
-        "Variable Player Powers",
-        "Variable Set-up",
-        "Voting"
-      ],
-      "families": [
-        "Game: Twilight Imperium"
-      ],
-      "player_poll": {
-        "1": [
-          2,
-          6,
-          482
-        ],
-        "2": [
-          2,
-          21,
-          469
-        ],
-        "3": [
-          24,
-          268,
-          242
-        ],
-        "4": [
-          177,
-          336,
-          81
-        ],
-        "5": [
-          129,
-          394,
-          58
-        ],
-        "6": [
-          491,
-          102,
-          32
-        ]
-      },
-      "users_rated": 28870,
-      "url": "https://boardgamegeek.com/boardgame/233078",
-      "anchored": false,
-      "gain": 0.353,
-      "uniqueContribution": 0.302,
-      "genres": [
-        {
-          "name": "Wargame \u00b7 Simulation \u00b7 World War II",
-          "value": 0.39
-        },
-        {
-          "name": "Variable Player Powers \u00b7 Cooperative Game \u00b7 Fantasy",
-          "value": 0.21
-        },
-        {
-          "name": "Economic \u00b7 Hand Management \u00b7 Set Collection",
-          "value": 0.15
-        }
-      ],
-      "coverage": [
-        0.015,
-        0.192,
-        0.389,
-        0.019,
-        0.056,
         0.0,
         0.0,
-        0.126,
-        0.133,
+        0.043,
         0.0,
-        0.033,
+        0.526,
         0.0
       ]
     },
@@ -1168,12 +1168,12 @@
       "users_rated": 7062,
       "url": "https://boardgamegeek.com/boardgame/390092",
       "anchored": false,
-      "gain": 0.294,
-      "uniqueContribution": 0.328,
+      "gain": 0.291,
+      "uniqueContribution": 0.327,
       "genres": [
         {
           "name": "Network and Route Building \u00b7 Trains \u00b7 Transportation",
-          "value": 0.45
+          "value": 0.46
         },
         {
           "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
@@ -1185,13 +1185,13 @@
         }
       ],
       "coverage": [
-        0.111,
+        0.112,
         0.011,
-        0.01,
-        0.245,
+        0.0,
+        0.248,
         0.0,
         0.0,
-        0.302,
+        0.306,
         0.0,
         0.0,
         0.0,
@@ -1250,28 +1250,28 @@
       "users_rated": 21465,
       "url": "https://boardgamegeek.com/boardgame/418059",
       "anchored": false,
-      "gain": 0.126,
-      "uniqueContribution": 0.389,
+      "gain": 0.13,
+      "uniqueContribution": 0.404,
       "genres": [
         {
           "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Variable Player Powers",
-          "value": 0.52
+          "value": 0.66
         },
         {
           "name": "Wargame \u00b7 Simulation \u00b7 World War II",
-          "value": 0.31
+          "value": 0.19
         },
         {
           "name": "Variable Player Powers \u00b7 Cooperative Game \u00b7 Fantasy",
-          "value": 0.12
+          "value": 0.15
         }
       ],
       "coverage": [
-        0.039,
-        0.099,
-        0.279,
         0.0,
-        0.467,
+        0.125,
+        0.171,
+        0.0,
+        0.591,
         0.0,
         0.0,
         0.0,

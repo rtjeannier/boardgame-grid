@@ -50,6 +50,7 @@ from .config import (
     GENRE_DISCOVER,
     GENRE_LIMIT,
     GENRE_MIN_COHESION,
+    GENRE_MIN_LIFT,
     GENRE_NAME_SEPARATOR,
     GENRE_SCARCITY,
     GENRE_TOP_SIGNALS,
@@ -253,8 +254,13 @@ def _tag_evidence(vocab: list[str], incidence: np.ndarray,
     denominator is per game, since it counts only the signals that game has.)
     """
     centrality = incidence * _tag_centrality(incidence)
-    home = membership.argmax(axis=1)         # each signal belongs to exactly one genre
+    home = membership.argmax(axis=1)         # each signal belongs to at most one genre
     strength = membership.max(axis=1)        # ...with this diagnostic weight
+    # Signals that beat no genre by enough were dropped (see `_assign_signals`)
+    # and are not evidence about anything. They have to be excluded here rather
+    # than left to contribute zero, because a tag's unit is split across the
+    # signals carrying it and a dropped signal would still take a share.
+    alive = strength > 0
 
     # Which signals mention each tag. A compound's name is its two tags joined by
     # GENRE_COMPOUND (see `_signal_space`), so the vocabulary already says this.
@@ -265,7 +271,7 @@ def _tag_evidence(vocab: list[str], incidence: np.ndarray,
 
     evidence = np.zeros((incidence.shape[0], membership.shape[1]))
     for game in range(incidence.shape[0]):
-        present = set(np.flatnonzero(incidence[game] > 0))
+        present = set(np.flatnonzero((incidence[game] > 0) & alive))
         tags = {tag for signal in present for tag in vocab[signal].split(GENRE_COMPOUND)}
         for tag in tags:
             carriers = [s for s in mentions[tag] if s in present]
@@ -452,14 +458,13 @@ def _prune_nested(incidence: np.ndarray, cores: list[list[int]],
 
 
 def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray:
-    """(n_signals x n_axes) map placing *every* signal on exactly one axis.
+    """(n_signals x n_axes) map placing each signal on at most one axis.
 
     The harvested cores define the genres; every signal left over joins the core
-    it most resembles. Without this the axes only span the cores — 32 of 274
-    signals — and 633 games carry no signal on any axis. Those games are not
-    merely unplaced — with no genre at all they can never be picked, whatever
-    they are. Attraction drops that from 633 games to 1, the only game in the
-    capture with no signals at all.
+    it most resembles, or none. Without any attraction the axes only span the
+    cores — 32 of 274 signals — and 633 games carry no signal on any axis. Those
+    games are not merely unplaced — with no genre at all they can never be
+    picked, whatever they are. Attraction drops that from 633 games to 3.
 
     A signal joins one axis but does not count fully towards it. Its weight is
     how *diagnostic* it is: of the games carrying this signal, the share that
@@ -468,6 +473,14 @@ def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray
     scores 0.15 on the traitor-game axis, `Flicking` spans 30 and scores 0.93 on
     dexterity. Core signals score exactly 1.0 and need no special case: every
     game carrying a core signal is in that core by definition.
+
+    That share is only meaningful against how big the genre is, so a signal that
+    does not beat chance by `GENRE_MIN_LIFT` is dropped instead of placed. A
+    tag forced into a genre it merely overlaps by coincidence goes on to donate
+    that genre to every game carrying it, and the games it misleads about are
+    exactly the ones with nothing else in common with it — `Race` and `Track
+    Movement` sat in the card genre at lifts of 1.24 and 1.02, which is how
+    Magical Athlete, a game with no cards, came out a card game.
 
     Without this a signal counted the same wherever it landed, and any game with
     a broad tag was dragged towards a genre it has nothing to do with. Crokinole
@@ -516,12 +529,20 @@ def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray
 
     # Which games sit in each genre, judged by its core signals alone.
     in_genre = np.stack([incidence[:, core].sum(axis=1) > 0 for core in cores])
+    chance = in_genre.mean(axis=1)      # what a random signal would score here
+    founding = {signal for core in cores for signal in core}
 
     membership = np.zeros((n_signals, len(cores)))
     for signal in range(n_signals):
         axis = int(home[signal])
         carriers = incidence[:, signal] > 0
-        membership[signal, axis] = in_genre[axis][carriers].mean()
+        share = in_genre[axis][carriers].mean()
+        # Beat chance by GENRE_MIN_LIFT or belong nowhere. The share alone says
+        # nothing when the genre is huge: the two largest cover 45% and 55% of
+        # the corpus, so a tag scores about half with them by coincidence.
+        # Founding signals are exempt — a genre keeps what defines it.
+        if signal in founding or share >= GENRE_MIN_LIFT * chance[axis]:
+            membership[signal, axis] = share
     return membership
 
 

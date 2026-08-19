@@ -155,6 +155,30 @@ GENRE_DISCOVER = 18
 # the line between "broad kind of game" and "thing games do".
 GENRE_BASE_RATE = 0.125
 
+# How much a signal must beat chance to join a genre at all. Signals that miss
+# are dropped outright rather than filed somewhere they do not belong.
+#
+# A leftover signal's weight is the share of its games sitting in the genre it
+# joined, and that share was never compared against how big the genre is. The
+# two largest genres cover 45% and 55% of the corpus, so *any* tag scores about
+# half with them by chance alone: `Track Movement` joined the card genre at 0.46
+# — a lift of 1.02, precisely chance — and `Race` at 0.56, a lift of 1.24. Both
+# then donated "card game" to every game carrying them, which is how Magical
+# Athlete came out a card game with no cards in it. The same blindness put
+# `Worker Placement` in the wargame genre at a lift of 0.43, below chance, where
+# its weight of 0.05 read as "uncrossing-cutting" rather than "wrongly placed".
+#
+# 1.3 is the strictest cutoff that costs nothing measurable. The 1.2-1.3 plateau
+# holds median pick rank at 250 with 3 games unplaced; at 1.4 the median falls
+# to 264, and at 1.5 unplaced jumps to 19. Dropping only at chance itself
+# (lift <= 1.0) is too weak to catch `Race` at 1.24 and leaves Magical Athlete a
+# card game. There is no natural gap to snap to — non-core lift runs 1.37 at the
+# lower quartile and 2.16 at the median — so this is a measured cutoff.
+#
+# Genres keep their own founding signals regardless, so a genre can never be
+# stripped of what defines it.
+GENRE_MIN_LIFT = 1.3
+
 # Contribution of the continuous stats to distances, relative to genre loadings
 # (which are L2-normalised per game). Within a cell weight is nearly constant,
 # so genre naturally dominates; these keep playtime/weight as mild tiebreakers.
