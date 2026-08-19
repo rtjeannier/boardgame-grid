@@ -475,12 +475,20 @@ def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray
     game carrying a core signal is in that core by definition.
 
     That share is only meaningful against how big the genre is, so a signal that
-    does not beat chance by `GENRE_MIN_LIFT` is dropped instead of placed. A
-    tag forced into a genre it merely overlaps by coincidence goes on to donate
-    that genre to every game carrying it, and the games it misleads about are
-    exactly the ones with nothing else in common with it — `Race` and `Track
-    Movement` sat in the card genre at lifts of 1.24 and 1.02, which is how
-    Magical Athlete, a game with no cards, came out a card game.
+    does not beat chance by `GENRE_MIN_LIFT` is re-homed where it does, and
+    dropped only if nowhere will have it. A tag forced into a genre it merely
+    overlaps by coincidence goes on to donate that genre to every game carrying
+    it, and the games it misleads about are exactly the ones with nothing else
+    in common with it — `Race` and `Track Movement` sat in the card genre at
+    lifts of 1.24 and 1.02, which is how Magical Athlete, a game with no cards,
+    came out a card game.
+
+    Do not collapse the two steps by placing on lift in the first place. Lift
+    divides by genre size, so it always prefers the smallest genre a signal
+    plausibly touches: placing that way sends 65 signals into the economic genre
+    and doubles the word-game genre, dropping their labels' accuracy to 79% and
+    41%. Resemblance decides where a signal goes; lift only decides whether that
+    was tenable.
 
     Without this a signal counted the same wherever it landed, and any game with
     a broad tag was dragged towards a genre it has nothing to do with. Crokinole
@@ -532,17 +540,34 @@ def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray
     chance = in_genre.mean(axis=1)      # what a random signal would score here
     founding = {signal for core in cores for signal in core}
 
+    # Share of each signal's games sitting in each genre — every pair at once,
+    # because a signal that fits its assigned genre badly needs somewhere to
+    # look. Lift is that share against what a random signal would score.
+    carried = (incidence > 0).astype(float)
+    shares = (in_genre.astype(float) @ carried) / np.maximum(carried.sum(axis=0), 1.0)
+    lift = shares / np.maximum(chance[:, None], 1e-9)
+
     membership = np.zeros((n_signals, len(cores)))
     for signal in range(n_signals):
         axis = int(home[signal])
-        carriers = incidence[:, signal] > 0
-        share = in_genre[axis][carriers].mean()
         # Beat chance by GENRE_MIN_LIFT or belong nowhere. The share alone says
         # nothing when the genre is huge: the two largest cover 45% and 55% of
         # the corpus, so a tag scores about half with them by coincidence.
         # Founding signals are exempt — a genre keeps what defines it.
-        if signal in founding or share >= GENRE_MIN_LIFT * chance[axis]:
-            membership[signal, axis] = share
+        if signal not in founding and lift[axis, signal] < GENRE_MIN_LIFT:
+            # Resemblance put it somewhere it has no business being. Dropping it
+            # here would throw away a signal that fits elsewhere perfectly well,
+            # so ask where it actually belongs before giving up on it. Placement
+            # and this test are different questions — geometric closeness to a
+            # centroid against "do these games really land there" — and 56
+            # signals fail the first while passing the second, `Income` into the
+            # wargame genre at a lift of 0.40 when economic games want it at
+            # 4.30. Blocs still move together (see `_unplaced_groups`); this
+            # only re-homes what would otherwise leave the bloc entirely.
+            axis = int(np.argmax(lift[:, signal]))
+            if lift[axis, signal] < GENRE_MIN_LIFT:
+                continue                # fits nowhere: genuinely not evidence
+        membership[signal, axis] = shares[axis, signal]
     return membership
 
 
