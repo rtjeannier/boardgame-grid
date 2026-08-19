@@ -34,7 +34,7 @@ import numpy as np
 
 from . import coverage
 from .archetypes import archetypes_for
-from .config import GAIN_FLOOR, MMR_LAMBDA
+from .config import GAIN_FLOOR, GENRE_REPEAT_PENALTY, MMR_LAMBDA
 from .model import Game
 
 
@@ -84,11 +84,21 @@ class CoverageScorer:
     still-uncovered area a game would fill, damped by how similar it is to what
     the cell already holds so a re-implementation cannot claim credit for ground
     its sibling already covers.
+
+    On top of that, a cell strongly prefers not to take two games of the same
+    *primary* genre — see GENRE_REPEAT_PENALTY. Coverage alone does not deliver
+    that, because it treats a genre as a quantity to fill rather than a kind to
+    represent: Dune: Imperium covers the card-game axis to 0.404, which leaves
+    0.60 "unfilled", so Lost Ruins of Arnak collects 0.199 for being the same
+    sort of game again. The two sat first and third in one cell.
     """
 
     def __init__(self, loadings: dict, similarity: dict | None, ratings: dict[int, float]):
         self.loadings = loadings
         self.similarity = similarity
+        # A game's strongest genre — the kind it counts as for the one-per-cell
+        # preference, and the same axis the frontend colours its dot by.
+        self.primary = {gid: int(np.argmax(row)) for gid, row in loadings.items()}
         # Quality is judged against each game's own genre, over the WHOLE
         # population — never a cell. A game's genres belong to the game, so its
         # weights are identical wherever it is considered and scores stay
@@ -106,18 +116,24 @@ class CoverageScorer:
         n_axes = len(next(iter(self.loadings.values())))
         self.uncovered = {key: np.ones(n_axes) for key in cells}
         self.chosen = {key: [] for key in cells}
+        self.kinds = {key: set() for key in cells}
 
     def score(self, key, game):
         raw = float(self.weights[(key, game.id)] @ self.uncovered[key])
-        return raw * coverage.novelty(game.id, self.chosen[key], self.similarity)
+        value = raw * coverage.novelty(game.id, self.chosen[key], self.similarity)
+        if self.primary[game.id] in self.kinds[key]:
+            value *= GENRE_REPEAT_PENALTY
+        return value
 
     def take(self, key, game):
         self.uncovered[key] *= 1.0 - self.weights[(key, game.id)]
         self.chosen[key].append(game.id)
+        self.kinds[key].add(self.primary[game.id])
 
     def reset_cell(self, key):
         self.uncovered[key] = np.ones(len(self.uncovered[key]))
         self.chosen[key] = []
+        self.kinds[key] = set()
 
     def weight_of(self, key, game) -> np.ndarray:
         """The game's quality- and membership-scaled loading vector in this cell.

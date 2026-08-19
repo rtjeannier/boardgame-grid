@@ -189,6 +189,28 @@ GAIN_FLOOR = 0.10         # stop picking when the best marginal gain drops below
 # same-core pair at 0.84 is still suppressed by 59%.
 SIMILARITY_EXPONENT = 3
 
+# What a second game of the same primary genre is worth to a cell, relative to
+# the first. A cell is meant to show the best game of each *kind*, and coverage
+# alone does not deliver that: it treats a genre as a quantity to fill, so once
+# Dune: Imperium covers the card-game axis to 0.404 there is still 0.60 "left"
+# for Lost Ruins of Arnak to claim by being the same sort of game again — the
+# two came out first and third in one cell.
+#
+# This matters more the more lopsided the radar is. Half the top 5000 is
+# primarily co-op/adventure/campaign — genuinely, not as an artefact; those tags
+# overlap 33-46% and the games are Gloomhaven, Arkham Horror, Sleeping Gods —
+# so without a penalty that one genre takes two slots in most cells simply by
+# being numerous. It accounted for 21 of 27 repeated cells.
+#
+# A *preference*, not a ban, so a cell whose candidates cannot field five genres
+# still fills rather than leaving slots empty. The exact value barely matters:
+# 0.5 and 0.0 give identical grids, because the repeats being displaced are
+# top-30 games that either win outright or lose outright. Cells repeating a
+# genre fall from 27 of 34 to 1, distinct genres per cell rise 3.79 -> 4.63, and
+# median pick rank goes 245 -> 278 as cells reach past a second Terraforming
+# Mars for the best game of a kind they lack.
+GENRE_REPEAT_PENALTY = 0.35
+
 # --- Soft cell membership ----------------------------------------------------
 #
 # A game does not sit in one cell; it belongs to several by degree. Columns come

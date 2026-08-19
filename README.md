@@ -256,7 +256,29 @@ should answer "what is the best game here", and coverage takes over once there
 is something on the chart to complement. Picking stops when nothing left would
 add much (`GAIN_FLOOR`), so rich cells naturally get more picks than thin ones.
 
-**Duplicate suppression.** That formula treats each game's coverage as an
+**One game per kind.** That formula treats a genre as a *quantity to fill*
+rather than a kind to represent, so a second game of the same kind still gets
+paid for whatever the first left over: Dune: Imperium covers the card-game axis
+to 0.404, leaving 0.60 "unfilled" for Lost Ruins of Arnak to claim, and the two
+came out first and third in one cell. So a cell strongly prefers not to take two
+games sharing a primary genre (`GENRE_REPEAT_PENALTY`) — a preference, not a
+ban, so a cell that cannot field enough kinds still fills.
+
+This matters more the more lopsided the radar is: half the top 5000 is primarily
+co-op/adventure/campaign, so without it that one genre takes two slots in most
+cells simply by being numerous. Cells repeating a genre fall from 27 of 34 to 1,
+and distinct genres per cell rise 3.79 → 4.63, at a cost of median pick rank
+245 → 278 as cells reach past a second Terraforming Mars for the best game of a
+kind they lack.
+
+Fixing the coverage formula itself instead — an axis covered by its *best* game,
+which should make the rule unnecessary — was tried and is worse on every count:
+147 picks against 163, median 299, and *more* repeats. The two work at different
+granularities. Coverage sees a game's whole eight-axis vector, so a second card
+game that is stronger on some secondary axis still scores; the rule sees only
+the primary genre, which is the question being asked.
+
+**Duplicate suppression.** The coverage formula treats each game's coverage as an
 *independent* event, which is wrong for two copies of one game — their coverage
 is perfectly correlated. A clone therefore collects credit on every axis its
 original only partly covers, worth `Σw − 1`, which is how Twilight Imperium 3rd
@@ -320,6 +342,8 @@ Everything lives in `pipeline/config.py`:
   against a "this is the best" vote), `MEMBERSHIP_FLOOR` (how far below its peak
   column a game still counts), `WEIGHT_TAPER` (how far a weight row bleeds past
   its edges), `CELL_MEMBERSHIP_FLOOR`.
+- **One game per kind** — `GENRE_REPEAT_PENALTY` (what a second game of a
+  genre a cell already holds is worth, relative to the first).
 - **Duplicate suppression** — `SIMILARITY_EXPONENT` (falloff sharpness; higher
   is more permissive to same-genre neighbours, lower prunes harder).
 - **MMR** — `MMR_LAMBDA` (1.0 = pure rank, 0.0 = pure spread).
