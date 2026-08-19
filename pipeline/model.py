@@ -31,6 +31,12 @@ class Game:
     # membership, so a game good at 3-6 appears in all of those columns instead
     # of only its peak. Empty for the seed dataset, which predates the field.
     best_votes: dict[int, int] = field(default_factory=dict)
+    # How many people have rated the game — a proxy for how hard BGG's tagging
+    # has been looked at. Tag count tracks popularity (rank vs tag count
+    # correlates -0.35), so a sparsely-tagged game is usually unread rather than
+    # genuinely simple; features.py uses this to decide how much of a game's
+    # claimed genre split to believe. 0 means "unknown", which reads as unread.
+    users_rated: int = 0
 
     @property
     def url(self) -> str:
@@ -45,6 +51,7 @@ class Game:
             signals=d["signals"], families=d.get("families", []),
             # JSON object keys are strings; the poll is keyed by player count.
             best_votes={int(k): v for k, v in d.get("best_votes", {}).items()},
+            users_rated=d.get("users_rated", 0),
         )
 
     def record(self) -> dict:
@@ -55,6 +62,7 @@ class Game:
             "best_counts": self.best_counts, "best_count": self.best_count,
             "signals": self.signals, "families": self.families,
             "best_votes": self.best_votes,
+            "users_rated": self.users_rated,
         }
 
     def to_dict(self) -> dict:

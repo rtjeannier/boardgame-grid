@@ -11,8 +11,11 @@ with a dose of engine-building. We recover that structure from the data:
   2. Factor it with NMF into latent *genre dimensions*. NMF loadings are
      non-negative, so "this game is 0.7 of dimension 3" reads naturally, and
      each dimension is nameable by its top-loading signals.
-  3. A game's full vector = its (L2-normalised) genre loadings plus mildly
-     scaled weight and log-playtime.
+  3. Normalise each game's loadings to sum to 1 — a genre *split*, not a genre
+     *amount* — then shrink that split toward "unknown" for games too little
+     read to trust (see `_shrink`).
+  4. A game's full vector = its genre loadings plus mildly scaled weight and
+     log-playtime.
 
 The result feeds two consumers: MMR coverage selection (pipeline/assign.py)
 and a global 2-D PCA projection the frontend scatters per cell.
@@ -25,6 +28,7 @@ from sklearn.decomposition import NMF, PCA
 
 from .config import (
     GENRE_TOP_SIGNALS,
+    LOADING_SHRINKAGE,
     NMF_COMPONENTS,
     PLAYTIME_SCALE,
     WEIGHT_SCALE,
@@ -144,7 +148,39 @@ def _genre_loadings(games: list[Game]) -> dict:
     # Brass: Birmingham lost its cell to a pile of eight-axis games.
     mass = loadings.sum(axis=1, keepdims=True)
     mass[mass == 0] = 1.0
-    return {"loadings": loadings / mass, "names": names}
+    shares = loadings / mass
+
+    return {"loadings": _shrink(shares, games), "names": names}
+
+
+def _shrink(shares: np.ndarray, games: list[Game]) -> np.ndarray:
+    """Blend each game's genre split toward "unknown" by how little it's been read.
+
+    A one-tag game claims 100% of a genre the way a batter who went 1-for-1
+    claims a 1.000 average — the number is real and the evidence isn't. Before
+    this, every genre axis was owned by an obscure game (a 494-rating title held
+    worker placement outright); after it they're held by Puerto Rico, Codenames,
+    Azul and Power Grid.
+
+    Weighted by ratings rather than tag count, because tag count cannot tell
+    "few tags because unread" from "few tags because simple". SCOUT has four
+    tags and 29k ratings — genuinely just a card game — and keeps 94% of its
+    claim; tag-count weighting would have cut it to 40%.
+    """
+    rated = np.array([max(g.users_rated, 0) for g in games], dtype=float)[:, None]
+    if not rated.any():
+        # No attention data at all — the committed seed dataset predates the
+        # field. Shrinking anyway would blend *every* game to a flat vector and
+        # quietly produce a grid where all games look identical, so take the
+        # loadings at face value instead: no evidence about the evidence.
+        return shares
+
+    n_axes = shares.shape[1]
+    unknown = np.full(n_axes, 1.0 / n_axes)
+    believed = rated / (rated + LOADING_SHRINKAGE)
+
+    shrunk = believed * shares + (1.0 - believed) * unknown
+    return shrunk / shrunk.sum(axis=1, keepdims=True)
 
 
 def _top_dims(row: np.ndarray, names: list[str], k: int = 3) -> list[tuple[str, float]]:

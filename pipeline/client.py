@@ -114,6 +114,7 @@ class BggClient:
             signals=_signals(item),
             families=_families(item),
             best_votes=best_votes,
+            users_rated=int(ratings.find("usersrated").get("value", 0)),
         )
 
     # --- low-level HTTP with cache + backoff --------------------------------

@@ -99,6 +99,21 @@ GAIN_FLOOR = 0.10         # stop picking when the best marginal gain drops below
 # on the live top-500: exponent 1 costs 6 extra picks, 3 lets a duplicate back in.
 SIMILARITY_EXPONENT = 2
 
+# How much evidence a game needs before we believe its genre split. BGG's tag
+# counts track popularity, not simplicity — rank and tag count correlate -0.35,
+# and the bottom of the top 5000 carries half the tags of the top 250 — so a
+# thinly-tagged game is usually unread rather than genuinely focused. Loadings
+# are therefore blended toward "unknown" (flat across every genre) in proportion
+# to how little attention a game has had:
+#
+#     shrunk = (ratings * observed + KAPPA * flat) / (ratings + KAPPA)
+#
+# A game keeps half its claim at KAPPA ratings. Weighting by *ratings* rather
+# than tag count is the point: SCOUT has four tags and 29k ratings, so it is
+# genuinely just a card game and keeps 94%; a one-tag game with 494 ratings
+# keeps 20%. Tag-count weighting would punish both alike.
+LOADING_SHRINKAGE = 8000
+
 # --- Soft cell membership ----------------------------------------------------
 #
 # A game does not sit in one cell; it belongs to several by degree. Columns come
