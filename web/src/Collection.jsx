@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import CoverageRadar from './CoverageRadar.jsx'
 import { gameColor } from './colors.js'
+import { primary } from './genres.js'
 
 // The Collection tab: a radar chart of genre coverage, the collection itself
 // (anchors locked in, greedy coverage fills around them), and any gaps with
@@ -105,7 +106,7 @@ export default function Collection() {
           <ul>
             {gaps.map((gap) => (
               <li key={gap.dimension}>
-                <strong>{gap.dimension.split(' / ')[0]}</strong>
+                <strong>{primary(gap.dimension)}</strong>
                 <span className="muted"> {(gap.coverage * 100).toFixed(0)}% covered — try </span>
                 {gap.suggestions.map((s, i) => (
                   <span key={s.id}>

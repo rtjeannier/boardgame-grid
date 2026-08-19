@@ -50,10 +50,11 @@ def find_games(tokens: list[str], games: list[Game]) -> list[Game]:
 def build_collection(dataset_path, anchor_tokens, size, evaluate_only):
     source, generated_at, games = dataset.load_dataset(dataset_path)
     space = build_feature_space(games)
-    ratings = [g.rating for g in games]
+    ratings = {g.id: g.rating for g in games}
+    genre = coverage.genre_weights(space.loadings, ratings)
 
     def weights(g):
-        return coverage.quality(g.rating, ratings) * space.loadings[g.id]
+        return genre[g.id]
 
     anchors = find_games(anchor_tokens, games)
     anchor_ids = {g.id for g in anchors}

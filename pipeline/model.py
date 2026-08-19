@@ -18,7 +18,7 @@ class Game:
     # measure of how much better one game is than another. Rank is a dense
     # ordering of a narrow band: #1 scores 8.39 and #5000 scores 5.79, so a
     # 135-place gap can be worth 0.4 of a point. Selection weights by this, not
-    # by rank position (see coverage.quality).
+    # by rank position (see coverage.genre_quality).
     rating: float
     weight: float      # BGG "averageweight", 1.0 (light) .. 5.0 (heavy)
     playtime: int      # BGG "playingtime", minutes
@@ -27,8 +27,8 @@ class Game:
     signals: list[str]       # BGG mechanic + category names (drive archetypes)
     # BGG "Game: X" family links — the marker that two entries are the same game
     # (editions, reimplementations, spin-offs). Kept out of `signals` on purpose:
-    # signals feed the NMF genre axes, where family tokens would pollute the
-    # dimension names; only the similarity space uses these.
+    # signals feed the clustered genre axes, where family tokens would pollute
+    # the axis names; only the similarity space uses these.
     families: list[str]
     # The whole suggested-players poll: count -> [best, recommended, not_rec].
     # All three are needed because Best alone is a preference ordering, not a

@@ -33,14 +33,13 @@ from typing import Protocol
 import numpy as np
 
 from . import coverage
-from .archetypes import archetypes_for, primary_archetype
+from .archetypes import archetypes_for
 from .config import GAIN_FLOOR, MMR_LAMBDA
 from .model import Game
 
 
 @dataclass
 class Assignment:
-    archetype: str
     game: Game
     gain: float | None = None   # what the scorer valued this pick at
 
@@ -87,22 +86,23 @@ class CoverageScorer:
     its sibling already covers.
     """
 
-    def __init__(self, loadings: dict, similarity: dict | None, ratings: list[float]):
+    def __init__(self, loadings: dict, similarity: dict | None, ratings: dict[int, float]):
         self.loadings = loadings
         self.similarity = similarity
-        # The WHOLE population's ratings, never a cell's. Normalising per cell
-        # would make a game's quality depend on which games happened to share
-        # its cell — 5p/Light's best game rates 7.79 and 4p/Heavy's rates 8.39,
-        # and both would score 1.0. That also breaks contests, which compare
-        # scores across cells.
-        self.ratings = ratings
+        # Quality is judged against each game's own genre, over the WHOLE
+        # population — never a cell. A game's genres belong to the game, so its
+        # weights are identical wherever it is considered and scores stay
+        # comparable across cells, which contests depend on. See
+        # coverage.genre_quality.
+        self.genre = coverage.genre_weights(loadings, ratings)
 
     def begin(self, cells, memberships):
         self.weights = {}
         for key, pool in cells.items():
             for game in pool:
-                q = coverage.quality(game.rating, self.ratings)
-                self.weights[(key, game.id)] = memberships[(key, game.id)] * q * self.loadings[game.id]
+                self.weights[(key, game.id)] = (
+                    memberships[(key, game.id)] * self.genre[game.id]
+                )
         n_axes = len(next(iter(self.loadings.values())))
         self.uncovered = {key: np.ones(n_axes) for key in cells}
         self.chosen = {key: [] for key in cells}
@@ -247,8 +247,7 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer, max_per_cell: int,
             key=lambda g: g.rank,
         )
         results[key] = CellResult(
-            [Assignment(_display_label(g), g,
-                        round(gains[(key, g.id)], 3) if (key, g.id) in gains else None)
+            [Assignment(g, round(gains[(key, g.id)], 3) if (key, g.id) in gains else None)
              for g in chosen[key]],
             leftovers[:alternates_limit],
         )
@@ -339,9 +338,3 @@ def _repair(keys, memberships, scorer, chosen, gains, max_per_cell, seeded) -> N
                 break
         if not moved:
             return
-
-
-def _display_label(game: Game) -> str:
-    """Cosmetic type label for a pick — selection never depends on it."""
-    arch = primary_archetype(game.signals)
-    return arch.label if arch else "Other"

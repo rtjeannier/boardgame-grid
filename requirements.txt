@@ -1,5 +1,8 @@
-# Feature space + selection (pipeline.build): numpy, scikit-learn.
-# Live BGG fetch (pipeline.fetch) additionally needs requests.
+# Feature space + selection (pipeline.build): numpy, scipy, scikit-learn.
+# scipy is imported directly for the tag dendrogram (features._harvest_cores);
+# it arrives as a scikit-learn dependency anyway, but we name it because we use
+# it. Live BGG fetch (pipeline.fetch) additionally needs requests.
 numpy>=1.26
+scipy>=1.11
 scikit-learn>=1.4
 requests>=2.31

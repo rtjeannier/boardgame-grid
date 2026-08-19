@@ -18,31 +18,66 @@ single cell holding the whole space for the collection builder.
 
 import numpy as np
 
-from .config import QUALITY_EXPONENT, QUALITY_FLOOR, SIMILARITY_EXPONENT
+from .config import (
+    GENRE_MEMBERSHIP_FLOOR,
+    QUALITY_EXPONENT,
+    QUALITY_FLOOR,
+    SIMILARITY_EXPONENT,
+)
 
 
-def quality(rating: float, ratings: list[float]) -> float:
-    """Map a game's rating to [QUALITY_FLOOR, 1] against the whole population.
+def genre_quality(loadings: np.ndarray, ratings: np.ndarray) -> np.ndarray:
+    """(n_games x n_axes) — how good each game is *for each genre*.
 
-    Weighted by BGG's Bayesian average, not by rank position, and normalised
-    globally rather than within a cell. Both parts matter.
+    A game's coverage of a genre is quality x loading, and the question quality
+    has to answer is "how good is this, for this kind of game". Rated against
+    the whole population instead, a genre whose best game is merely very good
+    could never be covered: Crokinole is the finest dexterity game in the corpus
+    and rates 7.80 where the population tops out at 8.39, so it scored 0.68 and
+    the dexterity axis sat two thirds empty however many dexterity games you
+    owned. The ceiling was not the collection, it was BGG's rating spread.
 
-    Percentile-within-cell used to squash the top flat: in an 857-game cell
-    holding ranks 3 to 4991, Orleans (#35) and Rajas of the Ganges (#170) came
-    out at 0.996 and 0.975 — a 135-place gap worth 0.02 — because both sat in
-    the same top 5% of that pool. A game's quality also swung with whichever
-    other games happened to share its cell, which is no property of the game.
+    So each axis is scaled against the games that belong to *it* — its own worst
+    to its own best — and a genre's leader scores 1.0 whatever the wider
+    population thinks. Membership is peak-relative (GENRE_MEMBERSHIP_FLOOR), so
+    a game counts towards every genre that is a real part of it.
 
-    QUALITY_EXPONENT then decides how much better a better game is. Rating
-    alone is a narrow band (8.39 at #1 down to 5.79 at #5000, so the whole
-    ladder spans 31%); raising the normalised score to a power above 1 widens
-    the gap between the top and the middle without inventing an ordering.
+    Note this is *within genre*, never within cell. A game's genres are a
+    property of the game, so its weights are the same wherever it is considered
+    and scores stay comparable across cells — which contests depend on.
+    Normalising within a cell would make quality depend on which games happened
+    to land beside it: in an 857-game cell holding ranks 3 to 4991, Orleans
+    (#35) and Rajas of the Ganges (#170) both came out top-5% at 0.996 and
+    0.975, a 135-place gap worth 0.02.
+
+    QUALITY_EXPONENT still decides how much better a better game is. Rating is a
+    narrow band and raising the normalised score to a power above 1 widens the
+    gap between the top and the middle without inventing an ordering.
     """
-    lo, hi = min(ratings), max(ratings)
-    if hi <= lo:
-        return 1.0
-    normalised = (rating - lo) / (hi - lo)
-    return QUALITY_FLOOR + (1 - QUALITY_FLOOR) * normalised ** QUALITY_EXPONENT
+    ratings = np.asarray(ratings, dtype=float)
+    member = loadings >= GENRE_MEMBERSHIP_FLOOR * loadings.max(axis=1, keepdims=True)
+
+    out = np.zeros_like(loadings)
+    for axis in range(loadings.shape[1]):
+        here = ratings[member[:, axis]]
+        lo, hi = here.min(), here.max()
+        normalised = np.clip((ratings - lo) / max(hi - lo, 1e-9), 0.0, 1.0)
+        out[:, axis] = QUALITY_FLOOR + (1 - QUALITY_FLOOR) * normalised ** QUALITY_EXPONENT
+    return out
+
+
+def genre_weights(loadings: dict[int, np.ndarray],
+                  ratings: dict[int, float]) -> dict[int, np.ndarray]:
+    """Per game, its quality-scaled loading vector — coverage before membership.
+
+    The one place this is computed, so the picker and the radar cannot drift
+    apart: `assign.CoverageScorer` scales these by cell membership to score, and
+    `build.py` serialises the same numbers for the frontend to draw.
+    """
+    ids = sorted(loadings)
+    matrix = np.stack([loadings[i] for i in ids])
+    scaled = matrix * genre_quality(matrix, np.array([ratings[i] for i in ids]))
+    return {i: scaled[k] for k, i in enumerate(ids)}
 
 
 def axis_coverage(weight_rows: list[np.ndarray], n_axes: int) -> np.ndarray:

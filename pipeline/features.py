@@ -3,33 +3,44 @@
 The "genre" of a game isn't one label — a game can be mostly worker-placement
 with a dose of engine-building. We recover that structure from the data:
 
-  1. Build a game × signal incidence matrix from BGG mechanic/category names,
-     IDF-weighted so ubiquitous signals (Hand Management) count less than
-     distinctive ones (Hidden Roles, Flicking). The weighting is sublinear:
-     BGG tags are polysemous, so an undamped IDF lets one rare tag hijack a
-     game's genre (see the note in `_genre_loadings`).
-  2. Factor it with NMF into latent *genre dimensions*. NMF loadings are
-     non-negative, so "this game is 0.7 of dimension 3" reads naturally, and
-     each dimension is nameable by its top-loading signals.
-  3. Normalise each game's loadings to sum to 1 — a genre *split*, not a genre
-     *amount* — then shrink that split toward "unknown" for games too little
-     read to trust (see `_shrink`).
+  1. Build a game × signal incidence matrix from BGG mechanic/category names.
+  2. Cluster the *signals* by co-occurrence to discover genres, and take each
+     cluster as one radar axis (see `_harvest_cores`). Axes are therefore named
+     with the actual BGG tags that define them, not with whatever a latent
+     factor happened to load on.
+  3. Each game's loadings = how its tags divide across those axes, normalised to
+     sum to 1 — a genre *split*, not a genre *amount*.
   4. A game's full vector = its genre loadings plus mildly scaled weight and
      log-playtime.
 
 The result feeds two consumers: MMR coverage selection (pipeline/assign.py)
 and a global 2-D PCA projection the frontend scatters per cell.
+
+This replaced NMF over an IDF-weighted matrix, for two reasons. Latent factors
+could not be named honestly — Wingspan's top genre came out as "Line of Sight /
+Miniatures" — and NMF cannot find a genre smaller than about 150 games at any
+`k`, so `Action / Dexterity` (120 games) and `Trick-taking` (89) had no axis at
+any corpus depth. Measured end-to-end on the 5000-game capture, the switch left
+149 of 167 grid picks unchanged, moved median pick rank 214 -> 222, and took
+same-axis agreement on known same-core game pairs from 4/5 to 5/5.
+
+Do not read this file's clustering as a duplicate of `_similarity_space` below
+and unify them — they answer different questions and are weighted oppositely on
+purpose. Axes ask "what regions of game-space exist", so tags group by raw
+co-occurrence. Similarity asks "are these two games substitutes", where only a
+game's *core* tags should count, so it weights by centrality instead.
 """
 
 from dataclasses import dataclass
 
 import numpy as np
-from sklearn.decomposition import NMF, PCA
+from scipy.cluster.hierarchy import linkage
+from sklearn.decomposition import PCA
 
 from .config import (
+    GENRE_AXIS_TARGET,
+    GENRE_NAME_SEPARATOR,
     GENRE_TOP_SIGNALS,
-    LOADING_SHRINKAGE,
-    NMF_COMPONENTS,
     PLAYTIME_SCALE,
     WEIGHT_SCALE,
 )
@@ -77,14 +88,16 @@ def build_feature_space(games: list[Game]) -> FeatureSpace:
 
 
 def _similarity_space(games: list[Game]) -> dict[int, np.ndarray]:
-    """Unit-norm IDF-weighted tag vectors, in the FULL space — no NMF.
+    """Unit-norm centrality-weighted tag vectors, in the FULL tag space.
 
     Used only to answer "are these two the same game?", never to place a game on
-    the radar. The distinction matters: cosine on the 10-dim NMF loadings cannot
-    tell a duplicate from a same-genre neighbour — Decrypto/Monikers (unrelated)
-    score 0.972 there, *above* Twilight Imperium 3rd/4th at 0.967, because the
-    bottleneck discards exactly the detail that separates them. In the full space
-    those become 0.234 and 0.807, which does separate them.
+    the radar. The distinction matters because the genre axes have no room to
+    answer it: across random pairs of games their cosine averages 0.823, since
+    fifteen axes leave everything a little like everything. A real
+    re-implementation cannot stand out against that floor — Twilight Imperium
+    3rd/4th score 0.973 there, which is merely the 91st percentile. In the full
+    tag space the bulk drops to 0.124 and the same pair reaches the 99.9th,
+    which is the separation `coverage.novelty` needs to act on.
 
     Families join the vocabulary here (and only here) because they roughly double
     that separation.
@@ -122,6 +135,10 @@ def _tag_centrality(present: np.ndarray) -> np.ndarray:
     distinctiveness instead put `Melding and Splaying` above `Set Collection`
     for 7 Wonders, and rated Race/Roll for the Galaxy as more alike than the two
     7 Wonders Duel games, which is backwards.
+
+    This is also why the radar axes do not reuse these weights: `_harvest_cores`
+    groups tags by plain co-occurrence, because "which regions of game-space
+    exist" is a different question from "are these two games substitutes".
     """
     # Tag-tag relatedness: two tags are alike if they mark the same games.
     co = present.T @ present
@@ -140,7 +157,7 @@ def _tag_centrality(present: np.ndarray) -> np.ndarray:
 
 
 def _genre_loadings(games: list[Game]) -> dict:
-    """NMF the IDF-weighted game×signal matrix into named genre dimensions."""
+    """Cluster signals into genres, then split each game across them."""
     vocab = sorted({s for g in games for s in g.signals})
     index = {s: j for j, s in enumerate(vocab)}
 
@@ -149,65 +166,200 @@ def _genre_loadings(games: list[Game]) -> dict:
         for s in g.signals:
             incidence[i, index[s]] = 1.0
 
-    # IDF: rare signals are more informative about what a game *is*. The curve
-    # is deliberately *sublinear* — plain log(n/df) let a single rare tag decide
-    # a game's whole identity, and BGG tags are polysemous: "Action Queue" means
-    # programming combat cards in Gloomhaven and column action selection in
-    # Wingspan. Weighted by plain IDF those two share a factor, and Wingspan's
-    # top genre came out as "Line of Sight / Miniatures". Damping keeps rare
-    # tags informative without letting them outvote everything a game actually
-    # is. Do not "simplify" this back to np.log.
-    doc_freq = incidence.sum(axis=0)
-    idf = 1 + np.log1p(len(games) / doc_freq)
-    weighted = incidence * idf
+    cores = _harvest_cores(incidence, GENRE_AXIS_TARGET)
+    membership = _assign_signals(incidence, cores)
 
-    n_dims = min(NMF_COMPONENTS, len(vocab))
-    nmf = NMF(n_components=n_dims, init="nndsvda", max_iter=500, random_state=0)
-    loadings = nmf.fit_transform(weighted)        # games × dims
-    components = nmf.components_                  # dims × signals
+    names = [_name_core(core, incidence, vocab) for core in cores]
 
-    # Name each dimension by its most characteristic signals.
-    names = []
-    for row in components:
-        best = np.argsort(row)[::-1][:GENRE_TOP_SIGNALS]
-        names.append(" / ".join(vocab[j] for j in best if row[j] > 0))
-
-    # L1-normalise per game: every game carries the same *total* genre mass, so
-    # the vector says how a game divides itself between genres, not how much
-    # genre it has. This has to be L1 because coverage sums across axes. Under
-    # L2 the sum of squares is fixed, so total mass grows as sqrt(k) with the
-    # number of axes a game touches — 3.16x for a ten-axis sprawl, which exceeds
-    # the entire 2.5x range of `coverage.quality`. A bottom-ranked generalist
-    # then outscores a #1 specialist and rank can never catch up, which is how
-    # Brass: Birmingham lost its cell to a pile of eight-axis games.
+    # How each game's tags divide across the axes, then L1-normalised: every
+    # game carries the same *total* genre mass, so the vector says how a game
+    # divides itself between genres, not how much genre it has. This has to be
+    # L1 because coverage sums across axes. Under L2 the sum of squares is
+    # fixed, so total mass grows as sqrt(k) with the number of axes a game
+    # touches — 3.16x for a ten-axis sprawl, which exceeds the entire 2.5x range
+    # of `coverage.genre_quality`. A bottom-ranked generalist then outscores a #1
+    # specialist and rank can never catch up, which is how Brass: Birmingham
+    # lost its cell to a pile of eight-axis games.
+    loadings = incidence @ membership
     mass = loadings.sum(axis=1, keepdims=True)
+    # Only a game carrying no signals at all can be zero here — every signal
+    # belongs to exactly one axis (see `_assign_signals`). Such a game covers
+    # no genre at all and is never picked, which is the honest reading of "we
+    # know nothing about this one".
     mass[mass == 0] = 1.0
     shares = loadings / mass
 
-    return {"loadings": _shrink(shares, games), "names": names}
+    return {"loadings": shares, "names": names}
 
 
-def _shrink(shares: np.ndarray, games: list[Game]) -> np.ndarray:
-    """Blend each game's genre split toward "unknown" by how little it's been read.
+def _harvest_cores(incidence: np.ndarray, target: int) -> list[list[int]]:
+    """Find `target` groups of signals that genuinely co-occur.
 
-    A one-tag game claims 100% of a genre the way a batter who went 1-for-1
-    claims a 1.000 average — the number is real and the evidence isn't. Before
-    this, every genre axis was owned by an obscure game (a 494-rating title held
-    worker placement outright); after it they're held by Puerto Rico, Codenames,
-    Azul and Power Grid.
+    Each signal is a unit vector over the games carrying it, so the cosine
+    between two signals is how much they co-occur, and a *group's* cohesion is
+    the mean cosine over its pairs. Agglomerate the signals, then harvest the
+    **maximal** subtrees that still hang together: walk down from the root and
+    accept a node as soon as it is cohesive enough, so each axis is the largest
+    group that is still one genre rather than the tightest pair inside it.
 
-    Weighted by ratings rather than tag count, because tag count cannot tell
-    "few tags because unread" from "few tags because simple". SCOUT has four
-    tags and 29k ratings — genuinely just a card game — and keeps 94% of its
-    claim; tag-count weighting would have cut it to 40%.
+    Crucially this does *not* partition the signals. Cutting the tree into
+    exactly `target` clusters forces every signal somewhere, and the weakly
+    correlated ones pile into a single residual drawer — measured at 424 signals
+    reaching 4335 of 5000 games, which swallowed dexterity whole. (Splitting
+    over-broad tags into interaction terms first does not help; it only moves
+    the drawer.) Leaving the incoherent tail unharvested is what removes it;
+    `_assign_signals` then places the tail, so nothing is actually lost.
+
+    A group only counts as a genre if it is some game's *primary* genre, for at
+    least a tenth of the games an even split would give it. Reach — how many
+    games carry any of its signals — is not enough on its own: `Age of Reason ·
+    American Revolutionary War` reached 76 games and passed every size test
+    going, yet exactly *one* game in 5000 was more that than anything else. It
+    described nothing, while taking a fifteenth of the chart. Genres that no
+    game actually belongs to are dropped here.
+
+    `target` is the only input. It sets the ceiling on reach (no group may span
+    more than ten times an even share, or it is not a genre), the floor on
+    primary games, and — through bisection — the cohesion threshold, which is
+    whatever makes exactly `target` groups survive.
     """
-    n_axes = shares.shape[1]
-    unknown = np.full(n_axes, 1.0 / n_axes)
-    rated = np.array([g.users_rated for g in games], dtype=float)[:, None]
-    believed = rated / (rated + LOADING_SHRINKAGE)
+    n_games, n_signals = incidence.shape
+    max_reach = n_games / target * 10
+    min_primary = n_games / target / 10
 
-    shrunk = believed * shares + (1.0 - believed) * unknown
-    return shrunk / shrunk.sum(axis=1, keepdims=True)
+    vectors = incidence.T / np.maximum(
+        np.linalg.norm(incidence.T, axis=1, keepdims=True), 1e-9
+    )
+    tree = linkage(vectors, method="ward")
+
+    # Walking the tree, each node carries its members, the *sum* of its members'
+    # unit vectors and the games it reaches. The sum is what makes this cheap:
+    # mean pairwise cosine is (|S|^2 - m) / (m(m-1)), so cohesion costs O(1) per
+    # node instead of O(m^2), and the whole search is a single pass.
+    members = {j: [j] for j in range(n_signals)}
+    totals = {j: vectors[j].copy() for j in range(n_signals)}
+    reached = {j: incidence[:, j] > 0 for j in range(n_signals)}
+    children: dict[int, tuple[int, int]] = {}
+    cohesion = {j: 1.0 for j in range(n_signals)}
+
+    for step, (a, b, _, _) in enumerate(tree):
+        a, b = int(a), int(b)
+        node = n_signals + step
+        children[node] = (a, b)
+        members[node] = members[a] + members[b]
+        totals[node] = totals[a] + totals[b]
+        reached[node] = reached[a] | reached[b]
+        size = len(members[node])
+        cohesion[node] = (float(totals[node] @ totals[node]) - size) / (size * (size - 1))
+
+    root = n_signals + len(tree) - 1
+
+    def harvest(threshold: float) -> list[list[int]]:
+        found, stack = [], [root]
+        while stack:
+            node = stack.pop()
+            if node < n_signals:
+                continue                  # a lone signal is not a genre
+            if cohesion[node] < threshold or reached[node].sum() > max_reach:
+                stack.extend(children[node])
+                continue
+            found.append(members[node])
+        return found
+
+    def genres(threshold: float) -> list[tuple[int, list[int]]]:
+        """Harvest, then keep only the groups some games primarily belong to."""
+        cores = harvest(threshold)
+        if not cores:
+            return []
+        loadings = incidence @ _assign_signals(incidence, cores)
+        held = loadings.sum(axis=1) > 0
+        counts = np.bincount(np.argmax(loadings[held], axis=1), minlength=len(cores))
+        return sorted(
+            ((int(n), core) for n, core in zip(counts, cores) if n >= min_primary),
+            key=lambda pair: -pair[0],
+        )
+
+    low, high = 0.0, 1.0
+    for _ in range(40):
+        mid = (low + high) / 2
+        if len(genres(mid)) < target:
+            high = mid
+        else:
+            low = mid
+
+    # Several groups can qualify at the same threshold, so this lands on "at
+    # least `target`"; keep the ones the most games actually belong to.
+    return [core for _, core in genres(low)[:target]]
+
+
+def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray:
+    """(n_signals x n_axes) map placing *every* signal on exactly one axis.
+
+    The harvested cores define the genres; every signal left over joins the core
+    it most resembles. Without this the axes only span the cores — 32 of 274
+    signals — and 633 games carry no signal on any axis. Those games are not
+    merely unplaced — with no genre at all they can never be picked, whatever
+    they are. Attraction drops that from 633 games to 1, the only game in the
+    capture with no signals at all.
+
+    A signal joins one axis but does not count fully towards it. Its weight is
+    how *diagnostic* it is: of the games carrying this signal, the share that
+    really sit in that genre. Cross-cutting signals therefore barely register
+    while defining ones count outright — `Team-Based Game` spans 356 games and
+    scores 0.15 on the traitor-game axis, `Flicking` spans 30 and scores 0.93 on
+    dexterity. Core signals score exactly 1.0 and need no special case: every
+    game carrying a core signal is in that core by definition.
+
+    Without this a signal counted the same wherever it landed, and any game with
+    a broad tag was dragged towards a genre it has nothing to do with. Crokinole
+    — `Action / Dexterity`, `Flicking`, `Team-Based Game` — split 0.67 dexterity
+    against 0.33 traitor games, so owning the one great dexterity game still
+    left that axis looking half empty. It now reads 0.93 against 0.07.
+    """
+    n_signals = incidence.shape[1]
+    vectors = incidence.T / np.maximum(
+        np.linalg.norm(incidence.T, axis=1, keepdims=True), 1e-9
+    )
+    centroids = np.stack([vectors[core].mean(axis=0) for core in cores])
+    centroids /= np.maximum(np.linalg.norm(centroids, axis=1, keepdims=True), 1e-9)
+    resemblance = vectors @ centroids.T
+
+    home = np.argmax(resemblance, axis=1)
+    for axis, core in enumerate(cores):
+        home[core] = axis
+
+    # Which games sit in each genre, judged by its core signals alone.
+    in_genre = np.stack([incidence[:, core].sum(axis=1) > 0 for core in cores])
+
+    membership = np.zeros((n_signals, len(cores)))
+    for signal in range(n_signals):
+        axis = int(home[signal])
+        carriers = incidence[:, signal] > 0
+        membership[signal, axis] = in_genre[axis][carriers].mean()
+    return membership
+
+
+def _name_core(core: list[int], incidence: np.ndarray, vocab: list[str]) -> str:
+    """Name an axis after the most-used signals in its core.
+
+    Core signals only — the attracted tail is placed by nearest neighbour and
+    would blur the label. BGG ships some tags twice in different cases
+    ("Real-time" and "Real-Time" are both live and cluster together), so a
+    signal whose name is already present in any case is skipped rather than
+    repeated back at the reader.
+    """
+    ordered = sorted(core, key=lambda j: -incidence[:, j].sum())
+    chosen: list[str] = []
+    seen: set[str] = set()
+    for j in ordered:
+        name = vocab[j]
+        if name.casefold() in seen:
+            continue
+        seen.add(name.casefold())
+        chosen.append(name)
+        if len(chosen) == GENRE_TOP_SIGNALS:
+            break
+    return GENRE_NAME_SEPARATOR.join(chosen)
 
 
 def _top_dims(row: np.ndarray, names: list[str], k: int = 3) -> list[tuple[str, float]]:

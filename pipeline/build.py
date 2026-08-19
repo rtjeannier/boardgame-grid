@@ -20,7 +20,6 @@ import argparse
 import json
 
 from . import buckets, coverage, dataset
-from .archetypes import ARCHETYPES
 from .assign import ArchetypeScorer, CoverageScorer, MmrScorer, allocate
 from .config import (
     ALTERNATES_PER_CELL,
@@ -41,9 +40,10 @@ def build(dataset_path, assigner_name):
     # The grid is just this stratification of the game space. Swap the axes and
     # the same allocator fills whatever cells come out; pass none at all and it
     # builds a collection, which is what pipeline/collection.py does.
-    ratings = [g.rating for g in games]      # population-wide, never per cell
+    ratings = {g.id: g.rating for g in games}   # population-wide, never per cell
     axes = [buckets.PlayerCountAxis(), buckets.WeightAxis(weight_rows)]
     cells, memberships = buckets.build_cells(games, axes)
+    genre = coverage.genre_weights(space.loadings, ratings)
 
     scorer = {
         "coverage": lambda: CoverageScorer(space.loadings, space.similarity, ratings),
@@ -52,6 +52,19 @@ def build(dataset_path, assigner_name):
     }[assigner_name]()
     results = allocate(cells, memberships, scorer, PICKS_PER_CELL,
                        alternates_limit=ALTERNATES_PER_CELL)
+
+    def primary_genre(g):
+        """The mined genre this game is most of — its colour on the grid.
+
+        Straight from the feature space, so the dot beside a game names the same
+        axis its biggest radar bar sits on. The old hand-written archetype
+        taxonomy said 'Set Collection' where the radar said something else, and
+        nothing kept the two in step.
+        """
+        loading = space.loadings[g.id]
+        if not loading.any():
+            return None            # no signals at all; nothing to claim
+        return space.dimension_names[int(loading.argmax())]
 
     def game_json(g, weight=None):
         """Game record + its place in the feature space, for the frontend.
@@ -64,6 +77,7 @@ def build(dataset_path, assigner_name):
         """
         x, y = space.projection[g.id]
         record = {**g.to_dict(), "x": x, "y": y,
+                  "genre": primary_genre(g),
                   "genres": [{"name": n, "value": v} for n, v in space.top_genres[g.id]]}
         if weight is not None:
             record["coverage"] = [round(float(w), 3) for w in weight]
@@ -74,21 +88,21 @@ def build(dataset_path, assigner_name):
 
         Quality is percentile *within this cell's* candidate pool, so a game's
         radar contribution matches the coverage the assigner saw when filling
-        the cell (see pipeline/coverage.quality)."""
+        the cell (see pipeline/coverage.genre_quality)."""
         col, row = key            # axis labels, in the order build_cells crossed them
         pool = cells[key]
 
         def weight(g):
             # Mirrors CoverageScorer exactly, membership included, so the radar
             # the frontend draws is the one selection was scored against.
-            return memberships[(key, g.id)] * coverage.quality(g.rating, ratings) * space.loadings[g.id]
+            return memberships[(key, g.id)] * genre[g.id]
 
         return {
             "column": col,
             "row": int(row),      # WeightAxis labels its rows by index
             "candidateCount": len(pool),
             "assignments": [
-                {"archetype": a.archetype, "game": game_json(a.game, weight(a.game)), "gain": a.gain}
+                {"game": game_json(a.game, weight(a.game)), "gain": a.gain}
                 for a in result.assignments
             ],
             "alternates": [game_json(g, weight(g)) for g in result.alternates],
@@ -102,7 +116,6 @@ def build(dataset_path, assigner_name):
             "assigner": assigner_name,
             "playerColumns": [c["label"] for c in PLAYER_COLUMNS],
             "weightRows": weight_rows,
-            "archetypes": [a.label for a in ARCHETYPES],
             "genreDimensions": space.dimension_names,
         },
         "cells": [

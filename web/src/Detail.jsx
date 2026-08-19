@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import Scatter from './Scatter.jsx'
 import CoverageRadar from './CoverageRadar.jsx'
 import { colorFor, gameColor } from './colors.js'
+import { primary } from './genres.js'
 
 // Slide-in panel for a single cell: a genre-coverage radar for the cell's
 // games, the similarity scatter, the full list of picks, and the runner-up
@@ -60,20 +61,21 @@ export default function Detail({ cell, meta, active, onClose }) {
         />
       </div>
 
-      <Scatter assignments={cell.assignments} alternates={cell.alternates} />
+      <Scatter assignments={cell.assignments} alternates={cell.alternates}
+        genres={meta.genreDimensions} />
 
       <ul className="detail__list">
-        {cell.assignments.map(({ archetype, game, gain }) => {
-          const dim = active.size > 0 && !active.has(archetype)
+        {cell.assignments.map(({ game, gain }) => {
+          const dim = active.size > 0 && !active.has(game.genre)
           const props = rowProps(game)
           return (
             <li key={game.id} {...props}
               className={`${props.className} ${dim ? 'row--dim' : ''}`}>
-              <span className="dot" style={{ background: colorFor(archetype) }} />
+              <span className="dot" style={{ background: colorFor(game.genre, meta.genreDimensions) }} />
               <div className="detail__game">
                 <a href={game.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{game.name}</a>
                 <span className="muted">
-                  {archetype}
+                  {primary(game.genre ?? '—')}
                   {gain != null && ` · +${gain.toFixed(2)} coverage`}
                 </span>
                 <Genres genres={game.genres} />
@@ -126,13 +128,13 @@ function playerRange(counts) {
   return runs.map(([lo, hi]) => (lo === hi ? `${lo}` : `${lo}–${hi}`)).join(', ')
 }
 
-// A game's strongest latent genre dimensions, e.g. "0.71 tile-laying · 0.30
-// set-collection" — the continuous "what kind of game is this" signal.
+// A game's strongest genre dimensions, e.g. "0.71 tile placement · 0.30 set
+// collection" — the continuous "what kind of game is this" signal.
 function Genres({ genres }) {
   if (!genres?.length) return null
   return (
     <span className="detail__genres muted">
-      {genres.map(({ name, value }) => `${value} ${name.split(' / ')[0].toLowerCase()}`).join(' · ')}
+      {genres.map(({ name, value }) => `${value} ${primary(name).toLowerCase()}`).join(' · ')}
     </span>
   )
 }

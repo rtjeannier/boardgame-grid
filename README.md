@@ -8,9 +8,9 @@ Curate a board-game collection as a 2-D grid:
 - **Inside each cell:** a subset chosen for *coverage* of a continuous game
   space — no two near-identical games, however well-ranked both are.
 
-Games live in an n-dimensional feature space: latent **genre dimensions**
-factored out of BGG's mechanic/category data (a game isn't "a deck builder",
-it's 0.7 deck-building / 0.4 worker-placement), plus weight and playtime.
+Games live in an n-dimensional feature space: **genre axes** discovered by
+clustering BGG's mechanic/category tags (a game isn't "a deck builder", it's
+0.7 deck-building / 0.4 worker-placement), plus weight and playtime.
 Selection fills a radar chart over those genre axes, so every cell shows the
 best game of each *kind* without anyone hand-defining the kinds — and the same
 math powers a **collection builder**: anchor games you love, fill the rest by
@@ -29,11 +29,11 @@ pipeline/            Python — two independent steps joined by a dataset file
   dataset.py         the dataset file format (load/save)
   client.py          live BGG XML API2 client (cached), used by fetch
   config.py          the two axes + tunables (edit me first)
-  features.py        the continuous feature space (IDF -> NMF genres -> vectors)
+  features.py        the continuous feature space (tag clusters -> genres -> vectors)
   coverage.py        the radar-chart coverage maths (no selection)
   assign.py          one allocator over any axes + swappable Scorers
   collection.py      the same allocator with no axes: anchors, gap analysis
-  archetypes.py      display-label taxonomy (mechanic/category -> archetype)
+  archetypes.py      hand-written taxonomy, only for --assigner greedy
   buckets.py         Axis protocol; player-count + quantile-weight axes
 data/
   games.seed.json    committed proxy dataset (same shape as a live capture)
@@ -117,22 +117,40 @@ pick this branch and the **`/docs`** folder. The site goes live at
 
 `pipeline/features.py` embeds every game:
 
-1. Game × signal incidence matrix from BGG mechanic/category names,
-   IDF-weighted so ubiquitous signals (Hand Management) count less than
-   distinctive ones (Hidden Roles, Flicking). The weighting is *sublinear*:
-   BGG tags are polysemous — "Action Queue" means programming combat cards in
-   Gloomhaven and column action selection in Wingspan — and an undamped IDF
-   let one rare tag decide a game's whole genre.
-2. NMF factors it into ~10 latent genre dimensions with non-negative,
-   human-readable loadings; each dimension is named by its top signals
-   (on the seed data they come out as recognisable genres — social deduction,
-   dexterity, tile-laying, party/word — with no hand labelling).
-   Note that the dimensions follow the *corpus*, not some fixed genre map: NMF
-   spends them on whatever tag co-occurrence is most common, so the curated seed
-   set yields an `Action / Dexterity` axis while the rank-ordered live top 1000
-   does not — dexterity is only 9 games there, too few to form a factor. Genres
-   that never co-occur as a block (Push Your Luck, Trick-taking) get no axis at
-   any component count.
+1. Game × signal incidence matrix from BGG mechanic/category names.
+2. The *signals* are clustered by co-occurrence, and each cluster becomes one
+   genre axis, named after the tags that define it — `Wargame · Simulation ·
+   World War II`, `Action / Dexterity · Stacking and Balancing`. Nobody labels
+   the genres; they are read off the data.
+
+   Signals are agglomerated into a tree, and the axes are the **maximal**
+   subtrees that still hang together: walk down from the root and take a branch
+   as soon as its members genuinely co-occur, so an axis is the largest group
+   that is still one genre rather than the tightest pair inside it. This
+   deliberately does *not* partition the tags — cutting the tree into exactly K
+   clusters forces every tag somewhere, and the weakly correlated ones pile into
+   one residual drawer (measured at 424 tags spanning 4335 of 5000 games, which
+   swallowed dexterity whole). Tags left outside the cores then join whichever
+   core they most resemble, so nothing is lost: without that step 633 games
+   carry no tag on any axis, and a game with no genre can never be picked.
+
+   A group only counts as a genre if it is some game's *primary* genre, for at
+   least a tenth of the games an even split would give it. Reach alone is not
+   enough: `Age of Reason · American Revolutionary War` was carried by 76 games
+   and passed every size test, yet exactly *one* game in 5000 was more that than
+   anything else — it described nothing while taking a fifteenth of the chart.
+
+   `GENRE_AXIS_TARGET` is the only knob. It caps how far a genre may reach, sets
+   the floor on primary games, and fixes the cohesion threshold — whatever makes
+   exactly that many genres survive, found by bisection rather than tuned.
+
+   The axes follow the *corpus*: the committed top-5000 capture yields
+   `Action / Dexterity`, `Real-time` and `Deduction · Murder / Mystery`, while a
+   smaller slice spends its axes differently. This replaced an NMF
+   factorisation, which could not name an axis honestly (Wingspan's top genre
+   came out as "Line of Sight / Miniatures") and could not find a genre below
+   ~150 games at any component count, leaving dexterity (120 games) and
+   trick-taking (89) with no axis at all.
 3. A game's vector = normalised genre loadings + mildly scaled weight and
    log-playtime. A global 2-D PCA of these vectors feeds the per-cell
    similarity scatter in the site's detail drawer.
@@ -180,14 +198,29 @@ games covers an axis unless all of them miss it:
 coverage(axis) = 1 − ∏(1 − wᵢ)
 ```
 
-`quality` comes from BGG's **Bayesian average**, normalised across the whole
-population — not from rank position, and not from a percentile within the cell.
-Both of those flatten the top: in an 857-game cell spanning ranks 3 to 4991,
-Orléans (#35) and Rajas of the Ganges (#170) scored 0.996 and 0.975, so a
-135-place gap was worth 0.02, and a game's quality moved with whichever other
-games happened to share its cell. `QUALITY_EXPONENT` then sets how sharply a
-better rating wins, because the rating band itself is narrow — 8.39 at #1 down
-to 5.79 at #5000.
+`quality` comes from BGG's **Bayesian average**, and it is judged *within each
+genre* — a game is scored against the games that share that genre, so a genre's
+best game covers it fully. Scored against the whole population instead, a genre
+whose best game is merely very good could never be covered at all: Crokinole is
+the finest dexterity game there is and rates 7.80 where the population tops out
+at 8.39, so it scored 0.68 and the dexterity axis sat two thirds empty no matter
+what you owned. The ceiling was BGG's rating spread, not the collection. Judged
+among dexterity games it scores 1.0 and fills its bar.
+
+Only the genre *leader* is lifted this way, which is what makes it affordable.
+Dividing every weight by the axis's best game instead inflates mediocre games on
+thin axes too, and cost 100 ranks of median pick quality while dropping Ark Nova
+and Terraforming Mars off the grid; this costs 12 ranks and drops nobody.
+
+Genre membership is peak-relative (`GENRE_MEMBERSHIP_FLOOR`), so a game counts
+towards every genre that is a real part of it. Note this is within *genre*,
+never within *cell* — a game's genres belong to the game, so its weights don't
+move with whatever else lands beside it, and scores stay comparable across cells
+(which contests depend on). A percentile would flatten the top instead: in an
+857-game cell spanning ranks 3 to 4991, Orléans (#35) and Rajas of the Ganges
+(#170) both scored top-5% at 0.996 and 0.975, so a 135-place gap was worth 0.02.
+`QUALITY_EXPONENT` sets how sharply a better rating wins, because the rating
+band itself is narrow — 8.39 at #1 down to 5.79 at #5000.
 
 So Dominion (0.7 deck-building) covers that axis to 0.7; adding Star Realms
 (0.6) only lifts it to 0.88 — near-duplicates have tiny marginal value.
@@ -219,18 +252,22 @@ and 4th Edition once shared a cell. So each candidate's gain is scaled by
 ```
 
 Similarity is cosine over **centrality-weighted tags**
-(`features._similarity_space`), never the 10-dim NMF loadings — the bottleneck discards exactly the detail that
-separates a duplicate from a same-genre neighbour. Measured on the live top 1000,
-Decrypto/Monikers (unrelated) score 0.955 in NMF space against Twilight Imperium
-3rd/4th at 0.997 — indistinguishable; in full space those become 0.230 and 0.817.
+(`features._similarity_space`), never the genre loadings — fifteen axes leave no
+room to tell a duplicate from a same-genre neighbour. Measured on the live top
+5000, random pairs of games already score 0.823 against each other on the genre
+axes, so Twilight Imperium 3rd/4th at 0.973 is merely the 91st percentile. In
+the full tag space the bulk drops to 0.124 and that pair reaches the 99.9th.
 BGG's `Game:` family links join that space and roughly double the separation.
 The penalty
 steers selection only — recorded gains and the coverage totals stay raw.
 
 `--assigner mmr` (maximal marginal relevance: rank blended with distance from
 picks) and `--assigner greedy` (one game per archetype) remain as
-alternatives. The archetype taxonomy in `archetypes.py` is display-only — it
-colors the dots and legend, but never drives selection.
+alternatives. The hand-written taxonomy in `archetypes.py` is now used *only* by
+that baseline. The grid's dots and legend name each game's strongest **mined**
+genre instead, so the colour beside a game is the axis its biggest radar bar
+sits on — the two used to be able to disagree, with nothing keeping them in
+step.
 
 ### The collection builder
 
@@ -255,8 +292,9 @@ Everything lives in `pipeline/config.py`:
 - **Player columns** — `PLAYER_COLUMNS` (label + inclusive count range).
 - **Number of weight rows** — `WEIGHT_ROW_COUNT`. Rows are quantiles of the
   actual population, so they stay balanced whatever you pick.
-- **Feature space** — `NMF_COMPONENTS` (genre dimensions), `WEIGHT_SCALE` /
-  `PLAYTIME_SCALE` (how much the continuous stats matter vs genre).
+- **Feature space** — `GENRE_AXIS_TARGET` (how many genre axes to discover),
+  `WEIGHT_SCALE` / `PLAYTIME_SCALE` (how much the continuous stats matter vs
+  genre).
 - **Coverage** — `QUALITY_FLOOR` (how much the worst-rated game still covers),
   `QUALITY_EXPONENT` (how sharply a better rating beats a worse one),
   `GAIN_FLOOR` (when to stop picking), `COLLECTION_SIZE`, `PICKS_PER_CELL`.
@@ -303,9 +341,12 @@ genre or mechanic axis would be a small class beside the two existing ones.
 ## Note on the current data
 
 The committed grid is built from a **live capture of BGG's top 5000**, marked
-`live data` in the header. `data/games.seed.json` is a 145-game slice of that
-same capture, carrying every field a full capture does, so the pipeline builds
-offline with `python -m pipeline.build` and no credentials.
+`live data` in the header. `data/games.seed.json` is the top 1000 of that same
+capture, carrying every field a full capture does, so the pipeline builds
+offline with `python -m pipeline.build` and no credentials. A thousand games is
+a floor, not a preference: genre axes are discovered from tag co-occurrence, and
+a smaller slice leaves most tags on one or two games each, so the clustering
+spends its axes on pairs like `Matching · Ladder Climbing`.
 
 The seed is a *smaller* dataset, never a *thinner* one. The pipeline has no
 fallbacks for absent fields — a dataset missing `users_rated`, `families` or

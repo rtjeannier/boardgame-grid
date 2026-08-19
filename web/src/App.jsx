@@ -3,9 +3,10 @@ import Grid from './Grid.jsx'
 import Detail from './Detail.jsx'
 import Collection from './Collection.jsx'
 import { colorFor } from './colors.js'
+import { primary } from './genres.js'
 
 // Top-level app: two tabs — the per-cell Grid and the anchored Collection
-// builder. Grid state (highlighted archetypes, open cell) lives here.
+// builder. Grid state (highlighted genres, open cell) lives here.
 export default function App() {
   const [tab, setTab] = useState('grid')
   const [data, setData] = useState(null)
@@ -45,7 +46,7 @@ export default function App() {
 
       {tab === 'grid' ? (
         <>
-          <Legend archetypes={data.meta.archetypes} active={active} onToggle={toggle} />
+          <Legend genres={data.meta.genreDimensions} active={active} onToggle={toggle} />
           <Grid data={data} active={active} selected={selected} onSelect={setSelected} />
           {selectedCell && (
             <Detail
@@ -78,21 +79,23 @@ function Header({ meta }) {
   )
 }
 
-// Clickable archetype swatches. Selecting some dims everything else in the grid
-// so you can trace, say, every worker-placement pick across the board.
-function Legend({ archetypes, active, onToggle }) {
+// Clickable genre swatches, one per mined axis. Selecting some dims everything
+// else in the grid so you can trace, say, every dexterity pick across the board.
+// The full axis name is the key; the leading tag is what gets shown.
+function Legend({ genres, active, onToggle }) {
   return (
     <div className="legend">
-      {archetypes.map((label) => {
+      {genres.map((label) => {
         const on = active.size === 0 || active.has(label)
         return (
           <button
             key={label}
             className={`legend__item ${on ? '' : 'legend__item--off'}`}
             onClick={() => onToggle(label)}
+            title={label}
           >
-            <span className="dot" style={{ background: colorFor(label) }} />
-            {label}
+            <span className="dot" style={{ background: colorFor(label, genres) }} />
+            {primary(label)}
           </button>
         )
       })}

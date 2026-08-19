@@ -65,8 +65,21 @@ ALTERNATES_PER_CELL = 6
 # genre dimensions factored out of the mechanic/category matrix, plus weight
 # and playtime. Per-cell selection then maximises coverage of that space.
 
-NMF_COMPONENTS = 10       # how many latent genre dimensions to factor out
+# How many radar axes to aim for. This is the *only* knob on axis discovery —
+# every other bound derives from it. A spoke should hold roughly one K-th of the
+# population, so `n / K` is the target reach and anything 10x smaller or 10x
+# larger is rejected outright; the cohesion threshold that yields K spokes is
+# then found by binary search rather than set by hand. Raising it to 20 buys
+# `Trick-taking`, `Constrained Bidding` and `Cooperative Game` as their own
+# spokes, at the cost of one same-core pair (see features._harvest_cores).
+GENRE_AXIS_TARGET = 15
 GENRE_TOP_SIGNALS = 3     # signals used to name a dimension for display
+
+# Dimension names join their signals with this. It cannot be " / ": BGG tag
+# names contain that string ("Action / Dexterity", "Murder / Mystery"), and the
+# frontend splits on it to take a spoke's primary label — which would render the
+# dexterity axis as "Action". web/src/{Radar,Detail,Collection}.jsx split on it.
+GENRE_NAME_SEPARATOR = " · "
 
 # Contribution of the continuous stats to distances, relative to genre loadings
 # (which are L2-normalised per game). Within a cell weight is nearly constant,
@@ -93,6 +106,25 @@ QUALITY_FLOOR = 0.2       # worst-rated game still covers this fraction of its l
 # still: it is a dense ordering of that same narrow band.
 QUALITY_EXPONENT = 2.0
 
+# Quality is judged against a game's own genre, not the whole corpus, and this
+# says who counts as being in a genre: any axis carrying at least this share of
+# the game's strongest one. Peak-relative for the same reason the player axis is
+# (see MEMBERSHIP_FLOOR) — it asks "is this what the game is?", not "is this all
+# the game is", so a game with two real genres belongs to both.
+#
+# Without this the dexterity axis could never fill. Crokinole *is* the best
+# dexterity game there is, but rated against all 5000 games a 7.80 scores 0.68,
+# and no dexterity game rates 8.39 — so the genre's bar was unreachable no
+# matter what you owned, and the same held for every genre without a top-ten
+# game in it. Judged among dexterity games Crokinole scores 1.0, and its bar
+# reads 0.92 instead of 0.63.
+#
+# Only the genre's *leader* is lifted, which is why this is affordable: dividing
+# every weight by the axis best instead inflates mediocre games on thin axes
+# too, and cost 100 ranks of median pick quality while dropping Ark Nova and
+# Terraforming Mars from the grid. This costs 12 ranks and drops nobody.
+GENRE_MEMBERSHIP_FLOOR = 0.5
+
 # Retuned from 0.15 when loadings moved from L2 to L1 normalisation: every game
 # now carries total mass 1.0 rather than ~2.2, so gains shrank by about that
 # factor and the floor follows them down.
@@ -110,21 +142,6 @@ GAIN_FLOOR = 0.10         # stop picking when the best marginal gain drops below
 # exponent of 2 would shave 22% off it. At 3 that bulk loses 10% while a
 # same-core pair at 0.84 is still suppressed by 59%.
 SIMILARITY_EXPONENT = 3
-
-# How much evidence a game needs before we believe its genre split. BGG's tag
-# counts track popularity, not simplicity — rank and tag count correlate -0.35,
-# and the bottom of the top 5000 carries half the tags of the top 250 — so a
-# thinly-tagged game is usually unread rather than genuinely focused. Loadings
-# are therefore blended toward "unknown" (flat across every genre) in proportion
-# to how little attention a game has had:
-#
-#     shrunk = (ratings * observed + KAPPA * flat) / (ratings + KAPPA)
-#
-# A game keeps half its claim at KAPPA ratings. Weighting by *ratings* rather
-# than tag count is the point: SCOUT has four tags and 29k ratings, so it is
-# genuinely just a card game and keeps 94%; a one-tag game with 494 ratings
-# keeps 20%. Tag-count weighting would punish both alike.
-LOADING_SHRINKAGE = 8000
 
 # --- Soft cell membership ----------------------------------------------------
 #

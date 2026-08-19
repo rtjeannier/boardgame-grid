@@ -1,10 +1,11 @@
 import React from 'react'
 import { colorFor } from './colors.js'
+import { primary } from './genres.js'
 
 // The grid itself: player count across the top, complexity down the side.
 // Rows are drawn heaviest-first so complexity rises as you scan upward.
 export default function Grid({ data, active, selected, onSelect }) {
-  const { playerColumns, weightRows } = data.meta
+  const { playerColumns, weightRows, genreDimensions } = data.meta
   const rowsTopDown = [...weightRows].reverse()
 
   // Fast lookup from (column, row) to its cell payload.
@@ -39,6 +40,7 @@ export default function Grid({ data, active, selected, onSelect }) {
                 <Cell
                   key={col}
                   cell={cell}
+                  genres={genreDimensions}
                   active={active}
                   selected={isSelected}
                   onSelect={() => cell && onSelect({ column: col, row: row.index })}
@@ -52,17 +54,18 @@ export default function Grid({ data, active, selected, onSelect }) {
   )
 }
 
-function Cell({ cell, active, selected, onSelect }) {
+function Cell({ cell, genres, active, selected, onSelect }) {
   if (!cell) return <div className="cell cell--empty" />
 
   const extra = cell.candidateCount - cell.assignments.length
   return (
     <button className={`cell ${selected ? 'cell--selected' : ''}`} onClick={onSelect}>
-      {cell.assignments.map(({ archetype, game }) => {
-        const dim = active.size > 0 && !active.has(archetype)
+      {cell.assignments.map(({ game }) => {
+        const dim = active.size > 0 && !active.has(game.genre)
         return (
-          <span key={game.id} className={`pick ${dim ? 'pick--dim' : ''}`} title={`${archetype} · weight ${game.weight}`}>
-            <span className="dot" style={{ background: colorFor(archetype) }} />
+          <span key={game.id} className={`pick ${dim ? 'pick--dim' : ''}`}
+            title={`${primary(game.genre ?? '—')} · weight ${game.weight}`}>
+            <span className="dot" style={{ background: colorFor(game.genre, genres) }} />
             <span className="pick__name">{game.name}</span>
           </span>
         )

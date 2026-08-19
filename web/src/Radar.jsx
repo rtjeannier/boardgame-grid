@@ -1,11 +1,34 @@
 import React from 'react'
+import { primary } from './genres.js'
 
 // Spoke labels use a dimension's first signal, shortened where BGG's official
 // name is too long to sit beside the chart.
-const SHORT = { 'Deck, Bag, and Pool Building': 'Deck Building' }
+const SHORT = {
+  'Deck, Bag, and Pool Building': 'Deck Building',
+  'Network and Route Building': 'Route Building',
+  'Variable Player Powers': 'Player Powers',
+}
 const label = (dim) => {
-  const first = dim.split(' / ')[0]
+  const first = primary(dim)
   return SHORT[first] || first
+}
+
+// Labels wrap so they stay inside the viewBox. Genre axes are named after BGG's
+// own tags now, which are phrases ("Action / Dexterity", "Pick-up and Deliver")
+// rather than the single words a latent factor used to be named with — set on
+// one line they ran past the chart and into whatever sits beside it. The most
+// horizontal spoke's label starts at 0.9 of the width, so a line has about 0.1
+// to live in; ten characters at the label font is just under, eleven is just
+// over ("Pick-up and" spilled by 0.015).
+const WRAP = 10
+const wrap = (text) => {
+  const lines = []
+  for (const word of text.split(' ')) {
+    const last = lines.length - 1
+    if (last >= 0 && lines[last].length + 1 + word.length <= WRAP) lines[last] += ` ${word}`
+    else lines.push(word)
+  }
+  return lines
 }
 
 // A polar bar chart in a donut: each genre dimension owns an angular sector,
@@ -63,10 +86,18 @@ export default function Radar({ dimensions, series }) {
       {dimensions.map((dim, i) => {
         const x = cx + R * 1.22 * Math.cos(angle(i))
         const y = cy + R * 1.22 * Math.sin(angle(i))
+        const lines = wrap(label(dim))
+        // dominant-baseline centres one line; lift the block by half its extra
+        // height so a two-line label straddles the spoke the same way.
+        const lead = 0.024
         return (
           <text key={dim} x={x} y={y} className="radar__label"
             textAnchor={Math.abs(Math.cos(angle(i))) < 0.3 ? 'middle' : Math.cos(angle(i)) > 0 ? 'start' : 'end'}>
-            {label(dim)}
+            {lines.map((line, l) => (
+              <tspan key={line} x={x} dy={l === 0 ? -((lines.length - 1) * lead) / 2 : lead}>
+                {line}
+              </tspan>
+            ))}
           </text>
         )
       })}

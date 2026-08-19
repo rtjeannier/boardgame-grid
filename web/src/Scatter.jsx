@@ -3,12 +3,12 @@ import { colorFor } from './colors.js'
 
 // A small inline-SVG map of one cell's games, using the global 2-D projection
 // of the feature space (so positions are comparable across cells). Picks are
-// colored by their type label; alternates are gray. Hover names a point.
-export default function Scatter({ assignments, alternates }) {
+// colored by their mined genre; alternates are gray. Hover names a point.
+export default function Scatter({ assignments, alternates, genres }) {
   const [hovered, setHovered] = useState(null)
 
   const points = [
-    ...assignments.map(({ archetype, game }) => ({ game, color: colorFor(archetype) })),
+    ...assignments.map(({ game }) => ({ game, color: colorFor(game.genre, genres) })),
     ...alternates.map((game) => ({ game, color: null })),
   ]
   if (points.length < 2) return null // a one-point map says nothing
