@@ -21,6 +21,7 @@ from .config import (
     CELL_MEMBERSHIP_FLOOR,
     MEMBERSHIP_FLOOR,
     PLAYER_COLUMNS,
+    RECOMMENDED_WEIGHT,
     WEIGHT_ROW_LADDER,
     WEIGHT_TAPER,
 )
@@ -50,31 +51,43 @@ def player_column_for(game: Game) -> str | None:
 def player_memberships(game: Game) -> dict[str, float]:
     """How strongly this game belongs to each player-count column, in (0, 1].
 
-    Scored *peak-relative*: a column takes its best constituent count's "Best"
-    votes, and every column is divided by the strongest one, so the game's home
-    column is 1.0. A game the community likes equally at 3, 4, 5 and 6 therefore
-    scores 1.0 in all four — versatility is not punished. (Dividing by the total
-    instead would give it 0.25 apiece and rank it below a mediocre game playable
-    only at 4.)
+    A count's score is its *approval share*, `(best + w·recommended) / votes`.
+    Not its share of Best votes: Best alone is a preference ordering, and a vote
+    for four players is a vote taken away from five. Cartographers' five-player
+    row reads 108 Best / 156 Recommended / 23 Not Recommended — 92% approval
+    against 97% at four — yet scored 108/248 = 0.44 and looked like a barely-
+    five-player game. `RECOMMENDED_WEIGHT` sets how much a "this works" vote
+    counts against a "this is the best" one.
 
-    Empty when the community endorses no player count at all — such a game has
-    no place on the player axis and is simply not placed.
+    Then scored *peak-relative*: every column is divided by the strongest, so
+    the game's home column is 1.0. A game the community likes equally at 3, 4,
+    5 and 6 therefore scores 1.0 in all four — versatility is not punished.
+    (Dividing by the total instead would give it 0.25 apiece and rank it below a
+    mediocre game playable only at 4.)
+
+    Empty when no count clears the floor — such a game has no place on the
+    player axis and is simply not placed.
     """
-    by_column: dict[str, int] = {}
-    for count, votes in game.best_votes.items():
+    by_column: dict[str, float] = {}
+    for count, (best, recommended, not_rec) in game.player_poll.items():
         col = _column_of(count)
-        if col is not None:
-            # A column spans several counts (6-8); take its strongest, not the
-            # sum, or wide columns would look better merely for being wide.
-            by_column[col] = max(by_column.get(col, 0), votes)
+        total = best + recommended + not_rec
+        if col is None or total == 0:
+            continue
+        score = (best + RECOMMENDED_WEIGHT * recommended) / total
+        # A column spans several counts (6-8); take its strongest, not the sum,
+        # or wide columns would look better merely for being wide.
+        by_column[col] = max(by_column.get(col, 0.0), score)
     if not by_column:
         return {}
 
     peak = max(by_column.values())
+    if peak <= 0:
+        return {}
     return {
-        col: votes / peak
-        for col, votes in by_column.items()
-        if votes / peak >= MEMBERSHIP_FLOOR
+        col: score / peak
+        for col, score in by_column.items()
+        if score / peak >= MEMBERSHIP_FLOOR
     }
 
 

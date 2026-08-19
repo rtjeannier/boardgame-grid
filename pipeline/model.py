@@ -30,12 +30,10 @@ class Game:
     # signals feed the NMF genre axes, where family tokens would pollute the
     # dimension names; only the similarity space uses these.
     families: list[str]
-    # Raw "Best" votes per player count, for counts the community endorses. This
-    # is the distribution behind `best_count`: A Game of Thrones records 915 at
-    # six players, 100 at five, 48 at four. The grid uses it for soft column
-    # membership, so a game good at 3-6 appears in all of those columns instead
-    # of only its peak.
-    best_votes: dict[int, int]
+    # The whole suggested-players poll: count -> [best, recommended, not_rec].
+    # All three are needed because Best alone is a preference ordering, not a
+    # verdict on a count — see buckets.player_memberships.
+    player_poll: dict[int, list[int]]
     # How many people have rated the game — a proxy for how hard BGG's tagging
     # has been looked at. Tag count tracks popularity (rank vs tag count
     # correlates -0.35), so a sparsely-tagged game is usually unread rather than
@@ -55,7 +53,7 @@ class Game:
             best_counts=d["best_counts"], best_count=d["best_count"],
             signals=d["signals"], families=d["families"],
             # JSON object keys are strings; the poll is keyed by player count.
-            best_votes={int(k): v for k, v in d["best_votes"].items()},
+            player_poll={int(k): v for k, v in d["player_poll"].items()},
             users_rated=d["users_rated"],
         )
 
@@ -66,7 +64,7 @@ class Game:
             "rating": self.rating, "weight": self.weight, "playtime": self.playtime,
             "best_counts": self.best_counts, "best_count": self.best_count,
             "signals": self.signals, "families": self.families,
-            "best_votes": self.best_votes,
+            "player_poll": self.player_poll,
             "users_rated": self.users_rated,
         }
 

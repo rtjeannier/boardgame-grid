@@ -98,9 +98,12 @@ class BggClient:
         if rank in (None, "Not Ranked"):
             return None  # unranked games have no place on the grid
 
-        best_votes = _best_votes(item)
-        best_counts = sorted(best_votes)
-        best_count = max(best_votes, key=lambda n: (best_votes[n], -n)) if best_votes else None
+        poll = _player_poll(item)
+        # Counts the community endorses outright — what BGG's own "Best: 3-6"
+        # label shows, kept for display and for the per-cell assigners.
+        endorsed = {n: v[0] for n, v in poll.items() if v[0] > 0 and v[0] >= v[2]}
+        best_counts = sorted(endorsed)
+        best_count = max(endorsed, key=lambda n: (endorsed[n], -n)) if endorsed else None
         name_el = item.find("name[@type='primary']")
         return Game(
             id=int(item.get("id")),
@@ -114,7 +117,7 @@ class BggClient:
             best_count=best_count,
             signals=_signals(item),
             families=_families(item),
-            best_votes=best_votes,
+            player_poll=poll,
             users_rated=int(ratings.find("usersrated").get("value")),
         )
 
@@ -161,33 +164,36 @@ class BggClient:
         raise RuntimeError(f"BGG did not return data for {url}")
 
 
-def _best_votes(item: ET.Element) -> dict[int, int]:
-    """The suggested-players poll as a distribution: count -> "Best" votes.
+def _player_poll(item: ET.Element) -> dict[int, list[int]]:
+    """The suggested-players poll, whole: count -> [best, recommended, not_rec].
 
-    A count qualifies when Best votes exist and outnumber "Not Recommended" —
-    the same test BGG's own "Best: 3-6" display uses. Callers derive the peak
-    (most Best votes, ties toward fewer players) and soft column membership
-    from this; keeping the raw votes is what makes the latter possible.
+    All three counts are kept because Best alone answers the wrong question.
+    Best is a *preference ordering* — a vote for four players is a vote taken
+    away from five — so Cartographers, which 92% of voters say plays well at
+    five, scored 108 Best against 248 at four and looked like a 44% five-player
+    game. How good a count is and which count people like most are different
+    things; `buckets.player_memberships` blends them, and the blend is a
+    config knob rather than something baked in here.
 
-    Deliberately *not* `Best + Recommended > Not Recommended`: that only asks
-    whether more people tolerate a count than object to it, and rates Ricochet
-    Robots as playing well at 1-12 when BGG says 3-6. Nor do we bound by
-    minplayers/maxplayers — Ricochet Robots reports maxplayers 99.
+    Rows labelled "N+" mean *more than* N and are skipped, not folded into N.
+    They used to be: `"6+".rstrip("+")` is `"6"`, so the open-ended row silently
+    overwrote the real one for 77 games — Sons of Anarchy's 48 four-player Best
+    votes were replaced by its "4+" row's 10.
     """
     poll = item.find("poll[@name='suggested_numplayers']")
     if poll is None:
         return {}
-    best_votes: dict[int, int] = {}
+    result: dict[int, list[int]] = {}
     for results in poll.findall("results"):
-        label = results.get("numplayers", "").rstrip("+")
-        if not label.isdigit():
+        label = results.get("numplayers", "")
+        if not label.isdigit():        # skips "N+" and anything else non-numeric
             continue
         votes = {r.get("value"): int(r.get("numvotes", 0)) for r in results.findall("result")}
-        best = votes.get("Best", 0)
-        not_rec = votes.get("Not Recommended", 0)
-        if best > 0 and best >= not_rec:
-            best_votes[int(label)] = best
-    return best_votes
+        counts = [votes.get("Best", 0), votes.get("Recommended", 0),
+                  votes.get("Not Recommended", 0)]
+        if sum(counts):
+            result[int(label)] = counts
+    return result
 
 
 def _signals(item: ET.Element) -> list[str]:

@@ -150,11 +150,18 @@ pick this branch and the **`/docs`** folder. The site goes live at
 A game does not live in one cell. Both axes are fuzzy, and a game belongs to
 several cells *by degree*:
 
-- **Columns** come from the suggested-players poll, scored **peak-relative**:
-  the game's strongest column is 1.0 and the others measure against it. A game
-  the community likes equally at 3, 4, 5 and 6 therefore scores 1.0 in all four
-  — versatility is not punished. (Scoring by share-of-total would give it 0.25
-  apiece and rank it below a mediocre game playable only at 4.)
+- **Columns** come from the suggested-players poll. A count scores its
+  *approval share* — `(best + RECOMMENDED_WEIGHT × recommended) / votes` — not
+  its share of Best votes, because Best alone is a preference ordering: a vote
+  for four players is a vote taken away from five. Cartographers plays well at
+  five by 92% approval against 97% at four, yet its Best votes (108 vs 248)
+  made it look like a 44% five-player game.
+
+  Columns are then **peak-relative**: the strongest is 1.0 and the others
+  measure against it, so a game the community likes equally at 3, 4, 5 and 6
+  scores 1.0 in all four — versatility is not punished. (Scoring by
+  share-of-total would give it 0.25 apiece and rank it below a mediocre game
+  playable only at 4.)
 - **Rows** taper: full membership inside a row, falling to zero across
   `WEIGHT_TAPER` weight units past each edge. The edges are quantile cuts, and
   BGG publishes only a mean weight, so 2.89 and 2.91 are not different games.
@@ -253,9 +260,10 @@ Everything lives in `pipeline/config.py`:
 - **Coverage** — `QUALITY_FLOOR` (how much the worst-rated game still covers),
   `QUALITY_EXPONENT` (how sharply a better rating beats a worse one),
   `GAIN_FLOOR` (when to stop picking), `COLLECTION_SIZE`, `PICKS_PER_CELL`.
-- **Membership** — `MEMBERSHIP_FLOOR` (how far below its peak column a game
-  still counts), `WEIGHT_TAPER` (how far a weight row bleeds past its edges),
-  `CELL_MEMBERSHIP_FLOOR`.
+- **Membership** — `RECOMMENDED_WEIGHT` (how much a "this works" vote counts
+  against a "this is the best" vote), `MEMBERSHIP_FLOOR` (how far below its peak
+  column a game still counts), `WEIGHT_TAPER` (how far a weight row bleeds past
+  its edges), `CELL_MEMBERSHIP_FLOOR`.
 - **Duplicate suppression** — `SIMILARITY_EXPONENT` (falloff sharpness; higher
   is more permissive to same-genre neighbours, lower prunes harder).
 - **MMR** — `MMR_LAMBDA` (1.0 = pure rank, 0.0 = pure spread).
@@ -301,7 +309,7 @@ offline with `python -m pipeline.build` and no credentials.
 
 The seed is a *smaller* dataset, never a *thinner* one. The pipeline has no
 fallbacks for absent fields — a dataset missing `users_rated`, `families` or
-`best_votes` raises rather than quietly producing a degraded grid, because a
+`player_poll` raises rather than quietly producing a degraded grid, because a
 build that reports "33 filled cells" while every game has collapsed to an
 identical vector is worse than one that fails. Regenerate the seed from a live
 capture rather than teaching the code to cope without it.

@@ -135,6 +135,16 @@ LOADING_SHRINKAGE = 8000
 # each and let a mediocre 4-only game beat it, which penalises versatility.
 MEMBERSHIP_FLOOR = 0.25   # drop columns scoring below this fraction of the peak
 
+# How much a "this works" vote counts against a "this is the best" vote. A
+# count's score is (best + RECOMMENDED_WEIGHT * recommended) / total votes.
+# Best votes alone are a preference ordering, not a verdict: a vote for four
+# players is a vote taken away from five. Cartographers plays well at five by
+# 92% approval against 97% at four, but scored 108 Best against 248 and came out
+# at 0.44. At 0.25 it reaches 0.67, while Ricochet Robots' eleven-player row —
+# tolerated but not liked — stays at the floor. Counting Recommended in full
+# would put that at 0.57 and drag every crowd game across the whole grid.
+RECOMMENDED_WEIGHT = 0.25
+
 # Weight rows are quantile cuts, so a game at 2.89 is barely distinguishable from
 # one at 2.91. Membership stays 1.0 inside a row and tapers to 0 across this many
 # weight units past each edge, letting borderline games belong to both.

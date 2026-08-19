@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "live",
-    "generatedAt": "2026-08-19T04:46:53+00:00",
+    "generatedAt": "2026-08-19T05:02:18+00:00",
     "size": 15,
     "anchors": [],
     "dimensions": [
@@ -80,9 +80,27 @@
       "families": [
         "Game: Brass"
       ],
-      "best_votes": {
-        "3": 766,
-        "4": 792
+      "player_poll": {
+        "1": [
+          0,
+          72,
+          783
+        ],
+        "2": [
+          133,
+          896,
+          184
+        ],
+        "3": [
+          766,
+          464,
+          20
+        ],
+        "4": [
+          792,
+          375,
+          54
+        ]
       },
       "users_rated": 59706,
       "url": "https://boardgamegeek.com/boardgame/224517",
@@ -163,10 +181,27 @@
       "families": [
         "Game: Gloomhaven"
       ],
-      "best_votes": {
-        "2": 414,
-        "3": 817,
-        "4": 501
+      "player_poll": {
+        "1": [
+          155,
+          714,
+          396
+        ],
+        "2": [
+          414,
+          900,
+          96
+        ],
+        "3": [
+          817,
+          543,
+          41
+        ],
+        "4": [
+          501,
+          666,
+          176
+        ]
       },
       "users_rated": 67551,
       "url": "https://boardgamegeek.com/boardgame/174430",
@@ -238,9 +273,27 @@
       "families": [
         "Game: Ark Nova"
       ],
-      "best_votes": {
-        "2": 1552,
-        "3": 670
+      "player_poll": {
+        "1": [
+          226,
+          1001,
+          311
+        ],
+        "2": [
+          1552,
+          589,
+          47
+        ],
+        "3": [
+          670,
+          1087,
+          181
+        ],
+        "4": [
+          115,
+          669,
+          1051
+        ]
       },
       "users_rated": 62515,
       "url": "https://boardgamegeek.com/boardgame/342942",
@@ -308,8 +361,17 @@
       "families": [
         "Game: Twilight Struggle"
       ],
-      "best_votes": {
-        "2": 883
+      "player_poll": {
+        "1": [
+          11,
+          37,
+          651
+        ],
+        "2": [
+          883,
+          48,
+          6
+        ]
       },
       "users_rated": 52351,
       "url": "https://boardgamegeek.com/boardgame/12333",
@@ -368,8 +430,17 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
-      "best_votes": {
-        "2": 404
+      "player_poll": {
+        "1": [
+          12,
+          81,
+          271
+        ],
+        "2": [
+          404,
+          22,
+          1
+        ]
       },
       "users_rated": 33866,
       "url": "https://boardgamegeek.com/boardgame/373106",
@@ -435,10 +506,27 @@
       "families": [
         "Game: Pandemic"
       ],
-      "best_votes": {
-        "2": 171,
-        "3": 195,
-        "4": 518
+      "player_poll": {
+        "1": [
+          21,
+          149,
+          464
+        ],
+        "2": [
+          171,
+          486,
+          109
+        ],
+        "3": [
+          195,
+          462,
+          42
+        ],
+        "4": [
+          518,
+          230,
+          25
+        ]
       },
       "users_rated": 57702,
       "url": "https://boardgamegeek.com/boardgame/161936",
@@ -511,15 +599,112 @@
       "families": [
         "Game: Werewolf / Mafia"
       ],
-      "best_votes": {
-        "8": 96,
-        "9": 162,
-        "10": 193,
-        "11": 228,
-        "12": 236,
-        "13": 111,
-        "14": 60,
-        "15": 45
+      "player_poll": {
+        "1": [
+          1,
+          0,
+          240
+        ],
+        "2": [
+          0,
+          0,
+          239
+        ],
+        "3": [
+          0,
+          0,
+          240
+        ],
+        "4": [
+          0,
+          0,
+          239
+        ],
+        "5": [
+          2,
+          37,
+          207
+        ],
+        "6": [
+          4,
+          98,
+          142
+        ],
+        "7": [
+          11,
+          166,
+          78
+        ],
+        "8": [
+          96,
+          150,
+          21
+        ],
+        "9": [
+          162,
+          98,
+          12
+        ],
+        "10": [
+          193,
+          71,
+          9
+        ],
+        "11": [
+          228,
+          39,
+          8
+        ],
+        "12": [
+          236,
+          32,
+          8
+        ],
+        "13": [
+          111,
+          130,
+          17
+        ],
+        "14": [
+          60,
+          170,
+          20
+        ],
+        "15": [
+          45,
+          160,
+          41
+        ],
+        "16": [
+          14,
+          121,
+          98
+        ],
+        "17": [
+          6,
+          76,
+          145
+        ],
+        "18": [
+          2,
+          62,
+          161
+        ],
+        "19": [
+          2,
+          47,
+          177
+        ],
+        "20": [
+          3,
+          45,
+          180
+        ],
+        "21": [
+          1,
+          16,
+          202
+        ]
       },
       "users_rated": 12126,
       "url": "https://boardgamegeek.com/boardgame/240980",
@@ -598,10 +783,37 @@
       "families": [
         "Game: Twilight Imperium"
       ],
-      "best_votes": {
-        "4": 177,
-        "5": 129,
-        "6": 491
+      "player_poll": {
+        "1": [
+          2,
+          6,
+          482
+        ],
+        "2": [
+          2,
+          21,
+          469
+        ],
+        "3": [
+          24,
+          268,
+          242
+        ],
+        "4": [
+          177,
+          336,
+          81
+        ],
+        "5": [
+          129,
+          394,
+          58
+        ],
+        "6": [
+          491,
+          102,
+          32
+        ]
       },
       "users_rated": 28870,
       "url": "https://boardgamegeek.com/boardgame/233078",
@@ -674,10 +886,27 @@
       "families": [
         "Game: A Feast for Odin"
       ],
-      "best_votes": {
-        "1": 136,
-        "2": 248,
-        "3": 286
+      "player_poll": {
+        "1": [
+          136,
+          319,
+          55
+        ],
+        "2": [
+          248,
+          306,
+          14
+        ],
+        "3": [
+          286,
+          200,
+          27
+        ],
+        "4": [
+          72,
+          260,
+          132
+        ]
       },
       "users_rated": 33951,
       "url": "https://boardgamegeek.com/boardgame/177736",
@@ -740,10 +969,32 @@
       "families": [
         "Game: The Crew"
       ],
-      "best_votes": {
-        "3": 75,
-        "4": 261,
-        "5": 63
+      "player_poll": {
+        "1": [
+          0,
+          4,
+          239
+        ],
+        "2": [
+          12,
+          92,
+          178
+        ],
+        "3": [
+          75,
+          224,
+          12
+        ],
+        "4": [
+          261,
+          56,
+          1
+        ],
+        "5": [
+          63,
+          175,
+          23
+        ]
       },
       "users_rated": 26320,
       "url": "https://boardgamegeek.com/boardgame/324856",
@@ -808,8 +1059,27 @@
         "Variable Set-up"
       ],
       "families": [],
-      "best_votes": {
-        "2": 553
+      "player_poll": {
+        "1": [
+          1,
+          39,
+          370
+        ],
+        "2": [
+          553,
+          35,
+          3
+        ],
+        "3": [
+          12,
+          94,
+          329
+        ],
+        "4": [
+          45,
+          153,
+          251
+        ]
       },
       "users_rated": 25453,
       "url": "https://boardgamegeek.com/boardgame/115746",
@@ -879,10 +1149,27 @@
       "families": [
         "Game: Spirit Island"
       ],
-      "best_votes": {
-        "1": 599,
-        "2": 1434,
-        "3": 660
+      "player_poll": {
+        "1": [
+          599,
+          1132,
+          128
+        ],
+        "2": [
+          1434,
+          573,
+          15
+        ],
+        "3": [
+          660,
+          1027,
+          118
+        ],
+        "4": [
+          193,
+          835,
+          671
+        ]
       },
       "users_rated": 64200,
       "url": "https://boardgamegeek.com/boardgame/162886",
@@ -949,9 +1236,27 @@
       "families": [
         "Game: The Castles of Burgundy"
       ],
-      "best_votes": {
-        "2": 1091,
-        "3": 501
+      "player_poll": {
+        "1": [
+          10,
+          100,
+          812
+        ],
+        "2": [
+          1091,
+          436,
+          53
+        ],
+        "3": [
+          501,
+          854,
+          43
+        ],
+        "4": [
+          293,
+          693,
+          366
+        ]
       },
       "users_rated": 70278,
       "url": "https://boardgamegeek.com/boardgame/84876",
@@ -1015,10 +1320,27 @@
         "Variable Player Powers"
       ],
       "families": [],
-      "best_votes": {
-        "1": 77,
-        "2": 230,
-        "3": 91
+      "player_poll": {
+        "1": [
+          77,
+          180,
+          44
+        ],
+        "2": [
+          230,
+          85,
+          2
+        ],
+        "3": [
+          91,
+          172,
+          20
+        ],
+        "4": [
+          42,
+          154,
+          76
+        ]
       },
       "users_rated": 13950,
       "url": "https://boardgamegeek.com/boardgame/338960",
@@ -1071,9 +1393,27 @@
         "Team-Based Game"
       ],
       "families": [],
-      "best_votes": {
-        "2": 219,
-        "4": 177
+      "player_poll": {
+        "1": [
+          1,
+          14,
+          197
+        ],
+        "2": [
+          219,
+          63,
+          3
+        ],
+        "3": [
+          5,
+          75,
+          144
+        ],
+        "4": [
+          177,
+          88,
+          8
+        ]
       },
       "users_rated": 21405,
       "url": "https://boardgamegeek.com/boardgame/521",
