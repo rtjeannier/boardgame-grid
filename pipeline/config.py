@@ -106,9 +106,20 @@ GENRE_GROWTH = 0.4
 # containment the redundant sub-genres go — `Modern Warfare` is 94% inside the
 # wargame genre — and dexterity survives all the way down to six.
 #
-# The radar is expected to be lopsided, because the corpus is: at eight the
-# genres run from 50% of all games down to 3%.
-GENRE_LIMIT = 8
+# The radar is expected to be lopsided, because the corpus is: at twelve the
+# genres run from 31% of all games down to 2%.
+#
+# Eight was too few to hold the corpus honestly. The thematic region — fantasy,
+# adventure, dice, miniatures, variable powers, solo, co-op — came out as one
+# 38% genre whose leading tag described only 44% of its own members, so Root,
+# Quacks and Five Tribes were all filed as cooperative games. That blob is real
+# and resists splitting directly: a tighter `GENRE_GROWTH`, dropping compounds
+# from clustering, and excluding parent/compound pairs from cohesion all made
+# the genre set worse. Simply allowing more genres does split it, because
+# `_prune_nested` stops merging distinct kinds to hit the count: at twelve the
+# biggest genre is 31% and a leading tag describes 80% of its members on
+# average, against 68% at eight.
+GENRE_LIMIT = 12
 
 # How many genres to discover before pruning. Left to run, the search keeps
 # splitting until the tag pool empties — about 40 — and the extra genres are
@@ -133,7 +144,16 @@ GENRE_DISCOVER = 18
 #
 # The relationship is not monotonic, so this is the right rule and not a smooth
 # dial: 1/6 and 1/10 both give worse genre sets than 1/8.
-GENRE_BASE_RATE = 1 / GENRE_LIMIT
+#
+# This was `1 / GENRE_LIMIT`, which coincided with an eighth while the limit was
+# eight. Raising the limit to twelve separated them, and the cutoff turns out to
+# belong where it was: at twelve genres, 1/8 still measures best (a leading tag
+# describes 80% of its genre, against 72% at 1/9, 78% at 1/10 and 65% at 1/12),
+# while 1/10 and 1/12 both lose the dexterity genre and 1/7 loses a canary. It
+# is a property of how BGG's tag frequencies fall, not of how many genres we
+# keep — 625 games separates `Economic` (631) from `Fighting` (602), which is
+# the line between "broad kind of game" and "thing games do".
+GENRE_BASE_RATE = 0.125
 
 # Contribution of the continuous stats to distances, relative to genre loadings
 # (which are L2-normalised per game). Within a cell weight is nearly constant,

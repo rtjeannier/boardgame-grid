@@ -284,7 +284,7 @@ def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:
     everything. Each pair of such tags therefore also becomes a signal in its
     own right: `Card Game + Hand Management`, `Tile Placement + Open Drafting`.
     A compound is specific enough to name a kind of game where neither half was,
-    and two of the eight genres exist only because of them.
+    and several genres exist only because of them.
 
     The base tags are *kept* alongside their compounds, not replaced by them. A
     tag connects every game carrying it; a compound connects only games sharing
@@ -631,10 +631,18 @@ def _defining_order(core: list[int], incidence: np.ndarray, vocab: list[str],
     across every kind of game, and naming by frequency alone put it at the head
     of an adventure genre that is really about campaigns and exploration.
 
-    Tempered by reach (`log`), because precision alone crowns whatever is
-    rarest: unmoderated it names the wargame genre `Ratio / Combat Results
-    Table` and the economic one `Commodity Speculation`, both technically
-    perfect and useless as labels.
+    Balanced against how much of the genre the tag *describes*, because
+    precision alone crowns whatever is rarest: unmoderated it names the wargame
+    genre `Ratio / Combat Results Table` and the economic one `Commodity
+    Speculation`, both technically perfect and useless as labels.
+
+    Both halves are needed, and the score is their harmonic mean, so a tag has
+    to be about this genre *and* about most of its members. This was precision
+    tempered by `log(reach)`, which is a proxy for the second half and too weak
+    a one: `Voting` named the party genre while describing 21% of it, and
+    `Stacking and Balancing` named dexterity at 21%, each winning on being
+    almost exclusive to a genre it barely covers. Naming by description alone
+    fails the other way, which is what the precision half is for.
 
     Tags may arrive as compounds (`Card Game + Hand Management`), so they are
     split back into the distinct tags they mention — otherwise a card genre
@@ -643,12 +651,18 @@ def _defining_order(core: list[int], incidence: np.ndarray, vocab: list[str],
     already present in any case is skipped rather than repeated.
     """
     scored = []
+    members = max(int(inside.sum()), 1)
     for signal in core:
         carriers = incidence[:, signal] > 0
         reach = carriers.sum()
         if not reach:
             continue
-        scored.append(((carriers & inside).sum() / reach * np.log1p(reach), signal))
+        held = (carriers & inside).sum()
+        precision = held / reach          # how much of the tag is this genre
+        recall = held / members           # how much of the genre is this tag
+        if not held:
+            continue
+        scored.append((2 * precision * recall / (precision + recall), signal))
 
     out: list[tuple[str, float]] = []
     seen: set[str] = set()

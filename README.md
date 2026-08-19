@@ -123,14 +123,14 @@ pick this branch and the **`/docs`** folder. The site goes live at
    World War II`, `Action / Dexterity · Stacking and Balancing`. Nobody labels
    the genres; they are read off the data.
 
-   **Base-rate tags get compounds.** A tag carried by more of the corpus than
-   one genre's even share — `1 / GENRE_LIMIT` — cannot itself be a genre.
-   `Hand Management` marks 1634 of 5000 games and `Card Game` 1483, and left to
-   found genres they anchor one covering most of everything. So every *pair* of
-   such tags also becomes a signal (`Card Game + Hand Management`), specific
-   enough to name a kind of game where neither half was; two of the eight genres
-   exist only because of them. Ordinary tags are left completely alone — pairing
-   them instead shreds them into fragments that only recombine into themselves.
+   **Base-rate tags get compounds.** A tag carried by more than
+   `GENRE_BASE_RATE` of the corpus cannot itself be a genre. `Hand Management`
+   marks 1634 of 5000 games and `Card Game` 1483, and left to found genres they
+   anchor one covering most of everything. So every *pair* of such tags also
+   becomes a signal (`Card Game + Hand Management`), specific enough to name a
+   kind of game where neither half was; several genres exist only because of
+   them. Ordinary tags are left completely alone — pairing them instead shreds
+   them into fragments that only recombine into themselves.
 
    The base tags are **kept** alongside their compounds. A tag connects every
    game carrying it; a compound connects only games sharing that exact pair, and
@@ -158,9 +158,19 @@ pick this branch and the **`/docs`** folder. The site goes live at
    War` is 94% inside the wargame genre, while dexterity is only 27% inside
    anything. Dexterity therefore survives all the way down to six axes.
 
-   **The radar is lopsided on purpose**, because the corpus is: the eight genres
-   run from 50% of all games down to 3%. Every build prints the worst
-   containment so redundancy stays visible.
+   **Genres are named by what they describe**, not by what is exclusive to them.
+   A tag's label score is the harmonic mean of how much of the tag lands in the
+   genre and how much of the genre carries the tag, so a name has to be about
+   this genre *and* about most of its members. Precision alone crowns whatever
+   is rarest — it named the party genre `Voting`, a tag 21% of it carries, and
+   the dexterity genre `Stacking and Balancing`, also 21%.
+
+   **The radar is lopsided on purpose**, because the corpus is: the twelve
+   genres run from 31% of all games down to 2%. Twelve rather than eight because
+   at eight the thematic region — fantasy, adventure, dice, miniatures, solo,
+   co-op — collapsed into one 38% genre whose leading tag described 44% of its
+   own members, so Root and Five Tribes were filed as cooperative games. Every
+   build prints the worst containment so redundancy stays visible.
 
    **Scarce genres are weighted up** (`GENRE_SCARCITY`), so a game leaning
    equally on a crowded genre and a rare one counts as the rare one. This is IDF
