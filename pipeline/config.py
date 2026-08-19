@@ -200,9 +200,25 @@ GENRE_MIN_LIFT = 1.3
 # *candidate*, not a refinement: a tag and a compound containing it have high
 # cosine by construction, so every extra pair competes to found an axis. At 1.55
 # Crokinole becomes a party game and mean name-truth falls to 72%, at 1.45 it
-# becomes a voting game at 54%. Replacing the base-rate compounds with these
-# instead of adding to them is worse still (54-71%) — the two rules do different
-# jobs and both are needed.
+# becomes a voting game at 54%.
+#
+# This cannot replace GENRE_BASE_RATE, and the two thresholds are not two
+# answers to one question. Every one of the 76 base pairs scores *below* this
+# bar — the highest is `Cooperative Game + Modular Board` at 1.58 and `Card Game
+# + Hand Management` is 1.47 — because a base pair's value is breadth, not
+# coherence: it is only modestly tighter than its parents precisely because its
+# parents are already coherent (0.350 and 0.329), and what it buys is splitting
+# 878 games off the two biggest tags in the corpus. Lowering the bar to reach
+# them does not work either, since 1.47 sits in the middle of the distribution
+# rather than at a gap: pure interaction at 1.5 admits 137 pairs for 64%
+# name-truth, and at 1.3 it admits 539 for 54%. Absolute cohesion does not
+# separate them either — base pairs span 0.316-0.546 and interaction pairs
+# 0.425-0.762, and catching even half the base pairs means admitting 664 of the
+# 1194 candidates.
+#
+# Dropping the base rule entirely costs the economic genre outright: Brass,
+# Terra Mystica, Barrage and Viticulture end up in a 455-game genre named
+# `Network and Route Building`, and Agricola in one named `Abstract Strategy`.
 GENRE_INTERACTION = 1.7
 
 # Contribution of the continuous stats to distances, relative to genre loadings
