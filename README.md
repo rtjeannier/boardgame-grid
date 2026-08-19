@@ -123,13 +123,23 @@ pick this branch and the **`/docs`** folder. The site goes live at
    World War II`, `Action / Dexterity · Stacking and Balancing`. Nobody labels
    the genres; they are read off the data.
 
-   **Base-rate tags are paired off first.** `Hand Management` marks 1634 of
-   5000 games and `Card Game` 1483 — those are base rates, not kinds of game,
-   and any genre founded on one covers most of the corpus. So a tag over
-   `GENRE_BASE_RATE` is dropped and survives only paired with another such tag
-   (`Card Game + Hand Management`), which is specific enough to name a kind of
-   game where neither half was. Ordinary tags are left completely alone; pairing
+   **Base-rate tags get compounds.** A tag carried by more of the corpus than
+   one genre's even share — `1 / GENRE_LIMIT` — cannot itself be a genre.
+   `Hand Management` marks 1634 of 5000 games and `Card Game` 1483, and left to
+   found genres they anchor one covering most of everything. So every *pair* of
+   such tags also becomes a signal (`Card Game + Hand Management`), specific
+   enough to name a kind of game where neither half was; two of the eight genres
+   exist only because of them. Ordinary tags are left completely alone — pairing
    them instead shreds them into fragments that only recombine into themselves.
+
+   The base tags are **kept** alongside their compounds. A tag connects every
+   game carrying it; a compound connects only games sharing that exact pair, and
+   games pair the same tag differently — Dune: Imperium and Lost Ruins of Arnak
+   both carry `Open Drafting`, but Dune pairs it with `Solo`/`Variable Player
+   Powers` and Arnak with `Card Game`/`Fantasy`/`Hand Management`. Dropping the
+   parent halves how alike a tag's games look to each other, for all thirteen
+   base tags, with none spared. Compounds add specificity; only the parent
+   carries commonality.
 
    **Genres are then claimed tightest-first.** Each round agglomerates whatever
    signals are unclaimed, takes the most cohesive group that reaches enough
@@ -329,9 +339,9 @@ Everything lives in `pipeline/config.py`:
 - **Player columns** — `PLAYER_COLUMNS` (label + inclusive count range).
 - **Number of weight rows** — `WEIGHT_ROW_COUNT`. Rows are quantiles of the
   actual population, so they stay balanced whatever you pick.
-- **Feature space** — `GENRE_LIMIT` (how many genre axes), `GENRE_BASE_RATE`
-  (when a tag is too common to found a genre), `GENRE_GROWTH` (how far a genre
-  may widen from its seed), `GENRE_DISCOVER` (how many to find before pruning),
+- **Feature space** — `GENRE_LIMIT` (how many genre axes; `GENRE_BASE_RATE`
+  derives from it), `GENRE_GROWTH` (how far a genre may widen from its seed),
+  `GENRE_DISCOVER` (how many to find before pruning),
   `GENRE_AXIS_TARGET` (the smallest genre worth having),
   `WEIGHT_SCALE` / `PLAYTIME_SCALE` (how much the continuous stats matter vs
   genre).

@@ -201,18 +201,30 @@ def _genre_loadings(games: list[Game]) -> dict:
 
 
 def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:
-    """Game x signal incidence, with the base-rate tags replaced by compounds.
+    """Game x signal incidence, plus a compound for each pair of base-rate tags.
 
-    A handful of BGG tags are carried by a fifth of everything — `Hand
-    Management` marks 1634 of 5000 games, `Card Game` 1483. Those are base
-    rates, not kinds of game, and any genre founded on one is enormous: left
-    alone they anchor a single 3079-game genre covering 62% of the corpus.
+    A tag carried by more of the corpus than one genre's even share cannot
+    itself be a genre — `Hand Management` marks 1634 of 5000 games and `Card
+    Game` 1483, and left to found genres they anchor one covering most of
+    everything. Each pair of such tags therefore also becomes a signal in its
+    own right: `Card Game + Hand Management`, `Tile Placement + Open Drafting`.
+    A compound is specific enough to name a kind of game where neither half was,
+    and two of the eight genres exist only because of them.
 
-    So a tag over `GENRE_BASE_RATE` is dropped and survives only paired with
-    another such tag — `Card Game × Hand Management`, `Hand Management × Set
-    Collection`. Each compound is specific enough to describe a kind of game
-    where neither half was, and the pairing splits the blob across several
-    genres instead of one. Ordinary tags are left completely alone.
+    The base tags are *kept* alongside their compounds, not replaced by them. A
+    tag connects every game carrying it; a compound connects only games sharing
+    that exact pair, and games pair the same tag differently — Dune: Imperium
+    and Lost Ruins of Arnak both carry `Open Drafting`, but Dune pairs it with
+    `Solo`/`Variable Player Powers` and Arnak with `Card Game`/`Fantasy`/`Hand
+    Management`. Dropping the parent therefore halves how alike a tag's games
+    look to each other: measured across all thirteen base tags, mean pairwise
+    cosine among a tag's games falls from ~0.20 to ~0.10, with no tag spared.
+    Compounds add specificity; only the parent carries commonality.
+
+    The tempting check — are the parent's games still covered by its compounds?
+    — is the wrong one. All thirteen come out 85-99% covered, which would say
+    drop them all. It measures whether each *game* keeps some signal, not
+    whether the *relationships between games* survive.
 
     Pairing *only* base tags with each other is what makes this work, and it
     took several wrong turns to find. Pairing them with ordinary tags instead
@@ -220,11 +232,6 @@ def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:
     because those fragments share it and nothing else: `Deck Construction`,
     `Horror` and `Humor` each came back as a "genre" reassembled from its own
     pieces, while dexterity, trick-taking and economic vanished entirely.
-    Keeping a tag *and* its compounds is worse still — a compound is a subset of
-    its parent, so their cosine is sqrt(containment), which beats every real
-    genre's internal cohesion (dexterity's is 0.48) and the clustering finds
-    nothing but parent/child pairs. Only base x base avoids both, because there
-    are just a handful of compounds and no ordinary tag is touched.
     """
     vocab = sorted({s for g in games for s in g.signals})
     index = {s: j for j, s in enumerate(vocab)}
@@ -237,8 +244,8 @@ def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:
     base = [j for j in range(len(vocab)) if carried[j] > len(games) * GENRE_BASE_RATE]
     floor = len(games) / GENRE_AXIS_TARGET / 10
 
-    names = [vocab[j] for j in range(len(vocab)) if j not in set(base)]
-    columns = [incidence[:, j] for j in range(len(vocab)) if j not in set(base)]
+    names = list(vocab)
+    columns = [incidence[:, j] for j in range(len(vocab))]
     for a, first in enumerate(base):
         for second in base[a + 1:]:
             both = incidence[:, first] * incidence[:, second]

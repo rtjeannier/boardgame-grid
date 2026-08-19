@@ -91,15 +91,6 @@ GENRE_COMPOUND = " + "
 # ten but only 92% of games end up in any genre at all.
 GENRE_MIN_COHESION = 0.10
 
-# A tag carried by more than this share of the corpus is a base rate, not a kind
-# of game. `Hand Management` marks 1634 of 5000 games and `Card Game` 1483, so
-# any genre founded on one is enormous — left alone they anchor a single genre
-# covering 62% of everything. Such tags are dropped and survive only paired with
-# each other (`Card Game × Hand Management`), which is specific enough to name a
-# kind of game where neither half was. See features._signal_space for why only
-# base x base pairing works and base x ordinary does not.
-GENRE_BASE_RATE = 0.20
-
 # How much of its starting tightness a genre may lose as it grows. Each genre
 # starts from the most cohesive group left and widens while it holds this share
 # of that. Relative because genres differ in how tight they naturally are —
@@ -117,6 +108,8 @@ GENRE_GROWTH = 0.4
 #
 # The radar is expected to be lopsided, because the corpus is: at eight the
 # genres run from 50% of all games down to 3%.
+GENRE_LIMIT = 8
+
 # How many genres to discover before pruning. Left to run, the search keeps
 # splitting until the tag pool empties — about 40 — and the extra genres are
 # real but marginal (`Trivia`, `Move Through Deck`). Discovering more is not
@@ -125,7 +118,22 @@ GENRE_GROWTH = 0.4
 # Eighteen is where the survivors are the recognisable kinds.
 GENRE_DISCOVER = 18
 
-GENRE_LIMIT = 8
+# A tag carried by more of the corpus than one genre's even share cannot itself
+# be a genre — it is a base rate. `Hand Management` marks 1634 of 5000 games and
+# `Card Game` 1483; left to found genres they anchor one covering most of
+# everything. Such tags are *additionally* offered paired with each other
+# (`Card Game + Hand Management`), which is specific enough to name a kind of
+# game where neither half was.
+#
+# Derived rather than tuned. It was a hand-picked 0.20, which is arbitrary and
+# was arbitrary in a way that mattered: `Solo / Solitaire Game` is 19.1% of the
+# corpus, so it missed by four tenths of a point and anchored a genre covering
+# half of everything, while catching it meant threading between `Solo` (954
+# games) and `Open Drafting` (950) — a threshold decided by four games.
+#
+# The relationship is not monotonic, so this is the right rule and not a smooth
+# dial: 1/6 and 1/10 both give worse genre sets than 1/8.
+GENRE_BASE_RATE = 1 / GENRE_LIMIT
 
 # Contribution of the continuous stats to distances, relative to genre loadings
 # (which are L2-normalised per game). Within a cell weight is nearly constant,
