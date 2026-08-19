@@ -23,7 +23,15 @@ export default function Radar({ dimensions, series }) {
   const cx = 0.5, cy = 0.5, R = 0.33, HOLE = 0.06
   const half = Math.PI / n
   const angle = (i) => (2 * Math.PI * i) / n - Math.PI / 2
-  const rad = (v) => HOLE + (R - HOLE) * v // 0 sits on the hole's rim, 1 on the outer rim
+  // 0 sits on the hole's rim, 1 on the outer rim — but the radial axis is
+  // deliberately NOT linear. A wedge's area is (theta/2)(r_out^2 - r_in^2), so a
+  // linear radius would make drawn area go as the square of the value: Ark Nova
+  // and SCOUT carry identical coverage mass yet drew at 1.9:1, and a ten-genre
+  // game drew 38% of a specialist's ink. Square-rooting makes area linear in the
+  // value, so equal coverage draws equal ink however it is spread. Same reason a
+  // pie chart's radius scales with the root of its value. The rings and the
+  // stacked-segment bars both go through here, so they stay honest too.
+  const rad = (v) => Math.sqrt(HOLE ** 2 + (R ** 2 - HOLE ** 2) * v)
   const pt = (a, r) => `${cx + r * Math.cos(a)},${cy + r * Math.sin(a)}`
 
   const arc = (i, v) =>

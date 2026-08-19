@@ -17,11 +17,13 @@ Two concerns are kept apart:
   nothing else. Swapping selection strategy means writing one of these, not
   another allocation loop.
 
-The opening round is scored by *rank* rather than by the scorer. Against an
-empty cell most scorers reduce to "how much does this game cover", which favours
-whatever is spread widest over whatever is best — the first pick should answer
-"what is the best game here", and marginal value takes over once there is
-something to complement.
+Every round is scored the same way, including the first. The opening pick used
+to be forced to the best-ranked game, because under L2-normalised loadings a
+game's value against an empty cell grew with how many genres it touched and the
+widest sprawl won regardless of quality. L1 removed that: `sum(w) = membership x
+quality`, so an empty cell's best bid is already its best-rated, best-fitting
+game. Forcing rank on top of that only overrode membership — it opened the solo
+column with games that were 35% solo.
 """
 
 import math
@@ -219,9 +221,9 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer, max_per_cell: int,
             chosen[key].append(game)
             taken.add(game.id)
 
-    for round_index in range(max_per_cell):
+    for _ in range(max_per_cell):
         awards = _bid_round(keys, cells, memberships, scorer, chosen, taken,
-                            max_per_cell, gain_floor, by_rank=(round_index == 0))
+                            max_per_cell, gain_floor)
         if not awards:
             break
         for key, (game, gain) in awards.items():
@@ -249,7 +251,7 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer, max_per_cell: int,
 
 
 def _bid_round(keys, cells, memberships, scorer, chosen, taken, max_per_cell,
-               gain_floor, by_rank: bool) -> dict:
+               gain_floor) -> dict:
     """One round of deferred acceptance; returns {cell key: (Game, score)}."""
     held: dict[int, tuple] = {}          # game id -> (cell key, score, Game)
     blocked: dict[tuple, set[int]] = {key: set() for key in keys}
@@ -264,11 +266,9 @@ def _bid_round(keys, cells, memberships, scorer, chosen, taken, max_per_cell,
             value = scorer.score(key, game)
             if value < gain_floor:
                 continue
-            # Rank leads the opening round, marginal value after. Membership
-            # breaks ties either way, so a game is never claimed by a cell it
+            # Membership breaks ties, so a game is never claimed by a cell it
             # barely reaches while one centred on it wants the same game.
-            sort = ((-game.rank, memberships[(key, game.id)]) if by_rank
-                    else (value, memberships[(key, game.id)]))
+            sort = (value, memberships[(key, game.id)])
             if best_sort is None or sort > best_sort:
                 best, best_score, best_sort = game, value, sort
         if best is None:

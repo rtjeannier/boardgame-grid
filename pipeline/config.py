@@ -78,7 +78,7 @@ PLAYTIME_SCALE = 0.25
 # game as  λ·quality + (1-λ)·distance-to-picks  and takes the best. Higher λ
 # favours rank; lower λ favours spreading across the space.
 MMR_LAMBDA = 0.5
-PICKS_PER_CELL = 8        # stop after this many picks per cell
+PICKS_PER_CELL = 5        # stop after this many picks per cell
 
 # Probabilistic coverage selection (the default; see pipeline/coverage.py).
 # A game covers each genre axis with "probability" quality × loading; a set's
