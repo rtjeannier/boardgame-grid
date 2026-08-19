@@ -298,10 +298,26 @@ MEMBERSHIP_FLOOR = 0.25   # drop columns scoring below this fraction of the peak
 # Best votes alone are a preference ordering, not a verdict: a vote for four
 # players is a vote taken away from five. Cartographers plays well at five by
 # 92% approval against 97% at four, but scored 108 Best against 248 and came out
-# at 0.44. At 0.25 it reaches 0.67, while Ricochet Robots' eleven-player row —
-# tolerated but not liked — stays at the floor. Counting Recommended in full
-# would put that at 0.57 and drag every crowd game across the whole grid.
-RECOMMENDED_WEIGHT = 0.25
+# at 0.44. At 0.25 it reaches 0.67.
+#
+# A quarter was too harsh, and was doing a second job it should not have been.
+# Concordia at five is 93 Best / 357 Recommended / 107 Not — four voters in five
+# call it good or better — and scored 0.43, so the fifth-player column treated
+# it as barely playable. Counting Recommended at half puts it at 0.58 while El
+# Grande, which really is a five-player game (79% Best, 3% Not), keeps 1.00
+# against 0.78 at four.
+#
+# What a quarter was silently buying is now bought explicitly by the
+# majority-negative guard in `buckets.player_memberships`: counts most voters
+# reject used to be excluded only because they landed under MEMBERSHIP_FLOOR at
+# this weight, which is why raising it alone drags crowd games across the grid
+# (Cartographers' nine-plus row, 104 Not against 17 Best, appears at 0.34).
+# With the guard doing that job, columns per game rise only 3.07 -> 3.20 rather
+# than 3.34, and median pick rank improves 250 -> 244 with all four canaries.
+#
+# Half is the top of the safe range: at 0.6 Terraforming Mars stops being
+# picked.
+RECOMMENDED_WEIGHT = 0.5
 
 # Weight rows are quantile cuts, so a game at 2.89 is barely distinguishable from
 # one at 2.91. Membership stays 1.0 inside a row and tapers to 0 across this many

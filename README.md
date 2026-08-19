@@ -224,6 +224,13 @@ several cells *by degree*:
   five by 92% approval against 97% at four, yet its Best votes (108 vs 248)
   made it look like a 44% five-player game.
 
+  All three vote types count, and none is a substitute for another. Recommended
+  is a weak yes, discounted rather than counted in full — treated as equal to
+  Best it makes Concordia as much a three-player game as a four (255 Best
+  against 451). Not Recommended is a real no: it dilutes the share *and* vetoes
+  the count outright when it carries a majority, which is what keeps
+  Cartographers (104 Not against 17 Best at nine-plus) out of the crowd column.
+
   Columns are then **peak-relative**: the strongest is 1.0 and the others
   measure against it, so a game the community likes equally at 3, 4, 5 and 6
   scores 1.0 in all four — versatility is not punished. (Scoring by

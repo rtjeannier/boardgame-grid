@@ -51,13 +51,22 @@ def player_column_for(game: Game) -> str | None:
 def player_memberships(game: Game) -> dict[str, float]:
     """How strongly this game belongs to each player-count column, in (0, 1].
 
-    A count's score is its *approval share*, `(best + w·recommended) / votes`.
-    Not its share of Best votes: Best alone is a preference ordering, and a vote
-    for four players is a vote taken away from five. Cartographers' five-player
-    row reads 108 Best / 156 Recommended / 23 Not Recommended — 92% approval
-    against 97% at four — yet scored 108/248 = 0.44 and looked like a barely-
-    five-player game. `RECOMMENDED_WEIGHT` sets how much a "this works" vote
-    counts against a "this is the best" one.
+    A count's score is its *approval share*, `(best + w·recommended) / votes`,
+    among counts the community does not reject outright. Not its share of Best
+    votes: Best alone is a preference ordering, and a vote for four players is a
+    vote taken away from five. Cartographers' five-player row reads 108 Best /
+    156 Recommended / 23 Not Recommended — 92% approval against 97% at four —
+    yet scored 108/248 = 0.44 and looked like a barely-five-player game.
+    `RECOMMENDED_WEIGHT` sets how much a "this works" vote counts against a
+    "this is the best" one.
+
+    All three vote types matter, and they are not interchangeable. Recommended
+    is a weak yes, so it is discounted rather than counted in full — treated as
+    equal to Best it says Concordia is as much a three-player game as a four
+    (255 Best against 451), and that El Grande, whose whole identity is being
+    best at five, is equally a four-player game. Not Recommended is a real no,
+    so it both dilutes the share and vetoes the count outright when it carries a
+    majority.
 
     Then scored *peak-relative*: every column is divided by the strongest, so
     the game's home column is 1.0. A game the community likes equally at 3, 4,
@@ -73,6 +82,15 @@ def player_memberships(game: Game) -> dict[str, float]:
         col = _column_of(count)
         total = best + recommended + not_rec
         if col is None or total == 0:
+            continue
+        # Never place a game at a count most voters reject. Not Recommended is
+        # otherwise only a denominator, and a count can score its way in on
+        # sheer turnout: Cartographers at nine-plus reads 17 Best / 78
+        # Recommended / 104 Not, and The Crew at two reads 27 / 243 / 356 —
+        # both majority-negative, both eligible on approval share alone. They
+        # were previously excluded only by accident, in that at
+        # RECOMMENDED_WEIGHT 0.25 they happened to land under MEMBERSHIP_FLOOR.
+        if not_rec > best + recommended:
             continue
         score = (best + RECOMMENDED_WEIGHT * recommended) / total
         # A column spans several counts (6-8); take its strongest, not the sum,
