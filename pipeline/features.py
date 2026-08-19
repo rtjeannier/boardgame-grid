@@ -26,9 +26,14 @@ same-axis agreement on known same-core game pairs from 4/5 to 5/5.
 
 Do not read this file's clustering as a duplicate of `_similarity_space` below
 and unify them — they answer different questions and are weighted oppositely on
-purpose. Axes ask "what regions of game-space exist", so tags group by raw
-co-occurrence. Similarity asks "are these two games substitutes", where only a
-game's *core* tags should count, so it weights by centrality instead.
+purpose. Discovering axes asks "what regions of game-space exist", so tags group
+by raw co-occurrence: a tag that is incidental to every game carrying it still
+marks out a region. Similarity asks "are these two games substitutes", where only
+a game's *core* tags should count, so it weights by centrality instead.
+
+Placing a game on those axes (`_tag_evidence`) is the second kind of question,
+not the first, and weights by centrality too — which region a game belongs in
+depends on its core tags, not its incidental ones.
 """
 
 from dataclasses import dataclass
@@ -199,7 +204,8 @@ def _genre_loadings(games: list[Game]) -> dict:
     # which genre a game counts as. That is intended and is why picks spread
     # more evenly, but it is the broader half of the effect.
     reach = np.array([(incidence[:, core].sum(axis=1) > 0).sum() for core in cores])
-    loadings = (incidence @ membership) * np.maximum(reach, 1.0) ** -GENRE_SCARCITY
+    loadings = _tag_evidence(vocab, incidence, membership) \
+        * np.maximum(reach, 1.0) ** -GENRE_SCARCITY
     mass = loadings.sum(axis=1, keepdims=True)
     # Only a game carrying no signals at all can be zero here — every signal
     # belongs to exactly one axis (see `_assign_signals`). Such a game covers
@@ -214,6 +220,59 @@ def _genre_loadings(games: list[Game]) -> dict:
     names = _name_genres(cores, incidence, vocab, member)
 
     return {"loadings": shares, "names": names}
+
+
+def _tag_evidence(vocab: list[str], incidence: np.ndarray,
+                  membership: np.ndarray) -> np.ndarray:
+    """(n_games x n_genres) — each game's tags, counted once each, per genre.
+
+    Every *tag* a game carries is one unit of evidence about what that game is.
+    The unit is scaled by how core the tag is to this particular game, then split
+    evenly across the signals present that mention it, and each share lands on
+    that signal's genre.
+
+    Two things this fixes, neither needing a tuned constant:
+
+    Double counting. `_signal_space` keeps base tags *and* their pairwise
+    compounds, so three base tags produce six features while four ordinary tags
+    produce four. Ticket to Ride Legacy carries seven train-ish tags and three
+    card-ish ones and came out a card game, because the card tags were base tags
+    and brought three compounds with them. Splitting a tag's unit across the
+    signals carrying it makes `Hand Management` worth the same whether it appears
+    alone or in three compounds. Note the split preserves what the compound
+    *says*: discovery may file `Hand Management + Set Collection` under a
+    different genre than `Hand Management` alone, and that routing still lands.
+
+    Soft tags. Weighted by `_tag_centrality`, a tag that sits badly with the
+    game's other tags barely counts. BGG tags Lords of Waterdeep `Hidden Roles`
+    for its secret Lord cards, the same tag Secret Hitler carries for social
+    deduction; centrality reads 0.020 there against 0.229 here, and Lords of
+    Waterdeep stops being a bluffing game.
+
+    (`_tag_centrality` is why this is a loop and not a matrix product: the split
+    denominator is per game, since it counts only the signals that game has.)
+    """
+    centrality = incidence * _tag_centrality(incidence)
+    home = membership.argmax(axis=1)         # each signal belongs to exactly one genre
+    strength = membership.max(axis=1)        # ...with this diagnostic weight
+
+    # Which signals mention each tag. A compound's name is its two tags joined by
+    # GENRE_COMPOUND (see `_signal_space`), so the vocabulary already says this.
+    mentions: dict[str, list[int]] = {}
+    for signal, name in enumerate(vocab):
+        for tag in name.split(GENRE_COMPOUND):
+            mentions.setdefault(tag, []).append(signal)
+
+    evidence = np.zeros((incidence.shape[0], membership.shape[1]))
+    for game in range(incidence.shape[0]):
+        present = set(np.flatnonzero(incidence[game] > 0))
+        tags = {tag for signal in present for tag in vocab[signal].split(GENRE_COMPOUND)}
+        for tag in tags:
+            carriers = [s for s in mentions[tag] if s in present]
+            for signal in carriers:
+                evidence[game, home[signal]] += (
+                    strength[signal] * centrality[game, signal] / len(carriers))
+    return evidence
 
 
 def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:

@@ -3,48 +3,46 @@
     "source": "live",
     "generatedAt": "2026-08-19T05:02:18+00:00",
     "size": 9,
-    "anchors": [
-      "Catan"
-    ],
+    "anchors": [],
     "dimensions": [
       "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-      "Cooperative Game \u00b7 Dice Rolling \u00b7 Variable Player Powers",
+      "Cooperative Game \u00b7 Variable Player Powers \u00b7 Dice Rolling",
       "Wargame \u00b7 Simulation \u00b7 World War II",
       "Trains \u00b7 Transportation \u00b7 Network and Route Building",
       "Bluffing \u00b7 Voting \u00b7 Hidden Roles",
-      "Economic \u00b7 Hand Management \u00b7 Set Collection",
-      "Tile Placement \u00b7 Set Collection \u00b7 Open Drafting",
+      "Economic \u00b7 Set Collection \u00b7 Open Drafting",
+      "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
       "Action / Dexterity \u00b7 Stacking and Balancing \u00b7 Flicking"
     ]
   },
   "anchorCoverage": [
-    0.018,
-    0.074,
-    0.026,
-    0.038,
-    0.042,
-    0.138,
-    0.023,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
     0.0
   ],
   "fullCoverage": [
-    0.748,
-    0.825,
-    0.735,
-    0.474,
-    0.871,
-    0.677,
-    0.521,
-    0.939
+    0.814,
+    0.785,
+    0.756,
+    0.505,
+    0.896,
+    0.626,
+    0.729,
+    0.985
   ],
   "games": [
     {
-      "id": 13,
-      "name": "Catan",
-      "year": 1995,
-      "rank": 626,
-      "rating": 6.90202,
-      "weight": 2.2806,
+      "id": 224517,
+      "name": "Brass: Birmingham",
+      "year": 2018,
+      "rank": 1,
+      "rating": 8.39082,
+      "weight": 3.8593,
       "playtime": 120,
       "best_counts": [
         3,
@@ -52,76 +50,79 @@
       ],
       "best_count": 4,
       "signals": [
+        "Age of Reason",
         "Economic",
-        "Negotiation",
+        "Industry / Manufacturing",
+        "Post-Napoleonic",
+        "Trains",
+        "Transportation",
         "Chaining",
-        "Dice Rolling",
+        "End Game Bonuses",
         "Hand Management",
-        "Hexagon Grid",
-        "Hidden Victory Points",
         "Income",
+        "Loans",
         "Market",
-        "Modular Board",
-        "Negotiation",
+        "Multi-Use Cards",
         "Network and Route Building",
-        "Race",
-        "Random Production",
-        "Take That",
-        "Trading",
+        "Ownership",
+        "Tags",
+        "Tech Trees / Tech Tracks",
+        "Tile Placement",
+        "Turn Order: Stat-Based",
         "Variable Set-up"
       ],
       "families": [
-        "Game: Catan"
+        "Game: Brass"
       ],
       "player_poll": {
         "1": [
-          1,
-          4,
-          1555
+          0,
+          72,
+          783
         ],
         "2": [
-          16,
-          263,
-          1387
+          133,
+          896,
+          184
         ],
         "3": [
-          729,
-          1167,
-          114
+          766,
+          464,
+          20
         ],
         "4": [
-          1559,
-          469,
-          47
+          792,
+          375,
+          54
         ]
       },
-      "users_rated": 143797,
-      "url": "https://boardgamegeek.com/boardgame/13",
-      "anchored": true,
-      "gain": null,
-      "uniqueContribution": 0.115,
+      "users_rated": 59706,
+      "url": "https://boardgamegeek.com/boardgame/224517",
+      "anchored": false,
+      "gain": 1.0,
+      "uniqueContribution": 0.62,
       "genres": [
         {
-          "name": "Economic \u00b7 Hand Management \u00b7 Set Collection",
-          "value": 0.4
-        },
-        {
-          "name": "Cooperative Game \u00b7 Dice Rolling \u00b7 Variable Player Powers",
-          "value": 0.21
+          "name": "Economic \u00b7 Set Collection \u00b7 Open Drafting",
+          "value": 0.47
         },
         {
           "name": "Trains \u00b7 Transportation \u00b7 Network and Route Building",
-          "value": 0.11
+          "value": 0.31
+        },
+        {
+          "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
+          "value": 0.1
         }
       ],
       "coverage": [
-        0.018,
-        0.074,
-        0.026,
-        0.038,
-        0.042,
-        0.138,
-        0.023,
+        0.016,
+        0.0,
+        0.1,
+        0.31,
+        0.0,
+        0.474,
+        0.101,
         0.0
       ]
     },
@@ -169,16 +170,12 @@
       "users_rated": 21405,
       "url": "https://boardgamegeek.com/boardgame/521",
       "anchored": false,
-      "gain": 0.996,
-      "uniqueContribution": 0.938,
+      "gain": 1.0,
+      "uniqueContribution": 0.941,
       "genres": [
         {
           "name": "Action / Dexterity \u00b7 Stacking and Balancing \u00b7 Flicking",
-          "value": 0.94
-        },
-        {
-          "name": "Bluffing \u00b7 Voting \u00b7 Hidden Roles",
-          "value": 0.06
+          "value": 0.98
         }
       ],
       "coverage": [
@@ -186,100 +183,90 @@
         0.0,
         0.0,
         0.0,
-        0.061,
+        0.015,
         0.0,
         0.0,
-        0.938
+        0.985
       ]
     },
     {
-      "id": 342942,
-      "name": "Ark Nova",
-      "year": 2021,
-      "rank": 2,
-      "rating": 8.35319,
-      "weight": 3.7984,
-      "playtime": 150,
+      "id": 161936,
+      "name": "Pandemic Legacy: Season 1",
+      "year": 2015,
+      "rank": 3,
+      "rating": 8.34423,
+      "weight": 2.8283,
+      "playtime": 60,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
-      "best_count": 2,
+      "best_count": 4,
       "signals": [
-        "Animals",
-        "Card Game",
         "Environmental",
-        "Contracts",
-        "End Game Bonuses",
-        "Events",
-        "Grid Coverage",
+        "Medical",
+        "Action Points",
+        "Cooperative Game",
         "Hand Management",
-        "Hexagon Grid",
-        "Income",
-        "Increase Value of Unchosen Resources",
-        "Open Drafting",
-        "Race",
+        "Legacy Game",
+        "Multi-Use Cards",
+        "Point to Point Movement",
+        "Scenario / Mission / Campaign Game",
         "Set Collection",
-        "Solo / Solitaire Game",
         "Tags",
-        "Tile Placement",
-        "Track Movement",
-        "Variable Player Powers",
-        "Variable Set-up"
+        "Trading",
+        "Variable Player Powers"
       ],
       "families": [
-        "Game: Ark Nova"
+        "Game: Pandemic"
       ],
       "player_poll": {
         "1": [
-          226,
-          1001,
-          311
+          21,
+          149,
+          464
         ],
         "2": [
-          1552,
-          589,
-          47
+          171,
+          486,
+          109
         ],
         "3": [
-          670,
-          1087,
-          181
+          195,
+          462,
+          42
         ],
         "4": [
-          115,
-          669,
-          1051
+          518,
+          230,
+          25
         ]
       },
-      "users_rated": 62515,
-      "url": "https://boardgamegeek.com/boardgame/342942",
+      "users_rated": 57702,
+      "url": "https://boardgamegeek.com/boardgame/161936",
       "anchored": false,
-      "gain": 0.939,
-      "uniqueContribution": 0.534,
+      "gain": 0.958,
+      "uniqueContribution": 0.376,
       "genres": [
         {
-          "name": "Tile Placement \u00b7 Set Collection \u00b7 Open Drafting",
-          "value": 0.41
+          "name": "Cooperative Game \u00b7 Variable Player Powers \u00b7 Dice Rolling",
+          "value": 0.56
         },
         {
           "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-          "value": 0.36
-        },
-        {
-          "name": "Cooperative Game \u00b7 Dice Rolling \u00b7 Variable Player Powers",
-          "value": 0.13
+          "value": 0.31
         }
       ],
       "coverage": [
-        0.362,
-        0.126,
-        0.063,
+        0.309,
+        0.556,
+        0.03,
         0.0,
+        0.037,
         0.0,
-        0.036,
-        0.412,
-        0.0
+        0.043,
+        0.024
       ]
     },
     {
@@ -431,125 +418,112 @@
       "users_rated": 12126,
       "url": "https://boardgamegeek.com/boardgame/240980",
       "anchored": false,
-      "gain": 0.8,
-      "uniqueContribution": 0.736,
+      "gain": 0.851,
+      "uniqueContribution": 0.803,
       "genres": [
         {
           "name": "Bluffing \u00b7 Voting \u00b7 Hidden Roles",
-          "value": 0.92
+          "value": 0.96
         }
       ],
       "coverage": [
-        0.021,
-        0.028,
+        0.005,
+        0.019,
         0.0,
         0.0,
-        0.849,
+        0.885,
         0.0,
         0.0,
         0.0
       ]
     },
     {
-      "id": 174430,
-      "name": "Gloomhaven",
-      "year": 2017,
-      "rank": 4,
-      "rating": 8.29134,
-      "weight": 3.9191,
-      "playtime": 120,
+      "id": 342942,
+      "name": "Ark Nova",
+      "year": 2021,
+      "rank": 2,
+      "rating": 8.35319,
+      "weight": 3.7984,
+      "playtime": 150,
       "best_counts": [
         2,
-        3,
-        4
+        3
       ],
-      "best_count": 3,
+      "best_count": 2,
       "signals": [
-        "Adventure",
-        "Exploration",
-        "Fantasy",
-        "Fighting",
-        "Miniatures",
-        "Action Queue",
-        "Action Retrieval",
-        "Campaign / Battle Card Driven",
-        "Card Play Conflict Resolution",
-        "Communication Limits",
-        "Cooperative Game",
-        "Critical Hits and Failures",
-        "Deck Construction",
-        "Grid Movement",
+        "Animals",
+        "Card Game",
+        "Environmental",
+        "Contracts",
+        "End Game Bonuses",
+        "Events",
+        "Grid Coverage",
         "Hand Management",
         "Hexagon Grid",
-        "Legacy Game",
-        "Line of Sight",
-        "Modular Board",
-        "Movement Points",
-        "Multi-Use Cards",
-        "Multiple Maps",
-        "Narrative Choice / Paragraph",
-        "Once-Per-Game Abilities",
-        "Player Elimination",
-        "Role Playing",
-        "Scenario / Mission / Campaign Game",
-        "Simultaneous Action Selection",
+        "Income",
+        "Increase Value of Unchosen Resources",
+        "Open Drafting",
+        "Race",
+        "Set Collection",
         "Solo / Solitaire Game",
-        "Storytelling",
         "Tags",
-        "Variable Player Powers"
+        "Tile Placement",
+        "Track Movement",
+        "Variable Player Powers",
+        "Variable Set-up"
       ],
       "families": [
-        "Game: Gloomhaven"
+        "Game: Ark Nova"
       ],
       "player_poll": {
         "1": [
-          155,
-          714,
-          396
+          226,
+          1001,
+          311
         ],
         "2": [
-          414,
-          900,
-          96
+          1552,
+          589,
+          47
         ],
         "3": [
-          817,
-          543,
-          41
+          670,
+          1087,
+          181
         ],
         "4": [
-          501,
-          666,
-          176
+          115,
+          669,
+          1051
         ]
       },
-      "users_rated": 67551,
-      "url": "https://boardgamegeek.com/boardgame/174430",
+      "users_rated": 62515,
+      "url": "https://boardgamegeek.com/boardgame/342942",
       "anchored": false,
-      "gain": 0.737,
-      "uniqueContribution": 0.438,
+      "gain": 0.7,
+      "uniqueContribution": 0.337,
       "genres": [
         {
-          "name": "Cooperative Game \u00b7 Dice Rolling \u00b7 Variable Player Powers",
-          "value": 0.69
+          "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
+          "value": 0.37
+        },
+        {
+          "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
+          "value": 0.34
         },
         {
           "name": "Wargame \u00b7 Simulation \u00b7 World War II",
           "value": 0.14
-        },
-        {
-          "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-          "value": 0.13
         }
       ],
       "coverage": [
-        0.122,
-        0.667,
-        0.143,
+        0.343,
+        0.103,
+        0.136,
         0.0,
-        0.028,
-        0.012,
         0.0,
+        0.05,
+        0.367,
         0.0
       ]
     },
@@ -602,140 +576,62 @@
       "users_rated": 52351,
       "url": "https://boardgamegeek.com/boardgame/12333",
       "anchored": false,
-      "gain": 0.529,
-      "uniqueContribution": 0.365,
+      "gain": 0.565,
+      "uniqueContribution": 0.466,
       "genres": [
         {
           "name": "Wargame \u00b7 Simulation \u00b7 World War II",
-          "value": 0.58
+          "value": 0.71
         },
         {
           "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-          "value": 0.21
+          "value": 0.15
         },
         {
-          "name": "Cooperative Game \u00b7 Dice Rolling \u00b7 Variable Player Powers",
-          "value": 0.2
+          "name": "Cooperative Game \u00b7 Variable Player Powers \u00b7 Dice Rolling",
+          "value": 0.13
         }
       ],
       "coverage": [
-        0.175,
-        0.164,
-        0.511,
+        0.122,
+        0.11,
+        0.629,
         0.0,
         0.0,
         0.0,
         0.0,
-        0.009
+        0.006
       ]
     },
     {
-      "id": 144733,
-      "name": "Russian Railroads",
-      "year": 2013,
-      "rank": 152,
-      "rating": 7.4548,
-      "weight": 3.3957,
+      "id": 397598,
+      "name": "Dune: Imperium \u2013 Uprising",
+      "year": 2023,
+      "rank": 5,
+      "rating": 8.25623,
+      "weight": 3.5244,
       "playtime": 120,
       "best_counts": [
-        2,
         3,
-        4
+        4,
+        6
       ],
       "best_count": 4,
       "signals": [
-        "Industry / Manufacturing",
-        "Trains",
-        "End Game Bonuses",
-        "Tech Trees / Tech Tracks",
-        "Turn Order: Claim Action",
-        "Worker Placement"
-      ],
-      "families": [
-        "Game: Russian Railroads"
-      ],
-      "player_poll": {
-        "1": [
-          2,
-          23,
-          117
-        ],
-        "2": [
-          57,
-          153,
-          25
-        ],
-        "3": [
-          97,
-          125,
-          9
-        ],
-        "4": [
-          166,
-          66,
-          4
-        ]
-      },
-      "users_rated": 18984,
-      "url": "https://boardgamegeek.com/boardgame/144733",
-      "anchored": false,
-      "gain": 0.44,
-      "uniqueContribution": 0.297,
-      "genres": [
-        {
-          "name": "Trains \u00b7 Transportation \u00b7 Network and Route Building",
-          "value": 0.53
-        },
-        {
-          "name": "Economic \u00b7 Hand Management \u00b7 Set Collection",
-          "value": 0.31
-        },
-        {
-          "name": "Wargame \u00b7 Simulation \u00b7 World War II",
-          "value": 0.15
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.0,
-        0.087,
-        0.282,
-        0.0,
-        0.166,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "id": 316554,
-      "name": "Dune: Imperium",
-      "year": 2020,
-      "rank": 6,
-      "rating": 8.21905,
-      "weight": 3.0785,
-      "playtime": 120,
-      "best_counts": [
-        3,
-        4
-      ],
-      "best_count": 3,
-      "signals": [
         "Movies / TV / Radio theme",
         "Novel-based",
-        "Political",
         "Science Fiction",
+        "Automatic Resource Growth",
         "Card Play Conflict Resolution",
+        "Contracts",
         "Deck, Bag, and Pool Building",
         "Delayed Purchase",
         "Force Commitment",
         "Increase Value of Unchosen Resources",
         "Multi-Use Cards",
         "Open Drafting",
-        "Ownership",
-        "Race",
         "Solo / Solitaire Game",
-        "Tags",
-        "Take That",
+        "Team-Based Game",
         "Turn Order: Progressive",
         "Variable Player Powers",
         "Worker Placement"
@@ -745,168 +641,256 @@
       ],
       "player_poll": {
         "1": [
-          77,
-          621,
-          424
+          22,
+          159,
+          122
         ],
         "2": [
-          72,
-          776,
-          398
+          21,
+          179,
+          130
         ],
         "3": [
-          927,
-          444,
-          28
+          167,
+          216,
+          20
         ],
         "4": [
-          924,
-          376,
-          59
+          345,
+          87,
+          7
+        ],
+        "5": [
+          2,
+          14,
+          256
+        ],
+        "6": [
+          61,
+          148,
+          57
         ]
       },
-      "users_rated": 59430,
-      "url": "https://boardgamegeek.com/boardgame/316554",
+      "users_rated": 19767,
+      "url": "https://boardgamegeek.com/boardgame/397598",
       "anchored": false,
-      "gain": 0.369,
-      "uniqueContribution": 0.324,
+      "gain": 0.337,
+      "uniqueContribution": 0.315,
       "genres": [
         {
           "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-          "value": 0.45
+          "value": 0.55
         },
         {
-          "name": "Cooperative Game \u00b7 Dice Rolling \u00b7 Variable Player Powers",
-          "value": 0.22
+          "name": "Cooperative Game \u00b7 Variable Player Powers \u00b7 Dice Rolling",
+          "value": 0.24
         },
         {
-          "name": "Economic \u00b7 Hand Management \u00b7 Set Collection",
-          "value": 0.17
+          "name": "Wargame \u00b7 Simulation \u00b7 World War II",
+          "value": 0.09
         }
       ],
       "coverage": [
-        0.41,
-        0.201,
-        0.145,
+        0.515,
+        0.226,
+        0.088,
         0.0,
-        0.023,
-        0.151,
-        0.0,
+        0.042,
+        0.047,
+        0.03,
         0.0
       ]
     },
     {
-      "id": 224517,
-      "name": "Brass: Birmingham",
-      "year": 2018,
-      "rank": 1,
-      "rating": 8.39082,
-      "weight": 3.8593,
+      "id": 4098,
+      "name": "Age of Steam",
+      "year": 2002,
+      "rank": 138,
+      "rating": 7.49563,
+      "weight": 3.8525,
       "playtime": 120,
       "best_counts": [
-        3,
-        4
+        4,
+        5
       ],
       "best_count": 4,
       "signals": [
-        "Age of Reason",
         "Economic",
-        "Industry / Manufacturing",
         "Post-Napoleonic",
         "Trains",
         "Transportation",
-        "Chaining",
-        "End Game Bonuses",
-        "Hand Management",
-        "Income",
+        "Auction / Bidding",
+        "Catch the Leader",
+        "Connections",
+        "Dice Rolling",
+        "Hexagon Grid",
         "Loans",
-        "Market",
-        "Multi-Use Cards",
         "Network and Route Building",
-        "Ownership",
-        "Tags",
-        "Tech Trees / Tech Tracks",
+        "Pick-up and Deliver",
+        "Player Elimination",
+        "Scenario / Mission / Campaign Game",
+        "Selection Order Bid",
+        "Solo / Solitaire Game",
         "Tile Placement",
-        "Turn Order: Stat-Based",
-        "Variable Set-up"
+        "Turn Order: Auction",
+        "Victory Points as a Resource"
       ],
       "families": [
-        "Game: Brass"
+        "Game: Age of Steam"
       ],
       "player_poll": {
         "1": [
-          0,
-          72,
-          783
+          2,
+          18,
+          105
         ],
         "2": [
-          133,
-          896,
-          184
+          2,
+          40,
+          98
         ],
         "3": [
-          766,
-          464,
-          20
+          33,
+          104,
+          36
         ],
         "4": [
-          792,
-          375,
-          54
+          131,
+          58,
+          3
+        ],
+        "5": [
+          90,
+          80,
+          9
+        ],
+        "6": [
+          26,
+          78,
+          51
         ]
       },
-      "users_rated": 59706,
-      "url": "https://boardgamegeek.com/boardgame/224517",
+      "users_rated": 12838,
+      "url": "https://boardgamegeek.com/boardgame/4098",
       "anchored": false,
-      "gain": 0.176,
-      "uniqueContribution": 0.562,
+      "gain": 0.283,
+      "uniqueContribution": 0.289,
       "genres": [
         {
-          "name": "Economic \u00b7 Hand Management \u00b7 Set Collection",
-          "value": 0.44
-        },
-        {
           "name": "Trains \u00b7 Transportation \u00b7 Network and Route Building",
-          "value": 0.24
+          "value": 0.52
         },
         {
-          "name": "Tile Placement \u00b7 Set Collection \u00b7 Open Drafting",
-          "value": 0.17
+          "name": "Economic \u00b7 Set Collection \u00b7 Open Drafting",
+          "value": 0.26
+        },
+        {
+          "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
+          "value": 0.1
         }
       ],
       "coverage": [
-        0.038,
         0.0,
-        0.114,
-        0.238,
-        0.0,
-        0.444,
-        0.166,
+        0.036,
+        0.028,
+        0.282,
+        0.008,
+        0.143,
+        0.054,
         0.0
+      ]
+    },
+    {
+      "id": 177736,
+      "name": "A Feast for Odin",
+      "year": 2016,
+      "rank": 27,
+      "rating": 7.93932,
+      "weight": 3.8673,
+      "playtime": 120,
+      "best_counts": [
+        1,
+        2,
+        3
+      ],
+      "best_count": 3,
+      "signals": [
+        "Animals",
+        "Farming",
+        "Industry / Manufacturing",
+        "Medieval",
+        "Puzzle",
+        "Action Points",
+        "Automatic Resource Growth",
+        "Dice Rolling",
+        "Enclosure",
+        "Grid Coverage",
+        "Hand Management",
+        "Income",
+        "Layering",
+        "Pattern Recognition",
+        "Push Your Luck",
+        "Solo / Solitaire Game",
+        "Square Grid",
+        "Tile Placement",
+        "Turn Order: Pass Order",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: A Feast for Odin"
+      ],
+      "player_poll": {
+        "1": [
+          136,
+          319,
+          55
+        ],
+        "2": [
+          248,
+          306,
+          14
+        ],
+        "3": [
+          286,
+          200,
+          27
+        ],
+        "4": [
+          72,
+          260,
+          132
+        ]
+      },
+      "users_rated": 33951,
+      "url": "https://boardgamegeek.com/boardgame/177736",
+      "anchored": false,
+      "gain": 0.105,
+      "uniqueContribution": 0.316,
+      "genres": [
+        {
+          "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
+          "value": 0.6
+        },
+        {
+          "name": "Cooperative Game \u00b7 Variable Player Powers \u00b7 Dice Rolling",
+          "value": 0.22
+        },
+        {
+          "name": "Economic \u00b7 Set Collection \u00b7 Open Drafting",
+          "value": 0.11
+        }
+      ],
+      "coverage": [
+        0.02,
+        0.172,
+        0.018,
+        0.0,
+        0.0,
+        0.084,
+        0.457,
+        0.016
       ]
     }
   ],
-  "gaps": [
-    {
-      "dimension": "Trains \u00b7 Transportation \u00b7 Network and Route Building",
-      "coverage": 0.474,
-      "suggestions": [
-        {
-          "name": "Ticket to Ride Legacy: Legends of the West",
-          "id": 390092,
-          "rank": 50
-        },
-        {
-          "name": "Next Station: London",
-          "id": 353545,
-          "rank": 580
-        },
-        {
-          "name": "Bus",
-          "id": 552,
-          "rank": 452
-        }
-      ]
-    }
-  ]
+  "gaps": []
 }
