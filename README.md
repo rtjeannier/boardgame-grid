@@ -162,6 +162,20 @@ pick this branch and the **`/docs`** folder. The site goes live at
    run from 50% of all games down to 3%. Every build prints the worst
    containment so redundancy stays visible.
 
+   **Scarce genres are weighted up** (`GENRE_SCARCITY`), so a game leaning
+   equally on a crowded genre and a rare one counts as the rare one. This is IDF
+   over genres, and without it a crowded genre wins on sheer volume: only 23% of
+   the games carrying the train genre's own signals were classified as train
+   games, and Ticket to Ride Legacy came out a card game. At 0.5 that rises to
+   34%, the biggest genre shrinks from 51% of the corpus to 40%, and picks
+   distribute far more evenly — genres spanning 40% down to 5% of all games get
+   25, 25, 25, 27, 18, 22, 13 and 7 picks respectively.
+
+   It is the same idea as the quality model's "judge a game within its own
+   genre", applied to membership rather than to quality. Between them, a small
+   genre gets an axis worth filling and its best game scores full marks for
+   filling it.
+
    Tags outside the chosen genres join whichever they most resemble, and they
    move in *coherent blocs* rather than one at a time — placing them
    individually tore dexterity apart, sending `Action / Dexterity` to dice
@@ -340,7 +354,8 @@ Everything lives in `pipeline/config.py`:
 - **Number of weight rows** — `WEIGHT_ROW_COUNT`. Rows are quantiles of the
   actual population, so they stay balanced whatever you pick.
 - **Feature space** — `GENRE_LIMIT` (how many genre axes; `GENRE_BASE_RATE`
-  derives from it), `GENRE_GROWTH` (how far a genre may widen from its seed),
+  derives from it), `GENRE_SCARCITY` (how much a rare genre counts for),
+  `GENRE_GROWTH` (how far a genre may widen from its seed),
   `GENRE_DISCOVER` (how many to find before pruning),
   `GENRE_AXIS_TARGET` (the smallest genre worth having),
   `WEIGHT_SCALE` / `PLAYTIME_SCALE` (how much the continuous stats matter vs

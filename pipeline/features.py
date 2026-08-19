@@ -46,6 +46,7 @@ from .config import (
     GENRE_LIMIT,
     GENRE_MIN_COHESION,
     GENRE_NAME_SEPARATOR,
+    GENRE_SCARCITY,
     GENRE_TOP_SIGNALS,
     PLAYTIME_SCALE,
     WEIGHT_SCALE,
@@ -183,7 +184,22 @@ def _genre_loadings(games: list[Game]) -> dict:
     # of `coverage.genre_quality`. A bottom-ranked generalist then outscores a #1
     # specialist and rank can never catch up, which is how Brass: Birmingham
     # lost its cell to a pile of eight-axis games.
-    loadings = incidence @ membership
+    # Scaled by how scarce each genre is, so belonging to a rare one counts for
+    # more — IDF over genres. Without it a crowded genre wins on sheer volume:
+    # a game sitting between the card-game genre and the much smaller train
+    # genre was pulled into the card game every time, and only 23% of the games
+    # carrying the train genre's own signals were classified as train games.
+    # Ticket to Ride Legacy came out a card game.
+    #
+    # Scarcity is each genre's *core reach* — how many games carry any of its
+    # founding signals — which is fixed before this runs, so the weighting does
+    # not depend on the assignment it is producing.
+    #
+    # Note this also lifts what a scarce genre is worth to `coverage`, not just
+    # which genre a game counts as. That is intended and is why picks spread
+    # more evenly, but it is the broader half of the effect.
+    reach = np.array([(incidence[:, core].sum(axis=1) > 0).sum() for core in cores])
+    loadings = (incidence @ membership) * np.maximum(reach, 1.0) ** -GENRE_SCARCITY
     mass = loadings.sum(axis=1, keepdims=True)
     # Only a game carrying no signals at all can be zero here — every signal
     # belongs to exactly one axis (see `_assign_signals`). Such a game covers

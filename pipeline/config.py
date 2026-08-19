@@ -179,6 +179,23 @@ QUALITY_EXPONENT = 2.0
 # Terraforming Mars from the grid. This costs 12 ranks and drops nobody.
 GENRE_MEMBERSHIP_FLOOR = 0.5
 
+# How much a genre's scarcity counts in its favour, as an exponent on genre
+# size — IDF over genres. Without it a crowded genre wins on sheer volume: a
+# game sitting between the card-game genre and the much smaller train genre goes
+# to the card game every time, and only 23% of the games carrying the train
+# genre's own signals were classified as train games (Ticket to Ride Legacy came
+# out a card game). At 0.5 that rises to 34%, the biggest genre shrinks from 51%
+# of the corpus to 40%, and median pick rank improves 287 -> 252.
+#
+# Square-root, chosen not derived. At 0.25 the effect is too weak to reclassify
+# Ticket to Ride; at 0.75 the crowded genres start losing games they should keep
+# (the co-op genre's recall falls to 37%). Set to 0 to restore flat weighting.
+#
+# This is the same idea as `coverage.genre_quality` — scarce is worth more —
+# applied to membership rather than to quality. Between them, a small genre gets
+# an axis worth filling and its best game scores full marks for filling it.
+GENRE_SCARCITY = 0.5
+
 # Retuned from 0.15 when loadings moved from L2 to L1 normalisation: every game
 # now carries total mass 1.0 rather than ~2.2, so gains shrank by about that
 # factor and the floor follows them down.
