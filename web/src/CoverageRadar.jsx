@@ -34,7 +34,7 @@ export default function CoverageRadar({ dimensions, games, baseIds, selected, mo
     let uncovered = Array(n).fill(1)
     games.forEach((g, i) => {
       if (!selected.has(g.id) || !g.coverage) return
-      const next = uncovered.map((u, d) => u * (1 - (g.coverage[d] ?? 0)))
+      const next = uncovered.map((u, d) => u * (1 - g.coverage[d]))
       series.push({
         key: g.id,
         base: uncovered.map((u) => 1 - u),

@@ -34,7 +34,7 @@ REQUEST_PAUSE = 2.0       # seconds between calls; BGG asks for a light touch
 # so no credential is ever committed. BGG asks that the agent string identify
 # the client and a contact address.
 TOKEN_ENV = "BGG_API_TOKEN"
-USER_AGENT = os.environ.get("BGG_USER_AGENT") or "boardgame-grid/0.1"
+AGENT_ENV = "BGG_USER_AGENT"
 
 
 class BggClient:
@@ -104,17 +104,17 @@ class BggClient:
         name_el = item.find("name[@type='primary']")
         return Game(
             id=int(item.get("id")),
-            name=name_el.get("value") if name_el is not None else "?",
-            year=int(item.find("yearpublished").get("value", 0)),
+            name=name_el.get("value"),
+            year=int(item.find("yearpublished").get("value")),
             rank=int(rank),
             weight=float(ratings.find("averageweight").get("value")),
-            playtime=int(item.find("playingtime").get("value", 0)),
+            playtime=int(item.find("playingtime").get("value")),
             best_counts=best_counts,
             best_count=best_count,
             signals=_signals(item),
             families=_families(item),
             best_votes=best_votes,
-            users_rated=int(ratings.find("usersrated").get("value", 0)),
+            users_rated=int(ratings.find("usersrated").get("value")),
         )
 
     # --- low-level HTTP with cache + backoff --------------------------------
@@ -134,8 +134,15 @@ class BggClient:
                     "https://boardgamegeek.com/using_the_xml_api and export it "
                     "on the host so the devcontainer forwards it in."
                 )
+            agent = os.environ.get(AGENT_ENV)
+            if not agent:
+                raise RuntimeError(
+                    f"{AGENT_ENV} is not set. BGG asks that the agent string name "
+                    "the client and a contact address; a generic fallback would "
+                    "misrepresent who is calling."
+                )
             self._session = requests.Session()
-            self._session.headers["User-Agent"] = USER_AGENT
+            self._session.headers["User-Agent"] = agent
             self._session.headers["Authorization"] = f"Bearer {token}"
 
         for attempt in range(5):

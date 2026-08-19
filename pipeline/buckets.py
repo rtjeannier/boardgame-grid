@@ -57,13 +57,9 @@ def player_memberships(game: Game) -> dict[str, float]:
     instead would give it 0.25 apiece and rank it below a mediocre game playable
     only at 4.)
 
-    Falls back to the peak column alone when raw votes are unavailable, which is
-    the case for the committed seed dataset.
+    Empty when the community endorses no player count at all — such a game has
+    no place on the player axis and is simply not placed.
     """
-    if not game.best_votes:
-        home = player_column_for(game)
-        return {home: 1.0} if home else {}
-
     by_column: dict[str, int] = {}
     for count, votes in game.best_votes.items():
         col = _column_of(count)

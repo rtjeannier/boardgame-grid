@@ -167,16 +167,9 @@ def _shrink(shares: np.ndarray, games: list[Game]) -> np.ndarray:
     tags and 29k ratings — genuinely just a card game — and keeps 94% of its
     claim; tag-count weighting would have cut it to 40%.
     """
-    rated = np.array([max(g.users_rated, 0) for g in games], dtype=float)[:, None]
-    if not rated.any():
-        # No attention data at all — the committed seed dataset predates the
-        # field. Shrinking anyway would blend *every* game to a flat vector and
-        # quietly produce a grid where all games look identical, so take the
-        # loadings at face value instead: no evidence about the evidence.
-        return shares
-
     n_axes = shares.shape[1]
     unknown = np.full(n_axes, 1.0 / n_axes)
+    rated = np.array([g.users_rated for g in games], dtype=float)[:, None]
     believed = rated / (rated + LOADING_SHRINKAGE)
 
     shrunk = believed * shares + (1.0 - believed) * unknown

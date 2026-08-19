@@ -1,31 +1,70 @@
 {
   "source": "seed",
-  "generatedAt": "2026-08-13",
+  "generatedAt": "2026-08-19T04:11:42+00:00",
   "games": [
     {
       "id": 174430,
       "name": "Gloomhaven",
       "year": 2017,
-      "rank": 1,
-      "weight": 3.9,
+      "rank": 4,
+      "weight": 3.9191,
       "playtime": 120,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
-      "best_count": 2,
+      "best_count": 3,
       "signals": [
+        "Adventure",
+        "Exploration",
+        "Fantasy",
+        "Fighting",
+        "Miniatures",
+        "Action Queue",
+        "Action Retrieval",
+        "Campaign / Battle Card Driven",
+        "Card Play Conflict Resolution",
+        "Communication Limits",
         "Cooperative Game",
+        "Critical Hits and Failures",
+        "Deck Construction",
+        "Grid Movement",
         "Hand Management",
-        "Modular Board"
-      ]
+        "Hexagon Grid",
+        "Legacy Game",
+        "Line of Sight",
+        "Modular Board",
+        "Movement Points",
+        "Multi-Use Cards",
+        "Multiple Maps",
+        "Narrative Choice / Paragraph",
+        "Once-Per-Game Abilities",
+        "Player Elimination",
+        "Role Playing",
+        "Scenario / Mission / Campaign Game",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game",
+        "Storytelling",
+        "Tags",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Gloomhaven"
+      ],
+      "best_votes": {
+        "2": 414,
+        "3": 817,
+        "4": 501
+      },
+      "users_rated": 67551
     },
     {
       "id": 224517,
       "name": "Brass: Birmingham",
       "year": 2018,
-      "rank": 2,
-      "weight": 3.9,
+      "rank": 1,
+      "weight": 3.8593,
       "playtime": 120,
       "best_counts": [
         3,
@@ -33,17 +72,42 @@
       ],
       "best_count": 4,
       "signals": [
-        "Network and Route Building",
+        "Age of Reason",
+        "Economic",
+        "Industry / Manufacturing",
+        "Post-Napoleonic",
+        "Trains",
+        "Transportation",
+        "Chaining",
+        "End Game Bonuses",
         "Hand Management",
-        "Market"
-      ]
+        "Income",
+        "Loans",
+        "Market",
+        "Multi-Use Cards",
+        "Network and Route Building",
+        "Ownership",
+        "Tags",
+        "Tech Trees / Tech Tracks",
+        "Tile Placement",
+        "Turn Order: Stat-Based",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Brass"
+      ],
+      "best_votes": {
+        "3": 766,
+        "4": 792
+      },
+      "users_rated": 59706
     },
     {
       "id": 342942,
       "name": "Ark Nova",
       "year": 2021,
-      "rank": 3,
-      "weight": 3.7,
+      "rank": 2,
+      "weight": 3.7984,
       "playtime": 150,
       "best_counts": [
         2,
@@ -51,122 +115,291 @@
       ],
       "best_count": 2,
       "signals": [
-        "Open Drafting",
-        "Set Collection",
+        "Animals",
+        "Card Game",
+        "Environmental",
+        "Contracts",
+        "End Game Bonuses",
+        "Events",
+        "Grid Coverage",
         "Hand Management",
-        "Engine Building"
-      ]
+        "Hexagon Grid",
+        "Income",
+        "Increase Value of Unchosen Resources",
+        "Open Drafting",
+        "Race",
+        "Set Collection",
+        "Solo / Solitaire Game",
+        "Tags",
+        "Tile Placement",
+        "Track Movement",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Ark Nova"
+      ],
+      "best_votes": {
+        "2": 1552,
+        "3": 670
+      },
+      "users_rated": 62515
     },
     {
       "id": 233078,
       "name": "Twilight Imperium: Fourth Edition",
       "year": 2017,
-      "rank": 5,
-      "weight": 4.3,
+      "rank": 7,
+      "weight": 4.3611,
       "playtime": 480,
       "best_counts": [
+        4,
+        5,
         6
       ],
       "best_count": 6,
       "signals": [
-        "Area Majority / Influence",
+        "Civilization",
+        "Economic",
+        "Exploration",
         "Negotiation",
-        "Variable Player Powers"
-      ]
+        "Political",
+        "Science Fiction",
+        "Space Exploration",
+        "Territory Building",
+        "Wargame",
+        "Action Drafting",
+        "Area-Impulse",
+        "Dice Rolling",
+        "Follow",
+        "Grid Movement",
+        "Hexagon Grid",
+        "Increase Value of Unchosen Resources",
+        "King of the Hill",
+        "Modular Board",
+        "Movement Points",
+        "Race",
+        "Tech Trees / Tech Tracks",
+        "Trading",
+        "Variable Phase Order",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Voting"
+      ],
+      "families": [
+        "Game: Twilight Imperium"
+      ],
+      "best_votes": {
+        "4": 177,
+        "5": 129,
+        "6": 491
+      },
+      "users_rated": 28870
     },
     {
       "id": 220308,
       "name": "Gaia Project",
       "year": 2017,
-      "rank": 8,
-      "weight": 4.4,
+      "rank": 13,
+      "weight": 4.4033,
       "playtime": 150,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
       "best_count": 3,
       "signals": [
-        "Area Majority / Influence",
-        "Tile Placement",
+        "Civilization",
+        "Economic",
+        "Science Fiction",
+        "Space Exploration",
+        "Territory Building",
+        "End Game Bonuses",
+        "Hexagon Grid",
+        "Income",
+        "Modular Board",
         "Network and Route Building",
-        "Variable Player Powers"
-      ]
+        "Solo / Solitaire Game",
+        "Tags",
+        "Tech Trees / Tech Tracks",
+        "Turn Order: Pass Order",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Victory Points as a Resource"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 131,
+        "3": 436,
+        "4": 355
+      },
+      "users_rated": 31667
     },
     {
       "id": 182028,
       "name": "Through the Ages: A New Story of Civilization",
       "year": 2015,
-      "rank": 12,
-      "weight": 4.4,
-      "playtime": 240,
+      "rank": 18,
+      "weight": 4.4408,
+      "playtime": 120,
       "best_counts": [
+        2,
         3
       ],
       "best_count": 3,
       "signals": [
-        "Engine Building",
-        "Hand Management",
-        "Auction/Bidding"
-      ]
+        "Card Game",
+        "Civilization",
+        "Economic",
+        "Action Points",
+        "Auction / Bidding",
+        "Auction: Dutch",
+        "Events",
+        "Income",
+        "Open Drafting",
+        "Player Elimination",
+        "Tags",
+        "Take That"
+      ],
+      "families": [
+        "Game: Through the Ages"
+      ],
+      "best_votes": {
+        "2": 210,
+        "3": 504
+      },
+      "users_rated": 35083
     },
     {
       "id": 177736,
       "name": "A Feast for Odin",
       "year": 2016,
-      "rank": 14,
-      "weight": 3.9,
+      "rank": 27,
+      "weight": 3.8673,
       "playtime": 120,
       "best_counts": [
-        3,
-        4
+        1,
+        2,
+        3
       ],
       "best_count": 3,
       "signals": [
-        "Worker Placement",
-        "Tile Placement"
-      ]
+        "Animals",
+        "Farming",
+        "Industry / Manufacturing",
+        "Medieval",
+        "Puzzle",
+        "Action Points",
+        "Automatic Resource Growth",
+        "Dice Rolling",
+        "Enclosure",
+        "Grid Coverage",
+        "Hand Management",
+        "Income",
+        "Layering",
+        "Pattern Recognition",
+        "Push Your Luck",
+        "Solo / Solitaire Game",
+        "Square Grid",
+        "Tile Placement",
+        "Turn Order: Pass Order",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: A Feast for Odin"
+      ],
+      "best_votes": {
+        "1": 136,
+        "2": 248,
+        "3": 286
+      },
+      "users_rated": 33951
     },
     {
       "id": 251247,
       "name": "Barrage",
       "year": 2019,
-      "rank": 20,
-      "weight": 3.9,
-      "playtime": 120,
+      "rank": 40,
+      "weight": 4.1141,
+      "playtime": 180,
       "best_counts": [
         3,
         4
       ],
       "best_count": 4,
       "signals": [
-        "Worker Placement",
-        "Network and Route Building"
-      ]
+        "Economic",
+        "Environmental",
+        "Industry / Manufacturing",
+        "Contracts",
+        "End Game Bonuses",
+        "Income",
+        "Network and Route Building",
+        "Ownership",
+        "Solo / Solitaire Game",
+        "Turn Order: Stat-Based",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: Barrage"
+      ],
+      "best_votes": {
+        "3": 199,
+        "4": 326
+      },
+      "users_rated": 22103
     },
     {
       "id": 96848,
       "name": "Mage Knight Board Game",
       "year": 2011,
-      "rank": 25,
-      "weight": 4.2,
+      "rank": 39,
+      "weight": 4.3786,
       "playtime": 240,
       "best_counts": [
-        1
+        1,
+        2
       ],
       "best_count": 1,
       "signals": [
+        "Adventure",
+        "Exploration",
+        "Fantasy",
+        "Fighting",
+        "Card Play Conflict Resolution",
+        "Cooperative Game",
         "Deck, Bag, and Pool Building",
+        "Dice Rolling",
+        "Grid Movement",
         "Hand Management",
-        "Modular Board"
-      ]
+        "Hexagon Grid",
+        "Map Addition",
+        "Modular Board",
+        "Multi-Use Cards",
+        "Open Drafting",
+        "Role Playing",
+        "Scenario / Mission / Campaign Game",
+        "Solo / Solitaire Game",
+        "Tags",
+        "Turn Order: Claim Action",
+        "Variable Player Powers"
+      ],
+      "families": [],
+      "best_votes": {
+        "1": 861,
+        "2": 630
+      },
+      "users_rated": 35338
     },
     {
       "id": 162886,
       "name": "Spirit Island",
       "year": 2017,
-      "rank": 6,
-      "weight": 4.0,
+      "rank": 11,
+      "weight": 4.0745,
       "playtime": 120,
       "best_counts": [
         1,
@@ -175,282 +408,619 @@
       ],
       "best_count": 2,
       "signals": [
-        "Cooperative Game",
+        "Environmental",
+        "Fantasy",
+        "Mythology",
+        "Territory Building",
+        "Action Retrieval",
         "Area Majority / Influence",
+        "Automatic Resource Growth",
+        "Campaign / Battle Card Driven",
+        "Cooperative Game",
+        "Deck, Bag, and Pool Building",
+        "Hand Management",
+        "Modular Board",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game",
+        "Tags",
         "Variable Player Powers",
-        "Hand Management"
-      ]
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Spirit Island"
+      ],
+      "best_votes": {
+        "1": 599,
+        "2": 1434,
+        "3": 660
+      },
+      "users_rated": 64200
     },
     {
       "id": 12333,
       "name": "Twilight Struggle",
       "year": 2005,
-      "rank": 10,
-      "weight": 3.6,
+      "rank": 16,
+      "weight": 3.6148,
       "playtime": 180,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
+        "Modern Warfare",
+        "Political",
+        "Wargame",
+        "Action / Event",
+        "Advantage Token",
         "Area Majority / Influence",
+        "Campaign / Battle Card Driven",
+        "Dice Rolling",
+        "Events",
         "Hand Management",
-        "Political"
-      ]
+        "Simulation",
+        "Simultaneous Action Selection",
+        "Stat Check Resolution",
+        "Sudden Death Ending",
+        "Tug of War",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Twilight Struggle"
+      ],
+      "best_votes": {
+        "2": 883
+      },
+      "users_rated": 52351
     },
     {
       "id": 187645,
       "name": "Star Wars: Rebellion",
       "year": 2016,
-      "rank": 11,
-      "weight": 3.7,
+      "rank": 10,
+      "weight": 3.7529,
       "playtime": 240,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
+        "Civil War",
+        "Movies / TV / Radio theme",
+        "Science Fiction",
+        "Space Exploration",
+        "Wargame",
         "Area Majority / Influence",
+        "Area Movement",
+        "Card Play Conflict Resolution",
+        "Contracts",
+        "Delayed Purchase",
         "Dice Rolling",
-        "Variable Player Powers"
-      ]
+        "Die Icon Resolution",
+        "Events",
+        "Hand Management",
+        "Hidden Movement",
+        "Income",
+        "Once-Per-Game Abilities",
+        "Tags",
+        "Take That",
+        "Team-Based Game",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Worker Placement, Different Worker Types"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 707
+      },
+      "users_rated": 36734
     },
     {
       "id": 115746,
       "name": "War of the Ring: Second Edition",
-      "year": 2012,
-      "rank": 13,
-      "weight": 4.2,
-      "playtime": 180,
+      "year": 2011,
+      "rank": 8,
+      "weight": 4.2293,
+      "playtime": 240,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
+        "Fantasy",
+        "Fighting",
+        "Novel-based",
+        "Territory Building",
+        "Wargame",
         "Area Majority / Influence",
+        "Area Movement",
+        "Campaign / Battle Card Driven",
+        "Card Play Conflict Resolution",
         "Dice Rolling",
-        "Hand Management"
-      ]
+        "Events",
+        "Hand Management",
+        "Movement Points",
+        "Team-Based Game",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 553
+      },
+      "users_rated": 25453
     },
     {
       "id": 295770,
       "name": "Frosthaven",
-      "year": 2023,
-      "rank": 15,
-      "weight": 4.3,
-      "playtime": 120,
+      "year": 2022,
+      "rank": 20,
+      "weight": 4.407,
+      "playtime": 180,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
-      "best_count": 2,
+      "best_count": 3,
       "signals": [
+        "Adventure",
+        "Exploration",
+        "Fantasy",
+        "Fighting",
+        "Miniatures",
+        "Campaign / Battle Card Driven",
+        "Communication Limits",
         "Cooperative Game",
+        "Deck Construction",
+        "Deck, Bag, and Pool Building",
+        "Grid Movement",
         "Hand Management",
-        "Modular Board"
-      ]
+        "Hexagon Grid",
+        "Legacy Game",
+        "Modular Board",
+        "Multi-Use Cards",
+        "Narrative Choice / Paragraph",
+        "Once-Per-Game Abilities",
+        "Scenario / Mission / Campaign Game",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Gloomhaven"
+      ],
+      "best_votes": {
+        "2": 67,
+        "3": 139,
+        "4": 92
+      },
+      "users_rated": 10456
     },
     {
       "id": 237182,
       "name": "Root",
       "year": 2018,
-      "rank": 32,
-      "weight": 3.9,
+      "rank": 34,
+      "weight": 3.8419,
       "playtime": 90,
       "best_counts": [
+        3,
         4
       ],
       "best_count": 4,
       "signals": [
+        "Animals",
+        "Fantasy",
+        "Negotiation",
+        "Territory Building",
+        "Wargame",
+        "Action Points",
+        "Action Queue",
+        "Action Retrieval",
         "Area Majority / Influence",
+        "Area Movement",
+        "Dice Rolling",
+        "Hand Management",
+        "Multi-Use Cards",
+        "Negotiation",
+        "Point to Point Movement",
+        "Race",
+        "Sudden Death Ending",
+        "Take That",
         "Variable Player Powers",
-        "Hand Management"
-      ]
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Root"
+      ],
+      "best_votes": {
+        "3": 249,
+        "4": 1192
+      },
+      "users_rated": 65616
     },
     {
       "id": 31260,
       "name": "Agricola",
       "year": 2007,
-      "rank": 38,
-      "weight": 3.6,
+      "rank": 65,
+      "weight": 3.6358,
       "playtime": 150,
       "best_counts": [
         2,
         3,
         4
       ],
-      "best_count": 3,
+      "best_count": 4,
       "signals": [
-        "Worker Placement",
-        "Hand Management",
-        "Set Collection"
-      ]
+        "Animals",
+        "Economic",
+        "Farming",
+        "Automatic Resource Growth",
+        "Closed Drafting",
+        "Enclosure",
+        "Increase Value of Unchosen Resources",
+        "Solo / Solitaire Game",
+        "Turn Order: Claim Action",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: Agricola"
+      ],
+      "best_votes": {
+        "2": 390,
+        "3": 1047,
+        "4": 1162
+      },
+      "users_rated": 77141
     },
     {
       "id": 102794,
       "name": "Caverna: The Cave Farmers",
       "year": 2013,
-      "rank": 70,
-      "weight": 3.8,
+      "rank": 62,
+      "weight": 3.7773,
       "playtime": 210,
       "best_counts": [
-        1,
         2,
-        3
+        3,
+        4
       ],
-      "best_count": 3,
+      "best_count": 4,
       "signals": [
-        "Worker Placement",
-        "Tile Placement"
-      ]
+        "Animals",
+        "Economic",
+        "Fantasy",
+        "Farming",
+        "Automatic Resource Growth",
+        "Increase Value of Unchosen Resources",
+        "Solo / Solitaire Game",
+        "Tile Placement",
+        "Turn Order: Claim Action",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: Caverna (Uwe Rosenberg)"
+      ],
+      "best_votes": {
+        "2": 93,
+        "3": 217,
+        "4": 313
+      },
+      "users_rated": 37537
     },
     {
       "id": 35677,
       "name": "Le Havre",
       "year": 2008,
-      "rank": 120,
-      "weight": 3.8,
-      "playtime": 200,
+      "rank": 83,
+      "weight": 3.7064,
+      "playtime": 150,
       "best_counts": [
         2,
         3
       ],
-      "best_count": 2,
+      "best_count": 3,
       "signals": [
-        "Worker Placement",
-        "Economic"
-      ]
+        "City Building",
+        "Economic",
+        "Industry / Manufacturing",
+        "Nautical",
+        "Automatic Resource Growth",
+        "End Game Bonuses",
+        "Increase Value of Unchosen Resources",
+        "Loans",
+        "Ownership",
+        "Solo / Solitaire Game",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: Le Havre"
+      ],
+      "best_votes": {
+        "2": 270,
+        "3": 578
+      },
+      "users_rated": 34102
     },
     {
       "id": 164928,
       "name": "Orl\u00e9ans",
       "year": 2014,
-      "rank": 60,
-      "weight": 3.1,
-      "playtime": 120,
+      "rank": 35,
+      "weight": 3.0115,
+      "playtime": 90,
       "best_counts": [
-        2,
         3,
         4
       ],
-      "best_count": 3,
+      "best_count": 4,
       "signals": [
+        "Medieval",
+        "Religious",
+        "Travel",
+        "Contracts",
         "Deck, Bag, and Pool Building",
-        "Worker Placement"
-      ]
+        "End Game Bonuses",
+        "Events",
+        "Kill Steal",
+        "Point to Point Movement",
+        "Simultaneous Action Selection",
+        "Tech Trees / Tech Tracks",
+        "Turn Order: Progressive",
+        "Variable Set-up",
+        "Worker Placement, Different Worker Types"
+      ],
+      "families": [
+        "Game: Orl\u00e9ans"
+      ],
+      "best_votes": {
+        "3": 173,
+        "4": 276
+      },
+      "users_rated": 35991
     },
     {
       "id": 185343,
       "name": "Anachrony",
       "year": 2017,
-      "rank": 105,
-      "weight": 4.0,
-      "playtime": 130,
+      "rank": 61,
+      "weight": 3.995,
+      "playtime": 120,
       "best_counts": [
-        3
+        2,
+        3,
+        4
       ],
       "best_count": 3,
       "signals": [
+        "Economic",
+        "Science Fiction",
+        "Contracts",
+        "Dice Rolling",
+        "Die Icon Resolution",
+        "End Game Bonuses",
+        "Events",
+        "Map Reduction",
+        "Open Drafting",
+        "Set Collection",
+        "Solo / Solitaire Game",
+        "Turn Order: Claim Action",
+        "Variable Player Powers",
+        "Variable Set-up",
         "Worker Placement",
-        "Science Fiction"
-      ]
+        "Worker Placement, Different Worker Types"
+      ],
+      "families": [
+        "Game: Anachrony"
+      ],
+      "best_votes": {
+        "2": 70,
+        "3": 248,
+        "4": 111
+      },
+      "users_rated": 21811
     },
     {
       "id": 184267,
       "name": "On Mars",
-      "year": 2019,
-      "rank": 140,
-      "weight": 4.7,
+      "year": 2020,
+      "rank": 58,
+      "weight": 4.6234,
       "playtime": 150,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
       "best_count": 3,
       "signals": [
-        "Worker Placement",
+        "City Building",
+        "Economic",
+        "Exploration",
+        "Science Fiction",
+        "Space Exploration",
+        "Territory Building",
+        "Contracts",
+        "Delayed Purchase",
+        "End Game Bonuses",
+        "Hexagon Grid",
+        "Income",
+        "Movement Points",
+        "Set Collection",
+        "Solo / Solitaire Game",
+        "Tech Trees / Tech Tracks",
         "Tile Placement",
-        "Science Fiction"
-      ]
+        "Variable Phase Order",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: On Mars"
+      ],
+      "best_votes": {
+        "2": 77,
+        "3": 247,
+        "4": 87
+      },
+      "users_rated": 15180
     },
     {
       "id": 175914,
       "name": "Food Chain Magnate",
       "year": 2015,
-      "rank": 90,
-      "weight": 4.2,
-      "playtime": 120,
+      "rank": 51,
+      "weight": 4.1837,
+      "playtime": 240,
       "best_counts": [
         3,
-        4,
-        5
+        4
       ],
       "best_count": 3,
       "signals": [
-        "Network and Route Building",
-        "Hand Management",
-        "Economic"
-      ]
+        "Economic",
+        "Industry / Manufacturing",
+        "Delayed Purchase",
+        "Income",
+        "Market",
+        "Modular Board",
+        "Open Drafting",
+        "Simultaneous Action Selection",
+        "Tech Trees / Tech Tracks",
+        "Victory Points as a Resource"
+      ],
+      "families": [],
+      "best_votes": {
+        "3": 235,
+        "4": 219
+      },
+      "users_rated": 23466
     },
     {
       "id": 34635,
-      "name": "Dominant Species",
-      "year": 2010,
-      "rank": 160,
-      "weight": 4.0,
-      "playtime": 240,
+      "name": "Stone Age",
+      "year": 2008,
+      "rank": 189,
+      "weight": 2.4553,
+      "playtime": 90,
       "best_counts": [
-        4,
-        5
+        2,
+        3,
+        4
       ],
-      "best_count": 5,
+      "best_count": 4,
       "signals": [
-        "Area Majority / Influence",
-        "Worker Placement",
-        "Animals"
-      ]
+        "Dice",
+        "Economic",
+        "Prehistoric",
+        "Contracts",
+        "Dice Rolling",
+        "End Game Bonuses",
+        "Set Collection",
+        "Turn Order: Progressive",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: Stone Age"
+      ],
+      "best_votes": {
+        "2": 187,
+        "3": 284,
+        "4": 656
+      },
+      "users_rated": 56131
     },
     {
       "id": 246900,
       "name": "Eclipse: Second Dawn for the Galaxy",
       "year": 2020,
-      "rank": 58,
-      "weight": 3.7,
+      "rank": 23,
+      "weight": 3.6682,
       "playtime": 200,
       "best_counts": [
-        4
+        3,
+        4,
+        5,
+        6
       ],
       "best_count": 4,
       "signals": [
+        "Civilization",
+        "Exploration",
+        "Science Fiction",
+        "Space Exploration",
+        "Territory Building",
+        "Wargame",
+        "Alliances",
         "Area Majority / Influence",
+        "Area-Impulse",
         "Dice Rolling",
-        "Science Fiction"
-      ]
+        "Grid Movement",
+        "Hexagon Grid",
+        "Hidden Victory Points",
+        "Hot Potato",
+        "Income",
+        "Modular Board",
+        "Tech Trees / Tech Tracks",
+        "Turn Order: Pass Order",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Eclipse (Lautapelit.fi)"
+      ],
+      "best_votes": {
+        "3": 57,
+        "4": 237,
+        "5": 72,
+        "6": 179
+      },
+      "users_rated": 17754
     },
     {
       "id": 120677,
       "name": "Terra Mystica",
       "year": 2012,
-      "rank": 40,
-      "weight": 3.9,
+      "rank": 36,
+      "weight": 3.9719,
       "playtime": 150,
       "best_counts": [
         3,
-        4
+        4,
+        5
       ],
       "best_count": 4,
       "signals": [
-        "Area Majority / Influence",
+        "Civilization",
+        "Economic",
+        "Fantasy",
+        "Territory Building",
+        "Chaining",
+        "End Game Bonuses",
+        "Hexagon Grid",
+        "Income",
+        "Increase Value of Unchosen Resources",
         "Network and Route Building",
-        "Variable Player Powers"
-      ]
+        "Tech Trees / Tech Tracks",
+        "Turn Order: Pass Order",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Victory Points as a Resource"
+      ],
+      "families": [],
+      "best_votes": {
+        "3": 178,
+        "4": 791,
+        "5": 214
+      },
+      "users_rated": 51274
     },
     {
       "id": 4098,
       "name": "Age of Steam",
       "year": 2002,
-      "rank": 130,
-      "weight": 3.9,
+      "rank": 138,
+      "weight": 3.8525,
       "playtime": 120,
       "best_counts": [
         4,
@@ -458,36 +1028,76 @@
       ],
       "best_count": 4,
       "signals": [
+        "Economic",
+        "Post-Napoleonic",
+        "Trains",
+        "Transportation",
+        "Auction / Bidding",
+        "Catch the Leader",
+        "Connections",
+        "Dice Rolling",
+        "Hexagon Grid",
+        "Loans",
         "Network and Route Building",
-        "Auction/Bidding",
-        "Trains"
-      ]
+        "Pick-up and Deliver",
+        "Player Elimination",
+        "Scenario / Mission / Campaign Game",
+        "Selection Order Bid",
+        "Solo / Solitaire Game",
+        "Tile Placement",
+        "Turn Order: Auction",
+        "Victory Points as a Resource"
+      ],
+      "families": [
+        "Game: Age of Steam"
+      ],
+      "best_votes": {
+        "4": 131,
+        "5": 90
+      },
+      "users_rated": 12838
     },
     {
       "id": 2651,
       "name": "Power Grid",
       "year": 2004,
-      "rank": 95,
-      "weight": 3.3,
+      "rank": 76,
+      "weight": 3.2452,
       "playtime": 120,
       "best_counts": [
         4,
         5,
         6
       ],
-      "best_count": 5,
+      "best_count": 4,
       "signals": [
+        "Economic",
+        "Industry / Manufacturing",
+        "Auction / Bidding",
+        "Auction: Turn Order Until Pass",
+        "Catch the Leader",
+        "Income",
+        "Market",
         "Network and Route Building",
-        "Auction/Bidding",
-        "Economic"
-      ]
+        "Turn Order: Stat-Based",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Power Grid"
+      ],
+      "best_votes": {
+        "4": 864,
+        "5": 802,
+        "6": 223
+      },
+      "users_rated": 69956
     },
     {
       "id": 304783,
       "name": "Hadrian's Wall",
       "year": 2021,
-      "rank": 150,
-      "weight": 3.4,
+      "rank": 173,
+      "weight": 3.1746,
       "playtime": 60,
       "best_counts": [
         1,
@@ -495,213 +1105,469 @@
       ],
       "best_count": 1,
       "signals": [
-        "Flip and Write",
-        "Paper-and-Pencil"
-      ]
+        "Ancient",
+        "City Building",
+        "Hand Management",
+        "Paper-and-Pencil",
+        "Solo / Solitaire Game",
+        "Tech Trees / Tech Tracks"
+      ],
+      "families": [],
+      "best_votes": {
+        "1": 318,
+        "2": 47
+      },
+      "users_rated": 10853
     },
     {
       "id": 161533,
       "name": "Lisboa",
       "year": 2017,
-      "rank": 155,
-      "weight": 4.6,
+      "rank": 70,
+      "weight": 4.5629,
       "playtime": 120,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
       "best_count": 3,
       "signals": [
+        "City Building",
+        "Economic",
+        "Industry / Manufacturing",
+        "Political",
+        "Area Majority / Influence",
         "Hand Management",
-        "Tile Placement",
-        "Economic"
-      ]
+        "Multi-Use Cards",
+        "Open Drafting",
+        "Set Collection",
+        "Solo / Solitaire Game",
+        "Tile Placement"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 61,
+        "3": 210,
+        "4": 62
+      },
+      "users_rated": 13073
     },
     {
       "id": 192135,
       "name": "Too Many Bones",
       "year": 2017,
-      "rank": 48,
-      "weight": 3.9,
+      "rank": 37,
+      "weight": 3.8675,
       "playtime": 120,
       "best_counts": [
         1,
-        2
+        2,
+        3
       ],
-      "best_count": 1,
+      "best_count": 2,
       "signals": [
+        "Adventure",
+        "Dice",
+        "Fantasy",
+        "Fighting",
         "Cooperative Game",
         "Dice Rolling",
+        "Die Icon Resolution",
+        "Grid Movement",
+        "Narrative Choice / Paragraph",
+        "Resource to Move",
+        "Role Playing",
+        "Scenario / Mission / Campaign Game",
+        "Solo / Solitaire Game",
+        "Square Grid",
+        "Stat Check Resolution",
+        "Tech Trees / Tech Tracks",
+        "Turn Order: Role Order",
         "Variable Player Powers"
-      ]
+      ],
+      "families": [
+        "Game: Too Many Bones"
+      ],
+      "best_votes": {
+        "1": 156,
+        "2": 227,
+        "3": 175
+      },
+      "users_rated": 17391
     },
     {
       "id": 167791,
       "name": "Terraforming Mars",
       "year": 2016,
-      "rank": 4,
-      "weight": 3.2,
+      "rank": 9,
+      "weight": 3.2724,
       "playtime": 120,
       "best_counts": [
+        2,
         3,
         4
       ],
       "best_count": 3,
       "signals": [
-        "Engine Building",
-        "Open Drafting",
-        "Tile Placement"
-      ]
+        "Civilization",
+        "Economic",
+        "Environmental",
+        "Industry / Manufacturing",
+        "Science Fiction",
+        "Space Exploration",
+        "Territory Building",
+        "Closed Drafting",
+        "Contracts",
+        "End Game Bonuses",
+        "Hand Management",
+        "Hexagon Grid",
+        "Income",
+        "Solo / Solitaire Game",
+        "Tags",
+        "Take That",
+        "Tile Placement",
+        "Turn Order: Progressive",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Terraforming Mars"
+      ],
+      "best_votes": {
+        "2": 626,
+        "3": 1742,
+        "4": 923
+      },
+      "users_rated": 114499
     },
     {
       "id": 193738,
       "name": "Great Western Trail",
       "year": 2016,
-      "rank": 15,
-      "weight": 3.7,
+      "rank": 21,
+      "weight": 3.6962,
       "playtime": 150,
       "best_counts": [
+        2,
         3,
         4
       ],
-      "best_count": 4,
+      "best_count": 3,
       "signals": [
+        "American West",
+        "Animals",
+        "Contracts",
         "Deck, Bag, and Pool Building",
-        "Network and Route Building",
-        "Hand Management"
-      ]
+        "Hand Management",
+        "Income",
+        "Ownership",
+        "Set Collection",
+        "Track Movement",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Great Western Trail"
+      ],
+      "best_votes": {
+        "2": 146,
+        "3": 571,
+        "4": 208
+      },
+      "users_rated": 44059
     },
     {
       "id": 169786,
       "name": "Scythe",
       "year": 2016,
-      "rank": 18,
-      "weight": 3.4,
+      "rank": 26,
+      "weight": 3.4516,
       "playtime": 115,
       "best_counts": [
+        3,
         4,
         5
       ],
-      "best_count": 5,
+      "best_count": 4,
       "signals": [
+        "Economic",
+        "Fighting",
+        "Science Fiction",
+        "Territory Building",
         "Area Majority / Influence",
-        "Engine Building",
-        "Variable Player Powers"
-      ]
+        "Card Play Conflict Resolution",
+        "Contracts",
+        "End Game Bonuses",
+        "Force Commitment",
+        "Grid Movement",
+        "Hexagon Grid",
+        "King of the Hill",
+        "Movement Points",
+        "Narrative Choice / Paragraph",
+        "Solo / Solitaire Game",
+        "Take That",
+        "Tech Trees / Tech Tracks",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Victory Points as a Resource",
+        "Zone of Control"
+      ],
+      "families": [
+        "Game: Scythe"
+      ],
+      "best_votes": {
+        "3": 358,
+        "4": 1038,
+        "5": 452
+      },
+      "users_rated": 94225
     },
     {
       "id": 316554,
       "name": "Dune: Imperium",
       "year": 2020,
-      "rank": 7,
-      "weight": 3.0,
+      "rank": 6,
+      "weight": 3.0785,
       "playtime": 120,
       "best_counts": [
         3,
         4
       ],
-      "best_count": 4,
+      "best_count": 3,
       "signals": [
+        "Movies / TV / Radio theme",
+        "Novel-based",
+        "Political",
+        "Science Fiction",
+        "Card Play Conflict Resolution",
         "Deck, Bag, and Pool Building",
+        "Delayed Purchase",
+        "Force Commitment",
+        "Increase Value of Unchosen Resources",
+        "Multi-Use Cards",
+        "Open Drafting",
+        "Ownership",
+        "Race",
+        "Solo / Solitaire Game",
+        "Tags",
+        "Take That",
+        "Turn Order: Progressive",
+        "Variable Player Powers",
         "Worker Placement"
-      ]
+      ],
+      "families": [
+        "Game: Dune: Imperium"
+      ],
+      "best_votes": {
+        "3": 927,
+        "4": 924
+      },
+      "users_rated": 59430
     },
     {
       "id": 199792,
       "name": "Everdell",
       "year": 2018,
-      "rank": 22,
-      "weight": 2.8,
+      "rank": 46,
+      "weight": 2.8338,
       "playtime": 80,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
       "best_count": 3,
       "signals": [
-        "Worker Placement",
+        "Animals",
+        "Card Game",
+        "City Building",
+        "Fantasy",
+        "Contracts",
+        "End Game Bonuses",
         "Hand Management",
-        "Engine Building"
-      ]
+        "Income",
+        "Open Drafting",
+        "Ownership",
+        "Set Collection",
+        "Solo / Solitaire Game",
+        "Tags",
+        "Variable Set-up",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: Everdell"
+      ],
+      "best_votes": {
+        "2": 335,
+        "3": 600,
+        "4": 196
+      },
+      "users_rated": 69599
     },
     {
       "id": 84876,
       "name": "The Castles of Burgundy",
       "year": 2011,
-      "rank": 24,
-      "weight": 3.0,
+      "rank": 17,
+      "weight": 2.9701,
       "playtime": 90,
       "best_counts": [
-        2
+        2,
+        3
       ],
       "best_count": 2,
       "signals": [
-        "Tile Placement",
+        "Animals",
+        "Medieval",
+        "Territory Building",
+        "Delayed Purchase",
         "Dice Rolling",
-        "Set Collection"
-      ]
+        "End Game Bonuses",
+        "Grid Coverage",
+        "Hexagon Grid",
+        "Open Drafting",
+        "Pattern Building",
+        "Tile Placement",
+        "Track Movement",
+        "Turn Order: Stat-Based",
+        "Variable Set-up",
+        "Worker Placement with Dice Workers"
+      ],
+      "families": [
+        "Game: The Castles of Burgundy"
+      ],
+      "best_votes": {
+        "2": 1091,
+        "3": 501
+      },
+      "users_rated": 70278
     },
     {
       "id": 121921,
       "name": "Robinson Crusoe: Adventures on the Cursed Island",
       "year": 2012,
-      "rank": 40,
-      "weight": 3.2,
+      "rank": 120,
+      "weight": 3.8273,
       "playtime": 120,
       "best_counts": [
         1,
-        3,
-        4
+        2,
+        3
       ],
-      "best_count": 3,
+      "best_count": 1,
       "signals": [
+        "Adventure",
+        "Exploration",
+        "Fighting",
+        "Novel-based",
+        "Territory Building",
+        "Action Queue",
+        "Area Movement",
         "Cooperative Game",
-        "Dice Rolling"
-      ]
+        "Dice Rolling",
+        "Die Icon Resolution",
+        "Events",
+        "Hexagon Grid",
+        "Map Addition",
+        "Movement Points",
+        "Narrative Choice / Paragraph",
+        "Scenario / Mission / Campaign Game",
+        "Solo / Solitaire Game",
+        "Tile Placement",
+        "Turn Order: Progressive",
+        "Variable Player Powers",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: Robinson Crusoe \u2013 Adventures on the Cursed Island"
+      ],
+      "best_votes": {
+        "1": 448,
+        "2": 398,
+        "3": 355
+      },
+      "users_rated": 47043
     },
     {
       "id": 28143,
       "name": "Race for the Galaxy",
       "year": 2007,
-      "rank": 45,
-      "weight": 3.0,
+      "rank": 94,
+      "weight": 2.9933,
       "playtime": 60,
       "best_counts": [
-        2
+        2,
+        3,
+        4
       ],
       "best_count": 2,
       "signals": [
-        "Engine Building",
-        "Open Drafting",
-        "Set Collection",
-        "Hand Management"
-      ]
+        "Card Game",
+        "Civilization",
+        "Economic",
+        "Science Fiction",
+        "Space Exploration",
+        "End Game Bonuses",
+        "Follow",
+        "Hand Management",
+        "Income",
+        "Market",
+        "Multi-Use Cards",
+        "Simultaneous Action Selection",
+        "Tags",
+        "Variable Phase Order"
+      ],
+      "families": [
+        "Game: Race for the Galaxy"
+      ],
+      "best_votes": {
+        "2": 843,
+        "3": 379,
+        "4": 437
+      },
+      "users_rated": 59303
     },
     {
       "id": 3076,
       "name": "Puerto Rico",
       "year": 2002,
-      "rank": 48,
-      "weight": 3.3,
-      "playtime": 120,
+      "rank": 57,
+      "weight": 3.2661,
+      "playtime": 150,
       "best_counts": [
         3,
         4,
         5
       ],
-      "best_count": 5,
+      "best_count": 4,
       "signals": [
-        "Set Collection",
+        "City Building",
         "Economic",
+        "Farming",
+        "Action Drafting",
+        "End Game Bonuses",
+        "Follow",
+        "Hidden Victory Points",
+        "Increase Value of Unchosen Resources",
+        "Turn Order: Progressive",
         "Variable Phase Order"
-      ]
+      ],
+      "families": [
+        "Game: Puerto Rico"
+      ],
+      "best_votes": {
+        "3": 378,
+        "4": 1075,
+        "5": 393
+      },
+      "users_rated": 74599
     },
     {
       "id": 124361,
       "name": "Concordia",
       "year": 2013,
-      "rank": 33,
-      "weight": 3.0,
+      "rank": 29,
+      "weight": 2.986,
       "playtime": 100,
       "best_counts": [
         3,
@@ -709,69 +1575,137 @@
       ],
       "best_count": 4,
       "signals": [
+        "Ancient",
+        "Economic",
+        "Nautical",
+        "Action Retrieval",
+        "Advantage Token",
+        "Auction: Dutch",
         "Deck, Bag, and Pool Building",
+        "End Game Bonuses",
+        "Hand Management",
+        "Hidden Victory Points",
+        "Investment",
+        "Movement Points",
         "Network and Route Building",
-        "Hand Management"
-      ]
+        "Open Drafting",
+        "Point to Point Movement",
+        "Set Collection",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Concordia"
+      ],
+      "best_votes": {
+        "3": 255,
+        "4": 451
+      },
+      "users_rated": 46173
     },
     {
       "id": 126163,
       "name": "Tzolk'in: The Mayan Calendar",
       "year": 2012,
-      "rank": 80,
-      "weight": 3.7,
+      "rank": 77,
+      "weight": 3.6629,
       "playtime": 90,
       "best_counts": [
+        2,
         3,
         4
       ],
       "best_count": 4,
       "signals": [
-        "Worker Placement",
-        "Set Collection"
-      ]
+        "Ancient",
+        "Civilization",
+        "Economic",
+        "Farming",
+        "Mythology",
+        "Bias",
+        "End Game Bonuses",
+        "Once-Per-Game Abilities",
+        "Track Movement",
+        "Turn Order: Claim Action",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: Tzolk'in \u2013 The Mayan Calendar"
+      ],
+      "best_votes": {
+        "2": 95,
+        "3": 189,
+        "4": 423
+      },
+      "users_rated": 42784
     },
     {
       "id": 102680,
       "name": "Trajan",
       "year": 2011,
-      "rank": 170,
-      "weight": 3.7,
-      "playtime": 100,
+      "rank": 149,
+      "weight": 3.6244,
+      "playtime": 120,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
-      "best_count": 2,
+      "best_count": 4,
       "signals": [
-        "Set Collection",
-        "Area Majority / Influence",
-        "Ancient"
-      ]
+        "Ancient",
+        "Area Movement",
+        "Hand Management",
+        "Mancala",
+        "Open Drafting",
+        "Set Collection"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 75,
+        "3": 101,
+        "4": 147
+      },
+      "users_rated": 18993
     },
     {
       "id": 43015,
       "name": "Hansa Teutonica",
       "year": 2009,
-      "rank": 110,
-      "weight": 3.1,
+      "rank": 147,
+      "weight": 3.0886,
       "playtime": 90,
       "best_counts": [
+        3,
         4,
         5
       ],
       "best_count": 5,
       "signals": [
+        "Medieval",
+        "Action Points",
+        "Area Majority / Influence",
+        "End Game Bonuses",
         "Network and Route Building",
-        "Area Majority / Influence"
-      ]
+        "Ownership",
+        "Take That",
+        "Tech Trees / Tech Tracks"
+      ],
+      "families": [
+        "Game: Hansa Teutonica"
+      ],
+      "best_votes": {
+        "3": 92,
+        "4": 153,
+        "5": 185
+      },
+      "users_rated": 17487
     },
     {
       "id": 216132,
       "name": "Clans of Caledonia",
       "year": 2017,
-      "rank": 180,
-      "weight": 3.4,
+      "rank": 78,
+      "weight": 3.4655,
       "playtime": 120,
       "best_counts": [
         3,
@@ -779,123 +1713,247 @@
       ],
       "best_count": 4,
       "signals": [
-        "Engine Building",
+        "Economic",
+        "Farming",
+        "Industry / Manufacturing",
+        "Commodity Speculation",
+        "Contracts",
+        "Hexagon Grid",
+        "Income",
+        "Market",
+        "Modular Board",
         "Network and Route Building",
-        "Economic"
-      ]
+        "Solo / Solitaire Game",
+        "Turn Order: Pass Order",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Clans of Caledonia"
+      ],
+      "best_votes": {
+        "3": 160,
+        "4": 235
+      },
+      "users_rated": 23085
     },
     {
       "id": 247763,
       "name": "Underwater Cities",
       "year": 2018,
-      "rank": 100,
-      "weight": 3.6,
-      "playtime": 130,
+      "rank": 52,
+      "weight": 3.5882,
+      "playtime": 150,
       "best_counts": [
         2,
         3
       ],
-      "best_count": 3,
+      "best_count": 2,
       "signals": [
-        "Worker Placement",
-        "Engine Building",
-        "Hand Management"
-      ]
+        "Card Game",
+        "City Building",
+        "Industry / Manufacturing",
+        "Nautical",
+        "Science Fiction",
+        "End Game Bonuses",
+        "Hand Management",
+        "Income",
+        "Network and Route Building",
+        "Solo / Solitaire Game",
+        "Turn Order: Claim Action",
+        "Turn Order: Stat-Based",
+        "Worker Placement"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 387,
+        "3": 209
+      },
+      "users_rated": 23323
     },
     {
       "id": 171623,
       "name": "The Voyages of Marco Polo",
       "year": 2015,
-      "rank": 125,
-      "weight": 3.2,
+      "rank": 122,
+      "weight": 3.1771,
       "playtime": 100,
       "best_counts": [
+        2,
         3,
         4
       ],
-      "best_count": 3,
+      "best_count": 4,
       "signals": [
-        "Worker Placement",
+        "Dice",
+        "Economic",
+        "Medieval",
+        "Travel",
+        "Contracts",
         "Dice Rolling",
-        "Set Collection"
-      ]
+        "End Game Bonuses",
+        "Point to Point Movement",
+        "Resource to Move",
+        "Turn Order: Claim Action",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Worker Placement with Dice Workers"
+      ],
+      "families": [
+        "Game: The Voyages of Marco Polo"
+      ],
+      "best_votes": {
+        "2": 66,
+        "3": 161,
+        "4": 268
+      },
+      "users_rated": 26418
     },
     {
       "id": 183394,
       "name": "Viticulture Essential Edition",
       "year": 2015,
-      "rank": 55,
-      "weight": 2.9,
+      "rank": 43,
+      "weight": 2.902,
       "playtime": 90,
       "best_counts": [
+        2,
         3,
         4
       ],
       "best_count": 4,
       "signals": [
+        "Economic",
+        "Farming",
+        "Contracts",
+        "Hand Management",
+        "Race",
+        "Solo / Solitaire Game",
+        "Turn Order: Auction",
+        "Victory Points as a Resource",
         "Worker Placement",
-        "Hand Management"
-      ]
+        "Worker Placement, Different Worker Types"
+      ],
+      "families": [
+        "Game: Viticulture"
+      ],
+      "best_votes": {
+        "2": 153,
+        "3": 440,
+        "4": 495
+      },
+      "users_rated": 55764
     },
     {
       "id": 12,
       "name": "Ra",
       "year": 1999,
-      "rank": 250,
-      "weight": 2.4,
+      "rank": 113,
+      "weight": 2.3039,
       "playtime": 60,
       "best_counts": [
         3,
-        4
+        4,
+        5
       ],
-      "best_count": 3,
+      "best_count": 4,
       "signals": [
-        "Auction/Bidding",
-        "Set Collection",
-        "Push Your Luck"
-      ]
+        "Ancient",
+        "Mythology",
+        "Auction / Bidding",
+        "Auction: Once Around",
+        "Closed Economy Auction",
+        "Constrained Bidding",
+        "Hidden Victory Points",
+        "Push Your Luck",
+        "Set Collection"
+      ],
+      "families": [
+        "Game: Ra"
+      ],
+      "best_votes": {
+        "3": 353,
+        "4": 401,
+        "5": 134
+      },
+      "users_rated": 32764
     },
     {
       "id": 93,
       "name": "El Grande",
       "year": 1995,
-      "rank": 165,
-      "weight": 3.1,
+      "rank": 101,
+      "weight": 2.9311,
       "playtime": 120,
       "best_counts": [
+        4,
         5
       ],
       "best_count": 5,
       "signals": [
+        "Medieval",
+        "Action Drafting",
         "Area Majority / Influence",
-        "Auction/Bidding",
-        "Hand Management"
-      ]
+        "Auction / Bidding",
+        "Hand Management",
+        "Open Drafting",
+        "Selection Order Bid",
+        "Simultaneous Action Selection",
+        "Take That",
+        "Turn Order: Auction"
+      ],
+      "families": [
+        "Game: El Grande"
+      ],
+      "best_votes": {
+        "4": 276,
+        "5": 567
+      },
+      "users_rated": 33458
     },
     {
       "id": 39463,
       "name": "Cosmic Encounter",
       "year": 2008,
-      "rank": 150,
-      "weight": 2.5,
-      "playtime": 90,
+      "rank": 232,
+      "weight": 2.5825,
+      "playtime": 120,
       "best_counts": [
+        4,
         5
       ],
       "best_count": 5,
       "signals": [
-        "Negotiation",
-        "Variable Player Powers",
         "Bluffing",
-        "Hand Management"
-      ]
+        "Negotiation",
+        "Science Fiction",
+        "Space Exploration",
+        "Alliances",
+        "Card Play Conflict Resolution",
+        "Hand Management",
+        "Interrupts",
+        "Negotiation",
+        "Prisoner's Dilemma",
+        "Race",
+        "Simultaneous Action Selection",
+        "Take That",
+        "Trading",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Cosmic Encounter"
+      ],
+      "best_votes": {
+        "4": 184,
+        "5": 188
+      },
+      "users_rated": 35124
     },
     {
       "id": 205637,
       "name": "Arkham Horror: The Card Game",
       "year": 2016,
-      "rank": 29,
-      "weight": 3.4,
+      "rank": 33,
+      "weight": 3.5674,
       "playtime": 120,
       "best_counts": [
         1,
@@ -903,56 +1961,138 @@
       ],
       "best_count": 2,
       "signals": [
+        "Adventure",
+        "Card Game",
+        "Collectible Components",
+        "Exploration",
+        "Horror",
+        "Novel-based",
+        "Action Points",
+        "Area Movement",
+        "Communication Limits",
         "Cooperative Game",
-        "Deck, Bag, and Pool Building",
-        "Hand Management"
-      ]
+        "Deck Construction",
+        "Events",
+        "Hand Management",
+        "Map Deformation",
+        "Modular Board",
+        "Player Elimination",
+        "Push Your Luck",
+        "Role Playing",
+        "Scenario / Mission / Campaign Game",
+        "Solo / Solitaire Game",
+        "Stat Check Resolution",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Arkham Horror \u2013 The Card Game"
+      ],
+      "best_votes": {
+        "1": 290,
+        "2": 783
+      },
+      "users_rated": 48084
     },
     {
       "id": 167355,
       "name": "Nemesis",
       "year": 2018,
-      "rank": 52,
-      "weight": 3.4,
+      "rank": 25,
+      "weight": 3.4905,
       "playtime": 180,
       "best_counts": [
+        3,
         4,
         5
       ],
-      "best_count": 5,
+      "best_count": 4,
       "signals": [
+        "Adventure",
+        "Horror",
+        "Miniatures",
+        "Science Fiction",
+        "Action Points",
+        "Campaign / Battle Card Driven",
         "Cooperative Game",
-        "Hidden Roles",
         "Dice Rolling",
-        "Science Fiction"
-      ]
+        "Hand Management",
+        "Hidden Roles",
+        "Interrupts",
+        "Modular Board",
+        "Player Elimination",
+        "Scenario / Mission / Campaign Game",
+        "Semi-Cooperative Game",
+        "Solo / Solitaire Game",
+        "Team-Based Game",
+        "Traitor Game",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Nemesis"
+      ],
+      "best_votes": {
+        "3": 155,
+        "4": 517,
+        "5": 399
+      },
+      "users_rated": 38047
     },
     {
       "id": 240980,
       "name": "Blood on the Clocktower",
       "year": 2022,
-      "rank": 180,
-      "weight": 2.7,
+      "rank": 66,
+      "weight": 3.0217,
       "playtime": 120,
       "best_counts": [
+        8,
+        9,
         10,
+        11,
         12,
+        13,
+        14,
         15
       ],
       "best_count": 12,
       "signals": [
-        "Hidden Roles",
+        "Bluffing",
         "Deduction",
+        "Murder / Mystery",
         "Party Game",
-        "Bluffing"
-      ]
+        "Betting and Bluffing",
+        "Deduction",
+        "Hidden Roles",
+        "Negotiation",
+        "Prisoner's Dilemma",
+        "Rock-Paper-Scissors",
+        "Roles with Asymmetric Information",
+        "Team-Based Game",
+        "Traitor Game",
+        "Variable Player Powers",
+        "Voting"
+      ],
+      "families": [
+        "Game: Werewolf / Mafia"
+      ],
+      "best_votes": {
+        "8": 96,
+        "9": 162,
+        "10": 193,
+        "11": 228,
+        "12": 236,
+        "13": 111,
+        "14": 60,
+        "15": 45
+      },
+      "users_rated": 12126
     },
     {
       "id": 118,
       "name": "Modern Art",
       "year": 1992,
-      "rank": 390,
-      "weight": 2.2,
+      "rank": 222,
+      "weight": 2.2765,
       "playtime": 45,
       "best_counts": [
         4,
@@ -960,88 +2100,139 @@
       ],
       "best_count": 5,
       "signals": [
-        "Auction/Bidding",
+        "Card Game",
+        "Economic",
+        "Auction / Bidding",
+        "Auction: English",
+        "Auction: Once Around",
+        "Auction: Sealed Bid",
+        "Auction: Turn Order Until Pass",
+        "Commodity Speculation",
         "Hand Management",
-        "Economic"
-      ]
+        "Victory Points as a Resource"
+      ],
+      "families": [],
+      "best_votes": {
+        "4": 249,
+        "5": 285
+      },
+      "users_rated": 25717
     },
     {
       "id": 110327,
       "name": "Lords of Waterdeep",
       "year": 2012,
-      "rank": 190,
-      "weight": 2.5,
-      "playtime": 90,
+      "rank": 107,
+      "weight": 2.4482,
+      "playtime": 120,
       "best_counts": [
+        3,
         4,
         5
       ],
       "best_count": 4,
       "signals": [
-        "Worker Placement",
-        "Set Collection"
-      ]
+        "City Building",
+        "Fantasy",
+        "Contracts",
+        "Hidden Roles",
+        "Increase Value of Unchosen Resources",
+        "Ownership",
+        "Set Collection",
+        "Take That",
+        "Turn Order: Claim Action",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: Lords of Waterdeep"
+      ],
+      "best_votes": {
+        "3": 403,
+        "4": 478,
+        "5": 126
+      },
+      "users_rated": 59470
     },
     {
       "id": 155426,
       "name": "Castles of Mad King Ludwig",
       "year": 2014,
-      "rank": 195,
-      "weight": 2.6,
+      "rank": 237,
+      "weight": 2.6469,
       "playtime": 90,
+      "best_counts": [
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Post-Napoleonic",
+        "Puzzle",
+        "End Game Bonuses",
+        "Hidden Victory Points",
+        "I Cut, You Choose",
+        "Increase Value of Unchosen Resources",
+        "Pattern Building",
+        "Set Collection",
+        "Tile Placement",
+        "Turn Order: Progressive"
+      ],
+      "families": [
+        "Game: Castles of Mad King Ludwig"
+      ],
+      "best_votes": {
+        "3": 156,
+        "4": 222
+      },
+      "users_rated": 28056
+    },
+    {
+      "id": 157354,
+      "name": "Five Tribes: The Djinns of Naqala",
+      "year": 2014,
+      "rank": 98,
+      "weight": 2.8372,
+      "playtime": 80,
       "best_counts": [
         2,
         3,
         4
       ],
-      "best_count": 3,
-      "signals": [
-        "Tile Placement",
-        "Auction/Bidding"
-      ]
-    },
-    {
-      "id": 111960,
-      "name": "Suburbia",
-      "year": 2012,
-      "rank": 250,
-      "weight": 2.8,
-      "playtime": 90,
-      "best_counts": [
-        2,
-        3
-      ],
       "best_count": 2,
       "signals": [
-        "Tile Placement",
-        "Engine Building",
-        "Economic"
-      ]
-    },
-    {
-      "id": 157354,
-      "name": "Five Tribes",
-      "year": 2014,
-      "rank": 140,
-      "weight": 2.9,
-      "playtime": 80,
-      "best_counts": [
-        2,
-        3
-      ],
-      "best_count": 2,
-      "signals": [
-        "Auction/Bidding",
+        "Arabian",
+        "Fantasy",
+        "Mythology",
+        "Auction / Bidding",
+        "Constrained Bidding",
+        "End Game Bonuses",
+        "Hidden Victory Points",
+        "Mancala",
+        "Modular Board",
         "Set Collection",
-        "Area Majority / Influence"
-      ]
+        "Square Grid",
+        "Take That",
+        "Turn Order: Auction",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Victory Points as a Resource"
+      ],
+      "families": [
+        "Game: Five Tribes"
+      ],
+      "best_votes": {
+        "2": 533,
+        "3": 324,
+        "4": 216
+      },
+      "users_rated": 45586
     },
     {
       "id": 2655,
       "name": "Hive",
       "year": 2001,
-      "rank": 260,
-      "weight": 2.3,
+      "rank": 336,
+      "weight": 2.3134,
       "playtime": 20,
       "best_counts": [
         2
@@ -1049,259 +2240,582 @@
       "best_count": 2,
       "signals": [
         "Abstract Strategy",
-        "Grid Movement"
-      ]
+        "Animals",
+        "Enclosure",
+        "Grid Movement",
+        "Hexagon Grid",
+        "Pattern Movement",
+        "Pieces as Map",
+        "Three Dimensional Movement",
+        "Tile Placement"
+      ],
+      "families": [
+        "Game: Hive"
+      ],
+      "best_votes": {
+        "2": 333
+      },
+      "users_rated": 40686
     },
     {
       "id": 30549,
       "name": "Pandemic",
       "year": 2008,
-      "rank": 110,
-      "weight": 2.4,
+      "rank": 174,
+      "weight": 2.3934,
       "playtime": 45,
       "best_counts": [
+        2,
         3,
         4
       ],
       "best_count": 4,
       "signals": [
+        "Medical",
+        "Travel",
+        "Action Points",
+        "Chaining",
+        "Contracts",
         "Cooperative Game",
+        "Events",
+        "Hand Management",
+        "Multi-Use Cards",
+        "Point to Point Movement",
         "Set Collection",
-        "Hand Management"
-      ]
+        "Simulation",
+        "Solo / Solitaire Game",
+        "Tags",
+        "Trading",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Pandemic"
+      ],
+      "best_votes": {
+        "2": 427,
+        "3": 671,
+        "4": 1340
+      },
+      "users_rated": 135982
     },
     {
       "id": 161936,
       "name": "Pandemic Legacy: Season 1",
       "year": 2015,
-      "rank": 9,
-      "weight": 2.8,
+      "rank": 3,
+      "weight": 2.8283,
       "playtime": 60,
       "best_counts": [
+        2,
+        3,
         4
       ],
       "best_count": 4,
       "signals": [
+        "Environmental",
+        "Medical",
+        "Action Points",
         "Cooperative Game",
-        "Set Collection",
         "Hand Management",
-        "Legacy Game"
-      ]
+        "Legacy Game",
+        "Multi-Use Cards",
+        "Point to Point Movement",
+        "Scenario / Mission / Campaign Game",
+        "Set Collection",
+        "Tags",
+        "Trading",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Pandemic"
+      ],
+      "best_votes": {
+        "2": 171,
+        "3": 195,
+        "4": 518
+      },
+      "users_rated": 57702
     },
     {
       "id": 155821,
       "name": "Inis",
       "year": 2016,
-      "rank": 55,
-      "weight": 2.8,
+      "rank": 125,
+      "weight": 2.9437,
       "playtime": 90,
       "best_counts": [
+        2,
+        3,
         4
       ],
       "best_count": 4,
       "signals": [
+        "Ancient",
+        "Card Game",
+        "Exploration",
+        "Mythology",
+        "Wargame",
+        "Action Drafting",
         "Area Majority / Influence",
-        "Closed Drafting"
-      ]
+        "Area Movement",
+        "Campaign / Battle Card Driven",
+        "Closed Drafting",
+        "Hand Management",
+        "Interrupts",
+        "King of the Hill",
+        "Map Addition",
+        "Modular Board",
+        "Take That",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Inis"
+      ],
+      "best_votes": {
+        "2": 120,
+        "3": 197,
+        "4": 301
+      },
+      "users_rated": 23413
     },
     {
       "id": 291457,
       "name": "Gloomhaven: Jaws of the Lion",
       "year": 2020,
-      "rank": 28,
-      "weight": 3.6,
+      "rank": 12,
+      "weight": 3.6426,
       "playtime": 120,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
       "best_count": 2,
       "signals": [
+        "Adventure",
+        "Exploration",
+        "Fantasy",
+        "Fighting",
+        "Miniatures",
+        "Action Queue",
+        "Action Retrieval",
+        "Campaign / Battle Card Driven",
+        "Communication Limits",
         "Cooperative Game",
+        "Critical Hits and Failures",
+        "Deck Construction",
+        "Grid Movement",
         "Hand Management",
-        "Modular Board"
-      ]
+        "Hexagon Grid",
+        "Legacy Game",
+        "Line of Sight",
+        "Movement Points",
+        "Multi-Use Cards",
+        "Multiple Maps",
+        "Narrative Choice / Paragraph",
+        "Once-Per-Game Abilities",
+        "Player Elimination",
+        "Role Playing",
+        "Scenario / Mission / Campaign Game",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Gloomhaven"
+      ],
+      "best_votes": {
+        "2": 410,
+        "3": 273,
+        "4": 187
+      },
+      "users_rated": 41730
     },
     {
       "id": 274364,
       "name": "Watergate",
       "year": 2019,
-      "rank": 310,
-      "weight": 2.4,
-      "playtime": 45,
+      "rank": 190,
+      "weight": 2.298,
+      "playtime": 60,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
-        "Hand Management",
+        "Card Game",
         "Political",
+        "Action / Event",
+        "Campaign / Battle Card Driven",
+        "Connections",
+        "Hand Management",
+        "Once-Per-Game Abilities",
+        "Take That",
         "Tug of War"
-      ]
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 153
+      },
+      "users_rated": 14541
     },
     {
       "id": 118048,
       "name": "Targi",
       "year": 2012,
-      "rank": 200,
-      "weight": 2.4,
+      "rank": 176,
+      "weight": 2.3427,
       "playtime": 60,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
-        "Worker Placement",
-        "Set Collection"
-      ]
+        "Arabian",
+        "Card Game",
+        "End Game Bonuses",
+        "Modular Board",
+        "Open Drafting",
+        "Pattern Building",
+        "Set Collection",
+        "Square Grid",
+        "Turn Order: Progressive",
+        "Worker Placement"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 241
+      },
+      "users_rated": 26980
     },
     {
       "id": 266192,
       "name": "Wingspan",
       "year": 2019,
-      "rank": 30,
-      "weight": 2.4,
+      "rank": 38,
+      "weight": 2.4807,
       "playtime": 70,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
-      "best_count": 2,
+      "best_count": 3,
       "signals": [
-        "Engine Building",
+        "Animals",
+        "Card Game",
+        "Educational",
+        "Action Queue",
+        "Dice Rolling",
+        "End Game Bonuses",
+        "Hand Management",
+        "Once-Per-Game Abilities",
         "Open Drafting",
         "Set Collection",
-        "Dice Rolling"
-      ]
+        "Solo / Solitaire Game",
+        "Turn Order: Progressive"
+      ],
+      "families": [
+        "Game: Wingspan"
+      ],
+      "best_votes": {
+        "2": 634,
+        "3": 1244,
+        "4": 554
+      },
+      "users_rated": 114787
     },
     {
       "id": 312484,
       "name": "Lost Ruins of Arnak",
       "year": 2020,
-      "rank": 26,
-      "weight": 2.9,
+      "rank": 30,
+      "weight": 2.9335,
       "playtime": 120,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
-      "best_count": 2,
+      "best_count": 3,
       "signals": [
+        "Adventure",
+        "Card Game",
+        "Exploration",
+        "Fantasy",
+        "Area Movement",
+        "Contracts",
         "Deck, Bag, and Pool Building",
+        "Delayed Purchase",
+        "End Game Bonuses",
+        "Hand Management",
+        "Multi-Use Cards",
+        "Once-Per-Game Abilities",
+        "Open Drafting",
+        "Resource to Move",
+        "Solo / Solitaire Game",
+        "Track Movement",
+        "Turn Order: Progressive",
         "Worker Placement"
-      ]
+      ],
+      "families": [
+        "Game: Lost Ruins of Arnak"
+      ],
+      "best_votes": {
+        "2": 308,
+        "3": 660,
+        "4": 222
+      },
+      "users_rated": 58281
     },
     {
       "id": 36218,
       "name": "Dominion",
       "year": 2008,
-      "rank": 42,
-      "weight": 2.4,
+      "rank": 146,
+      "weight": 2.3442,
       "playtime": 30,
       "best_counts": [
+        2,
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Card Game",
+        "Medieval",
+        "Deck, Bag, and Pool Building",
+        "Delayed Purchase",
+        "Hand Management",
+        "Open Drafting",
+        "Take That",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Dominion"
+      ],
+      "best_votes": {
+        "2": 732,
+        "3": 1001,
+        "4": 596
+      },
+      "users_rated": 97196
+    },
+    {
+      "id": 269385,
+      "name": "The Lord of the Rings: Journeys in Middle-Earth",
+      "year": 2019,
+      "rank": 144,
+      "weight": 2.6978,
+      "playtime": 120,
+      "best_counts": [
+        1,
         2,
         3
       ],
       "best_count": 2,
       "signals": [
+        "Adventure",
+        "Exploration",
+        "Fantasy",
+        "Fighting",
+        "Novel-based",
+        "Action Points",
+        "Area Movement",
+        "Campaign / Battle Card Driven",
+        "Cooperative Game",
         "Deck, Bag, and Pool Building",
-        "Hand Management"
-      ]
-    },
-    {
-      "id": 269385,
-      "name": "Res Arcana",
-      "year": 2019,
-      "rank": 90,
-      "weight": 2.5,
-      "playtime": 60,
-      "best_counts": [
-        2
+        "Map Addition",
+        "Modular Board",
+        "Role Playing",
+        "Scenario / Mission / Campaign Game",
+        "Solo / Solitaire Game",
+        "Stat Check Resolution",
+        "Variable Player Powers"
       ],
-      "best_count": 2,
-      "signals": [
-        "Engine Building",
-        "Hand Management",
-        "Fantasy"
-      ]
+      "families": [],
+      "best_votes": {
+        "1": 139,
+        "2": 217,
+        "3": 128
+      },
+      "users_rated": 18656
     },
     {
       "id": 244521,
-      "name": "The Quacks of Quedlinburg",
+      "name": "Quacks",
       "year": 2018,
-      "rank": 60,
-      "weight": 2.4,
+      "rank": 80,
+      "weight": 1.9414,
       "playtime": 45,
       "best_counts": [
+        2,
         3,
         4
       ],
       "best_count": 4,
       "signals": [
+        "Fantasy",
+        "Medieval",
+        "Catch the Leader",
         "Deck, Bag, and Pool Building",
-        "Push Your Luck"
-      ]
+        "Delayed Purchase",
+        "Dice Rolling",
+        "Die Icon Resolution",
+        "Events",
+        "Neighbor Scope",
+        "Push Your Luck",
+        "Score-and-Reset Game",
+        "Simultaneous Action Selection",
+        "Track Movement",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: The Quacks of Quedlinburg"
+      ],
+      "best_votes": {
+        "2": 126,
+        "3": 310,
+        "4": 573
+      },
+      "users_rated": 59926
     },
     {
       "id": 271324,
       "name": "It's a Wonderful World",
       "year": 2019,
-      "rank": 130,
-      "weight": 2.3,
+      "rank": 187,
+      "weight": 2.3232,
       "playtime": 45,
       "best_counts": [
-        4
+        1,
+        2,
+        3,
+        4,
+        5
       ],
       "best_count": 4,
       "signals": [
+        "Card Game",
+        "Civilization",
+        "Economic",
+        "Science Fiction",
         "Closed Drafting",
-        "Engine Building"
-      ]
+        "End Game Bonuses",
+        "Hand Management",
+        "Income",
+        "Set Collection",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: It's a Wonderful World"
+      ],
+      "best_votes": {
+        "1": 76,
+        "2": 81,
+        "3": 138,
+        "4": 196,
+        "5": 55
+      },
+      "users_rated": 23609
     },
     {
       "id": 68448,
       "name": "7 Wonders",
       "year": 2010,
-      "rank": 65,
-      "weight": 2.3,
+      "rank": 118,
+      "weight": 2.3145,
       "playtime": 30,
       "best_counts": [
+        3,
         4,
         5,
         6,
         7
       ],
-      "best_count": 6,
+      "best_count": 4,
       "signals": [
+        "Ancient",
+        "Card Game",
+        "City Building",
+        "Civilization",
+        "Economic",
         "Closed Drafting",
+        "End Game Bonuses",
+        "Hand Management",
+        "Melding and Splaying",
+        "Multi-Use Cards",
+        "Neighbor Scope",
+        "Once-Per-Game Abilities",
+        "Score-and-Reset Game",
         "Set Collection",
-        "Hand Management"
-      ]
+        "Simultaneous Action Selection",
+        "Tags",
+        "Tech Trees / Tech Tracks",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: 7 Wonders"
+      ],
+      "best_votes": {
+        "3": 535,
+        "4": 1370,
+        "5": 1253,
+        "6": 568,
+        "7": 462
+      },
+      "users_rated": 113447
     },
     {
       "id": 13,
-      "name": "CATAN",
+      "name": "Catan",
       "year": 1995,
-      "rank": 400,
-      "weight": 2.3,
-      "playtime": 90,
+      "rank": 626,
+      "weight": 2.2806,
+      "playtime": 120,
       "best_counts": [
+        3,
         4
       ],
       "best_count": 4,
       "signals": [
-        "Network and Route Building",
-        "Dice Rolling",
+        "Economic",
         "Negotiation",
-        "Trading"
-      ]
+        "Chaining",
+        "Dice Rolling",
+        "Hand Management",
+        "Hexagon Grid",
+        "Hidden Victory Points",
+        "Income",
+        "Market",
+        "Modular Board",
+        "Negotiation",
+        "Network and Route Building",
+        "Race",
+        "Random Production",
+        "Take That",
+        "Trading",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Catan"
+      ],
+      "best_votes": {
+        "3": 729,
+        "4": 1559
+      },
+      "users_rated": 143797
     },
     {
       "id": 201808,
       "name": "Clank!: A Deck-Building Adventure",
       "year": 2016,
-      "rank": 185,
-      "weight": 2.2,
+      "rank": 103,
+      "weight": 2.2307,
       "playtime": 60,
       "best_counts": [
         3,
@@ -1309,156 +2823,323 @@
       ],
       "best_count": 3,
       "signals": [
+        "Adventure",
+        "Fantasy",
+        "Action Points",
         "Deck, Bag, and Pool Building",
+        "Delayed Purchase",
+        "End Game Bonuses",
+        "Movement Points",
+        "Open Drafting",
+        "Player Elimination",
+        "Point to Point Movement",
         "Push Your Luck",
-        "Adventure"
-      ]
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Clank!"
+      ],
+      "best_votes": {
+        "3": 463,
+        "4": 296
+      },
+      "users_rated": 47925
     },
     {
       "id": 217372,
       "name": "The Quest for El Dorado",
       "year": 2017,
-      "rank": 230,
-      "weight": 1.9,
+      "rank": 121,
+      "weight": 1.9416,
       "playtime": 60,
       "best_counts": [
         2,
         3,
         4
       ],
-      "best_count": 3,
+      "best_count": 4,
       "signals": [
+        "Adventure",
+        "Exploration",
         "Deck, Bag, and Pool Building",
-        "Racing"
-      ]
+        "Delayed Purchase",
+        "Grid Movement",
+        "Hand Management",
+        "Hexagon Grid",
+        "Modular Board",
+        "Multi-Use Cards",
+        "Once-Per-Game Abilities",
+        "Open Drafting",
+        "Race",
+        "Resource to Move",
+        "Variable Set-up",
+        "Zone of Control"
+      ],
+      "families": [
+        "Game: The Quest for El Dorado"
+      ],
+      "best_votes": {
+        "2": 258,
+        "3": 171,
+        "4": 350
+      },
+      "users_rated": 33448
     },
     {
       "id": 147020,
       "name": "Star Realms",
       "year": 2014,
-      "rank": 330,
-      "weight": 1.9,
-      "playtime": 25,
+      "rank": 178,
+      "weight": 1.9129,
+      "playtime": 20,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
+        "Card Game",
+        "Fighting",
+        "Science Fiction",
         "Deck, Bag, and Pool Building",
-        "Hand Management"
-      ]
+        "Delayed Purchase",
+        "Hand Management",
+        "Income",
+        "Multi-Use Cards",
+        "Open Drafting",
+        "Player Elimination",
+        "Set Collection",
+        "Tags",
+        "Take That",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Star Realms"
+      ],
+      "best_votes": {
+        "2": 459
+      },
+      "users_rated": 48340
     },
     {
       "id": 268864,
       "name": "Undaunted: Normandy",
       "year": 2019,
-      "rank": 270,
-      "weight": 2.3,
+      "rank": 183,
+      "weight": 2.273,
       "playtime": 60,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
+        "Wargame",
+        "World War II",
+        "Command Cards",
         "Deck, Bag, and Pool Building",
-        "Wargame"
-      ]
+        "Dice Rolling",
+        "Hand Management",
+        "Modular Board",
+        "Open Drafting",
+        "Scenario / Mission / Campaign Game",
+        "Simulation"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 172
+      },
+      "users_rated": 14478
     },
     {
       "id": 246192,
       "name": "Gizmos",
       "year": 2018,
-      "rank": 400,
-      "weight": 2.0,
-      "playtime": 45,
+      "rank": 419,
+      "weight": 2.0557,
+      "playtime": 50,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
-      "best_count": 2,
+      "best_count": 3,
       "signals": [
-        "Engine Building",
-        "Set Collection"
-      ]
+        "Card Game",
+        "Science Fiction",
+        "Action Queue",
+        "Contracts",
+        "Open Drafting",
+        "Race"
+      ],
+      "families": [
+        "Game: Gizmos"
+      ],
+      "best_votes": {
+        "2": 59,
+        "3": 94,
+        "4": 45
+      },
+      "users_rated": 15070
     },
     {
       "id": 181304,
       "name": "Mysterium",
       "year": 2015,
-      "rank": 335,
-      "weight": 1.9,
-      "playtime": 45,
+      "rank": 456,
+      "weight": 1.8892,
+      "playtime": 42,
       "best_counts": [
+        4,
         5,
-        6
+        6,
+        7
       ],
       "best_count": 5,
       "signals": [
+        "Deduction",
+        "Murder / Mystery",
+        "Party Game",
+        "Real-time",
+        "Communication Limits",
         "Cooperative Game",
         "Deduction",
-        "Party Game"
-      ]
+        "Finale Ending",
+        "Hand Management",
+        "Pattern Recognition",
+        "Real-Time",
+        "Storytelling",
+        "Voting"
+      ],
+      "families": [
+        "Game: Mysterium"
+      ],
+      "best_votes": {
+        "4": 123,
+        "5": 328,
+        "6": 245,
+        "7": 134
+      },
+      "users_rated": 49638
     },
     {
       "id": 157969,
       "name": "Sheriff of Nottingham",
       "year": 2014,
-      "rank": 440,
-      "weight": 1.6,
+      "rank": 623,
+      "weight": 1.6589,
       "playtime": 60,
       "best_counts": [
+        4,
         5
       ],
       "best_count": 5,
       "signals": [
         "Bluffing",
+        "Card Game",
+        "Humor",
+        "Medieval",
         "Negotiation",
+        "Novel-based",
+        "Party Game",
+        "Betting and Bluffing",
+        "Bribery",
+        "Hand Management",
+        "Negotiation",
+        "Open Drafting",
+        "Role Playing",
         "Set Collection"
-      ]
+      ],
+      "families": [
+        "Game: Sheriff of Nottingham"
+      ],
+      "best_votes": {
+        "4": 112,
+        "5": 245
+      },
+      "users_rated": 38087
     },
     {
       "id": 478,
       "name": "Citadels",
       "year": 2000,
-      "rank": 500,
-      "weight": 2.1,
+      "rank": 594,
+      "weight": 2.0463,
       "playtime": 60,
       "best_counts": [
+        4,
         5,
-        6,
-        7
+        6
       ],
       "best_count": 5,
       "signals": [
+        "Bluffing",
+        "Card Game",
+        "City Building",
+        "Deduction",
+        "Fantasy",
+        "Medieval",
+        "Action Drafting",
         "Closed Drafting",
-        "Hidden Roles",
-        "City Building"
-      ]
+        "Income",
+        "Lose a Turn",
+        "Set Collection",
+        "Take That",
+        "Turn Order: Role Order",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Citadels"
+      ],
+      "best_votes": {
+        "4": 344,
+        "5": 564,
+        "6": 324
+      },
+      "users_rated": 57405
     },
     {
       "id": 171131,
       "name": "Captain Sonar",
       "year": 2016,
-      "rank": 380,
-      "weight": 2.1,
-      "playtime": 45,
+      "rank": 248,
+      "weight": 2.2051,
+      "playtime": 60,
       "best_counts": [
+        6,
         8
       ],
       "best_count": 8,
       "signals": [
+        "Deduction",
+        "Fighting",
+        "Modern Warfare",
+        "Nautical",
+        "Real-time",
+        "Deduction",
+        "Grid Movement",
+        "Hidden Movement",
+        "Line Drawing",
         "Real-Time",
-        "Team-Based Game",
-        "Deduction"
-      ]
+        "Role Playing",
+        "Secret Unit Deployment",
+        "Simulation",
+        "Team-Based Game"
+      ],
+      "families": [
+        "Game: Captain Sonar"
+      ],
+      "best_votes": {
+        "6": 143,
+        "8": 394
+      },
+      "users_rated": 24042
     },
     {
       "id": 150145,
       "name": "Skull King",
       "year": 2013,
-      "rank": 315,
-      "weight": 1.9,
-      "playtime": 45,
+      "rank": 287,
+      "weight": 1.726,
+      "playtime": 30,
       "best_counts": [
         4,
         5,
@@ -1466,70 +3147,131 @@
       ],
       "best_count": 5,
       "signals": [
-        "Trick-taking",
-        "Betting and Bluffing"
-      ]
+        "Card Game",
+        "Nautical",
+        "Pirates",
+        "Hand Management",
+        "Predictive Bid",
+        "Rock-Paper-Scissors",
+        "Trick-taking"
+      ],
+      "families": [],
+      "best_votes": {
+        "4": 137,
+        "5": 160,
+        "6": 102
+      },
+      "users_rated": 16155
     },
     {
       "id": 345972,
       "name": "Cat in the Box: Deluxe Edition",
       "year": 2022,
-      "rank": 290,
-      "weight": 2.0,
-      "playtime": 45,
+      "rank": 380,
+      "weight": 2.0455,
+      "playtime": 40,
       "best_counts": [
+        3,
         4,
         5
       ],
       "best_count": 4,
       "signals": [
-        "Trick-taking",
-        "Area Majority / Influence"
-      ]
+        "Animals",
+        "Card Game",
+        "Enclosure",
+        "Hand Management",
+        "Predictive Bid",
+        "Trick-taking"
+      ],
+      "families": [
+        "Game: Cat in the Box"
+      ],
+      "best_votes": {
+        "3": 39,
+        "4": 170,
+        "5": 37
+      },
+      "users_rated": 13201
     },
     {
       "id": 314491,
-      "name": "The Crew: The Quest for Planet Nine",
-      "year": 2019,
-      "rank": 70,
-      "weight": 1.9,
-      "playtime": 20,
+      "name": "Meadow",
+      "year": 2021,
+      "rank": 219,
+      "weight": 2.2523,
+      "playtime": 90,
       "best_counts": [
-        3,
-        4
+        2,
+        3
       ],
-      "best_count": 4,
+      "best_count": 2,
       "signals": [
-        "Cooperative Game",
-        "Trick-taking",
-        "Hand Management"
-      ]
+        "Animals",
+        "Card Game",
+        "Environmental",
+        "Puzzle",
+        "Hand Management",
+        "Layering",
+        "Open Drafting",
+        "Set Collection",
+        "Solo / Solitaire Game",
+        "Worker Placement, Different Worker Types"
+      ],
+      "families": [
+        "Game: Meadow (Rebel Studio)"
+      ],
+      "best_votes": {
+        "2": 195,
+        "3": 121
+      },
+      "users_rated": 14136
     },
     {
       "id": 199561,
       "name": "Sagrada",
       "year": 2017,
-      "rank": 220,
-      "weight": 1.9,
-      "playtime": 40,
+      "rank": 228,
+      "weight": 1.9202,
+      "playtime": 45,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
       "best_count": 2,
       "signals": [
+        "Abstract Strategy",
+        "Dice",
+        "Puzzle",
+        "Contracts",
         "Dice Rolling",
+        "End Game Bonuses",
+        "Grid Coverage",
+        "Open Drafting",
         "Pattern Building",
-        "Open Drafting"
-      ]
+        "Set Collection",
+        "Solo / Solitaire Game",
+        "Turn Order: Progressive",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Sagrada"
+      ],
+      "best_votes": {
+        "2": 302,
+        "3": 204,
+        "4": 150
+      },
+      "users_rated": 48532
     },
     {
       "id": 283155,
       "name": "Calico",
       "year": 2020,
-      "rank": 235,
-      "weight": 2.2,
-      "playtime": 30,
+      "rank": 275,
+      "weight": 2.1969,
+      "playtime": 45,
       "best_counts": [
         1,
         2,
@@ -1537,262 +3279,519 @@
       ],
       "best_count": 2,
       "signals": [
-        "Tile Placement",
+        "Abstract Strategy",
+        "Animals",
+        "Puzzle",
+        "Enclosure",
+        "End Game Bonuses",
+        "Grid Coverage",
+        "Hexagon Grid",
+        "Open Drafting",
+        "Pattern Building",
         "Set Collection",
-        "Pattern Building"
-      ]
+        "Solo / Solitaire Game",
+        "Tile Placement"
+      ],
+      "families": [],
+      "best_votes": {
+        "1": 70,
+        "2": 234,
+        "3": 105
+      },
+      "users_rated": 23885
     },
     {
       "id": 266524,
-      "name": "PARKS",
+      "name": "Parks",
       "year": 2019,
-      "rank": 280,
-      "weight": 2.2,
-      "playtime": 50,
+      "rank": 181,
+      "weight": 2.1289,
+      "playtime": 60,
       "best_counts": [
         2,
-        3
-      ],
-      "best_count": 2,
-      "signals": [
-        "Set Collection",
-        "Point to Point Movement"
-      ]
-    },
-    {
-      "id": 209685,
-      "name": "Century: Spice Road",
-      "year": 2017,
-      "rank": 350,
-      "weight": 1.8,
-      "playtime": 45,
-      "best_counts": [
         3,
         4
       ],
       "best_count": 3,
       "signals": [
-        "Engine Building",
-        "Hand Management",
-        "Set Collection"
-      ]
-    },
-    {
-      "id": 265736,
-      "name": "Tiny Towns",
-      "year": 2019,
-      "rank": 340,
-      "weight": 1.9,
-      "playtime": 45,
-      "best_counts": [
-        3,
-        4
+        "Animals",
+        "Economic",
+        "Environmental",
+        "Travel",
+        "Contracts",
+        "End Game Bonuses",
+        "Events",
+        "Modular Board",
+        "Solo / Solitaire Game",
+        "Track Movement",
+        "Turn Order: Claim Action",
+        "Variable Set-up",
+        "Worker Placement"
       ],
-      "best_count": 4,
-      "signals": [
-        "Tile Placement",
-        "Pattern Building",
-        "City Building"
-      ]
+      "families": [],
+      "best_votes": {
+        "2": 102,
+        "3": 300,
+        "4": 116
+      },
+      "users_rated": 31027
     },
     {
-      "id": 245654,
-      "name": "Railroad Ink: Deep Blue Edition",
-      "year": 2018,
-      "rank": 380,
-      "weight": 1.3,
-      "playtime": 30,
+      "id": 209685,
+      "name": "Century: Spice Road",
+      "year": 2017,
+      "rank": 392,
+      "weight": 1.8003,
+      "playtime": 45,
       "best_counts": [
         2,
         3,
         4
       ],
-      "best_count": 4,
+      "best_count": 3,
       "signals": [
-        "Roll / Spin and Write",
+        "Card Game",
+        "Economic",
+        "Medieval",
+        "Action Retrieval",
+        "Auction: Dutch",
+        "Contracts",
+        "Deck, Bag, and Pool Building",
+        "End Game Bonuses",
+        "Hand Management",
+        "Increase Value of Unchosen Resources",
+        "Open Drafting",
+        "Set Collection",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Century (Plan B Games)"
+      ],
+      "best_votes": {
+        "2": 43,
+        "3": 184,
+        "4": 169
+      },
+      "users_rated": 27906
+    },
+    {
+      "id": 265736,
+      "name": "Tiny Towns",
+      "year": 2019,
+      "rank": 532,
+      "weight": 2.0626,
+      "playtime": 60,
+      "best_counts": [
+        2,
+        3,
+        4
+      ],
+      "best_count": 3,
+      "signals": [
+        "Abstract Strategy",
+        "Animals",
+        "City Building",
+        "Puzzle",
+        "End Game Bonuses",
+        "Follow",
+        "Grid Coverage",
+        "Pattern Building",
+        "Player Elimination",
+        "Solo / Solitaire Game",
+        "Square Grid",
+        "Turn Order: Progressive",
+        "Variable Phase Order",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 56,
+        "3": 136,
+        "4": 102
+      },
+      "users_rated": 22688
+    },
+    {
+      "id": 245654,
+      "name": "Railroad Ink: Deep Blue Edition",
+      "year": 2018,
+      "rank": 641,
+      "weight": 1.4689,
+      "playtime": 30,
+      "best_counts": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "best_count": 2,
+      "signals": [
+        "Dice",
+        "Trains",
+        "Bingo",
+        "Connections",
         "Dice Rolling",
-        "Network and Route Building"
-      ]
+        "Line Drawing",
+        "Network and Route Building",
+        "Paper-and-Pencil",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game"
+      ],
+      "families": [
+        "Game: Railroad Ink"
+      ],
+      "best_votes": {
+        "2": 87,
+        "3": 63,
+        "4": 53,
+        "5": 23,
+        "6": 22
+      },
+      "users_rated": 15000
     },
     {
       "id": 98778,
       "name": "Hanabi",
       "year": 2010,
-      "rank": 430,
-      "weight": 1.7,
+      "rank": 607,
+      "weight": 1.6919,
       "playtime": 25,
       "best_counts": [
-        4
+        3,
+        4,
+        5
       ],
       "best_count": 4,
       "signals": [
+        "Card Game",
+        "Deduction",
+        "Memory",
+        "Communication Limits",
         "Cooperative Game",
         "Hand Management",
-        "Memory"
-      ]
+        "Memory",
+        "Ordering",
+        "Set Collection"
+      ],
+      "families": [
+        "Game: Hanabi"
+      ],
+      "best_votes": {
+        "3": 197,
+        "4": 408,
+        "5": 104
+      },
+      "users_rated": 52955
     },
     {
       "id": 277659,
       "name": "Final Girl",
       "year": 2021,
-      "rank": 170,
-      "weight": 2.4,
+      "rank": 97,
+      "weight": 2.7586,
       "playtime": 60,
       "best_counts": [
         1
       ],
       "best_count": 1,
       "signals": [
-        "Cooperative Game",
+        "Card Game",
+        "Fantasy",
+        "Horror",
         "Dice Rolling",
-        "Horror"
-      ]
+        "Hand Management",
+        "Pick-up and Deliver",
+        "Push Your Luck",
+        "Solo / Solitaire Game",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Final Girl"
+      ],
+      "best_votes": {
+        "1": 150
+      },
+      "users_rated": 11722
     },
     {
       "id": 373106,
       "name": "Sky Team",
       "year": 2023,
-      "rank": 75,
-      "weight": 2.0,
+      "rank": 32,
+      "weight": 2.0431,
       "playtime": 20,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
+        "Aviation / Flight",
+        "Dice",
+        "Communication Limits",
         "Cooperative Game",
         "Dice Rolling",
-        "Aviation / Flight"
-      ]
+        "Scenario / Mission / Campaign Game",
+        "Turn Order: Progressive",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Worker Placement with Dice Workers"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 404
+      },
+      "users_rated": 33866
     },
     {
       "id": 224037,
       "name": "Codenames: Duet",
       "year": 2017,
-      "rank": 210,
-      "weight": 1.4,
-      "playtime": 20,
+      "rank": 276,
+      "weight": 1.3605,
+      "playtime": 30,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
-        "Cooperative Game",
+        "Card Game",
+        "Deduction",
+        "Spies / Secret Agents",
         "Word Game",
-        "Deduction"
-      ]
+        "Communication Limits",
+        "Cooperative Game",
+        "Memory"
+      ],
+      "families": [
+        "Game: Codenames"
+      ],
+      "best_votes": {
+        "2": 310
+      },
+      "users_rated": 27048
     },
     {
       "id": 173346,
       "name": "7 Wonders Duel",
       "year": 2015,
-      "rank": 16,
-      "weight": 2.2,
+      "rank": 24,
+      "weight": 2.2276,
       "playtime": 30,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
+        "Ancient",
+        "Card Game",
+        "City Building",
+        "Civilization",
+        "Economic",
+        "End Game Bonuses",
+        "Income",
+        "Melding and Splaying",
+        "Modular Board",
+        "Multi-Use Cards",
+        "Once-Per-Game Abilities",
         "Open Drafting",
+        "Score-and-Reset Game",
         "Set Collection",
-        "Civilization"
-      ]
+        "Sudden Death Ending",
+        "Tags",
+        "Tech Trees / Tech Tracks",
+        "Track Movement",
+        "Tug of War",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: 7 Wonders",
+        "Game: 7 Wonders Duel"
+      ],
+      "best_votes": {
+        "2": 1484
+      },
+      "users_rated": 110092
     },
     {
       "id": 230802,
       "name": "Azul",
       "year": 2017,
-      "rank": 50,
-      "weight": 1.8,
+      "rank": 99,
+      "weight": 1.7716,
       "playtime": 45,
       "best_counts": [
         2,
+        3,
         4
       ],
       "best_count": 2,
       "signals": [
-        "Tile Placement",
+        "Abstract Strategy",
+        "Renaissance",
+        "Chaining",
+        "End Game Bonuses",
+        "Grid Coverage",
         "Open Drafting",
-        "Pattern Building"
-      ]
+        "Pattern Building",
+        "Set Collection",
+        "Square Grid",
+        "Tile Placement",
+        "Turn Order: Claim Action"
+      ],
+      "families": [
+        "Game: Azul"
+      ],
+      "best_votes": {
+        "2": 1093,
+        "3": 712,
+        "4": 423
+      },
+      "users_rated": 110182
     },
     {
       "id": 148228,
       "name": "Splendor",
       "year": 2014,
-      "rank": 120,
-      "weight": 1.8,
+      "rank": 243,
+      "weight": 1.7732,
       "playtime": 30,
       "best_counts": [
         2,
-        3
+        3,
+        4
       ],
       "best_count": 3,
       "signals": [
-        "Engine Building",
-        "Set Collection",
-        "Economic"
-      ]
+        "Card Game",
+        "Economic",
+        "Renaissance",
+        "Contracts",
+        "Open Drafting",
+        "Race",
+        "Set Collection"
+      ],
+      "families": [
+        "Game: Splendor"
+      ],
+      "best_votes": {
+        "2": 381,
+        "3": 670,
+        "4": 392
+      },
+      "users_rated": 91191
     },
     {
       "id": 9209,
       "name": "Ticket to Ride",
       "year": 2004,
-      "rank": 150,
-      "weight": 1.8,
+      "rank": 262,
+      "weight": 1.8185,
       "playtime": 60,
       "best_counts": [
-        4
+        3,
+        4,
+        5
       ],
       "best_count": 4,
       "signals": [
+        "Trains",
+        "Connections",
+        "Contracts",
+        "End Game Bonuses",
+        "Hand Management",
         "Network and Route Building",
-        "Set Collection",
-        "Trains"
-      ]
+        "Open Drafting",
+        "Push Your Luck",
+        "Set Collection"
+      ],
+      "families": [
+        "Game: Ticket to Ride (Official)"
+      ],
+      "best_votes": {
+        "3": 334,
+        "4": 816,
+        "5": 354
+      },
+      "users_rated": 99186
     },
     {
       "id": 822,
       "name": "Carcassonne",
       "year": 2000,
-      "rank": 175,
-      "weight": 1.9,
+      "rank": 240,
+      "weight": 1.884,
       "playtime": 45,
       "best_counts": [
-        2
+        2,
+        3,
+        4
       ],
       "best_count": 2,
       "signals": [
-        "Tile Placement",
-        "Area Majority / Influence"
-      ]
+        "Medieval",
+        "Territory Building",
+        "Area Majority / Influence",
+        "Enclosure",
+        "Kill Steal",
+        "Map Addition",
+        "Pattern Building",
+        "Square Grid",
+        "Tile Placement"
+      ],
+      "families": [
+        "Game: Carcassonne"
+      ],
+      "best_votes": {
+        "2": 1486,
+        "3": 1240,
+        "4": 769
+      },
+      "users_rated": 141035
     },
     {
       "id": 295947,
       "name": "Cascadia",
       "year": 2021,
-      "rank": 35,
-      "weight": 1.9,
+      "rank": 60,
+      "weight": 1.8434,
       "playtime": 45,
       "best_counts": [
-        2
+        2,
+        3,
+        4
       ],
       "best_count": 2,
       "signals": [
-        "Tile Placement",
+        "Animals",
+        "Environmental",
+        "Chaining",
+        "End Game Bonuses",
+        "Hexagon Grid",
+        "Line of Sight",
         "Open Drafting",
         "Pattern Building",
-        "Animals"
-      ]
+        "Solo / Solitaire Game",
+        "Tile Placement",
+        "Variable Set-up"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 563,
+        "3": 531,
+        "4": 182
+      },
+      "users_rated": 56612
     },
     {
       "id": 253344,
-      "name": "Cartographers",
+      "name": "Cthulhu: Death May Die",
       "year": 2019,
-      "rank": 95,
-      "weight": 1.9,
-      "playtime": 45,
+      "rank": 55,
+      "weight": 2.4891,
+      "playtime": 120,
       "best_counts": [
         2,
         3,
@@ -1800,191 +3799,366 @@
       ],
       "best_count": 3,
       "signals": [
-        "Roll / Spin and Write",
-        "Paper-and-Pencil"
-      ]
+        "Fantasy",
+        "Fighting",
+        "Horror",
+        "Miniatures",
+        "Novel-based",
+        "Action Points",
+        "Area Movement",
+        "Cooperative Game",
+        "Dice Rolling",
+        "Role Playing",
+        "Scenario / Mission / Campaign Game",
+        "Solo / Solitaire Game",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Cthulhu: Death may Die"
+      ],
+      "best_votes": {
+        "2": 110,
+        "3": 237,
+        "4": 111
+      },
+      "users_rated": 17289
     },
     {
       "id": 233867,
       "name": "Welcome To...",
       "year": 2018,
-      "rank": 145,
-      "weight": 1.8,
+      "rank": 217,
+      "weight": 1.8416,
       "playtime": 25,
       "best_counts": [
+        2,
         3,
-        4
+        4,
+        5,
+        6
       ],
       "best_count": 4,
       "signals": [
-        "Flip and Write",
+        "City Building",
+        "Bingo",
+        "Contracts",
+        "End Game Bonuses",
+        "Multi-Use Cards",
         "Paper-and-Pencil",
-        "City Building"
-      ]
+        "Pattern Building",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 119,
+        "3": 153,
+        "4": 187,
+        "5": 105,
+        "6": 82
+      },
+      "users_rated": 35079
     },
     {
       "id": 163412,
       "name": "Patchwork",
       "year": 2014,
-      "rank": 78,
-      "weight": 1.6,
+      "rank": 148,
+      "weight": 1.597,
       "playtime": 30,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
+        "Abstract Strategy",
+        "Economic",
+        "Puzzle",
+        "Grid Coverage",
+        "Income",
+        "Open Drafting",
+        "Rondel",
+        "Square Grid",
         "Tile Placement",
-        "Pattern Building",
-        "Economic"
-      ]
+        "Turn Order: Stat-Based",
+        "Turn Order: Time Track",
+        "Victory Points as a Resource"
+      ],
+      "families": [
+        "Game: Patchwork"
+      ],
+      "best_votes": {
+        "2": 632
+      },
+      "users_rated": 74764
     },
     {
       "id": 54043,
       "name": "Jaipur",
       "year": 2009,
-      "rank": 100,
-      "weight": 1.5,
+      "rank": 201,
+      "weight": 1.4627,
       "playtime": 30,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
-        "Open Drafting",
-        "Set Collection",
+        "Arabian",
+        "Card Game",
+        "Economic",
+        "End Game Bonuses",
         "Hand Management",
-        "Trading"
-      ]
+        "Hidden Victory Points",
+        "Market",
+        "Open Drafting",
+        "Race",
+        "Score-and-Reset Game",
+        "Set Collection",
+        "Sudden Death Ending",
+        "Turn Order: Progressive",
+        "Variable Set-up"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 503
+      },
+      "users_rated": 58780
     },
     {
       "id": 244522,
       "name": "That's Pretty Clever!",
       "year": 2018,
-      "rank": 160,
-      "weight": 1.4,
+      "rank": 202,
+      "weight": 1.8506,
       "playtime": 30,
       "best_counts": [
         1,
-        2
+        2,
+        3
       ],
-      "best_count": 1,
+      "best_count": 2,
       "signals": [
-        "Roll / Spin and Write",
+        "Dice",
+        "Number",
         "Dice Rolling",
-        "Push Your Luck"
-      ]
+        "Paper-and-Pencil",
+        "Re-rolling and Locking",
+        "Solo / Solitaire Game"
+      ],
+      "families": [
+        "Game: Ganz Sch\u00f6n Clever"
+      ],
+      "best_votes": {
+        "1": 97,
+        "2": 287,
+        "3": 110
+      },
+      "users_rated": 28303
     },
     {
       "id": 306735,
       "name": "Under Falling Skies",
       "year": 2020,
-      "rank": 182,
-      "weight": 2.1,
+      "rank": 267,
+      "weight": 2.3904,
       "playtime": 40,
       "best_counts": [
         1
       ],
       "best_count": 1,
       "signals": [
-        "Roll / Spin and Write",
+        "Dice",
+        "Science Fiction",
         "Dice Rolling",
-        "Science Fiction"
-      ]
+        "Modular Board",
+        "Once-Per-Game Abilities",
+        "Re-rolling and Locking",
+        "Scenario / Mission / Campaign Game",
+        "Solo / Solitaire Game",
+        "Square Grid",
+        "Sudden Death Ending",
+        "Variable Set-up",
+        "Worker Placement",
+        "Worker Placement with Dice Workers"
+      ],
+      "families": [],
+      "best_votes": {
+        "1": 236
+      },
+      "users_rated": 14195
     },
     {
       "id": 37046,
-      "name": "Friday",
-      "year": 2011,
-      "rank": 260,
-      "weight": 2.0,
-      "playtime": 25,
+      "name": "Ghost Stories",
+      "year": 2008,
+      "rank": 469,
+      "weight": 2.9053,
+      "playtime": 60,
+      "best_counts": [
+        1,
+        2,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Fantasy",
+        "Fighting",
+        "Horror",
+        "Mythology",
+        "Cooperative Game",
+        "Dice Rolling",
+        "Grid Movement",
+        "Modular Board",
+        "Move Through Deck",
+        "Solo / Solitaire Game",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Ghost Stories"
+      ],
+      "best_votes": {
+        "1": 81,
+        "2": 66,
+        "4": 275
+      },
+      "users_rated": 21925
+    },
+    {
+      "id": 156336,
+      "name": "Onirim (Second Edition)",
+      "year": 2014,
+      "rank": 866,
+      "weight": 1.6111,
+      "playtime": 15,
       "best_counts": [
         1
       ],
       "best_count": 1,
       "signals": [
-        "Deck, Bag, and Pool Building",
-        "Hand Management",
-        "Solo / Solitaire Game"
-      ]
-    },
-    {
-      "id": 156336,
-      "name": "Onirim",
-      "year": 2010,
-      "rank": 750,
-      "weight": 1.4,
-      "playtime": 15,
-      "best_counts": [
-        1,
-        2
-      ],
-      "best_count": 1,
-      "signals": [
+        "Card Game",
+        "Exploration",
+        "Fantasy",
         "Cooperative Game",
         "Hand Management",
-        "Set Collection"
-      ]
+        "Move Through Deck",
+        "Open Drafting",
+        "Set Collection",
+        "Solo / Solitaire Game"
+      ],
+      "families": [],
+      "best_votes": {
+        "1": 154
+      },
+      "users_rated": 11262
     },
     {
       "id": 192291,
       "name": "Sushi Go Party!",
       "year": 2016,
-      "rank": 190,
-      "weight": 1.5,
+      "rank": 288,
+      "weight": 1.3258,
       "playtime": 20,
       "best_counts": [
+        3,
         4,
-        5
+        5,
+        6
       ],
       "best_count": 5,
       "signals": [
+        "Card Game",
+        "Party Game",
         "Closed Drafting",
-        "Set Collection"
-      ]
+        "End Game Bonuses",
+        "Hand Management",
+        "Set Collection",
+        "Simultaneous Action Selection",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Sushi Go!"
+      ],
+      "best_votes": {
+        "3": 53,
+        "4": 232,
+        "5": 237,
+        "6": 133
+      },
+      "users_rated": 40682
     },
     {
       "id": 296151,
-      "name": "Point Salad",
-      "year": 2019,
-      "rank": 420,
-      "weight": 1.2,
-      "playtime": 30,
+      "name": "Viscounts of the West Kingdom",
+      "year": 2020,
+      "rank": 199,
+      "weight": 3.4557,
+      "playtime": 90,
       "best_counts": [
         2,
-        3,
-        4
+        3
       ],
       "best_count": 3,
       "signals": [
-        "Open Drafting",
-        "Set Collection"
-      ]
+        "Medieval",
+        "Area Majority / Influence",
+        "Deck, Bag, and Pool Building",
+        "End Game Bonuses",
+        "Hand Management",
+        "King of the Hill",
+        "Modular Board",
+        "Rondel",
+        "Set Collection",
+        "Solo / Solitaire Game",
+        "Variable Player Powers"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 47,
+        "3": 149
+      },
+      "users_rated": 11687
     },
     {
       "id": 204583,
       "name": "Kingdomino",
       "year": 2016,
-      "rank": 312,
-      "weight": 1.2,
-      "playtime": 20,
+      "rank": 331,
+      "weight": 1.2393,
+      "playtime": 25,
       "best_counts": [
+        2,
+        3,
         4
       ],
-      "best_count": 4,
+      "best_count": 2,
       "signals": [
-        "Tile Placement",
+        "Abstract Strategy",
+        "Medieval",
+        "Puzzle",
+        "Territory Building",
+        "Enclosure",
+        "Matching",
         "Open Drafting",
-        "Pattern Building"
-      ]
+        "Tile Placement",
+        "Turn Order: Claim Action"
+      ],
+      "families": [
+        "Game: Kingdomino"
+      ],
+      "best_votes": {
+        "2": 506,
+        "3": 161,
+        "4": 468
+      },
+      "users_rated": 53510
     },
     {
       "id": 194655,
       "name": "Santorini",
       "year": 2016,
-      "rank": 240,
-      "weight": 1.7,
+      "rank": 315,
+      "weight": 1.7181,
       "playtime": 20,
       "best_counts": [
         2
@@ -1992,16 +4166,30 @@
       "best_count": 2,
       "signals": [
         "Abstract Strategy",
+        "Ancient",
+        "Mythology",
         "Grid Movement",
+        "Map Reduction",
+        "Race",
+        "Square Grid",
+        "Team-Based Game",
+        "Three Dimensional Movement",
         "Variable Player Powers"
-      ]
+      ],
+      "families": [
+        "Game: Santorini"
+      ],
+      "best_votes": {
+        "2": 550
+      },
+      "users_rated": 42523
     },
     {
       "id": 160477,
       "name": "Onitama",
       "year": 2014,
-      "rank": 292,
-      "weight": 1.7,
+      "rank": 363,
+      "weight": 1.656,
       "playtime": 20,
       "best_counts": [
         2
@@ -2010,32 +4198,55 @@
       "signals": [
         "Abstract Strategy",
         "Grid Movement",
-        "Hand Management"
-      ]
+        "Hand Management",
+        "Pattern Movement",
+        "Square Grid",
+        "Static Capture"
+      ],
+      "families": [
+        "Game: Onitama"
+      ],
+      "best_votes": {
+        "2": 164
+      },
+      "users_rated": 25197
     },
     {
       "id": 50,
       "name": "Lost Cities",
       "year": 1999,
-      "rank": 360,
-      "weight": 1.5,
+      "rank": 348,
+      "weight": 1.4742,
       "playtime": 30,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
+        "Card Game",
+        "Exploration",
+        "Number",
         "Hand Management",
-        "Set Collection",
-        "Push Your Luck"
-      ]
+        "Melding and Splaying",
+        "Ordering",
+        "Push Your Luck",
+        "Score-and-Reset Game",
+        "Set Collection"
+      ],
+      "families": [
+        "Game: Lost Cities"
+      ],
+      "best_votes": {
+        "2": 449
+      },
+      "users_rated": 51371
     },
     {
       "id": 129622,
       "name": "Love Letter",
       "year": 2012,
-      "rank": 450,
-      "weight": 1.2,
+      "rank": 370,
+      "weight": 1.1842,
       "playtime": 20,
       "best_counts": [
         3,
@@ -2043,176 +4254,316 @@
       ],
       "best_count": 4,
       "signals": [
+        "Card Game",
+        "Deduction",
+        "Renaissance",
         "Deduction",
         "Hand Management",
-        "Player Elimination"
-      ]
+        "Player Elimination",
+        "Score-and-Reset Game",
+        "Take That"
+      ],
+      "families": [
+        "Game: Love Letter"
+      ],
+      "best_votes": {
+        "3": 264,
+        "4": 908
+      },
+      "users_rated": 72227
     },
     {
       "id": 244992,
       "name": "The Mind",
       "year": 2018,
-      "rank": 480,
-      "weight": 1.1,
+      "rank": 1129,
+      "weight": 1.0733,
       "playtime": 20,
       "best_counts": [
-        3
+        2,
+        3,
+        4
       ],
-      "best_count": 3,
+      "best_count": 4,
       "signals": [
+        "Card Game",
+        "Number",
+        "Communication Limits",
         "Cooperative Game",
-        "Hand Management",
-        "Real-Time"
-      ]
+        "Hand Management"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 76,
+        "3": 147,
+        "4": 329
+      },
+      "users_rated": 37934
     },
     {
       "id": 153938,
       "name": "Camel Up",
       "year": 2014,
-      "rank": 405,
-      "weight": 1.5,
+      "rank": 650,
+      "weight": 1.502,
       "playtime": 30,
       "best_counts": [
+        4,
         5,
         6
       ],
-      "best_count": 6,
+      "best_count": 5,
       "signals": [
-        "Dice Rolling",
+        "Animals",
+        "Arabian",
+        "Dice",
+        "Racing",
         "Betting and Bluffing",
-        "Racing"
-      ]
+        "End Game Bonuses",
+        "Roll / Spin and Move",
+        "Track Movement",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Camel Up"
+      ],
+      "best_votes": {
+        "4": 215,
+        "5": 227,
+        "6": 111
+      },
+      "users_rated": 29363
     },
     {
       "id": 169654,
       "name": "Deep Sea Adventure",
       "year": 2014,
-      "rank": 550,
-      "weight": 1.2,
+      "rank": 941,
+      "weight": 1.1835,
       "playtime": 30,
       "best_counts": [
+        3,
         4,
-        5,
-        6
+        5
       ],
-      "best_count": 5,
+      "best_count": 4,
       "signals": [
+        "Dice",
+        "Exploration",
+        "Nautical",
+        "Party Game",
+        "Pick-up and Deliver",
         "Push Your Luck",
-        "Dice Rolling"
-      ]
+        "Roll / Spin and Move"
+      ],
+      "families": [],
+      "best_votes": {
+        "3": 57,
+        "4": 181,
+        "5": 106
+      },
+      "users_rated": 21263
     },
     {
       "id": 11971,
       "name": "Cockroach Poker",
       "year": 2004,
-      "rank": 600,
-      "weight": 1.1,
+      "rank": 1102,
+      "weight": 1.0966,
       "playtime": 20,
       "best_counts": [
+        4,
         5,
         6
       ],
-      "best_count": 6,
+      "best_count": 5,
       "signals": [
         "Bluffing",
-        "Party Game"
-      ]
+        "Card Game",
+        "Party Game",
+        "Hand Management",
+        "Set Collection",
+        "Single Loser Game"
+      ],
+      "families": [],
+      "best_votes": {
+        "4": 76,
+        "5": 115,
+        "6": 75
+      },
+      "users_rated": 16696
     },
     {
       "id": 172,
       "name": "For Sale",
       "year": 1997,
-      "rank": 470,
-      "weight": 1.2,
+      "rank": 358,
+      "weight": 1.2486,
       "playtime": 30,
       "best_counts": [
+        4,
         5,
         6
       ],
       "best_count": 5,
       "signals": [
-        "Auction/Bidding",
-        "Set Collection",
-        "Economic"
-      ]
+        "Card Game",
+        "Economic",
+        "Auction / Bidding",
+        "Auction: Sealed Bid",
+        "Auction: Turn Order Until Pass",
+        "Hand Management",
+        "Selection Order Bid"
+      ],
+      "families": [],
+      "best_votes": {
+        "4": 225,
+        "5": 322,
+        "6": 130
+      },
+      "users_rated": 34664
     },
     {
       "id": 432,
-      "name": "6 nimmt!",
+      "name": "Take 5",
       "year": 1994,
-      "rank": 410,
-      "weight": 1.2,
+      "rank": 677,
+      "weight": 1.1889,
       "playtime": 45,
       "best_counts": [
+        4,
         5,
         6,
-        7
+        7,
+        8
       ],
-      "best_count": 6,
+      "best_count": 5,
       "signals": [
+        "Card Game",
+        "Number",
+        "Party Game",
         "Hand Management",
+        "Ordering",
+        "Push Your Luck",
+        "Score-and-Reset Game",
         "Simultaneous Action Selection"
-      ]
+      ],
+      "families": [
+        "Game: 6 nimmt!"
+      ],
+      "best_votes": {
+        "4": 174,
+        "5": 381,
+        "6": 354,
+        "7": 167,
+        "8": 109
+      },
+      "users_rated": 33036
     },
     {
       "id": 11,
       "name": "Bohnanza",
       "year": 1997,
-      "rank": 460,
-      "weight": 1.7,
+      "rank": 545,
+      "weight": 1.6667,
       "playtime": 45,
       "best_counts": [
+        4,
         5,
         6
       ],
       "best_count": 5,
       "signals": [
+        "Card Game",
+        "Farming",
+        "Negotiation",
+        "Hand Management",
+        "Multi-Use Cards",
         "Negotiation",
         "Set Collection",
-        "Hand Management",
         "Trading"
-      ]
+      ],
+      "families": [
+        "Game: Bohnanza"
+      ],
+      "best_votes": {
+        "4": 356,
+        "5": 467,
+        "6": 197
+      },
+      "users_rated": 51777
     },
     {
       "id": 47,
       "name": "Chinatown",
       "year": 1999,
-      "rank": 355,
-      "weight": 2.4,
+      "rank": 387,
+      "weight": 2.2237,
       "playtime": 60,
-      "best_counts": [
-        5
-      ],
-      "best_count": 5,
-      "signals": [
-        "Negotiation",
-        "Set Collection",
-        "Economic"
-      ]
-    },
-    {
-      "id": 266083,
-      "name": "QE",
-      "year": 2019,
-      "rank": 485,
-      "weight": 1.6,
-      "playtime": 45,
       "best_counts": [
         4,
         5
       ],
       "best_count": 5,
       "signals": [
-        "Auction/Bidding",
-        "Economic"
-      ]
+        "City Building",
+        "Economic",
+        "Negotiation",
+        "Enclosure",
+        "Income",
+        "Investment",
+        "Negotiation",
+        "Set Collection",
+        "Tile Placement",
+        "Trading",
+        "Victory Points as a Resource"
+      ],
+      "families": [],
+      "best_votes": {
+        "4": 82,
+        "5": 165
+      },
+      "users_rated": 12526
+    },
+    {
+      "id": 266083,
+      "name": "L.L.A.M.A.",
+      "year": 2019,
+      "rank": 1977,
+      "weight": 1.0521,
+      "playtime": 20,
+      "best_counts": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "best_count": 4,
+      "signals": [
+        "Card Game",
+        "Number",
+        "Hand Management",
+        "Ladder Climbing",
+        "Matching",
+        "Push Your Luck"
+      ],
+      "families": [
+        "Game: L.L.A.M.A."
+      ],
+      "best_votes": {
+        "3": 22,
+        "4": 106,
+        "5": 78,
+        "6": 33
+      },
+      "users_rated": 10521
     },
     {
       "id": 521,
       "name": "Crokinole",
       "year": 1876,
-      "rank": 80,
-      "weight": 1.1,
+      "rank": 45,
+      "weight": 1.2306,
       "playtime": 30,
       "best_counts": [
         2,
@@ -2220,104 +4571,172 @@
       ],
       "best_count": 2,
       "signals": [
+        "Action / Dexterity",
         "Flicking",
-        "Action / Dexterity"
-      ]
+        "Team-Based Game"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 219,
+        "4": 177
+      },
+      "users_rated": 21405
     },
     {
       "id": 165722,
-      "name": "Klask",
+      "name": "KLASK",
       "year": 2014,
-      "rank": 455,
-      "weight": 1.1,
-      "playtime": 20,
+      "rank": 261,
+      "weight": 1.0447,
+      "playtime": 10,
       "best_counts": [
         2
       ],
       "best_count": 2,
       "signals": [
         "Action / Dexterity",
-        "Real-Time"
-      ]
+        "Real-time",
+        "Real-Time",
+        "Score-and-Reset Game"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 97
+      },
+      "users_rated": 12476
     },
     {
       "id": 193042,
       "name": "Junk Art",
       "year": 2016,
-      "rank": 520,
-      "weight": 1.2,
+      "rank": 624,
+      "weight": 1.193,
       "playtime": 30,
       "best_counts": [
         3,
-        4
+        4,
+        5,
+        6
       ],
       "best_count": 4,
       "signals": [
-        "Stacking and Balancing",
-        "Action / Dexterity"
-      ]
+        "Action / Dexterity",
+        "Party Game",
+        "Bingo",
+        "Hand Management",
+        "I Cut, You Choose",
+        "Score-and-Reset Game",
+        "Stacking and Balancing"
+      ],
+      "families": [],
+      "best_votes": {
+        "3": 11,
+        "4": 43,
+        "5": 31,
+        "6": 27
+      },
+      "users_rated": 8332
     },
     {
       "id": 250458,
-      "name": "Rhino Hero: Super Battle",
-      "year": 2017,
-      "rank": 610,
-      "weight": 1.1,
-      "playtime": 15,
+      "name": "G\u00f9g\u014dng",
+      "year": 2018,
+      "rank": 491,
+      "weight": 3.0873,
+      "playtime": 90,
       "best_counts": [
         3,
         4
       ],
-      "best_count": 4,
+      "best_count": 3,
       "signals": [
-        "Stacking and Balancing",
-        "Action / Dexterity",
-        "Children's Game"
-      ]
+        "Medieval",
+        "Travel",
+        "Area Majority / Influence",
+        "Hand Management",
+        "Set Collection",
+        "Worker Placement"
+      ],
+      "families": [],
+      "best_votes": {
+        "3": 110,
+        "4": 89
+      },
+      "users_rated": 9685
     },
     {
       "id": 192457,
-      "name": "ICECOOL",
+      "name": "Cry Havoc",
       "year": 2016,
-      "rank": 700,
-      "weight": 1.1,
-      "playtime": 30,
+      "rank": 1024,
+      "weight": 3.2911,
+      "playtime": 120,
       "best_counts": [
         3,
         4
       ],
       "best_count": 4,
       "signals": [
-        "Flicking",
-        "Action / Dexterity",
-        "Children's Game"
-      ]
+        "Fighting",
+        "Miniatures",
+        "Science Fiction",
+        "Wargame",
+        "Area Majority / Influence",
+        "Area Movement",
+        "Deck, Bag, and Pool Building",
+        "Events",
+        "Hand Management",
+        "Multi-Use Cards",
+        "Point to Point Movement",
+        "Variable Player Powers",
+        "Victory Points as a Resource"
+      ],
+      "families": [],
+      "best_votes": {
+        "3": 44,
+        "4": 94
+      },
+      "users_rated": 7155
     },
     {
       "id": 92415,
       "name": "Skull",
       "year": 2011,
-      "rank": 230,
-      "weight": 1.3,
-      "playtime": 30,
+      "rank": 498,
+      "weight": 1.1178,
+      "playtime": 45,
       "best_counts": [
+        4,
         5,
         6
       ],
-      "best_count": 6,
+      "best_count": 5,
       "signals": [
         "Bluffing",
-        "Push Your Luck",
-        "Party Game"
-      ]
+        "Card Game",
+        "Party Game",
+        "Auction / Bidding",
+        "Auction: Turn Order Until Pass",
+        "Bids As Wagers",
+        "Hand Management",
+        "Player Elimination",
+        "Predictive Bid"
+      ],
+      "families": [],
+      "best_votes": {
+        "4": 95,
+        "5": 226,
+        "6": 185
+      },
+      "users_rated": 29042
     },
     {
       "id": 254640,
       "name": "Just One",
       "year": 2018,
-      "rank": 145,
-      "weight": 1.1,
-      "playtime": 20,
+      "rank": 159,
+      "weight": 1.0329,
+      "playtime": 60,
       "best_counts": [
         5,
         6,
@@ -2325,271 +4744,541 @@
       ],
       "best_count": 6,
       "signals": [
-        "Cooperative Game",
+        "Deduction",
         "Party Game",
-        "Word Game"
-      ]
+        "Word Game",
+        "Communication Limits",
+        "Cooperative Game",
+        "Deduction",
+        "Paper-and-Pencil",
+        "Score-and-Reset Game"
+      ],
+      "families": [],
+      "best_votes": {
+        "5": 155,
+        "6": 363,
+        "7": 343
+      },
+      "users_rated": 35672
     },
     {
       "id": 178900,
       "name": "Codenames",
       "year": 2015,
-      "rank": 85,
-      "weight": 1.3,
+      "rank": 163,
+      "weight": 1.2536,
       "playtime": 15,
       "best_counts": [
+        4,
         6,
-        7,
         8
       ],
       "best_count": 6,
       "signals": [
-        "Word Game",
+        "Card Game",
+        "Deduction",
         "Party Game",
+        "Spies / Secret Agents",
+        "Word Game",
+        "Communication Limits",
+        "Deduction",
+        "Memory",
+        "Race",
         "Team-Based Game"
-      ]
+      ],
+      "families": [
+        "Game: Codenames"
+      ],
+      "best_votes": {
+        "4": 433,
+        "6": 1106,
+        "8": 766
+      },
+      "users_rated": 105174
     },
     {
       "id": 225694,
       "name": "Decrypto",
       "year": 2018,
-      "rank": 135,
-      "weight": 1.8,
+      "rank": 117,
+      "weight": 1.8259,
       "playtime": 45,
       "best_counts": [
+        4,
         6,
-        7,
         8
       ],
       "best_count": 6,
       "signals": [
-        "Word Game",
         "Deduction",
         "Party Game",
+        "Spies / Secret Agents",
+        "Word Game",
+        "Communication Limits",
+        "Paper-and-Pencil",
+        "Targeted Clues",
         "Team-Based Game"
-      ]
+      ],
+      "families": [],
+      "best_votes": {
+        "4": 224,
+        "6": 313,
+        "8": 101
+      },
+      "users_rated": 27935
     },
     {
       "id": 131357,
       "name": "Coup",
       "year": 2012,
-      "rank": 220,
-      "weight": 1.4,
+      "rank": 724,
+      "weight": 1.4151,
       "playtime": 15,
       "best_counts": [
         4,
-        5
+        5,
+        6
       ],
       "best_count": 5,
       "signals": [
-        "Hidden Roles",
         "Bluffing",
-        "Player Elimination"
-      ]
+        "Card Game",
+        "Deduction",
+        "Party Game",
+        "Political",
+        "Hidden Roles",
+        "Memory",
+        "Player Elimination",
+        "Take That",
+        "Variable Player Powers"
+      ],
+      "families": [],
+      "best_votes": {
+        "4": 220,
+        "5": 399,
+        "6": 209
+      },
+      "users_rated": 52755
     },
     {
       "id": 128882,
       "name": "The Resistance: Avalon",
       "year": 2012,
-      "rank": 105,
-      "weight": 1.7,
+      "rank": 239,
+      "weight": 1.7397,
       "playtime": 30,
       "best_counts": [
+        6,
         7,
         8,
         9,
         10
       ],
-      "best_count": 10,
+      "best_count": 7,
       "signals": [
-        "Hidden Roles",
+        "Bluffing",
+        "Card Game",
         "Deduction",
+        "Fantasy",
+        "Medieval",
+        "Negotiation",
+        "Party Game",
+        "Spies / Secret Agents",
+        "Finale Ending",
+        "Hidden Roles",
+        "Roles with Asymmetric Information",
+        "Simultaneous Action Selection",
+        "Team-Based Game",
+        "Traitor Game",
+        "Variable Player Powers",
         "Voting"
-      ]
+      ],
+      "families": [
+        "Game: The Resistance",
+        "Game: Werewolf / Mafia"
+      ],
+      "best_votes": {
+        "6": 92,
+        "7": 345,
+        "8": 320,
+        "9": 135,
+        "10": 130
+      },
+      "users_rated": 36927
     },
     {
       "id": 41114,
       "name": "The Resistance",
       "year": 2009,
-      "rank": 300,
-      "weight": 1.6,
+      "rank": 468,
+      "weight": 1.5908,
       "playtime": 30,
       "best_counts": [
+        6,
         7,
         8,
-        9,
-        10
+        9
       ],
-      "best_count": 9,
+      "best_count": 7,
       "signals": [
-        "Hidden Roles",
+        "Bluffing",
+        "Card Game",
         "Deduction",
+        "Negotiation",
+        "Party Game",
+        "Print & Play",
+        "Science Fiction",
+        "Spies / Secret Agents",
+        "Hidden Roles",
+        "Memory",
+        "Roles with Asymmetric Information",
+        "Simultaneous Action Selection",
+        "Team-Based Game",
+        "Traitor Game",
         "Voting"
-      ]
+      ],
+      "families": [
+        "Game: The Resistance",
+        "Game: Werewolf / Mafia"
+      ],
+      "best_votes": {
+        "6": 124,
+        "7": 302,
+        "8": 191,
+        "9": 84
+      },
+      "users_rated": 42846
     },
     {
       "id": 223040,
-      "name": "Secret Hitler",
-      "year": 2016,
-      "rank": 158,
-      "weight": 1.7,
-      "playtime": 45,
+      "name": "Fantasy Realms",
+      "year": 2017,
+      "rank": 273,
+      "weight": 1.8141,
+      "playtime": 20,
       "best_counts": [
-        8,
-        9,
-        10
+        2,
+        3,
+        4
       ],
-      "best_count": 9,
+      "best_count": 2,
       "signals": [
-        "Hidden Roles",
-        "Voting",
-        "Political"
-      ]
+        "Card Game",
+        "Fantasy",
+        "End Game Bonuses",
+        "Hand Management",
+        "Open Drafting",
+        "Set Collection",
+        "Tags"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 194,
+        "3": 189,
+        "4": 115
+      },
+      "users_rated": 18669
     },
     {
       "id": 147949,
       "name": "One Night Ultimate Werewolf",
       "year": 2014,
-      "rank": 242,
-      "weight": 1.3,
+      "rank": 687,
+      "weight": 1.3815,
       "playtime": 10,
       "best_counts": [
+        5,
+        6,
         7,
         8,
-        9,
-        10
+        9
       ],
-      "best_count": 8,
+      "best_count": 6,
       "signals": [
-        "Hidden Roles",
+        "Bluffing",
+        "Card Game",
         "Deduction",
-        "Real-Time"
-      ]
+        "Horror",
+        "Party Game",
+        "Hidden Roles",
+        "Role Playing",
+        "Roles with Asymmetric Information",
+        "Traitor Game",
+        "Variable Player Powers",
+        "Voting"
+      ],
+      "families": [
+        "Game: Werewolf / Mafia"
+      ],
+      "best_votes": {
+        "5": 90,
+        "6": 205,
+        "7": 202,
+        "8": 154,
+        "9": 58
+      },
+      "users_rated": 31240
     },
     {
       "id": 156129,
       "name": "Deception: Murder in Hong Kong",
       "year": 2014,
-      "rank": 285,
-      "weight": 1.6,
-      "playtime": 30,
+      "rank": 293,
+      "weight": 1.5887,
+      "playtime": 20,
       "best_counts": [
         6,
         7,
-        8
+        8,
+        9
       ],
-      "best_count": 6,
+      "best_count": 7,
       "signals": [
-        "Hidden Roles",
+        "Bluffing",
         "Deduction",
-        "Party Game"
-      ]
+        "Murder / Mystery",
+        "Party Game",
+        "Communication Limits",
+        "Deduction",
+        "Events",
+        "Finale Ending",
+        "Hidden Roles",
+        "Storytelling",
+        "Team-Based Game",
+        "Traitor Game",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Deception \u2013 Murder in Hong Kong",
+        "Game: Werewolf / Mafia"
+      ],
+      "best_votes": {
+        "6": 148,
+        "7": 195,
+        "8": 189,
+        "9": 74
+      },
+      "users_rated": 25420
     },
     {
       "id": 166384,
       "name": "Spyfall",
       "year": 2014,
-      "rank": 525,
-      "weight": 1.3,
+      "rank": 1121,
+      "weight": 1.2298,
       "playtime": 15,
       "best_counts": [
+        5,
         6,
         7,
         8
       ],
       "best_count": 6,
       "signals": [
-        "Hidden Roles",
         "Bluffing",
-        "Party Game"
-      ]
+        "Deduction",
+        "Humor",
+        "Party Game",
+        "Spies / Secret Agents",
+        "Acting",
+        "Communication Limits",
+        "Memory",
+        "Role Playing",
+        "Roles with Asymmetric Information",
+        "Targeted Clues",
+        "Traitor Game",
+        "Voting"
+      ],
+      "families": [
+        "Game: Spyfall"
+      ],
+      "best_votes": {
+        "5": 87,
+        "6": 151,
+        "7": 61,
+        "8": 37
+      },
+      "users_rated": 22513
     },
     {
       "id": 198773,
-      "name": "Werewords",
-      "year": 2017,
-      "rank": 650,
-      "weight": 1.3,
-      "playtime": 10,
+      "name": "Codenames: Pictures",
+      "year": 2016,
+      "rank": 510,
+      "weight": 1.2351,
+      "playtime": 15,
       "best_counts": [
+        4,
         6,
-        7,
         8
       ],
-      "best_count": 7,
+      "best_count": 6,
       "signals": [
-        "Hidden Roles",
-        "Word Game",
+        "Card Game",
+        "Deduction",
         "Party Game",
-        "Real-Time"
-      ]
+        "Spies / Secret Agents",
+        "Communication Limits",
+        "Memory",
+        "Team-Based Game"
+      ],
+      "families": [
+        "Game: Codenames"
+      ],
+      "best_votes": {
+        "4": 70,
+        "6": 168,
+        "8": 80
+      },
+      "users_rated": 25368
     },
     {
       "id": 134352,
       "name": "Two Rooms and a Boom",
       "year": 2013,
-      "rank": 705,
-      "weight": 1.3,
-      "playtime": 30,
+      "rank": 1229,
+      "weight": 1.4845,
+      "playtime": 20,
       "best_counts": [
         10,
+        11,
         12,
-        14
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        30
       ],
-      "best_count": 12,
+      "best_count": 14,
       "signals": [
-        "Hidden Roles",
+        "Bluffing",
+        "Card Game",
+        "Deduction",
+        "Negotiation",
         "Party Game",
+        "Print & Play",
+        "Real-time",
+        "Spies / Secret Agents",
+        "Acting",
+        "Elapsed Real Time Ending",
+        "Hidden Roles",
+        "Real-Time",
         "Team-Based Game",
-        "Negotiation"
-      ]
+        "Variable Player Powers",
+        "Voting"
+      ],
+      "families": [],
+      "best_votes": {
+        "10": 32,
+        "11": 18,
+        "12": 28,
+        "13": 23,
+        "14": 47,
+        "15": 27,
+        "16": 40,
+        "17": 30,
+        "18": 43,
+        "19": 27,
+        "20": 38,
+        "21": 22,
+        "22": 29,
+        "23": 18,
+        "24": 20,
+        "25": 14,
+        "26": 15,
+        "27": 13,
+        "28": 13,
+        "30": 15
+      },
+      "users_rated": 6346
     },
     {
       "id": 262543,
       "name": "Wavelength",
       "year": 2019,
-      "rank": 332,
-      "weight": 1.2,
+      "rank": 537,
+      "weight": 1.1047,
       "playtime": 45,
       "best_counts": [
+        4,
         6,
-        7,
-        8
+        8,
+        10
       ],
       "best_count": 6,
       "signals": [
         "Party Game",
-        "Team-Based Game",
-        "Deduction"
-      ]
+        "Race",
+        "Targeted Clues",
+        "Team-Based Game"
+      ],
+      "families": [],
+      "best_votes": {
+        "4": 39,
+        "6": 112,
+        "8": 107,
+        "10": 36
+      },
+      "users_rated": 18906
     },
     {
       "id": 156546,
       "name": "Monikers",
       "year": 2015,
-      "rank": 320,
-      "weight": 1.2,
+      "rank": 305,
+      "weight": 1.09,
       "playtime": 60,
       "best_counts": [
         6,
         7,
         8,
-        10
+        9,
+        10,
+        12
       ],
       "best_count": 8,
       "signals": [
+        "Card Game",
+        "Humor",
+        "Mature / Adult",
         "Party Game",
-        "Word Game",
+        "Print & Play",
         "Acting",
+        "Communication Limits",
+        "Open Drafting",
+        "Role Playing",
+        "Singing",
         "Team-Based Game"
-      ]
+      ],
+      "families": [],
+      "best_votes": {
+        "6": 32,
+        "7": 8,
+        "8": 40,
+        "9": 11,
+        "10": 33,
+        "12": 15
+      },
+      "users_rated": 7916
     },
     {
       "id": 46213,
       "name": "Telestrations",
       "year": 2009,
-      "rank": 490,
-      "weight": 1.1,
+      "rank": 354,
+      "weight": 1.0692,
       "playtime": 30,
       "best_counts": [
         6,
@@ -2598,10 +5287,21 @@
       ],
       "best_count": 8,
       "signals": [
+        "Humor",
         "Party Game",
-        "Line Drawing",
-        "Memory"
-      ]
+        "Real-time",
+        "Drawing",
+        "Paper-and-Pencil"
+      ],
+      "families": [
+        "Game: Telestrations"
+      ],
+      "best_votes": {
+        "6": 65,
+        "7": 74,
+        "8": 190
+      },
+      "users_rated": 20964
     }
   ]
 }

@@ -23,7 +23,7 @@ def load_dataset(path: str | Path) -> tuple[str, str, list[Game]]:
     """Return (source, generatedAt, games) from a dataset file."""
     data = json.loads(Path(path).read_text())
     games = [Game.from_dict(g) for g in data["games"]]
-    return data.get("source", "?"), data.get("generatedAt", ""), games
+    return data["source"], data["generatedAt"], games
 
 
 def save_dataset(path: str | Path, games: list[Game], source: str, generated_at: str):

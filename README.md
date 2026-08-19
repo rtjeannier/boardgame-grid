@@ -284,10 +284,14 @@ genre or mechanic axis would be a small class beside the two existing ones.
 
 ## Note on the current data
 
-The committed grid is built from a **live capture of BGG's top 1000**, marked
-`live data` in the header. `data/games.seed.json` remains as a hand-entered
-proxy — approximate weights and player counts, no `Game:` families — so the
-pipeline still builds offline with `python -m pipeline.build` and no
-credentials. Duplicate suppression degrades gracefully there: without families
-it falls back to mechanics and categories alone, which still separates
-duplicates, just less sharply.
+The committed grid is built from a **live capture of BGG's top 5000**, marked
+`live data` in the header. `data/games.seed.json` is a 145-game slice of that
+same capture, carrying every field a full capture does, so the pipeline builds
+offline with `python -m pipeline.build` and no credentials.
+
+The seed is a *smaller* dataset, never a *thinner* one. The pipeline has no
+fallbacks for absent fields — a dataset missing `users_rated`, `families` or
+`best_votes` raises rather than quietly producing a degraded grid, because a
+build that reports "33 filled cells" while every game has collapsed to an
+identical vector is worse than one that fails. Regenerate the seed from a live
+capture rather than teaching the code to cope without it.
