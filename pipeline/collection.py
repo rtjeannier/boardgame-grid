@@ -18,7 +18,8 @@ import argparse
 import json
 from collections import defaultdict
 
-from . import coverage, dataset
+from . import buckets, coverage, dataset
+from .assign import CoverageScorer, allocate
 from .config import COLLECTION_SIZE, ROOT, SEED_DATASET
 from .features import build_feature_space
 from .model import Game
@@ -59,20 +60,22 @@ def build_collection(dataset_path, anchor_tokens, size, evaluate_only):
     anchor_weights = [weights(g) for g in anchors]
     n_axes = len(space.dimension_names)
 
-    # Fill around the anchors (unless we're only evaluating them).
+    # The collection is the grid with no axes: one cell holding the whole game
+    # space. Same allocator, same coverage maths, same duplicate suppression —
+    # anchors are simply seeded into that cell before the rounds begin, so they
+    # occupy slots and repel near-duplicates (anchor Wingspan and Wyrmspan stops
+    # being a candidate rather than filling a slot beside it).
+    cells, memberships = buckets.build_cells(games, axes=[])
+    scorer = CoverageScorer(space.loadings, space.similarity)
     picks = []
     if not evaluate_only:
-        candidates = [(g, weights(g)) for g in games if g.id not in anchor_ids]
-        picks = coverage.greedy_fill(
-            candidates, seed=anchor_weights, max_picks=max(size - len(anchors), 0),
-            # Anchors repel duplicates too: anchor Wingspan and Wyrmspan stops
-            # being a candidate, rather than filling a slot next to it.
-            similarity=space.similarity, seed_ids=[g.id for g in anchors],
-        )
+        results = allocate(cells, memberships, scorer, max_per_cell=size,
+                           seeded={(): anchors})
+        picks = [a for a in results[()].assignments if a.game.id not in anchor_ids]
 
-    members = anchors + [p.game for p in picks]
+    members = anchors + [a.game for a in picks]
     member_weights = [weights(g) for g in members]
-    gains = [None] * len(anchors) + [p.gain for p in picks]
+    gains = [None] * len(anchors) + [a.gain for a in picks]
 
     anchor_coverage = coverage.axis_coverage(anchor_weights, n_axes)
     full_coverage = coverage.axis_coverage(member_weights, n_axes)

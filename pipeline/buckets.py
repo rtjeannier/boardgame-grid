@@ -13,6 +13,10 @@ membership per cell. `build.py` uses that to scale coverage contribution, so a
 game centred in a cell counts fully and one that merely reaches it counts less.
 """
 
+from collections import defaultdict
+from collections.abc import Sequence
+from typing import Protocol
+
 from .config import (
     CELL_MEMBERSHIP_FLOOR,
     MEMBERSHIP_FLOOR,
@@ -141,20 +145,78 @@ def weight_memberships(weight: float, rows: list[dict]) -> dict[int, float]:
     return memberships
 
 
-def cell_memberships(game: Game, rows: list[dict]) -> dict[tuple[str, int], float]:
-    """Every cell this game belongs to, mapped to its membership.
+# --- Axes: an arbitrary stratification of the game space ---------------------
+#
+# The grid's two axes aren't special. An axis is anything that answers "how
+# strongly does this game belong to each of my buckets", so a genre axis or a
+# mechanic axis would slot in beside these without the allocator noticing. The
+# *unstratified* case — no axes at all, one bucket holding everything — is what
+# the collection builder uses, which is why it and the grid share one code path.
 
-    The product of the two axes' memberships, which is what `build.py` uses to
-    scale a game's coverage contribution per cell.
+
+class Axis(Protocol):
+    """One dimension of the space, cut into named buckets."""
+
+    name: str
+
+    def memberships(self, game: Game) -> dict[str, float]:
+        """Bucket label -> how strongly `game` belongs to it, in (0, 1]."""
+        ...
+
+
+class PlayerCountAxis:
+    """Columns: the player counts the community endorses, peak-relative."""
+
+    name = "players"
+
+    def memberships(self, game: Game) -> dict[str, float]:
+        return player_memberships(game)
+
+
+class WeightAxis:
+    """Rows: quantile weight bands with tapered edges.
+
+    Built from the population rather than fixed cut points, so it needs the rows
+    handed to it — see `build_weight_rows`.
     """
-    columns = player_memberships(game)
-    weights = weight_memberships(game.weight, rows)
-    cells: dict[tuple[str, int], float] = {}
-    for col, col_m in columns.items():
-        for row, row_m in weights.items():
-            if col_m * row_m > CELL_MEMBERSHIP_FLOOR:
-                cells[(col, row)] = col_m * row_m
-    return cells
+
+    name = "weight"
+
+    def __init__(self, rows: list[dict]):
+        self.rows = rows
+
+    def memberships(self, game: Game) -> dict[str, float]:
+        return {str(i): m for i, m in weight_memberships(game.weight, self.rows).items()}
+
+
+def build_cells(games: list[Game], axes: Sequence[Axis]) -> tuple[dict, dict]:
+    """Cross the axes into cells and place every game in each by degree.
+
+    Returns `(cells, memberships)` where `cells` maps a key — a tuple of one
+    bucket label per axis — to the games that reach it, and `memberships` maps
+    `(key, game id)` to the product of the game's membership on each axis.
+
+    With `axes=[]` there is exactly one cell, keyed `()`, holding every game at
+    membership 1.0. That is the whole game space, unstratified — the collection
+    builder's view — so it needs no separate implementation.
+    """
+    cells: dict[tuple, list[Game]] = defaultdict(list)
+    memberships: dict[tuple, float] = {}
+
+    for game in games:
+        placements: list[tuple[tuple, float]] = [((), 1.0)]
+        for axis in axes:
+            nxt = []
+            for label, axis_m in axis.memberships(game).items():
+                for key, m in placements:
+                    nxt.append((key + (label,), m * axis_m))
+            placements = nxt
+        for key, m in placements:
+            if m > CELL_MEMBERSHIP_FLOOR:
+                cells[key].append(game)
+                memberships[(key, game.id)] = m
+
+    return dict(cells), memberships
 
 
 def _row_name(index: int, row_count: int) -> str:

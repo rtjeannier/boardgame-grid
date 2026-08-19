@@ -6,25 +6,30 @@
     python -m pipeline.build --assigner greedy            # taxonomy baseline
 
 Flow: load a dataset -> embed every game in the continuous feature space ->
-mine weight rows from the population -> drop each game into its one home cell
-(its weight row × its peak-player-count column) -> ask the assigner for a
-diverse subset per cell -> serialise. The build never fetches anything; it
-only ever consumes a dataset file.
+mine weight rows from the population -> cross the two axes into cells, placing
+each game in every cell it reaches *by degree* -> allocate games across the
+whole grid so each is used once -> serialise. The build never fetches anything;
+it only ever consumes a dataset file.
+
+The grid is one stratification among many: `pipeline/assign.allocate` has no
+idea these axes mean players and weight, and `pipeline/collection.py` drives it
+with no axes at all to search the whole space.
 """
 
 import argparse
 import json
-from collections import defaultdict
 
 from . import buckets, coverage, dataset
 from .archetypes import ARCHETYPES
-from .assign import (
-    GreedyAssigner,
-    MmrAssigner,
-    assign_grid,
-    assign_grid_coverage,
+from .assign import ArchetypeScorer, CoverageScorer, MmrScorer, allocate
+from .config import (
+    ALTERNATES_PER_CELL,
+    OUTPUT_JSON,
+    PICKS_PER_CELL,
+    PLAYER_COLUMNS,
+    SEED_DATASET,
+    WEIGHT_ROW_COUNT,
 )
-from .config import ALTERNATES_PER_CELL, OUTPUT_JSON, PLAYER_COLUMNS, SEED_DATASET, WEIGHT_ROW_COUNT
 from .features import build_feature_space
 
 
@@ -33,41 +38,19 @@ def build(dataset_path, assigner_name):
     space = build_feature_space(games)
     weight_rows = buckets.build_weight_rows([g.weight for g in games], WEIGHT_ROW_COUNT)
 
-    # Where each game belongs, and how strongly. The coverage path treats this
-    # as a degree — a game good at 3-6 players is a candidate in all four
-    # columns — while mmr/greedy keep the older one-home-per-game placement.
-    #
-    # That fork is deliberate but worth knowing: mmr and greedy are therefore a
-    # comparison against the *older placement model*, not just a different
-    # selection strategy, and they make no attempt at grid-wide exclusivity, so
-    # a game can surface in more than one cell under them. Giving them soft
-    # membership would mean teaching them exclusivity too.
-    cells = defaultdict(list)
-    memberships: dict[tuple, float] = {}
-    if assigner_name == "coverage":
-        for game in games:
-            for key, membership in buckets.cell_memberships(game, weight_rows).items():
-                cells[key].append(game)
-                memberships[(key, game.id)] = membership
-    else:
-        for game in games:
-            col = buckets.player_column_for(game)
-            if not col:
-                continue  # no player-count signal — nothing to place
-            row = buckets.weight_row_index(game.weight, weight_rows)
-            cells[(col, row)].append(game)
+    # The grid is just this stratification of the game space. Swap the axes and
+    # the same allocator fills whatever cells come out; pass none at all and it
+    # builds a collection, which is what pipeline/collection.py does.
+    axes = [buckets.PlayerCountAxis(), buckets.WeightAxis(weight_rows)]
+    cells, memberships = buckets.build_cells(games, axes)
 
-    if assigner_name == "coverage":
-        # Games belong to several cells, so allocation is grid-wide: a game is
-        # picked at most once, and contested games go to the cell they help most.
-        results = assign_grid_coverage(cells, memberships, space.loadings,
-                                       space.similarity, ALTERNATES_PER_CELL)
-    else:
-        assigner = {
-            "mmr": lambda: MmrAssigner(space.vectors),
-            "greedy": lambda: GreedyAssigner(),
-        }[assigner_name]()
-        results = assign_grid(cells, assigner, ALTERNATES_PER_CELL)
+    scorer = {
+        "coverage": lambda: CoverageScorer(space.loadings, space.similarity),
+        "mmr": lambda: MmrScorer(space.vectors),
+        "greedy": lambda: ArchetypeScorer(),
+    }[assigner_name]()
+    results = allocate(cells, memberships, scorer, PICKS_PER_CELL,
+                       alternates_limit=ALTERNATES_PER_CELL)
 
     def game_json(g, weight=None):
         """Game record + its place in the feature space, for the frontend.
@@ -85,24 +68,24 @@ def build(dataset_path, assigner_name):
             record["coverage"] = [round(float(w), 3) for w in weight]
         return record
 
-    def cell_json(col, row, result):
+    def cell_json(key, result):
         """One cell: its picks and alternates, each carrying a coverage vector.
 
         Quality is percentile *within this cell's* candidate pool, so a game's
         radar contribution matches the coverage the assigner saw when filling
         the cell (see pipeline/coverage.quality)."""
-        pool = cells[(col, row)]
+        col, row = key            # axis labels, in the order build_cells crossed them
+        pool = cells[key]
         ranks = [g.rank for g in pool]
 
         def weight(g):
-            # Mirrors the assigner exactly, membership included, so the radar the
-            # frontend draws is the one selection was actually scored against.
-            membership = memberships.get(((col, row), g.id), 1.0)
-            return membership * coverage.quality(g.rank, ranks) * space.loadings[g.id]
+            # Mirrors CoverageScorer exactly, membership included, so the radar
+            # the frontend draws is the one selection was scored against.
+            return memberships[(key, g.id)] * coverage.quality(g.rank, ranks) * space.loadings[g.id]
 
         return {
             "column": col,
-            "row": row,
+            "row": int(row),      # WeightAxis labels its rows by index
             "candidateCount": len(pool),
             "assignments": [
                 {"archetype": a.archetype, "game": game_json(a.game, weight(a.game)), "gain": a.gain}
@@ -123,8 +106,8 @@ def build(dataset_path, assigner_name):
             "genreDimensions": space.dimension_names,
         },
         "cells": [
-            cell_json(col, row, result)
-            for (col, row), result in sorted(results.items())
+            cell_json(key, result)
+            for key, result in sorted(results.items(), key=lambda kv: (kv[0][0], int(kv[0][1])))
         ],
     }
 

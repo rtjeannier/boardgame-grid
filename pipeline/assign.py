@@ -1,28 +1,30 @@
-"""Choosing which of a cell's games to show (the coverage/de-duplication step).
+"""Choosing which games to show, in one place, for any stratification.
 
-This is the interesting, swappable part of the pipeline. Given the games that
-qualify for a single cell, an *assigner* picks a diverse subset — so a cell
-never shows five near-identical worker-placement games.
+There is a single allocator here — `allocate` — and it makes no assumptions
+about what the cells mean. Hand it the two-axis grid and it fills the grid; hand
+it a single cell holding every game and it builds a collection. `build.py` and
+`collection.py` differ only in the axes they pass and what they do with the
+result.
 
-The default lives in `assign_grid_coverage` at the bottom of this file, which
-allocates across the whole grid at once. The two `Assigner` classes here are
-per-cell alternatives reachable via `--assigner`:
+Two concerns are kept apart:
 
-* `MmrAssigner` — maximal marginal relevance (pairwise distance).
-* `GreedyAssigner` — the original one-game-per-archetype taxonomy walk.
+* **The allocator** owns cells, rounds, exclusivity and stopping. A game is
+  placed at most once across the whole space, contested games go to whichever
+  cell values them most, and every cell takes its first pick before any cell
+  takes its second — so a thin cell can't be picked clean by a well-stocked
+  neighbour helping itself repeatedly.
+* **A `Scorer`** owns "what is this game worth to this cell right now" and
+  nothing else. Swapping selection strategy means writing one of these, not
+  another allocation loop.
 
-Design notes
-------------
-* `Assigner` is a tiny protocol — swap in a different strategy (ILP, weighted
-  matching, ML-ranked, ...) by writing one `assign()` method.
-* `MmrAssigner` and `GreedyAssigner` treat each cell **independently**, so
-  `assign_grid` maps over cells and is trivially parallelisable.
-* The default coverage path does **not**, and can't: games belong to several
-  cells by degree (see buckets.cell_memberships), so something has to decide
-  which cell gets a contested game and ensure no game is shown twice. That lives
-  in `assign_grid_coverage` below, which allocates across the whole grid at once.
+The opening round is scored by *rank* rather than by the scorer. Against an
+empty cell most scorers reduce to "how much does this game cover", which favours
+whatever is spread widest over whatever is best — the first pick should answer
+"what is the best game here", and marginal value takes over once there is
+something to complement.
 """
 
+import math
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -30,7 +32,7 @@ import numpy as np
 
 from . import coverage
 from .archetypes import archetypes_for, primary_archetype
-from .config import GAIN_FLOOR, MMR_LAMBDA, PICKS_PER_CELL
+from .config import GAIN_FLOOR, MMR_LAMBDA
 from .model import Game
 
 
@@ -38,165 +40,197 @@ from .model import Game
 class Assignment:
     archetype: str
     game: Game
-    gain: float | None = None   # coverage added when picked (coverage path only)
+    gain: float | None = None   # what the scorer valued this pick at
 
 
 @dataclass
 class CellResult:
-    assignments: list[Assignment]   # one game per claimed archetype
-    alternates: list[Game]          # qualified games that didn't get a slot
+    assignments: list[Assignment]
+    alternates: list[Game]      # reached this cell but went unpicked
 
 
-class Assigner(Protocol):
-    def assign(self, games: list[Game], alternates_limit: int) -> CellResult:
-        """Choose one game per archetype from the games qualifying for a cell."""
+# --- Scorers ----------------------------------------------------------------
+
+class Scorer(Protocol):
+    """What is a game worth to a cell, given what that cell already holds?"""
+
+    def begin(self, cells: dict, memberships: dict) -> None:
+        """Precompute per-cell state before allocation starts."""
+        ...
+
+    def score(self, key: tuple, game: Game) -> float:
+        """Marginal value of adding `game` to cell `key` right now."""
+        ...
+
+    def take(self, key: tuple, game: Game) -> None:
+        """Record that `game` is now in `key`. Also used to seed anchors."""
+        ...
+
+    def reset_cell(self, key: tuple) -> None:
+        """Forget everything placed in `key`, so it can be replayed.
+
+        The repair pass rebuilds a cell by resetting it and re-`take`-ing what
+        remains, which keeps rollback logic out of every scorer.
+        """
         ...
 
 
-class MmrAssigner:
-    """Maximal-marginal-relevance coverage in the continuous feature space.
+class CoverageScorer:
+    """Probabilistic radar coverage — the default (see pipeline/coverage.py).
 
-    Start with the best-ranked game, then repeatedly add the game with the best
-    blend of quality and distance from everything already picked:
-
-        score = λ·quality + (1-λ)·min-distance-to-picks
-
-    with quality and distances normalised to [0, 1] within the cell. Two
-    near-identical games can't both get picked early, however well-ranked —
-    which is the whole "one worker placement per cell" idea, but grounded in
-    geometry instead of hand-made labels. Labels (each pick's primary
-    archetype) are kept purely for display and may legitimately repeat.
+    A game covers each genre axis with "probability" membership x quality x
+    loading, and a set covers an axis unless all of them miss it. Value is the
+    still-uncovered area a game would fill, damped by how similar it is to what
+    the cell already holds so a re-implementation cannot claim credit for ground
+    its sibling already covers.
     """
 
-    def __init__(self, vectors: dict[int, np.ndarray]):
-        self.vectors = vectors  # from features.build_feature_space
+    def __init__(self, loadings: dict, similarity: dict | None = None):
+        self.loadings = loadings
+        self.similarity = similarity
 
-    def assign(self, games: list[Game], alternates_limit: int) -> CellResult:
-        ranked = sorted(games, key=lambda g: g.rank)
-        points = np.stack([self.vectors[g.id] for g in ranked])
+    def begin(self, cells, memberships):
+        self.weights = {}
+        for key, pool in cells.items():
+            ranks = [g.rank for g in pool]
+            for game in pool:
+                q = coverage.quality(game.rank, ranks)
+                self.weights[(key, game.id)] = memberships[(key, game.id)] * q * self.loadings[game.id]
+        n_axes = len(next(iter(self.loadings.values())))
+        self.uncovered = {key: np.ones(n_axes) for key in cells}
+        self.chosen = {key: [] for key in cells}
 
-        # Quality: best rank in the cell -> 1.0, worst -> 0.0.
-        ranks = np.array([g.rank for g in ranked], dtype=float)
-        quality = 1.0 - (ranks - ranks.min()) / max(ranks.max() - ranks.min(), 1.0)
+    def score(self, key, game):
+        raw = float(self.weights[(key, game.id)] @ self.uncovered[key])
+        return raw * coverage.novelty(game.id, self.chosen[key], self.similarity)
 
-        # Pairwise distances, normalised by the cell's own diameter so λ blends
-        # two like-scaled quantities.
-        diffs = points[:, None, :] - points[None, :, :]
-        dist = np.linalg.norm(diffs, axis=2)
-        dist /= max(dist.max(), 1e-9)
+    def take(self, key, game):
+        self.uncovered[key] *= 1.0 - self.weights[(key, game.id)]
+        self.chosen[key].append(game.id)
 
-        picked = [0]  # the best-ranked game always leads
-        while len(picked) < min(PICKS_PER_CELL, len(ranked)):
-            remaining = [i for i in range(len(ranked)) if i not in picked]
-            spread = dist[np.ix_(remaining, picked)].min(axis=1)
-            scores = MMR_LAMBDA * quality[remaining] + (1 - MMR_LAMBDA) * spread
-            picked.append(remaining[int(np.argmax(scores))])
+    def reset_cell(self, key):
+        self.uncovered[key] = np.ones(len(self.uncovered[key]))
+        self.chosen[key] = []
 
-        assignments = [Assignment(_display_label(ranked[i]), ranked[i]) for i in picked]
-        leftovers = [g for i, g in enumerate(ranked) if i not in picked]
-        return CellResult(assignments, leftovers[:alternates_limit])
+    def weight_of(self, key, game) -> np.ndarray:
+        """The game's quality- and membership-scaled loading vector in this cell.
+
+        Serialised so the frontend radar draws the same numbers selection saw.
+        """
+        return self.weights[(key, game.id)]
 
 
-def _display_label(game: Game) -> str:
-    """Cosmetic type label for a pick — selection never depends on it."""
-    arch = primary_archetype(game.signals)
-    return arch.label if arch else "Other"
+class MmrScorer:
+    """Maximal marginal relevance: rank blended with distance from the picks.
 
-
-class GreedyAssigner:
-    """Walk games best-rank-first; each claims its most-defining free archetype.
-
-    Because we go in rank order, the top-ranked game gets first pick of its
-    signature archetype, the next game takes the best archetype still open, and
-    so on. Simple, fast, and produces an intuitive "best of each type" cell.
+    `score = lambda*quality + (1-lambda)*min-distance-to-picks`, both normalised
+    within the cell. Two near-identical games can't both score well early,
+    however well-ranked — the same "one worker placement per cell" idea as
+    coverage, but grounded in geometry rather than in filling a chart.
     """
 
-    def assign(self, games: list[Game], alternates_limit: int) -> CellResult:
-        ranked = sorted(games, key=lambda g: g.rank)
-        taken: set[str] = set()
-        assignments: list[Assignment] = []
-        leftovers: list[Game] = []
+    def __init__(self, vectors: dict):
+        self.vectors = vectors
 
-        for game in ranked:
-            claimed = next(
-                (a.label for a in archetypes_for(game.signals) if a.label not in taken),
-                None,
-            )
-            if claimed:
-                taken.add(claimed)
-                assignments.append(Assignment(claimed, game))
-            else:
-                leftovers.append(game)
+    def begin(self, cells, memberships):
+        self.chosen = {key: [] for key in cells}
+        self.quality, self.scale = {}, {}
+        for key, pool in cells.items():
+            ranks = np.array([g.rank for g in pool], dtype=float)
+            span = max(ranks.max() - ranks.min(), 1.0)
+            for game in pool:
+                # best rank in the cell -> 1.0, worst -> 0.0
+                self.quality[(key, game.id)] = 1.0 - (game.rank - ranks.min()) / span
+            pts = np.stack([self.vectors[g.id] for g in pool])
+            spread = np.linalg.norm(pts[:, None, :] - pts[None, :, :], axis=2).max()
+            self.scale[key] = max(float(spread), 1e-9)   # the cell's own diameter
 
-        return CellResult(assignments, leftovers[:alternates_limit])
+    def score(self, key, game):
+        picks = self.chosen[key]
+        if not picks:
+            return self.quality[(key, game.id)]
+        here = self.vectors[game.id]
+        nearest = min(float(np.linalg.norm(here - self.vectors[p])) for p in picks)
+        return (MMR_LAMBDA * self.quality[(key, game.id)]
+                + (1 - MMR_LAMBDA) * nearest / self.scale[key])
+
+    def take(self, key, game):
+        self.chosen[key].append(game.id)
+
+    def reset_cell(self, key):
+        self.chosen[key] = []
 
 
-def assign_grid(cells: dict, assigner: Assigner, alternates_limit: int) -> dict:
-    """Apply an assigner to every cell. `cells` maps (col, row) -> [Game].
+class ArchetypeScorer:
+    """One game per archetype — the original taxonomy walk, as a score.
 
-    Returns the same keys mapped to `CellResult`. Cells are independent, so this
-    map is trivially parallelisable if a strategy ever gets expensive.
+    A game is worth taking only while its most-defining archetype is still
+    unclaimed in this cell; among claimable games, better-ranked wins. Kept as a
+    baseline against the continuous feature space.
     """
-    return {key: assigner.assign(games, alternates_limit) for key, games in cells.items()}
+
+    def begin(self, cells, memberships):
+        self.taken = {key: set() for key in cells}
+
+    def _free(self, key, game) -> str | None:
+        return next((a.label for a in archetypes_for(game.signals)
+                     if a.label not in self.taken[key]), None)
+
+    def score(self, key, game):
+        if self._free(key, game) is None:
+            return 0.0
+        # Monotonic in rank so later rounds still prefer better games.
+        return 1.0 / (1.0 + math.log10(max(game.rank, 1)))
+
+    def take(self, key, game):
+        claimed = self._free(key, game)
+        if claimed:
+            self.taken[key].add(claimed)
+
+    def reset_cell(self, key):
+        self.taken[key] = set()
 
 
-# --- Grid-wide coverage allocation (the default) -----------------------------
+# --- The allocator ----------------------------------------------------------
 
-def assign_grid_coverage(cells: dict, memberships: dict, loadings: dict,
-                         similarity: dict | None, alternates_limit: int) -> dict:
-    """Allocate games across the whole grid so each is picked at most once.
+def allocate(cells: dict, memberships: dict, scorer: Scorer, max_per_cell: int,
+             seeded: dict | None = None, alternates_limit: int = 0,
+             gain_floor: float = GAIN_FLOOR) -> dict:
+    """Fill every cell, placing each game at most once across all of them.
 
-    `cells` maps (col, row) -> [Game]; `memberships` maps ((col, row), game id)
-    -> how strongly that game belongs there. A game appears in several pools, so
-    per-cell greedy would show it in several cells at once.
+    `cells` maps key -> [Game] and `memberships` maps (key, game id) -> degree,
+    both from `buckets.build_cells`. `seeded` pre-places games in a cell without
+    them competing for a slot — the collection builder's anchors.
 
-    Rounds, not one long greedy: every cell bids for its best remaining game,
-    a contested game goes to whichever cell gains most, and losers re-bid before
-    anything is committed. That way **every cell takes its first pick before any
-    cell takes its second**, so a thin cell can't be picked clean by a
-    well-stocked neighbour helping itself two or three times first. Allocating
-    strictly by highest-gain-anywhere scores marginally better on paper but
-    offers thin cells no such protection.
-
-    A game's coverage weight is `membership x quality x loadings`, so a game
-    centred in a cell counts fully and one that merely reaches it counts less --
-    reusing `quality` rather than inventing a parallel mechanism.
+    Rounds, not one long greedy: every cell bids, a contested game goes to
+    whichever cell scores it highest, losers re-bid, and nothing commits until
+    the round ends.
     """
-    keys = sorted(cells)                     # deterministic: contests must not
-    n_axes = len(next(iter(loadings.values())))   # hinge on dict iteration order
+    keys = sorted(cells)                 # deterministic: contests must not
+    scorer.begin(cells, memberships)     # hinge on dict iteration order
 
-    weights = {}
-    for key in keys:
-        pool = cells[key]
-        ranks = [g.rank for g in pool]
-        for game in pool:
-            q = coverage.quality(game.rank, ranks)
-            weights[(key, game.id)] = memberships[(key, game.id)] * q * loadings[game.id]
-
-    uncovered = {key: np.ones(n_axes) for key in keys}
-    chosen: dict[tuple, list[Game]] = {key: [] for key in keys}
+    chosen = {key: [] for key in keys}
     gains: dict[tuple, float] = {}
     taken: set[int] = set()
 
-    for round_index in range(PICKS_PER_CELL):
-        # Round 1 bids by *rank*, later rounds by coverage gain. Against an empty
-        # radar the gain of a game is just the sum of its loadings, so a game
-        # sprawling over eight genre axes outscores a focused one however much
-        # better it is — that is how Brass: Birmingham (#1, 4 axes) lost its cell
-        # to Skat (#2489, 3 axes) by way of a pile of 8-axis generalists. The
-        # opening pick should answer "what is the best game here", and coverage
-        # takes over once there is something on the chart to complement.
-        awards = _bid_round(keys, cells, memberships, weights, uncovered,
-                            chosen, taken, similarity, by_rank=(round_index == 0))
+    for key, games in (seeded or {}).items():
+        for game in games:
+            scorer.take(key, game)
+            chosen[key].append(game)
+            taken.add(game.id)
+
+    for round_index in range(max_per_cell):
+        awards = _bid_round(keys, cells, memberships, scorer, chosen, taken,
+                            max_per_cell, gain_floor, by_rank=(round_index == 0))
         if not awards:
             break
         for key, (game, gain) in awards.items():
             taken.add(game.id)
             gains[(key, game.id)] = gain
-            uncovered[key] *= 1.0 - weights[(key, game.id)]
+            scorer.take(key, game)
             chosen[key].append(game)
 
-    _repair(keys, cells, weights, uncovered, chosen, gains, similarity)
+    _repair(keys, memberships, scorer, chosen, gains, max_per_cell, seeded or {})
 
     results = {}
     for key in keys:
@@ -206,89 +240,92 @@ def assign_grid_coverage(cells: dict, memberships: dict, loadings: dict,
             key=lambda g: g.rank,
         )
         results[key] = CellResult(
-            [Assignment(_display_label(g), g, round(gains[(key, g.id)], 3))
+            [Assignment(_display_label(g), g,
+                        round(gains[(key, g.id)], 3) if (key, g.id) in gains else None)
              for g in chosen[key]],
             leftovers[:alternates_limit],
         )
     return results
 
 
-def _gain(key, game, weights, uncovered, chosen, similarity) -> float:
-    raw = float(weights[(key, game.id)] @ uncovered[key])
-    return raw * coverage.novelty(game.id, [g.id for g in chosen[key]], similarity)
-
-
-def _bid_round(keys, cells, memberships, weights, uncovered, chosen, taken,
-               similarity, by_rank: bool = False) -> dict:
-    """One round of deferred acceptance; returns {cell key: (Game, gain)}.
-
-    `by_rank` makes cells bid for their best-ranked game rather than their
-    highest-gain one — used for the opening round only, see the caller.
-    """
-    held: dict[int, tuple] = {}          # game id -> (cell key, gain, Game)
+def _bid_round(keys, cells, memberships, scorer, chosen, taken, max_per_cell,
+               gain_floor, by_rank: bool) -> dict:
+    """One round of deferred acceptance; returns {cell key: (Game, score)}."""
+    held: dict[int, tuple] = {}          # game id -> (cell key, score, Game)
     blocked: dict[tuple, set[int]] = {key: set() for key in keys}
-    pending = [k for k in keys if len(chosen[k]) < PICKS_PER_CELL]
+    pending = [k for k in keys if len(chosen[k]) < max_per_cell]
 
     while pending:
         key = pending.pop(0)
-        best, best_gain, best_sort = None, 0.0, None
+        best, best_score, best_sort = None, 0.0, None
         for game in cells[key]:
             if game.id in taken or game.id in blocked[key]:
                 continue
-            gain = _gain(key, game, weights, uncovered, chosen, similarity)
-            if gain < GAIN_FLOOR:
+            value = scorer.score(key, game)
+            if value < gain_floor:
                 continue
-            # Rank first in the opening round, coverage gain after. Membership
+            # Rank leads the opening round, marginal value after. Membership
             # breaks ties either way, so a game is never claimed by a cell it
-            # barely reaches when one that centres on it wants the same game.
+            # barely reaches while one centred on it wants the same game.
             sort = ((-game.rank, memberships[(key, game.id)]) if by_rank
-                    else (gain, memberships[(key, game.id)]))
+                    else (value, memberships[(key, game.id)]))
             if best_sort is None or sort > best_sort:
-                best, best_gain, best_sort = game, gain, sort
+                best, best_score, best_sort = game, value, sort
         if best is None:
-            continue                      # nothing left worth taking this round
+            continue                     # nothing left worth taking this round
 
         incumbent = held.get(best.id)
         if incumbent is None:
-            held[best.id] = (key, best_gain, best)
-        elif best_gain > incumbent[1]:
-            held[best.id] = (key, best_gain, best)
+            held[best.id] = (key, best_score, best)
+        elif best_score > incumbent[1]:
+            held[best.id] = (key, best_score, best)
             blocked[incumbent[0]].add(best.id)
             pending.append(incumbent[0])  # displaced cell bids again
         else:
             blocked[key].add(best.id)
             pending.append(key)
 
-    return {key: (game, gain) for _, (key, gain, game) in held.items()}
+    return {key: (game, score) for _, (key, score, game) in held.items()}
 
 
-def _repair(keys, cells, weights, uncovered, chosen, gains, similarity) -> None:
-    """Move a game if some cell with room would gain more from it.
+def _repair(keys, memberships, scorer, chosen, gains, max_per_cell, seeded) -> None:
+    """Move a game if some cell with room would value it more.
 
     A round commits its awards together, so a cell that valued a game more may
-    not have bid on it before it was claimed. Rare (one placement in a 238-pick
-    grid) but cheap to correct, and it makes the result order-independent.
+    not have bid on it before it was claimed. Rare — a handful of cells on a
+    35-cell grid — but cheap to correct, and it makes the result independent of
+    the order cells happened to bid in.
+
+    Seeded games (the collection's anchors) are pinned: they were placed by the
+    caller, not won, so they are not the allocator's to move.
     """
+    pinned = {(key, g.id) for key, games in seeded.items() for g in games}
+
+    def replay(key, games):
+        scorer.reset_cell(key)
+        for game in games:
+            scorer.take(key, game)
+
     for _ in range(len(keys)):            # bounded; converges in a pass or two
         moved = False
         for key in keys:
             for game in list(chosen[key]):
-                here = _gain(key, game, weights, uncovered, chosen, similarity)
+                if (key, game.id) in pinned:
+                    continue
+                here = scorer.score(key, game)
                 for other in keys:
-                    if other == key or len(chosen[other]) >= PICKS_PER_CELL:
+                    if other == key or len(chosen[other]) >= max_per_cell:
                         continue
-                    if (other, game.id) not in weights:
-                        continue
-                    there = _gain(other, game, weights, uncovered, chosen, similarity)
+                    if (other, game.id) not in memberships:
+                        continue          # game doesn't reach that cell at all
+                    there = scorer.score(other, game)
                     if there > here + 1e-9:
                         chosen[key].remove(game)
                         gains.pop((key, game.id), None)
-                        uncovered[key] = np.ones(len(uncovered[key]))
-                        for kept in chosen[key]:
-                            uncovered[key] *= 1.0 - weights[(key, kept.id)]
+                        replay(key, chosen[key])
                         chosen[other].append(game)
                         gains[(other, game.id)] = there
-                        uncovered[other] *= 1.0 - weights[(other, game.id)]
+                        scorer.take(other, game)
                         moved = True
                         break
                 if moved:
@@ -297,3 +334,9 @@ def _repair(keys, cells, weights, uncovered, chosen, gains, similarity) -> None:
                 break
         if not moved:
             return
+
+
+def _display_label(game: Game) -> str:
+    """Cosmetic type label for a pick — selection never depends on it."""
+    arch = primary_archetype(game.signals)
+    return arch.label if arch else "Other"

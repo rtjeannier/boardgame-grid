@@ -30,11 +30,11 @@ pipeline/            Python — two independent steps joined by a dataset file
   client.py          live BGG XML API2 client (cached), used by fetch
   config.py          the two axes + tunables (edit me first)
   features.py        the continuous feature space (IDF -> NMF genres -> vectors)
-  coverage.py        probabilistic radar-chart coverage (shared math)
-  assign.py          swappable per-cell selection (Coverage/Mmr/GreedyAssigner)
-  collection.py      whole-collection builder: anchors, gap analysis
+  coverage.py        the radar-chart coverage maths (no selection)
+  assign.py          one allocator over any axes + swappable Scorers
+  collection.py      the same allocator with no axes: anchors, gap analysis
   archetypes.py      display-label taxonomy (mechanic/category -> archetype)
-  buckets.py         player-count columns + quantile weight rows
+  buckets.py         Axis protocol; player-count + quantile-weight axes
 data/
   games.seed.json    committed proxy dataset (same shape as a live capture)
   games.json         live capture (git-ignored, made by fetch)
@@ -252,21 +252,35 @@ Everything lives in `pipeline/config.py`:
 
 ### Swapping the selection algorithm
 
-The default path is `assign.assign_grid_coverage`, which allocates across the
-whole grid because membership puts each game in several cells at once.
+`assign.py` splits the problem in two, so there is one allocation path however
+you select:
 
-`assign.py` also defines a tiny `Assigner` protocol for **per-cell** strategies:
-`MmrAssigner` (`--assigner mmr`) and the original `GreedyAssigner` (one game per
-archetype, `--assigner greedy`). Those assign every cell independently of the
-others, so a new per-cell strategy — clustering, an ILP, something ML-ranked —
-only has to implement `assign(games, alternates_limit) -> CellResult`, and stays
-trivially parallelisable across cells.
+- **`allocate`** owns cells, rounds, exclusivity and stopping, and knows nothing
+  about what the cells mean.
+- **A `Scorer`** answers only "what is this game worth to this cell right now".
 
-Note that the two paths place games differently: `--assigner mmr` and
-`--assigner greedy` still give each game a single home cell (its peak player
-count and its weight row), so they are a comparison against the *older placement
-model*, not just a different selection strategy. They also make no attempt at
-grid-wide exclusivity, so a game can appear in more than one cell under them.
+So a new strategy is one class with `begin` / `score` / `take` / `reset_cell` —
+no second allocation loop to keep in sync. Three ship today: `CoverageScorer`
+(default), `MmrScorer` (`--assigner mmr`, rank blended with distance from the
+picks) and `ArchetypeScorer` (`--assigner greedy`, one game per archetype). All
+three get membership, grid-wide exclusivity and the rank-seeded opening round
+for free.
+
+### Arbitrary axes
+
+The grid's two axes aren't privileged. An `Axis` answers "how strongly does this
+game belong to each of my buckets", and `buckets.build_cells(games, axes)`
+crosses any list of them into cells:
+
+```python
+axes = [PlayerCountAxis(), WeightAxis(rows)]   # the grid
+axes = []                                      # one cell = the whole space
+```
+
+That second line is the collection builder. It is not a parallel implementation
+— `pipeline/collection.py` calls the same `allocate` with no axes and seeds the
+anchors into that single cell, then does its own gap analysis on the result. A
+genre or mechanic axis would be a small class beside the two existing ones.
 
 ## Note on the current data
 
