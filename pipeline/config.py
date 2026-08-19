@@ -100,12 +100,16 @@ GAIN_FLOOR = 0.10         # stop picking when the best marginal gain drops below
 
 # Duplicate suppression. A candidate's gain is scaled by
 # (1 - similarity_to_nearest_pick ** SIMILARITY_EXPONENT), where similarity is
-# cosine in the full tag space (see features._similarity_space). The exponent is
-# the falloff sharpness: near-flat below 0.5 so genuinely different games in a
-# shared genre keep their value, collapsing above 0.8 so re-implementations and
-# editions cannot claim credit for space their sibling already covers. Measured
-# on the live top-500: exponent 1 costs 6 extra picks, 3 lets a duplicate back in.
-SIMILARITY_EXPONENT = 2
+# cosine over centrality-weighted tags (see features._similarity_space). The
+# exponent is the falloff sharpness: near-flat through the middle so games that
+# merely share a genre keep their value, collapsing at the top so two games with
+# the same core cannot both claim the space.
+#
+# Retuned 2 -> 3 when similarity moved to centrality weighting, which lifted the
+# whole scale — an unrelated 95th-percentile pair now scores 0.47, where an
+# exponent of 2 would shave 22% off it. At 3 that bulk loses 10% while a
+# same-core pair at 0.84 is still suppressed by 59%.
+SIMILARITY_EXPONENT = 3
 
 # How much evidence a game needs before we believe its genre split. BGG's tag
 # counts track popularity, not simplicity — rank and tag count correlate -0.35,

@@ -218,8 +218,8 @@ and 4th Edition once shared a cell. So each candidate's gain is scaled by
 1 − similarity_to_nearest_pick ^ SIMILARITY_EXPONENT
 ```
 
-Similarity is cosine in the **full tag space** (`features._similarity_space`),
-never the 10-dim NMF loadings — the bottleneck discards exactly the detail that
+Similarity is cosine over **centrality-weighted tags**
+(`features._similarity_space`), never the 10-dim NMF loadings — the bottleneck discards exactly the detail that
 separates a duplicate from a same-genre neighbour. Measured on the live top 1000,
 Decrypto/Monikers (unrelated) score 0.955 in NMF space against Twilight Imperium
 3rd/4th at 0.997 — indistinguishable; in full space those become 0.230 and 0.817.

@@ -89,20 +89,54 @@ def _similarity_space(games: list[Game]) -> dict[int, np.ndarray]:
     Families join the vocabulary here (and only here) because they roughly double
     that separation.
     """
-    tokens = {g.id: list(g.signals) + list(g.families) for g in games}
+    tokens = {g.id: set(g.signals) | set(g.families) for g in games}
     vocab = sorted({t for v in tokens.values() for t in v})
     index = {t: j for j, t in enumerate(vocab)}
 
-    matrix = np.zeros((len(games), len(vocab)))
+    present = np.zeros((len(games), len(vocab)))
     for i, g in enumerate(games):
         for t in tokens[g.id]:
-            matrix[i, index[t]] = 1.0
+            present[i, index[t]] = 1.0
 
-    matrix *= 1 + np.log1p(len(games) / matrix.sum(axis=0))   # same damped IDF
+    matrix = present * _tag_centrality(present)
     norms = np.linalg.norm(matrix, axis=1, keepdims=True)
     norms[norms == 0] = 1.0
-    matrix /= norms
-    return {g.id: matrix[i] for i, g in enumerate(games)}
+    return {g.id: matrix[i] / norms[i] for i, g in enumerate(games)}
+
+
+def _tag_centrality(present: np.ndarray) -> np.ndarray:
+    """Per (game, tag): how central that tag is to *that* game.
+
+    A game's tags are not equally load-bearing. 7 Wonders is a set-collection
+    drafting card game with unusual end conditions — `Set Collection` is what it
+    *is*, `Tug of War` is a quirk of how it ends. Weighting every tag alike made
+    two games agree only in proportion to their trivia.
+
+    Centrality is how well a tag sits with the game's *other* tags, measured by
+    how often tags co-occur across the corpus. So the mechanics that make a game
+    the kind of thing it is dominate, and the one-off flourishes fade.
+
+    Note this deliberately favours *common* tags over rare ones, which is the
+    opposite of IDF. That is the point: the shared core is what makes two games
+    substitutes for each other, and IDF measures the flourishes. Weighting by
+    distinctiveness instead put `Melding and Splaying` above `Set Collection`
+    for 7 Wonders, and rated Race/Roll for the Galaxy as more alike than the two
+    7 Wonders Duel games, which is backwards.
+    """
+    # Tag-tag relatedness: two tags are alike if they mark the same games.
+    co = present.T @ present
+    scale = np.sqrt(np.diag(co))
+    scale[scale == 0] = 1.0
+    related = co / np.outer(scale, scale)
+    np.fill_diagonal(related, 0.0)          # a tag cannot vouch for itself
+
+    # Mean relatedness to the game's other tags.
+    degree = present.sum(axis=1, keepdims=True)
+    centrality = (present @ related) / np.maximum(degree - 1, 1)
+
+    # A one-tag game has no "other tags" to be central to; its single tag is by
+    # definition its whole identity, so give it full weight rather than zero.
+    return np.where(degree > 1, centrality, 1.0)
 
 
 def _genre_loadings(games: list[Game]) -> dict:

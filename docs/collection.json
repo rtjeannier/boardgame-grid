@@ -30,16 +30,16 @@
     0.0
   ],
   "fullCoverage": [
-    0.608,
-    0.851,
-    0.696,
-    0.731,
-    0.738,
-    0.762,
-    0.793,
-    0.662,
-    0.665,
-    0.897
+    0.559,
+    0.886,
+    0.714,
+    0.703,
+    0.733,
+    0.709,
+    0.788,
+    0.712,
+    0.723,
+    0.834
   ],
   "games": [
     {
@@ -106,7 +106,7 @@
       "url": "https://boardgamegeek.com/boardgame/224517",
       "anchored": false,
       "gain": 1.0,
-      "uniqueContribution": 0.528,
+      "uniqueContribution": 0.441,
       "genres": [
         {
           "name": "Network and Route Building / Economic / Trains",
@@ -206,8 +206,8 @@
       "users_rated": 67551,
       "url": "https://boardgamegeek.com/boardgame/174430",
       "anchored": false,
-      "gain": 0.9,
-      "uniqueContribution": 0.258,
+      "gain": 0.907,
+      "uniqueContribution": 0.319,
       "genres": [
         {
           "name": "Variable Player Powers / Fighting / Miniatures",
@@ -298,8 +298,8 @@
       "users_rated": 62515,
       "url": "https://boardgamegeek.com/boardgame/342942",
       "anchored": false,
-      "gain": 0.771,
-      "uniqueContribution": 0.277,
+      "gain": 0.758,
+      "uniqueContribution": 0.258,
       "genres": [
         {
           "name": "End Game Bonuses / Worker Placement / Variable Set-up",
@@ -377,7 +377,7 @@
       "url": "https://boardgamegeek.com/boardgame/12333",
       "anchored": false,
       "gain": 0.642,
-      "uniqueContribution": 0.27,
+      "uniqueContribution": 0.301,
       "genres": [
         {
           "name": "Wargame / Simulation / Hexagon Grid",
@@ -403,75 +403,6 @@
         0.026,
         0.011,
         0.039
-      ]
-    },
-    {
-      "id": 373106,
-      "name": "Sky Team",
-      "year": 2023,
-      "rank": 32,
-      "rating": 7.88952,
-      "weight": 2.0431,
-      "playtime": 20,
-      "best_counts": [
-        2
-      ],
-      "best_count": 2,
-      "signals": [
-        "Aviation / Flight",
-        "Dice",
-        "Communication Limits",
-        "Cooperative Game",
-        "Dice Rolling",
-        "Scenario / Mission / Campaign Game",
-        "Turn Order: Progressive",
-        "Variable Player Powers",
-        "Variable Set-up",
-        "Worker Placement with Dice Workers"
-      ],
-      "families": [],
-      "player_poll": {
-        "1": [
-          12,
-          81,
-          271
-        ],
-        "2": [
-          404,
-          22,
-          1
-        ]
-      },
-      "users_rated": 33866,
-      "url": "https://boardgamegeek.com/boardgame/373106",
-      "anchored": false,
-      "gain": 0.538,
-      "uniqueContribution": 0.272,
-      "genres": [
-        {
-          "name": "Dice / Dice Rolling / Push Your Luck",
-          "value": 0.48
-        },
-        {
-          "name": "End Game Bonuses / Worker Placement / Variable Set-up",
-          "value": 0.12
-        },
-        {
-          "name": "Variable Player Powers / Fighting / Miniatures",
-          "value": 0.1
-        }
-      ],
-      "coverage": [
-        0.068,
-        0.085,
-        0.014,
-        0.047,
-        0.045,
-        0.014,
-        0.014,
-        0.348,
-        0.014,
-        0.073
       ]
     },
     {
@@ -531,8 +462,8 @@
       "users_rated": 57702,
       "url": "https://boardgamegeek.com/boardgame/161936",
       "anchored": false,
-      "gain": 0.501,
-      "uniqueContribution": 0.249,
+      "gain": 0.54,
+      "uniqueContribution": 0.276,
       "genres": [
         {
           "name": "Variable Player Powers / Fighting / Miniatures",
@@ -709,8 +640,8 @@
       "users_rated": 12126,
       "url": "https://boardgamegeek.com/boardgame/240980",
       "anchored": false,
-      "gain": 0.47,
-      "uniqueContribution": 0.224,
+      "gain": 0.499,
+      "uniqueContribution": 0.231,
       "genres": [
         {
           "name": "Deduction / Party Game / Bluffing",
@@ -736,6 +667,75 @@
         0.025,
         0.025,
         0.049
+      ]
+    },
+    {
+      "id": 373106,
+      "name": "Sky Team",
+      "year": 2023,
+      "rank": 32,
+      "rating": 7.88952,
+      "weight": 2.0431,
+      "playtime": 20,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Aviation / Flight",
+        "Dice",
+        "Communication Limits",
+        "Cooperative Game",
+        "Dice Rolling",
+        "Scenario / Mission / Campaign Game",
+        "Turn Order: Progressive",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Worker Placement with Dice Workers"
+      ],
+      "families": [],
+      "player_poll": {
+        "1": [
+          12,
+          81,
+          271
+        ],
+        "2": [
+          404,
+          22,
+          1
+        ]
+      },
+      "users_rated": 33866,
+      "url": "https://boardgamegeek.com/boardgame/373106",
+      "anchored": false,
+      "gain": 0.461,
+      "uniqueContribution": 0.252,
+      "genres": [
+        {
+          "name": "Dice / Dice Rolling / Push Your Luck",
+          "value": 0.48
+        },
+        {
+          "name": "End Game Bonuses / Worker Placement / Variable Set-up",
+          "value": 0.12
+        },
+        {
+          "name": "Variable Player Powers / Fighting / Miniatures",
+          "value": 0.1
+        }
+      ],
+      "coverage": [
+        0.068,
+        0.085,
+        0.014,
+        0.047,
+        0.045,
+        0.014,
+        0.014,
+        0.348,
+        0.014,
+        0.073
       ]
     },
     {
@@ -818,8 +818,8 @@
       "users_rated": 28870,
       "url": "https://boardgamegeek.com/boardgame/233078",
       "anchored": false,
-      "gain": 0.418,
-      "uniqueContribution": 0.23,
+      "gain": 0.412,
+      "uniqueContribution": 0.253,
       "genres": [
         {
           "name": "Area Majority / Influence / Area Movement / Territory Building",
@@ -911,8 +911,8 @@
       "users_rated": 33951,
       "url": "https://boardgamegeek.com/boardgame/177736",
       "anchored": false,
-      "gain": 0.363,
-      "uniqueContribution": 0.22,
+      "gain": 0.357,
+      "uniqueContribution": 0.214,
       "genres": [
         {
           "name": "Tile Placement / Pattern Building / Abstract Strategy",
@@ -1000,7 +1000,7 @@
       "url": "https://boardgamegeek.com/boardgame/324856",
       "anchored": false,
       "gain": 0.331,
-      "uniqueContribution": 0.239,
+      "uniqueContribution": 0.246,
       "genres": [
         {
           "name": "Deduction / Party Game / Bluffing",
@@ -1026,91 +1026,6 @@
         0.016,
         0.029,
         0.016
-      ]
-    },
-    {
-      "id": 115746,
-      "name": "War of the Ring: Second Edition",
-      "year": 2011,
-      "rank": 8,
-      "rating": 8.19993,
-      "weight": 4.2293,
-      "playtime": 240,
-      "best_counts": [
-        2
-      ],
-      "best_count": 2,
-      "signals": [
-        "Fantasy",
-        "Fighting",
-        "Novel-based",
-        "Territory Building",
-        "Wargame",
-        "Area Majority / Influence",
-        "Area Movement",
-        "Campaign / Battle Card Driven",
-        "Card Play Conflict Resolution",
-        "Dice Rolling",
-        "Events",
-        "Hand Management",
-        "Movement Points",
-        "Team-Based Game",
-        "Variable Player Powers",
-        "Variable Set-up"
-      ],
-      "families": [],
-      "player_poll": {
-        "1": [
-          1,
-          39,
-          370
-        ],
-        "2": [
-          553,
-          35,
-          3
-        ],
-        "3": [
-          12,
-          94,
-          329
-        ],
-        "4": [
-          45,
-          153,
-          251
-        ]
-      },
-      "users_rated": 25453,
-      "url": "https://boardgamegeek.com/boardgame/115746",
-      "anchored": false,
-      "gain": 0.308,
-      "uniqueContribution": 0.236,
-      "genres": [
-        {
-          "name": "Area Majority / Influence / Area Movement / Territory Building",
-          "value": 0.27
-        },
-        {
-          "name": "Variable Player Powers / Fighting / Miniatures",
-          "value": 0.25
-        },
-        {
-          "name": "Wargame / Simulation / Hexagon Grid",
-          "value": 0.22
-        }
-      ],
-      "coverage": [
-        0.027,
-        0.038,
-        0.06,
-        0.198,
-        0.036,
-        0.239,
-        0.021,
-        0.021,
-        0.021,
-        0.226
       ]
     },
     {
@@ -1174,8 +1089,8 @@
       "users_rated": 64200,
       "url": "https://boardgamegeek.com/boardgame/162886",
       "anchored": false,
-      "gain": 0.258,
-      "uniqueContribution": 0.23,
+      "gain": 0.288,
+      "uniqueContribution": 0.26,
       "genres": [
         {
           "name": "Area Majority / Influence / Area Movement / Territory Building",
@@ -1201,6 +1116,259 @@
         0.009,
         0.009,
         0.164
+      ]
+    },
+    {
+      "id": 521,
+      "name": "Crokinole",
+      "year": 1876,
+      "rank": 45,
+      "rating": 7.80222,
+      "weight": 1.2306,
+      "playtime": 30,
+      "best_counts": [
+        2,
+        4
+      ],
+      "best_count": 2,
+      "signals": [
+        "Action / Dexterity",
+        "Flicking",
+        "Team-Based Game"
+      ],
+      "families": [],
+      "player_poll": {
+        "1": [
+          1,
+          14,
+          197
+        ],
+        "2": [
+          219,
+          63,
+          3
+        ],
+        "3": [
+          5,
+          75,
+          144
+        ],
+        "4": [
+          177,
+          88,
+          8
+        ]
+      },
+      "users_rated": 21405,
+      "url": "https://boardgamegeek.com/boardgame/521",
+      "anchored": false,
+      "gain": 0.248,
+      "uniqueContribution": 0.214,
+      "genres": [
+        {
+          "name": "Deduction / Party Game / Bluffing",
+          "value": 0.47
+        },
+        {
+          "name": "Variable Player Powers / Fighting / Miniatures",
+          "value": 0.2
+        },
+        {
+          "name": "Dice / Dice Rolling / Push Your Luck",
+          "value": 0.11
+        }
+      ],
+      "coverage": [
+        0.018,
+        0.018,
+        0.018,
+        0.018,
+        0.316,
+        0.018,
+        0.046,
+        0.072,
+        0.018,
+        0.134
+      ]
+    },
+    {
+      "id": 366013,
+      "name": "Heat: Pedal to the Metal",
+      "year": 2022,
+      "rank": 47,
+      "rating": 7.7946,
+      "weight": 2.2015,
+      "playtime": 60,
+      "best_counts": [
+        4,
+        5,
+        6
+      ],
+      "best_count": 6,
+      "signals": [
+        "Racing",
+        "Sports",
+        "Catch the Leader",
+        "Deck, Bag, and Pool Building",
+        "Hand Management",
+        "Programmed Movement",
+        "Push Your Luck",
+        "Race",
+        "Simulation",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game",
+        "Track Movement",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Heat \u2013 Pedal to the Metal"
+      ],
+      "player_poll": {
+        "1": [
+          83,
+          411,
+          197
+        ],
+        "2": [
+          60,
+          447,
+          197
+        ],
+        "3": [
+          83,
+          489,
+          112
+        ],
+        "4": [
+          266,
+          443,
+          19
+        ],
+        "5": [
+          531,
+          186,
+          8
+        ],
+        "6": [
+          568,
+          150,
+          17
+        ]
+      },
+      "users_rated": 42604,
+      "url": "https://boardgamegeek.com/boardgame/366013",
+      "anchored": false,
+      "gain": 0.232,
+      "uniqueContribution": 0.212,
+      "genres": [
+        {
+          "name": "Dice / Dice Rolling / Push Your Luck",
+          "value": 0.34
+        },
+        {
+          "name": "Wargame / Simulation / Hexagon Grid",
+          "value": 0.19
+        },
+        {
+          "name": "Card Game / Hand Management / Open Drafting",
+          "value": 0.19
+        }
+      ],
+      "coverage": [
+        0.026,
+        0.107,
+        0.127,
+        0.131,
+        0.011,
+        0.011,
+        0.011,
+        0.231,
+        0.011,
+        0.011
+      ]
+    },
+    {
+      "id": 182028,
+      "name": "Through the Ages: A New Story of Civilization",
+      "year": 2015,
+      "rank": 18,
+      "rating": 8.00736,
+      "weight": 4.4408,
+      "playtime": 120,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 3,
+      "signals": [
+        "Card Game",
+        "Civilization",
+        "Economic",
+        "Action Points",
+        "Auction / Bidding",
+        "Auction: Dutch",
+        "Events",
+        "Income",
+        "Open Drafting",
+        "Player Elimination",
+        "Tags",
+        "Take That"
+      ],
+      "families": [
+        "Game: Through the Ages"
+      ],
+      "player_poll": {
+        "1": [
+          6,
+          20,
+          457
+        ],
+        "2": [
+          210,
+          451,
+          53
+        ],
+        "3": [
+          504,
+          194,
+          21
+        ],
+        "4": [
+          130,
+          331,
+          199
+        ]
+      },
+      "users_rated": 35083,
+      "url": "https://boardgamegeek.com/boardgame/182028",
+      "anchored": false,
+      "gain": 0.213,
+      "uniqueContribution": 0.214,
+      "genres": [
+        {
+          "name": "Network and Route Building / Economic / Trains",
+          "value": 0.26
+        },
+        {
+          "name": "End Game Bonuses / Worker Placement / Variable Set-up",
+          "value": 0.25
+        },
+        {
+          "name": "Card Game / Hand Management / Open Drafting",
+          "value": 0.19
+        }
+      ],
+      "coverage": [
+        0.015,
+        0.198,
+        0.146,
+        0.016,
+        0.035,
+        0.088,
+        0.015,
+        0.015,
+        0.206,
+        0.049
       ]
     },
     {
@@ -1261,8 +1429,8 @@
       "users_rated": 70278,
       "url": "https://boardgamegeek.com/boardgame/84876",
       "anchored": false,
-      "gain": 0.236,
-      "uniqueContribution": 0.24,
+      "gain": 0.2,
+      "uniqueContribution": 0.235,
       "genres": [
         {
           "name": "Tile Placement / Pattern Building / Abstract Strategy",
@@ -1288,163 +1456,6 @@
         0.13,
         0.008,
         0.008
-      ]
-    },
-    {
-      "id": 338960,
-      "name": "Slay the Spire: The Board Game",
-      "year": 2024,
-      "rank": 15,
-      "rating": 8.04067,
-      "weight": 2.9072,
-      "playtime": 150,
-      "best_counts": [
-        1,
-        2,
-        3
-      ],
-      "best_count": 2,
-      "signals": [
-        "Adventure",
-        "Card Game",
-        "Fantasy",
-        "Fighting",
-        "Video Game Theme",
-        "Cooperative Game",
-        "Deck, Bag, and Pool Building",
-        "Dice Rolling",
-        "Hand Management",
-        "Scenario / Mission / Campaign Game",
-        "Simultaneous Action Selection",
-        "Solo / Solitaire Game",
-        "Variable Player Powers"
-      ],
-      "families": [],
-      "player_poll": {
-        "1": [
-          77,
-          180,
-          44
-        ],
-        "2": [
-          230,
-          85,
-          2
-        ],
-        "3": [
-          91,
-          172,
-          20
-        ],
-        "4": [
-          42,
-          154,
-          76
-        ]
-      },
-      "users_rated": 13950,
-      "url": "https://boardgamegeek.com/boardgame/338960",
-      "anchored": false,
-      "gain": 0.218,
-      "uniqueContribution": 0.225,
-      "genres": [
-        {
-          "name": "Variable Player Powers / Fighting / Miniatures",
-          "value": 0.31
-        },
-        {
-          "name": "Card Game / Hand Management / Open Drafting",
-          "value": 0.2
-        },
-        {
-          "name": "Cooperative Game / Adventure / Exploration",
-          "value": 0.15
-        }
-      ],
-      "coverage": [
-        0.122,
-        0.029,
-        0.159,
-        0.035,
-        0.029,
-        0.029,
-        0.029,
-        0.092,
-        0.029,
-        0.246
-      ]
-    },
-    {
-      "id": 521,
-      "name": "Crokinole",
-      "year": 1876,
-      "rank": 45,
-      "rating": 7.80222,
-      "weight": 1.2306,
-      "playtime": 30,
-      "best_counts": [
-        2,
-        4
-      ],
-      "best_count": 2,
-      "signals": [
-        "Action / Dexterity",
-        "Flicking",
-        "Team-Based Game"
-      ],
-      "families": [],
-      "player_poll": {
-        "1": [
-          1,
-          14,
-          197
-        ],
-        "2": [
-          219,
-          63,
-          3
-        ],
-        "3": [
-          5,
-          75,
-          144
-        ],
-        "4": [
-          177,
-          88,
-          8
-        ]
-      },
-      "users_rated": 21405,
-      "url": "https://boardgamegeek.com/boardgame/521",
-      "anchored": false,
-      "gain": 0.203,
-      "uniqueContribution": 0.205,
-      "genres": [
-        {
-          "name": "Deduction / Party Game / Bluffing",
-          "value": 0.47
-        },
-        {
-          "name": "Variable Player Powers / Fighting / Miniatures",
-          "value": 0.2
-        },
-        {
-          "name": "Dice / Dice Rolling / Push Your Luck",
-          "value": 0.11
-        }
-      ],
-      "coverage": [
-        0.018,
-        0.018,
-        0.018,
-        0.018,
-        0.316,
-        0.018,
-        0.046,
-        0.072,
-        0.018,
-        0.134
       ]
     }
   ],
