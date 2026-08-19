@@ -52,6 +52,7 @@ from .config import (
     GENRE_INTERACTION,
     GENRE_MIN_COHESION,
     GENRE_MIN_LIFT,
+    GENRE_SPANS,
     GENRE_NAME_SEPARATOR,
     GENRE_SCARCITY,
     GENRE_TOP_SIGNALS,
@@ -304,9 +305,16 @@ def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:
     Compounds add specificity; only the parent carries commonality.
 
     The tempting check — are the parent's games still covered by its compounds?
-    — is the wrong one. All thirteen come out 85-99% covered, which would say
-    drop them all. It measures whether each *game* keeps some signal, not
-    whether the *relationships between games* survive.
+    — is the wrong one *here*. All thirteen come out 85-99% covered, which would
+    say drop them all. It measures whether each *game* keeps some signal, not
+    whether the *relationships between games* survive. (`_spanning` does use it,
+    for a different question: whether a tag that is going to lose its bare form
+    anyway would strand its games. There it separates 95% from 0%.)
+
+    A tag that *spans* kinds rather than naming one is the exception to keeping
+    parents — see `_spanning`. Worker placement divides into card, economic and
+    area-control games the way `Card Game` divides, and keeping its bare tag
+    gathers all of them into a single axis instead.
 
     Pairing *only* base tags with each other is what makes this work, and it
     took several wrong turns to find. Pairing them with ordinary tags instead
@@ -326,8 +334,14 @@ def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:
     base = [j for j in range(len(vocab)) if carried[j] > len(games) * GENRE_BASE_RATE]
     floor = len(games) / GENRE_AXIS_TARGET / 10
 
-    names = list(vocab)
-    columns = [incidence[:, j] for j in range(len(vocab))]
+    # Tags that span several kinds of game are paired like base tags but do not
+    # appear on their own, so a game is a *type* of one rather than merely
+    # carrying it (see `_spanning`).
+    spanning = _spanning(vocab, incidence, carried, base, floor)
+    base = sorted(base + list(spanning))
+
+    names = [s for j, s in enumerate(vocab) if j not in spanning]
+    columns = [incidence[:, j] for j in range(len(vocab)) if j not in spanning]
     paired = set()
     for a, first in enumerate(base):
         for second in base[a + 1:]:
@@ -342,6 +356,89 @@ def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:
             names.append(f"{vocab[first]}{GENRE_COMPOUND}{vocab[second]}")
             columns.append(incidence[:, first] * incidence[:, second])
     return names, np.stack(columns, axis=1)
+
+
+def _spanning(vocab: list[str], incidence: np.ndarray, carried: np.ndarray,
+              base: list[int], floor: float) -> set[int]:
+    """Tags to represent only through their compounds, never on their own.
+
+    `Worker Placement` is not one thing. There are worker-placement card games,
+    economic ones and area-control ones, exactly as `Card Game` divides into
+    `Card Game + Hand Management` and the rest — but with a single bare signal
+    they were indistinguishable, so every worker-placement game got the same
+    nudge whatever kind it was.
+
+    A tag qualifies on three counts, and all three are needed.
+
+    It has to *span*. Measure how alike a tag's games are, then measure again
+    with the tag deleted from every vector: if what is left barely holds
+    together, the tag was the only thing they shared. Worker Placement keeps
+    0.60, inside the 0.49-0.70 band the base tags occupy, where a tag that names
+    a kind outright keeps far more — `World War II` 0.92, `Miniatures` 0.86.
+
+    It must anchor no genre. `Deduction` and `Party Game` also span, but they
+    found genres, and taking their bare tag away concentrates them rather than
+    spreading them (6.2 -> 4.0 and 4.7 -> 3.2 effective genres). So discovery
+    runs once first, on the signal space as it would be without any of this.
+
+    Its compounds must cover its games, or dropping the bare tag deletes the
+    concept instead of dividing it. `Action / Dexterity` passes the first two
+    tests and fails here outright: not one of its pairings with a base tag
+    reaches `floor`, so coverage is 0%. Crokinole carries three tags — `Action /
+    Dexterity`, `Flicking`, `Team-Based Game` — and none is a base tag, because
+    dexterity games do not share the euro vocabulary base tags are drawn from.
+    The span measure flags dexterity for the opposite reason to worker
+    placement: its games share nothing else because the tag *is* their kind.
+    Worker Placement covers 95% across twelve compounds.
+
+    (`_signal_space` documents coverage as the wrong check. That is about
+    whether to drop base tags' parents, where all thirteen score 85-99% and it
+    cannot discriminate. Here it separates 95% from 0%.)
+    """
+    weighted = incidence * _tag_centrality(incidence)
+
+    def cohesion(rows: np.ndarray, without: int | None = None) -> float:
+        """How alike these games are, optionally with one tag struck out."""
+        vectors = weighted[rows]
+        if without is not None:
+            vectors = vectors.copy()
+            vectors[:, without] = 0.0
+        size = len(vectors)
+        if size < 2:
+            return 0.0
+        units = vectors / np.maximum(np.linalg.norm(vectors, axis=1, keepdims=True), 1e-9)
+        total = units.sum(axis=0)
+        return (float(total @ total) - size) / (size * (size - 1))
+
+    # Which tags already anchor a genre, judged on the space as it stands. Only
+    # the plain columns matter here, so the compounds are left out of the pass.
+    plain = np.stack([incidence[:, j] for j in range(len(vocab))], axis=1)
+    anchors = {j for core in _prune_nested(plain, _harvest_cores(plain, GENRE_AXIS_TARGET),
+                                           GENRE_LIMIT) for j in core}
+
+    found = set()
+    for tag in range(len(vocab)):
+        if tag in base or tag in anchors or carried[tag] < floor * 2:
+            continue
+        mine = np.flatnonzero(incidence[:, tag] > 0)
+        held = cohesion(mine)
+        if not held or cohesion(mine, without=tag) > GENRE_SPANS * held:
+            continue
+        covered = np.zeros(len(mine), dtype=bool)
+        for other in base:
+            if (incidence[:, tag] * incidence[:, other]).sum() >= floor:
+                covered |= incidence[mine, other] > 0
+        if covered.mean() >= _SPANNING_COVERAGE:
+            found.add(tag)
+    return found
+
+
+# A spanning tag's compounds have to account for very nearly all of its games,
+# since dropping the bare tag leaves them with nothing else. This separates
+# `Worker Placement` at 95% from `Action / Dexterity` at 0%, so it is a
+# well-definedness guard rather than a dial — the nearest other candidates score
+# 81% and 57% and are already excluded for anchoring genres.
+_SPANNING_COVERAGE = 0.90
 
 
 def _interactions(games: list[Game], incidence: np.ndarray,

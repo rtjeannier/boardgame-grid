@@ -143,8 +143,21 @@ pick this branch and the **`/docs`** folder. The site goes live at
    The bar is high on purpose: a surviving compound is a genre *candidate*, not
    a refinement, so every extra pair competes to found an axis.
 
-   The base tags are **kept** alongside their compounds. A tag connects every
-   game carrying it; a compound connects only games sharing that exact pair, and
+   **A tag that spans kinds is represented only by its compounds**
+   (`GENRE_SPANS`). Worker placement is not one thing — there are
+   worker-placement card games, economic ones and area-control ones — so it is
+   paired like a base tag and its bare form is dropped, leaving a game as a
+   *type* of worker placement rather than merely carrying the tag. A tag
+   qualifies when its games stop looking alike once the tag is deleted from
+   them, and only if it anchors no genre of its own and its compounds still
+   cover its games. That last test is what keeps `Action / Dexterity` out:
+   Crokinole carries three tags and none is a base tag, so no dexterity compound
+   exists and dropping the bare tag would erase the concept rather than divide
+   it.
+
+   The base tags are otherwise **kept** alongside their compounds. A tag
+   connects every game carrying it; a compound connects only games sharing that
+   exact pair, and
    games pair the same tag differently — Dune: Imperium and Lost Ruins of Arnak
    both carry `Open Drafting`, but Dune pairs it with `Solo`/`Variable Player
    Powers` and Arnak with `Card Game`/`Fantasy`/`Hand Management`. Dropping the

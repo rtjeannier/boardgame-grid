@@ -9,12 +9,12 @@
       "Variable Player Powers \u00b7 Fantasy \u00b7 Fighting",
       "Bluffing \u00b7 Voting \u00b7 Hidden Roles",
       "Abstract Strategy \u00b7 Pattern Building \u00b7 Tile Placement",
-      "Wargame \u00b7 Simulation \u00b7 Hexagon Grid",
+      "Wargame \u00b7 Simulation \u00b7 World War II",
       "Set Collection \u00b7 Card Game \u00b7 Hand Management",
       "Area Majority / Influence \u00b7 Hand Management \u00b7 Variable Player Powers",
       "Real-time \u00b7 Puzzle",
       "Network and Route Building \u00b7 Trains \u00b7 Transportation",
-      "Economic \u00b7 Hand Management \u00b7 Set Collection",
+      "Economic \u00b7 Worker Placement \u00b7 Hand Management",
       "Word Game \u00b7 Spelling",
       "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection"
     ]
@@ -34,20 +34,91 @@
     0.0
   ],
   "fullCoverage": [
-    0.725,
-    0.817,
-    0.894,
-    0.654,
-    0.635,
-    0.632,
-    0.491,
-    0.937,
-    0.58,
-    0.762,
-    0.677,
-    0.56
+    0.742,
+    0.82,
+    0.889,
+    0.623,
+    0.617,
+    0.704,
+    0.552,
+    0.935,
+    0.535,
+    0.805,
+    0.672,
+    0.619
   ],
   "games": [
+    {
+      "id": 521,
+      "name": "Crokinole",
+      "year": 1876,
+      "rank": 45,
+      "rating": 7.80222,
+      "weight": 1.2306,
+      "playtime": 30,
+      "best_counts": [
+        2,
+        4
+      ],
+      "best_count": 2,
+      "signals": [
+        "Action / Dexterity",
+        "Flicking",
+        "Team-Based Game"
+      ],
+      "families": [],
+      "player_poll": {
+        "1": [
+          1,
+          14,
+          197
+        ],
+        "2": [
+          219,
+          63,
+          3
+        ],
+        "3": [
+          5,
+          75,
+          144
+        ],
+        "4": [
+          177,
+          88,
+          8
+        ]
+      },
+      "users_rated": 21405,
+      "url": "https://boardgamegeek.com/boardgame/521",
+      "anchored": false,
+      "gain": 1.0,
+      "uniqueContribution": 0.863,
+      "genres": [
+        {
+          "name": "Real-time \u00b7 Puzzle",
+          "value": 0.93
+        },
+        {
+          "name": "Word Game \u00b7 Spelling",
+          "value": 0.07
+        }
+      ],
+      "coverage": [
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.928,
+        0.0,
+        0.0,
+        0.072,
+        0.0
+      ]
+    },
     {
       "id": 224517,
       "name": "Brass: Birmingham",
@@ -112,19 +183,19 @@
       "url": "https://boardgamegeek.com/boardgame/224517",
       "anchored": false,
       "gain": 1.0,
-      "uniqueContribution": 0.538,
+      "uniqueContribution": 0.472,
       "genres": [
         {
-          "name": "Economic \u00b7 Hand Management \u00b7 Set Collection",
-          "value": 0.55
+          "name": "Economic \u00b7 Worker Placement \u00b7 Hand Management",
+          "value": 0.48
         },
         {
           "name": "Network and Route Building \u00b7 Trains \u00b7 Transportation",
-          "value": 0.29
+          "value": 0.3
         },
         {
           "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
-          "value": 0.09
+          "value": 0.16
         }
       ],
       "coverage": [
@@ -136,81 +207,10 @@
         0.0,
         0.017,
         0.0,
-        0.294,
-        0.553,
+        0.295,
+        0.48,
         0.0,
-        0.091
-      ]
-    },
-    {
-      "id": 521,
-      "name": "Crokinole",
-      "year": 1876,
-      "rank": 45,
-      "rating": 7.80222,
-      "weight": 1.2306,
-      "playtime": 30,
-      "best_counts": [
-        2,
-        4
-      ],
-      "best_count": 2,
-      "signals": [
-        "Action / Dexterity",
-        "Flicking",
-        "Team-Based Game"
-      ],
-      "families": [],
-      "player_poll": {
-        "1": [
-          1,
-          14,
-          197
-        ],
-        "2": [
-          219,
-          63,
-          3
-        ],
-        "3": [
-          5,
-          75,
-          144
-        ],
-        "4": [
-          177,
-          88,
-          8
-        ]
-      },
-      "users_rated": 21405,
-      "url": "https://boardgamegeek.com/boardgame/521",
-      "anchored": false,
-      "gain": 1.0,
-      "uniqueContribution": 0.837,
-      "genres": [
-        {
-          "name": "Real-time \u00b7 Puzzle",
-          "value": 0.93
-        },
-        {
-          "name": "Word Game \u00b7 Spelling",
-          "value": 0.07
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.0,
-        0.928,
-        0.0,
-        0.0,
-        0.072,
-        0.0
+        0.162
       ]
     },
     {
@@ -289,33 +289,33 @@
       "users_rated": 67551,
       "url": "https://boardgamegeek.com/boardgame/174430",
       "anchored": false,
-      "gain": 0.953,
-      "uniqueContribution": 0.483,
+      "gain": 0.95,
+      "uniqueContribution": 0.48,
       "genres": [
         {
           "name": "Variable Player Powers \u00b7 Fantasy \u00b7 Fighting",
-          "value": 0.7
+          "value": 0.71
         },
         {
           "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
           "value": 0.13
         },
         {
-          "name": "Wargame \u00b7 Simulation \u00b7 Hexagon Grid",
-          "value": 0.11
+          "name": "Wargame \u00b7 Simulation \u00b7 World War II",
+          "value": 0.1
         }
       ],
       "coverage": [
         0.124,
-        0.679,
-        0.028,
+        0.683,
+        0.027,
         0.0,
-        0.108,
-        0.004,
+        0.099,
+        0.0,
         0.008,
         0.004,
         0.0,
-        0.016,
+        0.024,
         0.0,
         0.0
       ]
@@ -469,8 +469,8 @@
       "users_rated": 12126,
       "url": "https://boardgamegeek.com/boardgame/240980",
       "anchored": false,
-      "gain": 0.861,
-      "uniqueContribution": 0.689,
+      "gain": 0.858,
+      "uniqueContribution": 0.712,
       "genres": [
         {
           "name": "Bluffing \u00b7 Voting \u00b7 Hidden Roles",
@@ -478,9 +478,9 @@
         }
       ],
       "coverage": [
-        0.004,
-        0.017,
-        0.865,
+        0.0,
+        0.022,
+        0.863,
         0.0,
         0.0,
         0.0,
@@ -555,35 +555,35 @@
       "users_rated": 62515,
       "url": "https://boardgamegeek.com/boardgame/342942",
       "anchored": false,
-      "gain": 0.778,
-      "uniqueContribution": 0.433,
+      "gain": 0.75,
+      "uniqueContribution": 0.359,
       "genres": [
-        {
-          "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
-          "value": 0.29
-        },
         {
           "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
           "value": 0.23
         },
         {
-          "name": "Economic \u00b7 Hand Management \u00b7 Set Collection",
-          "value": 0.19
+          "name": "Economic \u00b7 Worker Placement \u00b7 Hand Management",
+          "value": 0.2
+        },
+        {
+          "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
+          "value": 0.2
         }
       ],
       "coverage": [
-        0.126,
-        0.03,
+        0.183,
+        0.049,
         0.0,
         0.058,
         0.069,
-        0.288,
+        0.199,
         0.0,
         0.0,
         0.009,
-        0.184,
+        0.196,
         0.0,
-        0.231
+        0.232
       ]
     },
     {
@@ -635,11 +635,11 @@
       "users_rated": 52351,
       "url": "https://boardgamegeek.com/boardgame/12333",
       "anchored": false,
-      "gain": 0.663,
-      "uniqueContribution": 0.503,
+      "gain": 0.664,
+      "uniqueContribution": 0.501,
       "genres": [
         {
-          "name": "Wargame \u00b7 Simulation \u00b7 Hexagon Grid",
+          "name": "Wargame \u00b7 Simulation \u00b7 World War II",
           "value": 0.53
         },
         {
@@ -731,12 +731,12 @@
       "users_rated": 35672,
       "url": "https://boardgamegeek.com/boardgame/254640",
       "anchored": false,
-      "gain": 0.606,
-      "uniqueContribution": 0.618,
+      "gain": 0.607,
+      "uniqueContribution": 0.616,
       "genres": [
         {
           "name": "Word Game \u00b7 Spelling",
-          "value": 0.72
+          "value": 0.71
         },
         {
           "name": "Bluffing \u00b7 Voting \u00b7 Hidden Roles",
@@ -744,21 +744,446 @@
         },
         {
           "name": "Real-time \u00b7 Puzzle",
-          "value": 0.1
+          "value": 0.09
         }
       ],
       "coverage": [
         0.0,
         0.0,
-        0.124,
+        0.123,
         0.0,
         0.0,
+        0.007,
         0.0,
-        0.0,
-        0.07,
+        0.066,
         0.008,
         0.0,
-        0.648,
+        0.643,
+        0.0
+      ]
+    },
+    {
+      "id": 161936,
+      "name": "Pandemic Legacy: Season 1",
+      "year": 2015,
+      "rank": 3,
+      "rating": 8.34423,
+      "weight": 2.8283,
+      "playtime": 60,
+      "best_counts": [
+        2,
+        3,
+        4
+      ],
+      "best_count": 4,
+      "signals": [
+        "Environmental",
+        "Medical",
+        "Action Points",
+        "Cooperative Game",
+        "Hand Management",
+        "Legacy Game",
+        "Multi-Use Cards",
+        "Point to Point Movement",
+        "Scenario / Mission / Campaign Game",
+        "Set Collection",
+        "Tags",
+        "Trading",
+        "Variable Player Powers"
+      ],
+      "families": [
+        "Game: Pandemic"
+      ],
+      "player_poll": {
+        "1": [
+          21,
+          149,
+          464
+        ],
+        "2": [
+          171,
+          486,
+          109
+        ],
+        "3": [
+          195,
+          462,
+          42
+        ],
+        "4": [
+          518,
+          230,
+          25
+        ]
+      },
+      "users_rated": 57702,
+      "url": "https://boardgamegeek.com/boardgame/161936",
+      "anchored": false,
+      "gain": 0.53,
+      "uniqueContribution": 0.337,
+      "genres": [
+        {
+          "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
+          "value": 0.34
+        },
+        {
+          "name": "Variable Player Powers \u00b7 Fantasy \u00b7 Fighting",
+          "value": 0.25
+        },
+        {
+          "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
+          "value": 0.19
+        }
+      ],
+      "coverage": [
+        0.189,
+        0.247,
+        0.031,
+        0.0,
+        0.0,
+        0.334,
+        0.0,
+        0.015,
+        0.073,
+        0.068,
+        0.0,
+        0.036
+      ]
+    },
+    {
+      "id": 230802,
+      "name": "Azul",
+      "year": 2017,
+      "rank": 99,
+      "rating": 7.6034,
+      "weight": 1.7716,
+      "playtime": 45,
+      "best_counts": [
+        2,
+        3,
+        4
+      ],
+      "best_count": 2,
+      "signals": [
+        "Abstract Strategy",
+        "Renaissance",
+        "Chaining",
+        "End Game Bonuses",
+        "Grid Coverage",
+        "Open Drafting",
+        "Pattern Building",
+        "Set Collection",
+        "Square Grid",
+        "Tile Placement",
+        "Turn Order: Claim Action"
+      ],
+      "families": [
+        "Game: Azul"
+      ],
+      "player_poll": {
+        "1": [
+          10,
+          39,
+          1213
+        ],
+        "2": [
+          1093,
+          632,
+          55
+        ],
+        "3": [
+          712,
+          912,
+          41
+        ],
+        "4": [
+          423,
+          1037,
+          161
+        ]
+      },
+      "users_rated": 110182,
+      "url": "https://boardgamegeek.com/boardgame/230802",
+      "anchored": false,
+      "gain": 0.501,
+      "uniqueContribution": 0.378,
+      "genres": [
+        {
+          "name": "Abstract Strategy \u00b7 Pattern Building \u00b7 Tile Placement",
+          "value": 0.6
+        },
+        {
+          "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
+          "value": 0.23
+        },
+        {
+          "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
+          "value": 0.13
+        }
+      ],
+      "coverage": [
+        0.009,
+        0.0,
+        0.0,
+        0.432,
+        0.0,
+        0.076,
+        0.0,
+        0.0,
+        0.0,
+        0.019,
+        0.0,
+        0.137
+      ]
+    },
+    {
+      "id": 418059,
+      "name": "SETI: Search for Extraterrestrial Intelligence",
+      "year": 2024,
+      "rank": 14,
+      "rating": 8.04503,
+      "weight": 3.8338,
+      "playtime": 160,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 3,
+      "signals": [
+        "Science Fiction",
+        "Space Exploration",
+        "Area Majority / Influence",
+        "End Game Bonuses",
+        "Income",
+        "Multi-Use Cards",
+        "Resource to Move",
+        "Solo / Solitaire Game",
+        "Turn Order: Progressive",
+        "Variable Set-up"
+      ],
+      "families": [],
+      "player_poll": {
+        "1": [
+          30,
+          248,
+          88
+        ],
+        "2": [
+          89,
+          366,
+          84
+        ],
+        "3": [
+          417,
+          152,
+          9
+        ],
+        "4": [
+          124,
+          237,
+          187
+        ]
+      },
+      "users_rated": 21465,
+      "url": "https://boardgamegeek.com/boardgame/418059",
+      "anchored": false,
+      "gain": 0.432,
+      "uniqueContribution": 0.446,
+      "genres": [
+        {
+          "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Variable Player Powers",
+          "value": 0.46
+        },
+        {
+          "name": "Economic \u00b7 Worker Placement \u00b7 Hand Management",
+          "value": 0.45
+        },
+        {
+          "name": "Variable Player Powers \u00b7 Fantasy \u00b7 Fighting",
+          "value": 0.08
+        }
+      ],
+      "coverage": [
+        0.0,
+        0.069,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.417,
+        0.0,
+        0.0,
+        0.363,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": 231733,
+      "name": "Obsession",
+      "year": 2018,
+      "rank": 68,
+      "rating": 7.71637,
+      "weight": 3.1132,
+      "playtime": 90,
+      "best_counts": [
+        1,
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Post-Napoleonic",
+        "Action Retrieval",
+        "Closed Drafting",
+        "Deck, Bag, and Pool Building",
+        "Hand Management",
+        "Solo / Solitaire Game",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: Obsession"
+      ],
+      "player_poll": {
+        "1": [
+          62,
+          185,
+          44
+        ],
+        "2": [
+          261,
+          116,
+          11
+        ],
+        "3": [
+          133,
+          177,
+          15
+        ],
+        "4": [
+          36,
+          173,
+          93
+        ]
+      },
+      "users_rated": 18614,
+      "url": "https://boardgamegeek.com/boardgame/231733",
+      "anchored": false,
+      "gain": 0.334,
+      "uniqueContribution": 0.285,
+      "genres": [
+        {
+          "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
+          "value": 0.69
+        },
+        {
+          "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
+          "value": 0.26
+        }
+      ],
+      "coverage": [
+        0.449,
+        0.0,
+        0.0,
+        0.0,
+        0.033,
+        0.172,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "id": 390092,
+      "name": "Ticket to Ride Legacy: Legends of the West",
+      "year": 2023,
+      "rank": 50,
+      "rating": 7.78368,
+      "weight": 2.5646,
+      "playtime": 90,
+      "best_counts": [
+        3,
+        4,
+        5
+      ],
+      "best_count": 4,
+      "signals": [
+        "American West",
+        "Trains",
+        "Connections",
+        "Contracts",
+        "End Game Bonuses",
+        "Hand Management",
+        "Legacy Game",
+        "Network and Route Building",
+        "Open Drafting",
+        "Push Your Luck",
+        "Set Collection"
+      ],
+      "families": [
+        "Game: Ticket to Ride (Official)"
+      ],
+      "player_poll": {
+        "1": [
+          0,
+          1,
+          119
+        ],
+        "2": [
+          7,
+          63,
+          66
+        ],
+        "3": [
+          23,
+          76,
+          15
+        ],
+        "4": [
+          86,
+          47,
+          4
+        ],
+        "5": [
+          54,
+          49,
+          23
+        ]
+      },
+      "users_rated": 7062,
+      "url": "https://boardgamegeek.com/boardgame/390092",
+      "anchored": false,
+      "gain": 0.278,
+      "uniqueContribution": 0.304,
+      "genres": [
+        {
+          "name": "Network and Route Building \u00b7 Trains \u00b7 Transportation",
+          "value": 0.39
+        },
+        {
+          "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
+          "value": 0.35
+        },
+        {
+          "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
+          "value": 0.14
+        }
+      ],
+      "coverage": [
+        0.099,
+        0.009,
+        0.0,
+        0.0,
+        0.0,
+        0.239,
+        0.0,
+        0.0,
+        0.264,
+        0.066,
+        0.0,
         0.0
       ]
     },
@@ -820,8 +1245,8 @@
       "users_rated": 70278,
       "url": "https://boardgamegeek.com/boardgame/84876",
       "anchored": false,
-      "gain": 0.522,
-      "uniqueContribution": 0.416,
+      "gain": 0.117,
+      "uniqueContribution": 0.394,
       "genres": [
         {
           "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
@@ -829,475 +1254,28 @@
         },
         {
           "name": "Abstract Strategy \u00b7 Pattern Building \u00b7 Tile Placement",
-          "value": 0.28
+          "value": 0.29
         },
         {
-          "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
-          "value": 0.13
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.014,
-        0.0,
-        0.28,
-        0.082,
-        0.105,
-        0.0,
-        0.0,
-        0.014,
-        0.092,
-        0.0,
-        0.282
-      ]
-    },
-    {
-      "id": 93,
-      "name": "El Grande",
-      "year": 1995,
-      "rank": 101,
-      "rating": 7.59324,
-      "weight": 2.9311,
-      "playtime": 120,
-      "best_counts": [
-        4,
-        5
-      ],
-      "best_count": 5,
-      "signals": [
-        "Medieval",
-        "Action Drafting",
-        "Area Majority / Influence",
-        "Auction / Bidding",
-        "Hand Management",
-        "Open Drafting",
-        "Selection Order Bid",
-        "Simultaneous Action Selection",
-        "Take That",
-        "Turn Order: Auction"
-      ],
-      "families": [
-        "Game: El Grande"
-      ],
-      "player_poll": {
-        "1": [
-          2,
-          3,
-          468
-        ],
-        "2": [
-          4,
-          89,
-          498
-        ],
-        "3": [
-          38,
-          339,
-          239
-        ],
-        "4": [
-          276,
-          398,
-          21
-        ],
-        "5": [
-          567,
-          133,
-          22
-        ]
-      },
-      "users_rated": 33458,
-      "url": "https://boardgamegeek.com/boardgame/93",
-      "anchored": false,
-      "gain": 0.423,
-      "uniqueContribution": 0.357,
-      "genres": [
-        {
-          "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Variable Player Powers",
-          "value": 0.52
-        },
-        {
-          "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-          "value": 0.15
-        },
-        {
-          "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
+          "name": "Economic \u00b7 Worker Placement \u00b7 Hand Management",
           "value": 0.14
         }
       ],
       "coverage": [
-        0.092,
+        0.036,
+        0.014,
         0.0,
-        0.028,
+        0.285,
+        0.083,
+        0.041,
         0.0,
-        0.0,
-        0.081,
-        0.339,
-        0.0,
-        0.055,
-        0.035,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "id": 231733,
-      "name": "Obsession",
-      "year": 2018,
-      "rank": 68,
-      "rating": 7.71637,
-      "weight": 3.1132,
-      "playtime": 90,
-      "best_counts": [
-        1,
-        2,
-        3
-      ],
-      "best_count": 2,
-      "signals": [
-        "Post-Napoleonic",
-        "Action Retrieval",
-        "Closed Drafting",
-        "Deck, Bag, and Pool Building",
-        "Hand Management",
-        "Solo / Solitaire Game",
-        "Worker Placement"
-      ],
-      "families": [
-        "Game: Obsession"
-      ],
-      "player_poll": {
-        "1": [
-          62,
-          185,
-          44
-        ],
-        "2": [
-          261,
-          116,
-          11
-        ],
-        "3": [
-          133,
-          177,
-          15
-        ],
-        "4": [
-          36,
-          173,
-          93
-        ]
-      },
-      "users_rated": 18614,
-      "url": "https://boardgamegeek.com/boardgame/231733",
-      "anchored": false,
-      "gain": 0.383,
-      "uniqueContribution": 0.315,
-      "genres": [
-        {
-          "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-          "value": 0.73
-        },
-        {
-          "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
-          "value": 0.13
-        },
-        {
-          "name": "Economic \u00b7 Hand Management \u00b7 Set Collection",
-          "value": 0.1
-        }
-      ],
-      "coverage": [
-        0.48,
-        0.0,
-        0.0,
-        0.0,
-        0.03,
-        0.085,
-        0.0,
-        0.0,
-        0.0,
-        0.061,
-        0.0,
-        0.0
-      ]
-    },
-    {
-      "id": 188,
-      "name": "Go",
-      "year": -2200,
-      "rank": 238,
-      "rating": 7.30222,
-      "weight": 3.9148,
-      "playtime": 180,
-      "best_counts": [
-        2
-      ],
-      "best_count": 2,
-      "signals": [
-        "Abstract Strategy",
-        "Chaining",
-        "Enclosure",
-        "Pattern Building",
-        "Pattern Recognition",
-        "Square Grid"
-      ],
-      "families": [],
-      "player_poll": {
-        "1": [
-          3,
-          30,
-          176
-        ],
-        "2": [
-          260,
-          12,
-          0
-        ]
-      },
-      "users_rated": 18478,
-      "url": "https://boardgamegeek.com/boardgame/188",
-      "anchored": false,
-      "gain": 0.349,
-      "uniqueContribution": 0.348,
-      "genres": [
-        {
-          "name": "Abstract Strategy \u00b7 Pattern Building \u00b7 Tile Placement",
-          "value": 0.86
-        },
-        {
-          "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
-          "value": 0.11
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.0,
-        0.0,
-        0.482,
-        0.0,
-        0.0,
-        0.0,
-        0.026,
-        0.0,
-        0.0,
-        0.0,
-        0.05
-      ]
-    },
-    {
-      "id": 4098,
-      "name": "Age of Steam",
-      "year": 2002,
-      "rank": 138,
-      "rating": 7.49563,
-      "weight": 3.8525,
-      "playtime": 120,
-      "best_counts": [
-        4,
-        5
-      ],
-      "best_count": 4,
-      "signals": [
-        "Economic",
-        "Post-Napoleonic",
-        "Trains",
-        "Transportation",
-        "Auction / Bidding",
-        "Catch the Leader",
-        "Connections",
-        "Dice Rolling",
-        "Hexagon Grid",
-        "Loans",
-        "Network and Route Building",
-        "Pick-up and Deliver",
-        "Player Elimination",
-        "Scenario / Mission / Campaign Game",
-        "Selection Order Bid",
-        "Solo / Solitaire Game",
-        "Tile Placement",
-        "Turn Order: Auction",
-        "Victory Points as a Resource"
-      ],
-      "families": [
-        "Game: Age of Steam"
-      ],
-      "player_poll": {
-        "1": [
-          2,
-          18,
-          105
-        ],
-        "2": [
-          2,
-          40,
-          98
-        ],
-        "3": [
-          33,
-          104,
-          36
-        ],
-        "4": [
-          131,
-          58,
-          3
-        ],
-        "5": [
-          90,
-          80,
-          9
-        ],
-        "6": [
-          26,
-          78,
-          51
-        ]
-      },
-      "users_rated": 12838,
-      "url": "https://boardgamegeek.com/boardgame/4098",
-      "anchored": false,
-      "gain": 0.262,
-      "uniqueContribution": 0.273,
-      "genres": [
-        {
-          "name": "Network and Route Building \u00b7 Trains \u00b7 Transportation",
-          "value": 0.59
-        },
-        {
-          "name": "Economic \u00b7 Hand Management \u00b7 Set Collection",
-          "value": 0.22
-        },
-        {
-          "name": "Tile Placement \u00b7 Open Drafting \u00b7 Set Collection",
-          "value": 0.08
-        }
-      ],
-      "coverage": [
-        0.0,
-        0.012,
-        0.006,
-        0.0,
-        0.043,
-        0.003,
-        0.0,
-        0.0,
-        0.323,
-        0.121,
-        0.0,
-        0.043
-      ]
-    },
-    {
-      "id": 161936,
-      "name": "Pandemic Legacy: Season 1",
-      "year": 2015,
-      "rank": 3,
-      "rating": 8.34423,
-      "weight": 2.8283,
-      "playtime": 60,
-      "best_counts": [
-        2,
-        3,
-        4
-      ],
-      "best_count": 4,
-      "signals": [
-        "Environmental",
-        "Medical",
-        "Action Points",
-        "Cooperative Game",
-        "Hand Management",
-        "Legacy Game",
-        "Multi-Use Cards",
-        "Point to Point Movement",
-        "Scenario / Mission / Campaign Game",
-        "Set Collection",
-        "Tags",
-        "Trading",
-        "Variable Player Powers"
-      ],
-      "families": [
-        "Game: Pandemic"
-      ],
-      "player_poll": {
-        "1": [
-          21,
-          149,
-          464
-        ],
-        "2": [
-          171,
-          486,
-          109
-        ],
-        "3": [
-          195,
-          462,
-          42
-        ],
-        "4": [
-          518,
-          230,
-          25
-        ]
-      },
-      "users_rated": 57702,
-      "url": "https://boardgamegeek.com/boardgame/161936",
-      "anchored": false,
-      "gain": 0.12,
-      "uniqueContribution": 0.365,
-      "genres": [
-        {
-          "name": "Variable Player Powers \u00b7 Fantasy \u00b7 Fighting",
-          "value": 0.32
-        },
-        {
-          "name": "Set Collection \u00b7 Card Game \u00b7 Hand Management",
-          "value": 0.31
-        },
-        {
-          "name": "Card Game \u00b7 Hand Management \u00b7 Fantasy",
-          "value": 0.19
-        }
-      ],
-      "coverage": [
-        0.186,
-        0.315,
-        0.03,
-        0.0,
-        0.0,
-        0.307,
         0.0,
         0.015,
-        0.04,
-        0.067,
+        0.109,
         0.0,
-        0.035
+        0.287
       ]
     }
   ],
-  "gaps": [
-    {
-      "dimension": "Area Majority / Influence \u00b7 Hand Management \u00b7 Variable Player Powers",
-      "coverage": 0.491,
-      "suggestions": [
-        {
-          "name": "SETI: Search for Extraterrestrial Intelligence",
-          "id": 418059,
-          "rank": 14
-        },
-        {
-          "name": "ZhanGuo",
-          "id": 160495,
-          "rank": 950
-        },
-        {
-          "name": "Las Vegas Royale",
-          "id": 271319,
-          "rank": 944
-        }
-      ]
-    }
-  ]
+  "gaps": []
 }

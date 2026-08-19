@@ -221,6 +221,35 @@ GENRE_MIN_LIFT = 1.3
 # `Network and Route Building`, and Agricola in one named `Abstract Strategy`.
 GENRE_INTERACTION = 1.7
 
+# When a tag's games stop looking alike once you delete the tag itself, the tag
+# was the only thing they shared — it spans several kinds of game rather than
+# naming one. Such a tag is represented *only* through its compounds, never on
+# its own, so a game is a type of it rather than merely carrying it.
+#
+# `Worker Placement` is the case this exists for. There are worker-placement
+# card games, economic ones and area-control ones, and with a single bare signal
+# they were indistinguishable. Its games keep 0.60 of their cohesion without it,
+# putting it inside the band the base tags occupy (0.49-0.70) and far from tags
+# that name a kind outright — `World War II` keeps 0.92, `Role Playing` 0.91,
+# `Miniatures` 0.86. 0.60 is the largest gap in that region of the distribution.
+#
+# Dropping the bare tag is the whole point and not an implementation detail:
+# keeping it alongside the compounds produces exactly the single axis this is
+# meant to avoid. Its games fall from 6.3 effective genres to 2.4, with 79% of
+# them in one `Worker Placement` genre.
+#
+# Two further tests keep this narrow, and both are needed. A tag that anchors a
+# genre of its own is left alone — `Deduction` and `Party Game` also span, but
+# taking their bare tag away concentrates them (6.2 -> 4.0 and 4.7 -> 3.2
+# effective genres) rather than spreading them. And a tag whose compounds do not
+# cover its games is left alone, because dropping the bare tag would delete the
+# concept rather than split it: `Action / Dexterity` has *no* pairing with a base
+# tag that reaches the shared-game floor, so its coverage is 0%. Crokinole
+# carries three tags and none of them is a base tag. The measure flags dexterity
+# for the opposite reason to worker placement — its games share nothing else
+# because the tag *is* their kind, not because it spans kinds.
+GENRE_SPANS = 0.60
+
 # Contribution of the continuous stats to distances, relative to genre loadings
 # (which are L2-normalised per game). Within a cell weight is nearly constant,
 # so genre naturally dominates; these keep playtime/weight as mild tiebreakers.
