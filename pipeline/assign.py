@@ -87,16 +87,21 @@ class CoverageScorer:
     its sibling already covers.
     """
 
-    def __init__(self, loadings: dict, similarity: dict | None = None):
+    def __init__(self, loadings: dict, similarity: dict | None, ratings: list[float]):
         self.loadings = loadings
         self.similarity = similarity
+        # The WHOLE population's ratings, never a cell's. Normalising per cell
+        # would make a game's quality depend on which games happened to share
+        # its cell — 5p/Light's best game rates 7.79 and 4p/Heavy's rates 8.39,
+        # and both would score 1.0. That also breaks contests, which compare
+        # scores across cells.
+        self.ratings = ratings
 
     def begin(self, cells, memberships):
         self.weights = {}
         for key, pool in cells.items():
-            ratings = [g.rating for g in pool]
             for game in pool:
-                q = coverage.quality(game.rating, ratings)
+                q = coverage.quality(game.rating, self.ratings)
                 self.weights[(key, game.id)] = memberships[(key, game.id)] * q * self.loadings[game.id]
         n_axes = len(next(iter(self.loadings.values())))
         self.uncovered = {key: np.ones(n_axes) for key in cells}

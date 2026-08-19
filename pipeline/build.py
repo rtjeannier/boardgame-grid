@@ -41,11 +41,12 @@ def build(dataset_path, assigner_name):
     # The grid is just this stratification of the game space. Swap the axes and
     # the same allocator fills whatever cells come out; pass none at all and it
     # builds a collection, which is what pipeline/collection.py does.
+    ratings = [g.rating for g in games]      # population-wide, never per cell
     axes = [buckets.PlayerCountAxis(), buckets.WeightAxis(weight_rows)]
     cells, memberships = buckets.build_cells(games, axes)
 
     scorer = {
-        "coverage": lambda: CoverageScorer(space.loadings, space.similarity),
+        "coverage": lambda: CoverageScorer(space.loadings, space.similarity, ratings),
         "mmr": lambda: MmrScorer(space.vectors),
         "greedy": lambda: ArchetypeScorer(),
     }[assigner_name]()
@@ -76,7 +77,6 @@ def build(dataset_path, assigner_name):
         the cell (see pipeline/coverage.quality)."""
         col, row = key            # axis labels, in the order build_cells crossed them
         pool = cells[key]
-        ratings = [g.rating for g in pool]
 
         def weight(g):
             # Mirrors CoverageScorer exactly, membership included, so the radar

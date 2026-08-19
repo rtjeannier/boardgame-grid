@@ -66,7 +66,7 @@ def build_collection(dataset_path, anchor_tokens, size, evaluate_only):
     # occupy slots and repel near-duplicates (anchor Wingspan and Wyrmspan stops
     # being a candidate rather than filling a slot beside it).
     cells, memberships = buckets.build_cells(games, axes=[])
-    scorer = CoverageScorer(space.loadings, space.similarity)
+    scorer = CoverageScorer(space.loadings, space.similarity, ratings)
     picks = []
     if not evaluate_only:
         results = allocate(cells, memberships, scorer, max_per_cell=size,
