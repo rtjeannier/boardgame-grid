@@ -10,8 +10,11 @@ A candidate's marginal gain is therefore Σ w·(uncovered space) — literally
 "how much of the empty chart it fills". Coverage functions are submodular, so
 the greedy loop below is guaranteed near-optimal (≥ 1-1/e of the best set).
 
-Used by both the per-cell CoverageAssigner (pipeline/assign.py) and the
-whole-collection builder (pipeline/collection.py).
+`greedy_fill` below drives the whole-collection builder (pipeline/collection.py).
+The grid uses the same `quality` / `axis_coverage` / `novelty` maths but runs its
+own allocation across all cells at once — see `assign.assign_grid_coverage`,
+which cannot use `greedy_fill` because a game belongs to several cells and may
+only be picked in one.
 """
 
 from collections.abc import Sequence

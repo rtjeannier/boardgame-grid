@@ -137,11 +137,37 @@ pick this branch and the **`/docs`** folder. The site goes live at
    log-playtime. A global 2-D PCA of these vectors feeds the per-cell
    similarity scatter in the site's detail drawer.
 
+   Loadings are **L1-normalised**: every game carries the same *total* genre
+   mass, so the vector says how a game divides itself between genres, not how
+   much genre it has. This matters because coverage sums across axes. Under L2
+   the sum of *squares* is fixed, so a game touching k axes carries √k mass —
+   3.16× for a ten-axis sprawl, which exceeds the entire 2.5× range of
+   `quality`. A bottom-ranked generalist then outscores a #1 specialist and rank
+   can never catch up.
+
+### Where a game sits: membership, not a single home
+
+A game does not live in one cell. Both axes are fuzzy, and a game belongs to
+several cells *by degree*:
+
+- **Columns** come from the suggested-players poll, scored **peak-relative**:
+  the game's strongest column is 1.0 and the others measure against it. A game
+  the community likes equally at 3, 4, 5 and 6 therefore scores 1.0 in all four
+  — versatility is not punished. (Scoring by share-of-total would give it 0.25
+  apiece and rank it below a mediocre game playable only at 4.)
+- **Rows** taper: full membership inside a row, falling to zero across
+  `WEIGHT_TAPER` weight units past each edge. The edges are quantile cuts, and
+  BGG publishes only a mean weight, so 2.89 and 2.91 are not different games.
+
+Cell membership is the product of the two, and it scales the game's coverage
+contribution — so a game centred in a cell counts fully and one that merely
+reaches it counts less.
+
 ### Coverage selection (the default)
 
 Picture a radar chart with one spoke per genre dimension. Each game covers
-every axis with "probability" `quality × loading`, and a set of games covers
-an axis unless all of them miss it:
+every axis with "probability" `membership × quality × loading`, and a set of
+games covers an axis unless all of them miss it:
 
 ```
 coverage(axis) = 1 − ∏(1 − wᵢ)
@@ -149,11 +175,22 @@ coverage(axis) = 1 − ∏(1 − wᵢ)
 
 So Dominion (0.7 deck-building) covers that axis to 0.7; adding Star Realms
 (0.6) only lifts it to 0.88 — near-duplicates have tiny marginal value.
-Selection is greedy: the best-ranked game leads, then whatever fills the most
-still-empty radar area, stopping when nothing left would add much
-(`GAIN_FLOOR`) — so rich cells naturally get more picks than thin ones.
-Coverage functions are submodular, which makes this greedy provably
-near-optimal (≥ 1−1/e of the best possible set).
+
+Because games belong to several cells, selection is **grid-wide**: a game is
+picked at most once anywhere, and something has to decide which cell gets a
+contested one. Allocation runs in rounds — every cell bids for its best
+remaining game, a contested game goes to whichever cell gains most, losers
+re-bid, and nothing commits until the round ends. So **every cell takes its
+first pick before any cell takes its second**, and a thin cell can't be picked
+clean by a well-stocked neighbour helping itself repeatedly. A repair pass
+afterwards moves a game if some cell with room would gain more from it.
+
+The **opening round bids by rank**, later rounds by coverage gain. Against an
+empty radar a game's gain is just the sum of its loadings, so without this the
+widest-spread game wins the first slot however mediocre it is; the opening pick
+should answer "what is the best game here", and coverage takes over once there
+is something on the chart to complement. Picking stops when nothing left would
+add much (`GAIN_FLOOR`), so rich cells naturally get more picks than thin ones.
 
 **Duplicate suppression.** That formula treats each game's coverage as an
 *independent* event, which is wrong for two copies of one game — their coverage
@@ -206,18 +243,30 @@ Everything lives in `pipeline/config.py`:
   `PLAYTIME_SCALE` (how much the continuous stats matter vs genre).
 - **Coverage** — `QUALITY_FLOOR` (how much a badly-ranked game still covers),
   `GAIN_FLOOR` (when to stop picking), `COLLECTION_SIZE`, `PICKS_PER_CELL`.
+- **Membership** — `MEMBERSHIP_FLOOR` (how far below its peak column a game
+  still counts), `WEIGHT_TAPER` (how far a weight row bleeds past its edges),
+  `CELL_MEMBERSHIP_FLOOR`.
 - **Duplicate suppression** — `SIMILARITY_EXPONENT` (falloff sharpness; higher
   is more permissive to same-genre neighbours, lower prunes harder).
 - **MMR** — `MMR_LAMBDA` (1.0 = pure rank, 0.0 = pure spread).
 
 ### Swapping the selection algorithm
 
-`assign.py` defines a tiny `Assigner` protocol; `MmrAssigner` and the original
-`GreedyAssigner` (one game per archetype, `--assigner greedy`) both implement
-it. Every cell is assigned independently of the others, so a new strategy —
-clustering, an ILP, something ML-ranked — only has to implement
-`assign(games, alternates_limit) -> CellResult`, and the grid stays trivially
-parallelisable across cells.
+The default path is `assign.assign_grid_coverage`, which allocates across the
+whole grid because membership puts each game in several cells at once.
+
+`assign.py` also defines a tiny `Assigner` protocol for **per-cell** strategies:
+`MmrAssigner` (`--assigner mmr`) and the original `GreedyAssigner` (one game per
+archetype, `--assigner greedy`). Those assign every cell independently of the
+others, so a new per-cell strategy — clustering, an ILP, something ML-ranked —
+only has to implement `assign(games, alternates_limit) -> CellResult`, and stays
+trivially parallelisable across cells.
+
+Note that the two paths place games differently: `--assigner mmr` and
+`--assigner greedy` still give each game a single home cell (its peak player
+count and its weight row), so they are a comparison against the *older placement
+model*, not just a different selection strategy. They also make no attempt at
+grid-wide exclusivity, so a game can appear in more than one cell under them.
 
 ## Note on the current data
 

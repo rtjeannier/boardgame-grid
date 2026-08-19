@@ -36,6 +36,12 @@ def build(dataset_path, assigner_name):
     # Where each game belongs, and how strongly. The coverage path treats this
     # as a degree — a game good at 3-6 players is a candidate in all four
     # columns — while mmr/greedy keep the older one-home-per-game placement.
+    #
+    # That fork is deliberate but worth knowing: mmr and greedy are therefore a
+    # comparison against the *older placement model*, not just a different
+    # selection strategy, and they make no attempt at grid-wide exclusivity, so
+    # a game can surface in more than one cell under them. Giving them soft
+    # membership would mean teaching them exclusivity too.
     cells = defaultdict(list)
     memberships: dict[tuple, float] = {}
     if assigner_name == "coverage":
