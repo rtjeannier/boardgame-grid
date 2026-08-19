@@ -4,8 +4,10 @@ This is the interesting, swappable part of the pipeline. Given the games that
 qualify for a single cell, an *assigner* picks a diverse subset — so a cell
 never shows five near-identical worker-placement games.
 
-Three strategies live here:
-* `CoverageAssigner` (default) — probabilistic radar-chart coverage.
+The default lives in `assign_grid_coverage` at the bottom of this file, which
+allocates across the whole grid at once. The two `Assigner` classes here are
+per-cell alternatives reachable via `--assigner`:
+
 * `MmrAssigner` — maximal marginal relevance (pairwise distance).
 * `GreedyAssigner` — the original one-game-per-archetype taxonomy walk.
 
@@ -36,7 +38,7 @@ from .model import Game
 class Assignment:
     archetype: str
     game: Game
-    gain: float | None = None   # coverage added when picked (CoverageAssigner only)
+    gain: float | None = None   # coverage added when picked (coverage path only)
 
 
 @dataclass
@@ -49,35 +51,6 @@ class Assigner(Protocol):
     def assign(self, games: list[Game], alternates_limit: int) -> CellResult:
         """Choose one game per archetype from the games qualifying for a cell."""
         ...
-
-
-class CoverageAssigner:
-    """Fill the cell's genre radar chart (see pipeline/coverage.py).
-
-    Every game covers each genre axis with probability quality × loading;
-    greedy adds whatever covers the most still-empty area and stops when
-    nothing left would add much — so a rich cell gets more picks than a thin
-    one, and a near-duplicate of an earlier pick never makes the cut.
-    """
-
-    def __init__(self, loadings: dict[int, "np.ndarray"],
-                 similarity: dict[int, "np.ndarray"] | None = None):
-        self.loadings = loadings      # from features.build_feature_space
-        self.similarity = similarity  # full-space vectors; suppresses duplicates
-
-    def assign(self, games: list[Game], alternates_limit: int) -> CellResult:
-        ranks = [g.rank for g in games]
-        candidates = [
-            (g, coverage.quality(g.rank, ranks) * self.loadings[g.id])
-            for g in games
-        ]
-        picks = coverage.greedy_fill(candidates, seed=[], max_picks=PICKS_PER_CELL,
-                                     similarity=self.similarity)
-
-        assignments = [Assignment(_display_label(p.game), p.game, p.gain) for p in picks]
-        chosen = {p.game.id for p in picks}
-        leftovers = sorted((g for g in games if g.id not in chosen), key=lambda g: g.rank)
-        return CellResult(assignments, leftovers[:alternates_limit])
 
 
 class MmrAssigner:
@@ -192,11 +165,10 @@ def assign_grid_coverage(cells: dict, memberships: dict, loadings: dict,
     keys = sorted(cells)                     # deterministic: contests must not
     n_axes = len(next(iter(loadings.values())))   # hinge on dict iteration order
 
-    weights, ranks_by_cell = {}, {}
+    weights = {}
     for key in keys:
         pool = cells[key]
         ranks = [g.rank for g in pool]
-        ranks_by_cell[key] = ranks
         for game in pool:
             q = coverage.quality(game.rank, ranks)
             weights[(key, game.id)] = memberships[(key, game.id)] * q * loadings[game.id]
@@ -259,23 +231,20 @@ def _bid_round(keys, cells, memberships, weights, uncovered, chosen, taken,
 
     while pending:
         key = pending.pop(0)
-        best, best_gain, best_sort = None, GAIN_FLOOR, None
+        best, best_gain, best_sort = None, 0.0, None
         for game in cells[key]:
             if game.id in taken or game.id in blocked[key]:
                 continue
             gain = _gain(key, game, weights, uncovered, chosen, similarity)
-            if by_rank:
-                # Membership first so a game is not claimed by a cell it barely
-                # reaches, then rank. Gain still has to clear the floor.
-                if gain < GAIN_FLOOR:
-                    continue
-                sort = (memberships[(key, game.id)], -game.rank)
-                if best_sort is None or sort > best_sort:
-                    best, best_gain, best_sort = game, gain, sort
-            elif gain > best_gain or (best is not None and gain == best_gain and (
-                    memberships[(key, game.id)], -game.rank)
-                    > (memberships[(key, best.id)], -best.id)):
-                best, best_gain = game, gain
+            if gain < GAIN_FLOOR:
+                continue
+            # Rank first in the opening round, coverage gain after. Membership
+            # breaks ties either way, so a game is never claimed by a cell it
+            # barely reaches when one that centres on it wants the same game.
+            sort = ((-game.rank, memberships[(key, game.id)]) if by_rank
+                    else (gain, memberships[(key, game.id)]))
+            if best_sort is None or sort > best_sort:
+                best, best_gain, best_sort = game, gain, sort
         if best is None:
             continue                      # nothing left worth taking this round
 
