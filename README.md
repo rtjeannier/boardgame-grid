@@ -173,6 +173,15 @@ games covers an axis unless all of them miss it:
 coverage(axis) = 1 − ∏(1 − wᵢ)
 ```
 
+`quality` comes from BGG's **Bayesian average**, normalised across the whole
+population — not from rank position, and not from a percentile within the cell.
+Both of those flatten the top: in an 857-game cell spanning ranks 3 to 4991,
+Orléans (#35) and Rajas of the Ganges (#170) scored 0.996 and 0.975, so a
+135-place gap was worth 0.02, and a game's quality moved with whichever other
+games happened to share its cell. `QUALITY_EXPONENT` then sets how sharply a
+better rating wins, because the rating band itself is narrow — 8.39 at #1 down
+to 5.79 at #5000.
+
 So Dominion (0.7 deck-building) covers that axis to 0.7; adding Star Realms
 (0.6) only lifts it to 0.88 — near-duplicates have tiny marginal value.
 
@@ -241,7 +250,8 @@ Everything lives in `pipeline/config.py`:
   actual population, so they stay balanced whatever you pick.
 - **Feature space** — `NMF_COMPONENTS` (genre dimensions), `WEIGHT_SCALE` /
   `PLAYTIME_SCALE` (how much the continuous stats matter vs genre).
-- **Coverage** — `QUALITY_FLOOR` (how much a badly-ranked game still covers),
+- **Coverage** — `QUALITY_FLOOR` (how much the worst-rated game still covers),
+  `QUALITY_EXPONENT` (how sharply a better rating beats a worse one),
   `GAIN_FLOOR` (when to stop picking), `COLLECTION_SIZE`, `PICKS_PER_CELL`.
 - **Membership** — `MEMBERSHIP_FLOOR` (how far below its peak column a game
   still counts), `WEIGHT_TAPER` (how far a weight row bleeds past its edges),

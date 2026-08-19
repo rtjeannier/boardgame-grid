@@ -94,9 +94,9 @@ class CoverageScorer:
     def begin(self, cells, memberships):
         self.weights = {}
         for key, pool in cells.items():
-            ranks = [g.rank for g in pool]
+            ratings = [g.rating for g in pool]
             for game in pool:
-                q = coverage.quality(game.rank, ranks)
+                q = coverage.quality(game.rating, ratings)
                 self.weights[(key, game.id)] = memberships[(key, game.id)] * q * self.loadings[game.id]
         n_axes = len(next(iter(self.loadings.values())))
         self.uncovered = {key: np.ones(n_axes) for key in cells}

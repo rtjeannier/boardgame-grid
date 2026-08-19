@@ -14,6 +14,12 @@ class Game:
     name: str
     year: int
     rank: int          # overall BGG rank; lower is better (1 = #1 game)
+    # BGG's Bayesian average — the score that *produces* `rank`, and the honest
+    # measure of how much better one game is than another. Rank is a dense
+    # ordering of a narrow band: #1 scores 8.39 and #5000 scores 5.79, so a
+    # 135-place gap can be worth 0.4 of a point. Selection weights by this, not
+    # by rank position (see coverage.quality).
+    rating: float
     weight: float      # BGG "averageweight", 1.0 (light) .. 5.0 (heavy)
     playtime: int      # BGG "playingtime", minutes
     best_counts: list[int]   # every count the community rates "Best" (for display)
@@ -45,7 +51,7 @@ class Game:
     def from_dict(cls, d: dict) -> "Game":
         return cls(
             id=d["id"], name=d["name"], year=d["year"], rank=d["rank"],
-            weight=d["weight"], playtime=d["playtime"],
+            rating=d["rating"], weight=d["weight"], playtime=d["playtime"],
             best_counts=d["best_counts"], best_count=d["best_count"],
             signals=d["signals"], families=d["families"],
             # JSON object keys are strings; the poll is keyed by player count.
@@ -57,7 +63,7 @@ class Game:
         """Canonical serialisable fields — what gets stored in a dataset."""
         return {
             "id": self.id, "name": self.name, "year": self.year, "rank": self.rank,
-            "weight": self.weight, "playtime": self.playtime,
+            "rating": self.rating, "weight": self.weight, "playtime": self.playtime,
             "best_counts": self.best_counts, "best_count": self.best_count,
             "signals": self.signals, "families": self.families,
             "best_votes": self.best_votes,

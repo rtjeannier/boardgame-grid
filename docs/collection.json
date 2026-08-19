@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "live",
-    "generatedAt": "2026-08-19T04:11:42+00:00",
+    "generatedAt": "2026-08-19T04:46:53+00:00",
     "size": 15,
     "anchors": [],
     "dimensions": [
@@ -30,16 +30,16 @@
     0.0
   ],
   "fullCoverage": [
-    0.716,
-    0.924,
-    0.95,
-    0.801,
-    0.915,
-    0.831,
-    0.936,
-    0.827,
-    0.86,
-    0.802
+    0.608,
+    0.851,
+    0.696,
+    0.731,
+    0.738,
+    0.762,
+    0.793,
+    0.662,
+    0.665,
+    0.897
   ],
   "games": [
     {
@@ -47,6 +47,7 @@
       "name": "Brass: Birmingham",
       "year": 2018,
       "rank": 1,
+      "rating": 8.39082,
       "weight": 3.8593,
       "playtime": 120,
       "best_counts": [
@@ -87,7 +88,7 @@
       "url": "https://boardgamegeek.com/boardgame/224517",
       "anchored": false,
       "gain": 1.0,
-      "uniqueContribution": 0.228,
+      "uniqueContribution": 0.528,
       "genres": [
         {
           "name": "Network and Route Building / Economic / Trains",
@@ -112,319 +113,12 @@
       ]
     },
     {
-      "id": 205637,
-      "name": "Arkham Horror: The Card Game",
-      "year": 2016,
-      "rank": 33,
-      "weight": 3.5674,
-      "playtime": 120,
-      "best_counts": [
-        1,
-        2
-      ],
-      "best_count": 2,
-      "signals": [
-        "Adventure",
-        "Card Game",
-        "Collectible Components",
-        "Exploration",
-        "Horror",
-        "Novel-based",
-        "Action Points",
-        "Area Movement",
-        "Communication Limits",
-        "Cooperative Game",
-        "Deck Construction",
-        "Events",
-        "Hand Management",
-        "Map Deformation",
-        "Modular Board",
-        "Player Elimination",
-        "Push Your Luck",
-        "Role Playing",
-        "Scenario / Mission / Campaign Game",
-        "Solo / Solitaire Game",
-        "Stat Check Resolution",
-        "Variable Player Powers"
-      ],
-      "families": [
-        "Game: Arkham Horror \u2013 The Card Game"
-      ],
-      "best_votes": {
-        "1": 290,
-        "2": 783
-      },
-      "users_rated": 48084,
-      "url": "https://boardgamegeek.com/boardgame/205637",
-      "anchored": false,
-      "gain": 0.969,
-      "uniqueContribution": 0.244,
-      "genres": [
-        {
-          "name": "Variable Player Powers / Fighting / Miniatures",
-          "value": 0.37
-        },
-        {
-          "name": "Cooperative Game / Adventure / Exploration",
-          "value": 0.23
-        },
-        {
-          "name": "Card Game / Hand Management / Open Drafting",
-          "value": 0.15
-        }
-      ],
-      "coverage": [
-        0.228,
-        0.014,
-        0.145,
-        0.014,
-        0.078,
-        0.108,
-        0.014,
-        0.014,
-        0.014,
-        0.367
-      ]
-    },
-    {
-      "id": 244522,
-      "name": "That's Pretty Clever!",
-      "year": 2018,
-      "rank": 202,
-      "weight": 1.8506,
-      "playtime": 30,
-      "best_counts": [
-        1,
-        2,
-        3
-      ],
-      "best_count": 2,
-      "signals": [
-        "Dice",
-        "Number",
-        "Dice Rolling",
-        "Paper-and-Pencil",
-        "Re-rolling and Locking",
-        "Solo / Solitaire Game"
-      ],
-      "families": [
-        "Game: Ganz Sch\u00f6n Clever"
-      ],
-      "best_votes": {
-        "1": 97,
-        "2": 287,
-        "3": 110
-      },
-      "users_rated": 28303,
-      "url": "https://boardgamegeek.com/boardgame/244522",
-      "anchored": false,
-      "gain": 0.909,
-      "uniqueContribution": 0.589,
-      "genres": [
-        {
-          "name": "Dice / Dice Rolling / Push Your Luck",
-          "value": 0.78
-        }
-      ],
-      "coverage": [
-        0.036,
-        0.027,
-        0.022,
-        0.022,
-        0.022,
-        0.022,
-        0.022,
-        0.763,
-        0.022,
-        0.022
-      ]
-    },
-    {
-      "id": 822,
-      "name": "Carcassonne",
-      "year": 2000,
-      "rank": 240,
-      "weight": 1.884,
-      "playtime": 45,
-      "best_counts": [
-        2,
-        3,
-        4
-      ],
-      "best_count": 2,
-      "signals": [
-        "Medieval",
-        "Territory Building",
-        "Area Majority / Influence",
-        "Enclosure",
-        "Kill Steal",
-        "Map Addition",
-        "Pattern Building",
-        "Square Grid",
-        "Tile Placement"
-      ],
-      "families": [
-        "Game: Carcassonne"
-      ],
-      "best_votes": {
-        "2": 1486,
-        "3": 1240,
-        "4": 769
-      },
-      "users_rated": 141035,
-      "url": "https://boardgamegeek.com/boardgame/822",
-      "anchored": false,
-      "gain": 0.867,
-      "uniqueContribution": 0.186,
-      "genres": [
-        {
-          "name": "Tile Placement / Pattern Building / Abstract Strategy",
-          "value": 0.62
-        },
-        {
-          "name": "Area Majority / Influence / Area Movement / Territory Building",
-          "value": 0.34
-        }
-      ],
-      "coverage": [
-        0.005,
-        0.005,
-        0.005,
-        0.005,
-        0.005,
-        0.329,
-        0.6,
-        0.005,
-        0.005,
-        0.005
-      ]
-    },
-    {
-      "id": 178900,
-      "name": "Codenames",
-      "year": 2015,
-      "rank": 163,
-      "weight": 1.2536,
-      "playtime": 15,
-      "best_counts": [
-        4,
-        6,
-        8
-      ],
-      "best_count": 6,
-      "signals": [
-        "Card Game",
-        "Deduction",
-        "Party Game",
-        "Spies / Secret Agents",
-        "Word Game",
-        "Communication Limits",
-        "Deduction",
-        "Memory",
-        "Race",
-        "Team-Based Game"
-      ],
-      "families": [
-        "Game: Codenames"
-      ],
-      "best_votes": {
-        "4": 433,
-        "6": 1106,
-        "8": 766
-      },
-      "users_rated": 105174,
-      "url": "https://boardgamegeek.com/boardgame/178900",
-      "anchored": false,
-      "gain": 0.836,
-      "uniqueContribution": 0.398,
-      "genres": [
-        {
-          "name": "Deduction / Party Game / Bluffing",
-          "value": 0.84
-        },
-        {
-          "name": "Card Game / Hand Management / Open Drafting",
-          "value": 0.11
-        }
-      ],
-      "coverage": [
-        0.007,
-        0.007,
-        0.106,
-        0.007,
-        0.819,
-        0.007,
-        0.007,
-        0.007,
-        0.007,
-        0.007
-      ]
-    },
-    {
-      "id": 268864,
-      "name": "Undaunted: Normandy",
-      "year": 2019,
-      "rank": 183,
-      "weight": 2.273,
-      "playtime": 60,
-      "best_counts": [
-        2
-      ],
-      "best_count": 2,
-      "signals": [
-        "Wargame",
-        "World War II",
-        "Command Cards",
-        "Deck, Bag, and Pool Building",
-        "Dice Rolling",
-        "Hand Management",
-        "Modular Board",
-        "Open Drafting",
-        "Scenario / Mission / Campaign Game",
-        "Simulation"
-      ],
-      "families": [],
-      "best_votes": {
-        "2": 172
-      },
-      "users_rated": 14478,
-      "url": "https://boardgamegeek.com/boardgame/268864",
-      "anchored": false,
-      "gain": 0.722,
-      "uniqueContribution": 0.251,
-      "genres": [
-        {
-          "name": "Wargame / Simulation / Hexagon Grid",
-          "value": 0.49
-        },
-        {
-          "name": "Card Game / Hand Management / Open Drafting",
-          "value": 0.17
-        },
-        {
-          "name": "Cooperative Game / Adventure / Exploration",
-          "value": 0.06
-        }
-      ],
-      "coverage": [
-        0.063,
-        0.035,
-        0.167,
-        0.481,
-        0.035,
-        0.035,
-        0.035,
-        0.049,
-        0.035,
-        0.046
-      ]
-    },
-    {
-      "id": 312484,
-      "name": "Lost Ruins of Arnak",
-      "year": 2020,
-      "rank": 30,
-      "weight": 2.9335,
+      "id": 174430,
+      "name": "Gloomhaven",
+      "year": 2017,
+      "rank": 4,
+      "rating": 8.29134,
+      "weight": 3.9191,
       "playtime": 120,
       "best_counts": [
         2,
@@ -434,261 +128,150 @@
       "best_count": 3,
       "signals": [
         "Adventure",
-        "Card Game",
         "Exploration",
-        "Fantasy",
-        "Area Movement",
-        "Contracts",
-        "Deck, Bag, and Pool Building",
-        "Delayed Purchase",
-        "End Game Bonuses",
-        "Hand Management",
-        "Multi-Use Cards",
-        "Once-Per-Game Abilities",
-        "Open Drafting",
-        "Resource to Move",
-        "Solo / Solitaire Game",
-        "Track Movement",
-        "Turn Order: Progressive",
-        "Worker Placement"
-      ],
-      "families": [
-        "Game: Lost Ruins of Arnak"
-      ],
-      "best_votes": {
-        "2": 308,
-        "3": 660,
-        "4": 222
-      },
-      "users_rated": 58281,
-      "url": "https://boardgamegeek.com/boardgame/312484",
-      "anchored": false,
-      "gain": 0.596,
-      "uniqueContribution": 0.146,
-      "genres": [
-        {
-          "name": "End Game Bonuses / Worker Placement / Variable Set-up",
-          "value": 0.47
-        },
-        {
-          "name": "Card Game / Hand Management / Open Drafting",
-          "value": 0.28
-        },
-        {
-          "name": "Cooperative Game / Adventure / Exploration",
-          "value": 0.12
-        }
-      ],
-      "coverage": [
-        0.124,
-        0.469,
-        0.276,
-        0.012,
-        0.012,
-        0.055,
-        0.012,
-        0.012,
-        0.012,
-        0.012
-      ]
-    },
-    {
-      "id": 209010,
-      "name": "Mechs vs. Minions",
-      "year": 2016,
-      "rank": 93,
-      "weight": 2.4506,
-      "playtime": 120,
-      "best_counts": [
-        2,
-        3,
-        4
-      ],
-      "best_count": 4,
-      "signals": [
         "Fantasy",
         "Fighting",
         "Miniatures",
-        "Video Game Theme",
         "Action Queue",
-        "Bias",
+        "Action Retrieval",
+        "Campaign / Battle Card Driven",
+        "Card Play Conflict Resolution",
+        "Communication Limits",
         "Cooperative Game",
-        "Dice Rolling",
+        "Critical Hits and Failures",
+        "Deck Construction",
+        "Grid Movement",
+        "Hand Management",
+        "Hexagon Grid",
+        "Legacy Game",
+        "Line of Sight",
         "Modular Board",
-        "Open Drafting",
-        "Programmed Movement",
+        "Movement Points",
+        "Multi-Use Cards",
+        "Multiple Maps",
+        "Narrative Choice / Paragraph",
+        "Once-Per-Game Abilities",
+        "Player Elimination",
         "Role Playing",
+        "Scenario / Mission / Campaign Game",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game",
+        "Storytelling",
+        "Tags",
         "Variable Player Powers"
       ],
-      "families": [],
+      "families": [
+        "Game: Gloomhaven"
+      ],
       "best_votes": {
-        "2": 59,
-        "3": 47,
-        "4": 177
+        "2": 414,
+        "3": 817,
+        "4": 501
       },
-      "users_rated": 18482,
-      "url": "https://boardgamegeek.com/boardgame/209010",
+      "users_rated": 67551,
+      "url": "https://boardgamegeek.com/boardgame/174430",
       "anchored": false,
-      "gain": 0.487,
-      "uniqueContribution": 0.353,
+      "gain": 0.9,
+      "uniqueContribution": 0.258,
       "genres": [
         {
           "name": "Variable Player Powers / Fighting / Miniatures",
-          "value": 0.6
+          "value": 0.47
         },
         {
           "name": "Cooperative Game / Adventure / Exploration",
-          "value": 0.09
-        },
-        {
-          "name": "Dice / Dice Rolling / Push Your Luck",
-          "value": 0.07
-        }
-      ],
-      "coverage": [
-        0.085,
-        0.039,
-        0.055,
-        0.03,
-        0.03,
-        0.03,
-        0.03,
-        0.068,
-        0.03,
-        0.592
-      ]
-    },
-    {
-      "id": 155821,
-      "name": "Inis",
-      "year": 2016,
-      "rank": 125,
-      "weight": 2.9437,
-      "playtime": 90,
-      "best_counts": [
-        2,
-        3,
-        4
-      ],
-      "best_count": 4,
-      "signals": [
-        "Ancient",
-        "Card Game",
-        "Exploration",
-        "Mythology",
-        "Wargame",
-        "Action Drafting",
-        "Area Majority / Influence",
-        "Area Movement",
-        "Campaign / Battle Card Driven",
-        "Closed Drafting",
-        "Hand Management",
-        "Interrupts",
-        "King of the Hill",
-        "Map Addition",
-        "Modular Board",
-        "Take That",
-        "Variable Set-up"
-      ],
-      "families": [
-        "Game: Inis"
-      ],
-      "best_votes": {
-        "2": 120,
-        "3": 197,
-        "4": 301
-      },
-      "users_rated": 23413,
-      "url": "https://boardgamegeek.com/boardgame/155821",
-      "anchored": false,
-      "gain": 0.433,
-      "uniqueContribution": 0.208,
-      "genres": [
-        {
-          "name": "Area Majority / Influence / Area Movement / Territory Building",
-          "value": 0.41
-        },
-        {
-          "name": "Wargame / Simulation / Hexagon Grid",
           "value": 0.19
         },
         {
-          "name": "Card Game / Hand Management / Open Drafting",
-          "value": 0.17
+          "name": "Wargame / Simulation / Hexagon Grid",
+          "value": 0.15
         }
       ],
       "coverage": [
-        0.057,
-        0.048,
-        0.166,
-        0.183,
-        0.025,
-        0.406,
-        0.025,
-        0.025,
-        0.025,
-        0.025
+        0.178,
+        0.052,
+        0.073,
+        0.139,
+        0.018,
+        0.01,
+        0.01,
+        0.01,
+        0.01,
+        0.441
       ]
     },
     {
-      "id": 118,
-      "name": "Modern Art",
-      "year": 1992,
-      "rank": 222,
-      "weight": 2.2765,
-      "playtime": 45,
+      "id": 342942,
+      "name": "Ark Nova",
+      "year": 2021,
+      "rank": 2,
+      "rating": 8.35319,
+      "weight": 3.7984,
+      "playtime": 150,
       "best_counts": [
-        4,
-        5
+        2,
+        3
       ],
-      "best_count": 5,
+      "best_count": 2,
       "signals": [
+        "Animals",
         "Card Game",
-        "Economic",
-        "Auction / Bidding",
-        "Auction: English",
-        "Auction: Once Around",
-        "Auction: Sealed Bid",
-        "Auction: Turn Order Until Pass",
-        "Commodity Speculation",
+        "Environmental",
+        "Contracts",
+        "End Game Bonuses",
+        "Events",
+        "Grid Coverage",
         "Hand Management",
-        "Victory Points as a Resource"
+        "Hexagon Grid",
+        "Income",
+        "Increase Value of Unchosen Resources",
+        "Open Drafting",
+        "Race",
+        "Set Collection",
+        "Solo / Solitaire Game",
+        "Tags",
+        "Tile Placement",
+        "Track Movement",
+        "Variable Player Powers",
+        "Variable Set-up"
       ],
-      "families": [],
+      "families": [
+        "Game: Ark Nova"
+      ],
       "best_votes": {
-        "4": 249,
-        "5": 285
+        "2": 1552,
+        "3": 670
       },
-      "users_rated": 25717,
-      "url": "https://boardgamegeek.com/boardgame/118",
+      "users_rated": 62515,
+      "url": "https://boardgamegeek.com/boardgame/342942",
       "anchored": false,
-      "gain": 0.343,
-      "uniqueContribution": 0.219,
+      "gain": 0.771,
+      "uniqueContribution": 0.277,
       "genres": [
         {
-          "name": "Network and Route Building / Economic / Trains",
-          "value": 0.56
+          "name": "End Game Bonuses / Worker Placement / Variable Set-up",
+          "value": 0.38
+        },
+        {
+          "name": "Tile Placement / Pattern Building / Abstract Strategy",
+          "value": 0.32
         },
         {
           "name": "Card Game / Hand Management / Open Drafting",
-          "value": 0.2
-        },
-        {
-          "name": "Area Majority / Influence / Area Movement / Territory Building",
-          "value": 0.07
+          "value": 0.15
         }
       ],
       "coverage": [
+        0.012,
+        0.37,
+        0.149,
+        0.066,
+        0.011,
+        0.011,
+        0.314,
         0.023,
-        0.023,
-        0.197,
-        0.023,
-        0.023,
-        0.068,
-        0.023,
-        0.023,
-        0.547,
-        0.023
+        0.011,
+        0.011
       ]
     },
     {
@@ -696,6 +279,7 @@
       "name": "Twilight Struggle",
       "year": 2005,
       "rank": 16,
+      "rating": 8.03687,
       "weight": 3.6148,
       "playtime": 180,
       "best_counts": [
@@ -730,8 +314,8 @@
       "users_rated": 52351,
       "url": "https://boardgamegeek.com/boardgame/12333",
       "anchored": false,
-      "gain": 0.309,
-      "uniqueContribution": 0.26,
+      "gain": 0.642,
+      "uniqueContribution": 0.27,
       "genres": [
         {
           "name": "Wargame / Simulation / Hexagon Grid",
@@ -747,87 +331,668 @@
         }
       ],
       "coverage": [
-        0.016,
-        0.056,
-        0.06,
-        0.434,
-        0.017,
-        0.307,
         0.013,
-        0.033,
-        0.013,
-        0.049
+        0.045,
+        0.048,
+        0.347,
+        0.014,
+        0.245,
+        0.011,
+        0.026,
+        0.011,
+        0.039
       ]
     },
     {
-      "id": 230802,
-      "name": "Azul",
-      "year": 2017,
-      "rank": 99,
-      "weight": 1.7716,
-      "playtime": 45,
+      "id": 373106,
+      "name": "Sky Team",
+      "year": 2023,
+      "rank": 32,
+      "rating": 7.88952,
+      "weight": 2.0431,
+      "playtime": 20,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Aviation / Flight",
+        "Dice",
+        "Communication Limits",
+        "Cooperative Game",
+        "Dice Rolling",
+        "Scenario / Mission / Campaign Game",
+        "Turn Order: Progressive",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Worker Placement with Dice Workers"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 404
+      },
+      "users_rated": 33866,
+      "url": "https://boardgamegeek.com/boardgame/373106",
+      "anchored": false,
+      "gain": 0.538,
+      "uniqueContribution": 0.272,
+      "genres": [
+        {
+          "name": "Dice / Dice Rolling / Push Your Luck",
+          "value": 0.48
+        },
+        {
+          "name": "End Game Bonuses / Worker Placement / Variable Set-up",
+          "value": 0.12
+        },
+        {
+          "name": "Variable Player Powers / Fighting / Miniatures",
+          "value": 0.1
+        }
+      ],
+      "coverage": [
+        0.068,
+        0.085,
+        0.014,
+        0.047,
+        0.045,
+        0.014,
+        0.014,
+        0.348,
+        0.014,
+        0.073
+      ]
+    },
+    {
+      "id": 161936,
+      "name": "Pandemic Legacy: Season 1",
+      "year": 2015,
+      "rank": 3,
+      "rating": 8.34423,
+      "weight": 2.8283,
+      "playtime": 60,
       "best_counts": [
         2,
         3,
         4
       ],
-      "best_count": 2,
+      "best_count": 4,
       "signals": [
-        "Abstract Strategy",
-        "Renaissance",
-        "Chaining",
-        "End Game Bonuses",
-        "Grid Coverage",
-        "Open Drafting",
-        "Pattern Building",
+        "Environmental",
+        "Medical",
+        "Action Points",
+        "Cooperative Game",
+        "Hand Management",
+        "Legacy Game",
+        "Multi-Use Cards",
+        "Point to Point Movement",
+        "Scenario / Mission / Campaign Game",
         "Set Collection",
-        "Square Grid",
-        "Tile Placement",
-        "Turn Order: Claim Action"
+        "Tags",
+        "Trading",
+        "Variable Player Powers"
       ],
       "families": [
-        "Game: Azul"
+        "Game: Pandemic"
       ],
       "best_votes": {
-        "2": 1093,
-        "3": 712,
-        "4": 423
+        "2": 171,
+        "3": 195,
+        "4": 518
       },
-      "users_rated": 110182,
-      "url": "https://boardgamegeek.com/boardgame/230802",
+      "users_rated": 57702,
+      "url": "https://boardgamegeek.com/boardgame/161936",
       "anchored": false,
-      "gain": 0.295,
-      "uniqueContribution": 0.25,
+      "gain": 0.501,
+      "uniqueContribution": 0.249,
       "genres": [
         {
-          "name": "Tile Placement / Pattern Building / Abstract Strategy",
-          "value": 0.79
+          "name": "Variable Player Powers / Fighting / Miniatures",
+          "value": 0.34
         },
         {
           "name": "End Game Bonuses / Worker Placement / Variable Set-up",
-          "value": 0.14
+          "value": 0.22
+        },
+        {
+          "name": "Card Game / Hand Management / Open Drafting",
+          "value": 0.19
         }
       ],
       "coverage": [
-        0.007,
-        0.138,
-        0.023,
-        0.007,
-        0.007,
-        0.007,
-        0.781,
-        0.007,
-        0.007,
-        0.007
+        0.13,
+        0.216,
+        0.181,
+        0.019,
+        0.012,
+        0.044,
+        0.012,
+        0.012,
+        0.015,
+        0.33
       ]
     },
     {
-      "id": 239188,
-      "name": "Chronicles of Crime",
-      "year": 2018,
-      "rank": 353,
-      "weight": 2.0614,
+      "id": 240980,
+      "name": "Blood on the Clocktower",
+      "year": 2022,
+      "rank": 66,
+      "rating": 7.72011,
+      "weight": 3.0217,
+      "playtime": 120,
+      "best_counts": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15
+      ],
+      "best_count": 12,
+      "signals": [
+        "Bluffing",
+        "Deduction",
+        "Murder / Mystery",
+        "Party Game",
+        "Betting and Bluffing",
+        "Deduction",
+        "Hidden Roles",
+        "Negotiation",
+        "Prisoner's Dilemma",
+        "Rock-Paper-Scissors",
+        "Roles with Asymmetric Information",
+        "Team-Based Game",
+        "Traitor Game",
+        "Variable Player Powers",
+        "Voting"
+      ],
+      "families": [
+        "Game: Werewolf / Mafia"
+      ],
+      "best_votes": {
+        "8": 96,
+        "9": 162,
+        "10": 193,
+        "11": 228,
+        "12": 236,
+        "13": 111,
+        "14": 60,
+        "15": 45
+      },
+      "users_rated": 12126,
+      "url": "https://boardgamegeek.com/boardgame/240980",
+      "anchored": false,
+      "gain": 0.47,
+      "uniqueContribution": 0.224,
+      "genres": [
+        {
+          "name": "Deduction / Party Game / Bluffing",
+          "value": 0.59
+        },
+        {
+          "name": "Variable Player Powers / Fighting / Miniatures",
+          "value": 0.08
+        },
+        {
+          "name": "Area Majority / Influence / Area Movement / Territory Building",
+          "value": 0.06
+        }
+      ],
+      "coverage": [
+        0.025,
+        0.025,
+        0.025,
+        0.025,
+        0.375,
+        0.039,
+        0.025,
+        0.025,
+        0.025,
+        0.049
+      ]
+    },
+    {
+      "id": 233078,
+      "name": "Twilight Imperium: Fourth Edition",
+      "year": 2017,
+      "rank": 7,
+      "rating": 8.21738,
+      "weight": 4.3611,
+      "playtime": 480,
+      "best_counts": [
+        4,
+        5,
+        6
+      ],
+      "best_count": 6,
+      "signals": [
+        "Civilization",
+        "Economic",
+        "Exploration",
+        "Negotiation",
+        "Political",
+        "Science Fiction",
+        "Space Exploration",
+        "Territory Building",
+        "Wargame",
+        "Action Drafting",
+        "Area-Impulse",
+        "Dice Rolling",
+        "Follow",
+        "Grid Movement",
+        "Hexagon Grid",
+        "Increase Value of Unchosen Resources",
+        "King of the Hill",
+        "Modular Board",
+        "Movement Points",
+        "Race",
+        "Tech Trees / Tech Tracks",
+        "Trading",
+        "Variable Phase Order",
+        "Variable Player Powers",
+        "Variable Set-up",
+        "Voting"
+      ],
+      "families": [
+        "Game: Twilight Imperium"
+      ],
+      "best_votes": {
+        "4": 177,
+        "5": 129,
+        "6": 491
+      },
+      "users_rated": 28870,
+      "url": "https://boardgamegeek.com/boardgame/233078",
+      "anchored": false,
+      "gain": 0.418,
+      "uniqueContribution": 0.23,
+      "genres": [
+        {
+          "name": "Area Majority / Influence / Area Movement / Territory Building",
+          "value": 0.23
+        },
+        {
+          "name": "Variable Player Powers / Fighting / Miniatures",
+          "value": 0.19
+        },
+        {
+          "name": "Wargame / Simulation / Hexagon Grid",
+          "value": 0.18
+        }
+      ],
+      "coverage": [
+        0.023,
+        0.119,
+        0.019,
+        0.164,
+        0.061,
+        0.205,
+        0.042,
+        0.044,
+        0.052,
+        0.167
+      ]
+    },
+    {
+      "id": 177736,
+      "name": "A Feast for Odin",
+      "year": 2016,
+      "rank": 27,
+      "rating": 7.93932,
+      "weight": 3.8673,
+      "playtime": 120,
+      "best_counts": [
+        1,
+        2,
+        3
+      ],
+      "best_count": 3,
+      "signals": [
+        "Animals",
+        "Farming",
+        "Industry / Manufacturing",
+        "Medieval",
+        "Puzzle",
+        "Action Points",
+        "Automatic Resource Growth",
+        "Dice Rolling",
+        "Enclosure",
+        "Grid Coverage",
+        "Hand Management",
+        "Income",
+        "Layering",
+        "Pattern Recognition",
+        "Push Your Luck",
+        "Solo / Solitaire Game",
+        "Square Grid",
+        "Tile Placement",
+        "Turn Order: Pass Order",
+        "Worker Placement"
+      ],
+      "families": [
+        "Game: A Feast for Odin"
+      ],
+      "best_votes": {
+        "1": 136,
+        "2": 248,
+        "3": 286
+      },
+      "users_rated": 33951,
+      "url": "https://boardgamegeek.com/boardgame/177736",
+      "anchored": false,
+      "gain": 0.363,
+      "uniqueContribution": 0.22,
+      "genres": [
+        {
+          "name": "Tile Placement / Pattern Building / Abstract Strategy",
+          "value": 0.46
+        },
+        {
+          "name": "Dice / Dice Rolling / Push Your Luck",
+          "value": 0.18
+        },
+        {
+          "name": "End Game Bonuses / Worker Placement / Variable Set-up",
+          "value": 0.15
+        }
+      ],
+      "coverage": [
+        0.019,
+        0.116,
+        0.03,
+        0.014,
+        0.014,
+        0.035,
+        0.341,
+        0.134,
+        0.014,
+        0.029
+      ]
+    },
+    {
+      "id": 324856,
+      "name": "The Crew: Mission Deep Sea",
+      "year": 2021,
+      "rank": 44,
+      "rating": 7.80291,
+      "weight": 2.0506,
+      "playtime": 20,
+      "best_counts": [
+        3,
+        4,
+        5
+      ],
+      "best_count": 4,
+      "signals": [
+        "Adventure",
+        "Card Game",
+        "Mythology",
+        "Nautical",
+        "Communication Limits",
+        "Cooperative Game",
+        "Deduction",
+        "Hand Management",
+        "Scenario / Mission / Campaign Game",
+        "Trick-taking"
+      ],
+      "families": [
+        "Game: The Crew"
+      ],
+      "best_votes": {
+        "3": 75,
+        "4": 261,
+        "5": 63
+      },
+      "users_rated": 26320,
+      "url": "https://boardgamegeek.com/boardgame/324856",
+      "anchored": false,
+      "gain": 0.331,
+      "uniqueContribution": 0.239,
+      "genres": [
+        {
+          "name": "Deduction / Party Game / Bluffing",
+          "value": 0.29
+        },
+        {
+          "name": "Card Game / Hand Management / Open Drafting",
+          "value": 0.28
+        },
+        {
+          "name": "Cooperative Game / Adventure / Exploration",
+          "value": 0.22
+        }
+      ],
+      "coverage": [
+        0.15,
+        0.016,
+        0.187,
+        0.019,
+        0.194,
+        0.037,
+        0.016,
+        0.016,
+        0.029,
+        0.016
+      ]
+    },
+    {
+      "id": 115746,
+      "name": "War of the Ring: Second Edition",
+      "year": 2011,
+      "rank": 8,
+      "rating": 8.19993,
+      "weight": 4.2293,
+      "playtime": 240,
+      "best_counts": [
+        2
+      ],
+      "best_count": 2,
+      "signals": [
+        "Fantasy",
+        "Fighting",
+        "Novel-based",
+        "Territory Building",
+        "Wargame",
+        "Area Majority / Influence",
+        "Area Movement",
+        "Campaign / Battle Card Driven",
+        "Card Play Conflict Resolution",
+        "Dice Rolling",
+        "Events",
+        "Hand Management",
+        "Movement Points",
+        "Team-Based Game",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [],
+      "best_votes": {
+        "2": 553
+      },
+      "users_rated": 25453,
+      "url": "https://boardgamegeek.com/boardgame/115746",
+      "anchored": false,
+      "gain": 0.308,
+      "uniqueContribution": 0.236,
+      "genres": [
+        {
+          "name": "Area Majority / Influence / Area Movement / Territory Building",
+          "value": 0.27
+        },
+        {
+          "name": "Variable Player Powers / Fighting / Miniatures",
+          "value": 0.25
+        },
+        {
+          "name": "Wargame / Simulation / Hexagon Grid",
+          "value": 0.22
+        }
+      ],
+      "coverage": [
+        0.027,
+        0.038,
+        0.06,
+        0.198,
+        0.036,
+        0.239,
+        0.021,
+        0.021,
+        0.021,
+        0.226
+      ]
+    },
+    {
+      "id": 162886,
+      "name": "Spirit Island",
+      "year": 2017,
+      "rank": 11,
+      "rating": 8.1413,
+      "weight": 4.0745,
+      "playtime": 120,
+      "best_counts": [
+        1,
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Environmental",
+        "Fantasy",
+        "Mythology",
+        "Territory Building",
+        "Action Retrieval",
+        "Area Majority / Influence",
+        "Automatic Resource Growth",
+        "Campaign / Battle Card Driven",
+        "Cooperative Game",
+        "Deck, Bag, and Pool Building",
+        "Hand Management",
+        "Modular Board",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game",
+        "Tags",
+        "Variable Player Powers",
+        "Variable Set-up"
+      ],
+      "families": [
+        "Game: Spirit Island"
+      ],
+      "best_votes": {
+        "1": 599,
+        "2": 1434,
+        "3": 660
+      },
+      "users_rated": 64200,
+      "url": "https://boardgamegeek.com/boardgame/162886",
+      "anchored": false,
+      "gain": 0.258,
+      "uniqueContribution": 0.23,
+      "genres": [
+        {
+          "name": "Area Majority / Influence / Area Movement / Territory Building",
+          "value": 0.33
+        },
+        {
+          "name": "Variable Player Powers / Fighting / Miniatures",
+          "value": 0.19
+        },
+        {
+          "name": "End Game Bonuses / Worker Placement / Variable Set-up",
+          "value": 0.15
+        }
+      ],
+      "coverage": [
+        0.075,
+        0.129,
+        0.106,
+        0.022,
+        0.009,
+        0.285,
+        0.044,
+        0.009,
+        0.009,
+        0.164
+      ]
+    },
+    {
+      "id": 84876,
+      "name": "The Castles of Burgundy",
+      "year": 2011,
+      "rank": 17,
+      "rating": 8.03305,
+      "weight": 2.9701,
       "playtime": 90,
+      "best_counts": [
+        2,
+        3
+      ],
+      "best_count": 2,
+      "signals": [
+        "Animals",
+        "Medieval",
+        "Territory Building",
+        "Delayed Purchase",
+        "Dice Rolling",
+        "End Game Bonuses",
+        "Grid Coverage",
+        "Hexagon Grid",
+        "Open Drafting",
+        "Pattern Building",
+        "Tile Placement",
+        "Track Movement",
+        "Turn Order: Stat-Based",
+        "Variable Set-up",
+        "Worker Placement with Dice Workers"
+      ],
+      "families": [
+        "Game: The Castles of Burgundy"
+      ],
+      "best_votes": {
+        "2": 1091,
+        "3": 501
+      },
+      "users_rated": 70278,
+      "url": "https://boardgamegeek.com/boardgame/84876",
+      "anchored": false,
+      "gain": 0.236,
+      "uniqueContribution": 0.24,
+      "genres": [
+        {
+          "name": "Tile Placement / Pattern Building / Abstract Strategy",
+          "value": 0.47
+        },
+        {
+          "name": "End Game Bonuses / Worker Placement / Variable Set-up",
+          "value": 0.17
+        },
+        {
+          "name": "Dice / Dice Rolling / Push Your Luck",
+          "value": 0.16
+        }
+      ],
+      "coverage": [
+        0.008,
+        0.135,
+        0.013,
+        0.053,
+        0.008,
+        0.059,
+        0.373,
+        0.13,
+        0.008,
+        0.008
+      ]
+    },
+    {
+      "id": 338960,
+      "name": "Slay the Spire: The Board Game",
+      "year": 2024,
+      "rank": 15,
+      "rating": 8.04067,
+      "weight": 2.9072,
+      "playtime": 150,
       "best_counts": [
         1,
         2,
@@ -836,159 +1001,110 @@
       "best_count": 2,
       "signals": [
         "Adventure",
-        "Deduction",
-        "Murder / Mystery",
-        "Cooperative Game",
-        "Scenario / Mission / Campaign Game",
-        "Solo / Solitaire Game",
-        "Storytelling"
-      ],
-      "families": [
-        "Game: Chronicles of Crime"
-      ],
-      "best_votes": {
-        "1": 78,
-        "2": 264,
-        "3": 69
-      },
-      "users_rated": 25099,
-      "url": "https://boardgamegeek.com/boardgame/239188",
-      "anchored": false,
-      "gain": 0.278,
-      "uniqueContribution": 0.268,
-      "genres": [
-        {
-          "name": "Cooperative Game / Adventure / Exploration",
-          "value": 0.42
-        },
-        {
-          "name": "Deduction / Party Game / Bluffing",
-          "value": 0.38
-        }
-      ],
-      "coverage": [
-        0.405,
-        0.023,
-        0.023,
-        0.023,
-        0.368,
-        0.023,
-        0.023,
-        0.023,
-        0.023,
-        0.023
-      ]
-    },
-    {
-      "id": 291453,
-      "name": "SCOUT",
-      "year": 2019,
-      "rank": 110,
-      "weight": 1.389,
-      "playtime": 20,
-      "best_counts": [
-        4,
-        5
-      ],
-      "best_count": 4,
-      "signals": [
         "Card Game",
+        "Fantasy",
+        "Fighting",
+        "Video Game Theme",
+        "Cooperative Game",
+        "Deck, Bag, and Pool Building",
+        "Dice Rolling",
         "Hand Management",
-        "Ladder Climbing",
-        "Score-and-Reset Game"
+        "Scenario / Mission / Campaign Game",
+        "Simultaneous Action Selection",
+        "Solo / Solitaire Game",
+        "Variable Player Powers"
       ],
       "families": [],
       "best_votes": {
-        "4": 515,
-        "5": 154
+        "1": 77,
+        "2": 230,
+        "3": 91
       },
-      "users_rated": 29173,
-      "url": "https://boardgamegeek.com/boardgame/291453",
+      "users_rated": 13950,
+      "url": "https://boardgamegeek.com/boardgame/338960",
       "anchored": false,
-      "gain": 0.23,
+      "gain": 0.218,
       "uniqueContribution": 0.225,
       "genres": [
         {
+          "name": "Variable Player Powers / Fighting / Miniatures",
+          "value": 0.31
+        },
+        {
           "name": "Card Game / Hand Management / Open Drafting",
-          "value": 0.81
+          "value": 0.2
+        },
+        {
+          "name": "Cooperative Game / Adventure / Exploration",
+          "value": 0.15
         }
       ],
       "coverage": [
-        0.021,
-        0.021,
-        0.796,
-        0.021,
-        0.021,
-        0.021,
-        0.021,
-        0.021,
-        0.021,
-        0.021
+        0.122,
+        0.029,
+        0.159,
+        0.035,
+        0.029,
+        0.029,
+        0.029,
+        0.092,
+        0.029,
+        0.246
       ]
     },
     {
-      "id": 3076,
-      "name": "Puerto Rico",
-      "year": 2002,
-      "rank": 57,
-      "weight": 3.2661,
-      "playtime": 150,
+      "id": 521,
+      "name": "Crokinole",
+      "year": 1876,
+      "rank": 45,
+      "rating": 7.80222,
+      "weight": 1.2306,
+      "playtime": 30,
       "best_counts": [
-        3,
-        4,
-        5
+        2,
+        4
       ],
-      "best_count": 4,
+      "best_count": 2,
       "signals": [
-        "City Building",
-        "Economic",
-        "Farming",
-        "Action Drafting",
-        "End Game Bonuses",
-        "Follow",
-        "Hidden Victory Points",
-        "Increase Value of Unchosen Resources",
-        "Turn Order: Progressive",
-        "Variable Phase Order"
+        "Action / Dexterity",
+        "Flicking",
+        "Team-Based Game"
       ],
-      "families": [
-        "Game: Puerto Rico"
-      ],
+      "families": [],
       "best_votes": {
-        "3": 378,
-        "4": 1075,
-        "5": 393
+        "2": 219,
+        "4": 177
       },
-      "users_rated": 74599,
-      "url": "https://boardgamegeek.com/boardgame/3076",
+      "users_rated": 21405,
+      "url": "https://boardgamegeek.com/boardgame/521",
       "anchored": false,
-      "gain": 0.208,
-      "uniqueContribution": 0.21,
+      "gain": 0.203,
+      "uniqueContribution": 0.205,
       "genres": [
         {
-          "name": "End Game Bonuses / Worker Placement / Variable Set-up",
-          "value": 0.69
+          "name": "Deduction / Party Game / Bluffing",
+          "value": 0.47
         },
         {
-          "name": "Network and Route Building / Economic / Trains",
-          "value": 0.13
+          "name": "Variable Player Powers / Fighting / Miniatures",
+          "value": 0.2
         },
         {
-          "name": "Area Majority / Influence / Area Movement / Territory Building",
-          "value": 0.09
+          "name": "Dice / Dice Rolling / Push Your Luck",
+          "value": 0.11
         }
       ],
       "coverage": [
-        0.01,
-        0.682,
-        0.01,
-        0.01,
-        0.01,
-        0.085,
-        0.042,
-        0.01,
-        0.127,
-        0.01
+        0.018,
+        0.018,
+        0.018,
+        0.018,
+        0.316,
+        0.018,
+        0.046,
+        0.072,
+        0.018,
+        0.134
       ]
     }
   ],

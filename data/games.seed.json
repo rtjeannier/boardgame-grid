@@ -1,12 +1,13 @@
 {
   "source": "seed",
-  "generatedAt": "2026-08-19T04:11:42+00:00",
+  "generatedAt": "2026-08-19T04:46:53+00:00",
   "games": [
     {
       "id": 174430,
       "name": "Gloomhaven",
       "year": 2017,
       "rank": 4,
+      "rating": 8.29134,
       "weight": 3.9191,
       "playtime": 120,
       "best_counts": [
@@ -64,6 +65,7 @@
       "name": "Brass: Birmingham",
       "year": 2018,
       "rank": 1,
+      "rating": 8.39082,
       "weight": 3.8593,
       "playtime": 120,
       "best_counts": [
@@ -107,6 +109,7 @@
       "name": "Ark Nova",
       "year": 2021,
       "rank": 2,
+      "rating": 8.35319,
       "weight": 3.7984,
       "playtime": 150,
       "best_counts": [
@@ -150,6 +153,7 @@
       "name": "Twilight Imperium: Fourth Edition",
       "year": 2017,
       "rank": 7,
+      "rating": 8.21738,
       "weight": 4.3611,
       "playtime": 480,
       "best_counts": [
@@ -201,6 +205,7 @@
       "name": "Gaia Project",
       "year": 2017,
       "rank": 13,
+      "rating": 8.08448,
       "weight": 4.4033,
       "playtime": 150,
       "best_counts": [
@@ -241,6 +246,7 @@
       "name": "Through the Ages: A New Story of Civilization",
       "year": 2015,
       "rank": 18,
+      "rating": 8.00736,
       "weight": 4.4408,
       "playtime": 120,
       "best_counts": [
@@ -276,6 +282,7 @@
       "name": "A Feast for Odin",
       "year": 2016,
       "rank": 27,
+      "rating": 7.93932,
       "weight": 3.8673,
       "playtime": 120,
       "best_counts": [
@@ -321,6 +328,7 @@
       "name": "Barrage",
       "year": 2019,
       "rank": 40,
+      "rating": 7.83539,
       "weight": 4.1141,
       "playtime": 180,
       "best_counts": [
@@ -357,6 +365,7 @@
       "name": "Mage Knight Board Game",
       "year": 2011,
       "rank": 39,
+      "rating": 7.83631,
       "weight": 4.3786,
       "playtime": 240,
       "best_counts": [
@@ -399,6 +408,7 @@
       "name": "Spirit Island",
       "year": 2017,
       "rank": 11,
+      "rating": 8.1413,
       "weight": 4.0745,
       "playtime": 120,
       "best_counts": [
@@ -441,6 +451,7 @@
       "name": "Twilight Struggle",
       "year": 2005,
       "rank": 16,
+      "rating": 8.03687,
       "weight": 3.6148,
       "playtime": 180,
       "best_counts": [
@@ -479,6 +490,7 @@
       "name": "Star Wars: Rebellion",
       "year": 2016,
       "rank": 10,
+      "rating": 8.16847,
       "weight": 3.7529,
       "playtime": 240,
       "best_counts": [
@@ -521,6 +533,7 @@
       "name": "War of the Ring: Second Edition",
       "year": 2011,
       "rank": 8,
+      "rating": 8.19993,
       "weight": 4.2293,
       "playtime": 240,
       "best_counts": [
@@ -556,6 +569,7 @@
       "name": "Frosthaven",
       "year": 2022,
       "rank": 20,
+      "rating": 7.96935,
       "weight": 4.407,
       "playtime": 180,
       "best_counts": [
@@ -603,6 +617,7 @@
       "name": "Root",
       "year": 2018,
       "rank": 34,
+      "rating": 7.88136,
       "weight": 3.8419,
       "playtime": 90,
       "best_counts": [
@@ -646,6 +661,7 @@
       "name": "Agricola",
       "year": 2007,
       "rank": 65,
+      "rating": 7.72145,
       "weight": 3.6358,
       "playtime": 150,
       "best_counts": [
@@ -681,6 +697,7 @@
       "name": "Caverna: The Cave Farmers",
       "year": 2013,
       "rank": 62,
+      "rating": 7.72805,
       "weight": 3.7773,
       "playtime": 210,
       "best_counts": [
@@ -716,6 +733,7 @@
       "name": "Le Havre",
       "year": 2008,
       "rank": 83,
+      "rating": 7.65507,
       "weight": 3.7064,
       "playtime": 150,
       "best_counts": [
@@ -750,6 +768,7 @@
       "name": "Orl\u00e9ans",
       "year": 2014,
       "rank": 35,
+      "rating": 7.85856,
       "weight": 3.0115,
       "playtime": 90,
       "best_counts": [
@@ -787,6 +806,7 @@
       "name": "Anachrony",
       "year": 2017,
       "rank": 61,
+      "rating": 7.72842,
       "weight": 3.995,
       "playtime": 120,
       "best_counts": [
@@ -828,6 +848,7 @@
       "name": "On Mars",
       "year": 2020,
       "rank": 58,
+      "rating": 7.74143,
       "weight": 4.6234,
       "playtime": 150,
       "best_counts": [
@@ -871,6 +892,7 @@
       "name": "Food Chain Magnate",
       "year": 2015,
       "rank": 51,
+      "rating": 7.77516,
       "weight": 4.1837,
       "playtime": 240,
       "best_counts": [
@@ -902,6 +924,7 @@
       "name": "Stone Age",
       "year": 2008,
       "rank": 189,
+      "rating": 7.37848,
       "weight": 2.4553,
       "playtime": 90,
       "best_counts": [
@@ -936,6 +959,7 @@
       "name": "Eclipse: Second Dawn for the Galaxy",
       "year": 2020,
       "rank": 23,
+      "rating": 7.95831,
       "weight": 3.6682,
       "playtime": 200,
       "best_counts": [
@@ -982,6 +1006,7 @@
       "name": "Terra Mystica",
       "year": 2012,
       "rank": 36,
+      "rating": 7.85632,
       "weight": 3.9719,
       "playtime": 150,
       "best_counts": [
@@ -1020,6 +1045,7 @@
       "name": "Age of Steam",
       "year": 2002,
       "rank": 138,
+      "rating": 7.49563,
       "weight": 3.8525,
       "playtime": 120,
       "best_counts": [
@@ -1062,6 +1088,7 @@
       "name": "Power Grid",
       "year": 2004,
       "rank": 76,
+      "rating": 7.68016,
       "weight": 3.2452,
       "playtime": 120,
       "best_counts": [
@@ -1097,6 +1124,7 @@
       "name": "Hadrian's Wall",
       "year": 2021,
       "rank": 173,
+      "rating": 7.40741,
       "weight": 3.1746,
       "playtime": 60,
       "best_counts": [
@@ -1124,6 +1152,7 @@
       "name": "Lisboa",
       "year": 2017,
       "rank": 70,
+      "rating": 7.70819,
       "weight": 4.5629,
       "playtime": 120,
       "best_counts": [
@@ -1158,6 +1187,7 @@
       "name": "Too Many Bones",
       "year": 2017,
       "rank": 37,
+      "rating": 7.85088,
       "weight": 3.8675,
       "playtime": 120,
       "best_counts": [
@@ -1201,6 +1231,7 @@
       "name": "Terraforming Mars",
       "year": 2016,
       "rank": 9,
+      "rating": 8.18083,
       "weight": 3.2724,
       "playtime": 120,
       "best_counts": [
@@ -1246,6 +1277,7 @@
       "name": "Great Western Trail",
       "year": 2016,
       "rank": 21,
+      "rating": 7.96872,
       "weight": 3.6962,
       "playtime": 150,
       "best_counts": [
@@ -1281,6 +1313,7 @@
       "name": "Scythe",
       "year": 2016,
       "rank": 26,
+      "rating": 7.94038,
       "weight": 3.4516,
       "playtime": 115,
       "best_counts": [
@@ -1327,6 +1360,7 @@
       "name": "Dune: Imperium",
       "year": 2020,
       "rank": 6,
+      "rating": 8.21905,
       "weight": 3.0785,
       "playtime": 120,
       "best_counts": [
@@ -1369,6 +1403,7 @@
       "name": "Everdell",
       "year": 2018,
       "rank": 46,
+      "rating": 7.80119,
       "weight": 2.8338,
       "playtime": 80,
       "best_counts": [
@@ -1409,6 +1444,7 @@
       "name": "The Castles of Burgundy",
       "year": 2011,
       "rank": 17,
+      "rating": 8.03305,
       "weight": 2.9701,
       "playtime": 90,
       "best_counts": [
@@ -1447,6 +1483,7 @@
       "name": "Robinson Crusoe: Adventures on the Cursed Island",
       "year": 2012,
       "rank": 120,
+      "rating": 7.54271,
       "weight": 3.8273,
       "playtime": 120,
       "best_counts": [
@@ -1493,6 +1530,7 @@
       "name": "Race for the Galaxy",
       "year": 2007,
       "rank": 94,
+      "rating": 7.61516,
       "weight": 2.9933,
       "playtime": 60,
       "best_counts": [
@@ -1532,6 +1570,7 @@
       "name": "Puerto Rico",
       "year": 2002,
       "rank": 57,
+      "rating": 7.75102,
       "weight": 3.2661,
       "playtime": 150,
       "best_counts": [
@@ -1567,6 +1606,7 @@
       "name": "Concordia",
       "year": 2013,
       "rank": 29,
+      "rating": 7.92308,
       "weight": 2.986,
       "playtime": 100,
       "best_counts": [
@@ -1607,6 +1647,7 @@
       "name": "Tzolk'in: The Mayan Calendar",
       "year": 2012,
       "rank": 77,
+      "rating": 7.68004,
       "weight": 3.6629,
       "playtime": 90,
       "best_counts": [
@@ -1643,6 +1684,7 @@
       "name": "Trajan",
       "year": 2011,
       "rank": 149,
+      "rating": 7.46255,
       "weight": 3.6244,
       "playtime": 120,
       "best_counts": [
@@ -1672,6 +1714,7 @@
       "name": "Hansa Teutonica",
       "year": 2009,
       "rank": 147,
+      "rating": 7.47286,
       "weight": 3.0886,
       "playtime": 90,
       "best_counts": [
@@ -1705,6 +1748,7 @@
       "name": "Clans of Caledonia",
       "year": 2017,
       "rank": 78,
+      "rating": 7.67631,
       "weight": 3.4655,
       "playtime": 120,
       "best_counts": [
@@ -1741,6 +1785,7 @@
       "name": "Underwater Cities",
       "year": 2018,
       "rank": 52,
+      "rating": 7.77286,
       "weight": 3.5882,
       "playtime": 150,
       "best_counts": [
@@ -1775,6 +1820,7 @@
       "name": "The Voyages of Marco Polo",
       "year": 2015,
       "rank": 122,
+      "rating": 7.54047,
       "weight": 3.1771,
       "playtime": 100,
       "best_counts": [
@@ -1813,6 +1859,7 @@
       "name": "Viticulture Essential Edition",
       "year": 2015,
       "rank": 43,
+      "rating": 7.80321,
       "weight": 2.902,
       "playtime": 90,
       "best_counts": [
@@ -1848,6 +1895,7 @@
       "name": "Ra",
       "year": 1999,
       "rank": 113,
+      "rating": 7.55865,
       "weight": 2.3039,
       "playtime": 60,
       "best_counts": [
@@ -1882,6 +1930,7 @@
       "name": "El Grande",
       "year": 1995,
       "rank": 101,
+      "rating": 7.59324,
       "weight": 2.9311,
       "playtime": 120,
       "best_counts": [
@@ -1911,49 +1960,38 @@
       "users_rated": 33458
     },
     {
-      "id": 39463,
+      "id": 40531,
       "name": "Cosmic Encounter",
-      "year": 2008,
-      "rank": 232,
-      "weight": 2.5825,
-      "playtime": 120,
+      "year": 2000,
+      "rank": 4555,
+      "rating": 5.82718,
+      "weight": 2.3077,
+      "playtime": 60,
       "best_counts": [
-        4,
-        5
+        4
       ],
-      "best_count": 5,
+      "best_count": 4,
       "signals": [
         "Bluffing",
-        "Negotiation",
+        "Card Game",
         "Science Fiction",
-        "Space Exploration",
-        "Alliances",
-        "Card Play Conflict Resolution",
-        "Hand Management",
-        "Interrupts",
-        "Negotiation",
-        "Prisoner's Dilemma",
-        "Race",
-        "Simultaneous Action Selection",
-        "Take That",
-        "Trading",
         "Variable Player Powers"
       ],
       "families": [
         "Game: Cosmic Encounter"
       ],
       "best_votes": {
-        "4": 184,
-        "5": 188
+        "4": 5
       },
-      "users_rated": 35124
+      "users_rated": 1391
     },
     {
-      "id": 205637,
+      "id": 463126,
       "name": "Arkham Horror: The Card Game",
-      "year": 2016,
-      "rank": 33,
-      "weight": 3.5674,
+      "year": 2026,
+      "rank": 1932,
+      "rating": 6.28944,
+      "weight": 3.8537,
       "playtime": 120,
       "best_counts": [
         1,
@@ -1961,12 +1999,10 @@
       ],
       "best_count": 2,
       "signals": [
-        "Adventure",
         "Card Game",
-        "Collectible Components",
         "Exploration",
         "Horror",
-        "Novel-based",
+        "Science Fiction",
         "Action Points",
         "Area Movement",
         "Communication Limits",
@@ -1977,7 +2013,6 @@
         "Map Deformation",
         "Modular Board",
         "Player Elimination",
-        "Push Your Luck",
         "Role Playing",
         "Scenario / Mission / Campaign Game",
         "Solo / Solitaire Game",
@@ -1988,16 +2023,17 @@
         "Game: Arkham Horror \u2013 The Card Game"
       ],
       "best_votes": {
-        "1": 290,
-        "2": 783
+        "1": 7,
+        "2": 21
       },
-      "users_rated": 48084
+      "users_rated": 899
     },
     {
       "id": 167355,
       "name": "Nemesis",
       "year": 2018,
       "rank": 25,
+      "rating": 7.94728,
       "weight": 3.4905,
       "playtime": 180,
       "best_counts": [
@@ -2042,6 +2078,7 @@
       "name": "Blood on the Clocktower",
       "year": 2022,
       "rank": 66,
+      "rating": 7.72011,
       "weight": 3.0217,
       "playtime": 120,
       "best_counts": [
@@ -2092,6 +2129,7 @@
       "name": "Modern Art",
       "year": 1992,
       "rank": 222,
+      "rating": 7.33144,
       "weight": 2.2765,
       "playtime": 45,
       "best_counts": [
@@ -2123,6 +2161,7 @@
       "name": "Lords of Waterdeep",
       "year": 2012,
       "rank": 107,
+      "rating": 7.57973,
       "weight": 2.4482,
       "playtime": 120,
       "best_counts": [
@@ -2158,6 +2197,7 @@
       "name": "Castles of Mad King Ludwig",
       "year": 2014,
       "rank": 237,
+      "rating": 7.30462,
       "weight": 2.6469,
       "playtime": 90,
       "best_counts": [
@@ -2191,6 +2231,7 @@
       "name": "Five Tribes: The Djinns of Naqala",
       "year": 2014,
       "rank": 98,
+      "rating": 7.60667,
       "weight": 2.8372,
       "playtime": 80,
       "best_counts": [
@@ -2232,6 +2273,7 @@
       "name": "Hive",
       "year": 2001,
       "rank": 336,
+      "rating": 7.16545,
       "weight": 2.3134,
       "playtime": 20,
       "best_counts": [
@@ -2262,6 +2304,7 @@
       "name": "Pandemic",
       "year": 2008,
       "rank": 174,
+      "rating": 7.40159,
       "weight": 2.3934,
       "playtime": 45,
       "best_counts": [
@@ -2304,6 +2347,7 @@
       "name": "Pandemic Legacy: Season 1",
       "year": 2015,
       "rank": 3,
+      "rating": 8.34423,
       "weight": 2.8283,
       "playtime": 60,
       "best_counts": [
@@ -2342,6 +2386,7 @@
       "name": "Inis",
       "year": 2016,
       "rank": 125,
+      "rating": 7.53132,
       "weight": 2.9437,
       "playtime": 90,
       "best_counts": [
@@ -2384,6 +2429,7 @@
       "name": "Gloomhaven: Jaws of the Lion",
       "year": 2020,
       "rank": 12,
+      "rating": 8.09133,
       "weight": 3.6426,
       "playtime": 120,
       "best_counts": [
@@ -2437,6 +2483,7 @@
       "name": "Watergate",
       "year": 2019,
       "rank": 190,
+      "rating": 7.37532,
       "weight": 2.298,
       "playtime": 60,
       "best_counts": [
@@ -2465,6 +2512,7 @@
       "name": "Targi",
       "year": 2012,
       "rank": 176,
+      "rating": 7.39982,
       "weight": 2.3427,
       "playtime": 60,
       "best_counts": [
@@ -2494,6 +2542,7 @@
       "name": "Wingspan",
       "year": 2019,
       "rank": 38,
+      "rating": 7.84217,
       "weight": 2.4807,
       "playtime": 70,
       "best_counts": [
@@ -2531,6 +2580,7 @@
       "name": "Lost Ruins of Arnak",
       "year": 2020,
       "rank": 30,
+      "rating": 7.91708,
       "weight": 2.9335,
       "playtime": 120,
       "best_counts": [
@@ -2574,6 +2624,7 @@
       "name": "Dominion",
       "year": 2008,
       "rank": 146,
+      "rating": 7.47361,
       "weight": 2.3442,
       "playtime": 30,
       "best_counts": [
@@ -2607,6 +2658,7 @@
       "name": "The Lord of the Rings: Journeys in Middle-Earth",
       "year": 2019,
       "rank": 144,
+      "rating": 7.47857,
       "weight": 2.6978,
       "playtime": 120,
       "best_counts": [
@@ -2647,6 +2699,7 @@
       "name": "Quacks",
       "year": 2018,
       "rank": 80,
+      "rating": 7.66524,
       "weight": 1.9414,
       "playtime": 45,
       "best_counts": [
@@ -2686,6 +2739,7 @@
       "name": "It's a Wonderful World",
       "year": 2019,
       "rank": 187,
+      "rating": 7.38305,
       "weight": 2.3232,
       "playtime": 45,
       "best_counts": [
@@ -2727,6 +2781,7 @@
       "name": "7 Wonders",
       "year": 2010,
       "rank": 118,
+      "rating": 7.54604,
       "weight": 2.3145,
       "playtime": 30,
       "best_counts": [
@@ -2775,6 +2830,7 @@
       "name": "Catan",
       "year": 1995,
       "rank": 626,
+      "rating": 6.90202,
       "weight": 2.2806,
       "playtime": 120,
       "best_counts": [
@@ -2815,6 +2871,7 @@
       "name": "Clank!: A Deck-Building Adventure",
       "year": 2016,
       "rank": 103,
+      "rating": 7.59225,
       "weight": 2.2307,
       "playtime": 60,
       "best_counts": [
@@ -2850,6 +2907,7 @@
       "name": "The Quest for El Dorado",
       "year": 2017,
       "rank": 121,
+      "rating": 7.54135,
       "weight": 1.9416,
       "playtime": 60,
       "best_counts": [
@@ -2890,6 +2948,7 @@
       "name": "Star Realms",
       "year": 2014,
       "rank": 178,
+      "rating": 7.39773,
       "weight": 1.9129,
       "playtime": 20,
       "best_counts": [
@@ -2925,6 +2984,7 @@
       "name": "Undaunted: Normandy",
       "year": 2019,
       "rank": 183,
+      "rating": 7.38823,
       "weight": 2.273,
       "playtime": 60,
       "best_counts": [
@@ -2954,6 +3014,7 @@
       "name": "Gizmos",
       "year": 2018,
       "rank": 419,
+      "rating": 7.07453,
       "weight": 2.0557,
       "playtime": 50,
       "best_counts": [
@@ -2985,6 +3046,7 @@
       "name": "Mysterium",
       "year": 2015,
       "rank": 456,
+      "rating": 7.04711,
       "weight": 1.8892,
       "playtime": 42,
       "best_counts": [
@@ -3025,6 +3087,7 @@
       "name": "Sheriff of Nottingham",
       "year": 2014,
       "rank": 623,
+      "rating": 6.90354,
       "weight": 1.6589,
       "playtime": 60,
       "best_counts": [
@@ -3062,6 +3125,7 @@
       "name": "Citadels",
       "year": 2000,
       "rank": 594,
+      "rating": 6.92947,
       "weight": 2.0463,
       "playtime": 60,
       "best_counts": [
@@ -3101,6 +3165,7 @@
       "name": "Captain Sonar",
       "year": 2016,
       "rank": 248,
+      "rating": 7.28384,
       "weight": 2.2051,
       "playtime": 60,
       "best_counts": [
@@ -3138,6 +3203,7 @@
       "name": "Skull King",
       "year": 2013,
       "rank": 287,
+      "rating": 7.21773,
       "weight": 1.726,
       "playtime": 30,
       "best_counts": [
@@ -3168,6 +3234,7 @@
       "name": "Cat in the Box: Deluxe Edition",
       "year": 2022,
       "rank": 380,
+      "rating": 7.11495,
       "weight": 2.0455,
       "playtime": 40,
       "best_counts": [
@@ -3199,6 +3266,7 @@
       "name": "Meadow",
       "year": 2021,
       "rank": 219,
+      "rating": 7.33616,
       "weight": 2.2523,
       "playtime": 90,
       "best_counts": [
@@ -3232,6 +3300,7 @@
       "name": "Sagrada",
       "year": 2017,
       "rank": 228,
+      "rating": 7.32513,
       "weight": 1.9202,
       "playtime": 45,
       "best_counts": [
@@ -3270,6 +3339,7 @@
       "name": "Calico",
       "year": 2020,
       "rank": 275,
+      "rating": 7.23835,
       "weight": 2.1969,
       "playtime": 45,
       "best_counts": [
@@ -3305,6 +3375,7 @@
       "name": "Parks",
       "year": 2019,
       "rank": 181,
+      "rating": 7.39257,
       "weight": 2.1289,
       "playtime": 60,
       "best_counts": [
@@ -3341,6 +3412,7 @@
       "name": "Century: Spice Road",
       "year": 2017,
       "rank": 392,
+      "rating": 7.10262,
       "weight": 1.8003,
       "playtime": 45,
       "best_counts": [
@@ -3379,6 +3451,7 @@
       "name": "Tiny Towns",
       "year": 2019,
       "rank": 532,
+      "rating": 6.97754,
       "weight": 2.0626,
       "playtime": 60,
       "best_counts": [
@@ -3417,6 +3490,7 @@
       "name": "Railroad Ink: Deep Blue Edition",
       "year": 2018,
       "rank": 641,
+      "rating": 6.88635,
       "weight": 1.4689,
       "playtime": 30,
       "best_counts": [
@@ -3456,6 +3530,7 @@
       "name": "Hanabi",
       "year": 2010,
       "rank": 607,
+      "rating": 6.91979,
       "weight": 1.6919,
       "playtime": 25,
       "best_counts": [
@@ -3490,6 +3565,7 @@
       "name": "Final Girl",
       "year": 2021,
       "rank": 97,
+      "rating": 7.60837,
       "weight": 2.7586,
       "playtime": 60,
       "best_counts": [
@@ -3521,6 +3597,7 @@
       "name": "Sky Team",
       "year": 2023,
       "rank": 32,
+      "rating": 7.88952,
       "weight": 2.0431,
       "playtime": 20,
       "best_counts": [
@@ -3550,6 +3627,7 @@
       "name": "Codenames: Duet",
       "year": 2017,
       "rank": 276,
+      "rating": 7.23309,
       "weight": 1.3605,
       "playtime": 30,
       "best_counts": [
@@ -3578,6 +3656,7 @@
       "name": "7 Wonders Duel",
       "year": 2015,
       "rank": 24,
+      "rating": 7.94997,
       "weight": 2.2276,
       "playtime": 30,
       "best_counts": [
@@ -3620,6 +3699,7 @@
       "name": "Azul",
       "year": 2017,
       "rank": 99,
+      "rating": 7.6034,
       "weight": 1.7716,
       "playtime": 45,
       "best_counts": [
@@ -3656,6 +3736,7 @@
       "name": "Splendor",
       "year": 2014,
       "rank": 243,
+      "rating": 7.29261,
       "weight": 1.7732,
       "playtime": 30,
       "best_counts": [
@@ -3688,6 +3769,7 @@
       "name": "Ticket to Ride",
       "year": 2004,
       "rank": 262,
+      "rating": 7.25974,
       "weight": 1.8185,
       "playtime": 60,
       "best_counts": [
@@ -3722,6 +3804,7 @@
       "name": "Carcassonne",
       "year": 2000,
       "rank": 240,
+      "rating": 7.29902,
       "weight": 1.884,
       "playtime": 45,
       "best_counts": [
@@ -3756,6 +3839,7 @@
       "name": "Cascadia",
       "year": 2021,
       "rank": 60,
+      "rating": 7.73208,
       "weight": 1.8434,
       "playtime": 45,
       "best_counts": [
@@ -3790,6 +3874,7 @@
       "name": "Cthulhu: Death May Die",
       "year": 2019,
       "rank": 55,
+      "rating": 7.76258,
       "weight": 2.4891,
       "playtime": 120,
       "best_counts": [
@@ -3828,6 +3913,7 @@
       "name": "Welcome To...",
       "year": 2018,
       "rank": 217,
+      "rating": 7.34784,
       "weight": 1.8416,
       "playtime": 25,
       "best_counts": [
@@ -3864,6 +3950,7 @@
       "name": "Patchwork",
       "year": 2014,
       "rank": 148,
+      "rating": 7.47093,
       "weight": 1.597,
       "playtime": 30,
       "best_counts": [
@@ -3897,6 +3984,7 @@
       "name": "Jaipur",
       "year": 2009,
       "rank": 201,
+      "rating": 7.36125,
       "weight": 1.4627,
       "playtime": 30,
       "best_counts": [
@@ -3930,6 +4018,7 @@
       "name": "That's Pretty Clever!",
       "year": 2018,
       "rank": 202,
+      "rating": 7.35936,
       "weight": 1.8506,
       "playtime": 30,
       "best_counts": [
@@ -3961,6 +4050,7 @@
       "name": "Under Falling Skies",
       "year": 2020,
       "rank": 267,
+      "rating": 7.24876,
       "weight": 2.3904,
       "playtime": 40,
       "best_counts": [
@@ -3993,6 +4083,7 @@
       "name": "Ghost Stories",
       "year": 2008,
       "rank": 469,
+      "rating": 7.03715,
       "weight": 2.9053,
       "playtime": 60,
       "best_counts": [
@@ -4029,6 +4120,7 @@
       "name": "Onirim (Second Edition)",
       "year": 2014,
       "rank": 866,
+      "rating": 6.73072,
       "weight": 1.6111,
       "playtime": 15,
       "best_counts": [
@@ -4057,6 +4149,7 @@
       "name": "Sushi Go Party!",
       "year": 2016,
       "rank": 288,
+      "rating": 7.21677,
       "weight": 1.3258,
       "playtime": 20,
       "best_counts": [
@@ -4092,6 +4185,7 @@
       "name": "Viscounts of the West Kingdom",
       "year": 2020,
       "rank": 199,
+      "rating": 7.36408,
       "weight": 3.4557,
       "playtime": 90,
       "best_counts": [
@@ -4124,6 +4218,7 @@
       "name": "Kingdomino",
       "year": 2016,
       "rank": 331,
+      "rating": 7.16876,
       "weight": 1.2393,
       "playtime": 25,
       "best_counts": [
@@ -4158,6 +4253,7 @@
       "name": "Santorini",
       "year": 2016,
       "rank": 315,
+      "rating": 7.188,
       "weight": 1.7181,
       "playtime": 20,
       "best_counts": [
@@ -4189,6 +4285,7 @@
       "name": "Onitama",
       "year": 2014,
       "rank": 363,
+      "rating": 7.13587,
       "weight": 1.656,
       "playtime": 20,
       "best_counts": [
@@ -4216,6 +4313,7 @@
       "name": "Lost Cities",
       "year": 1999,
       "rank": 348,
+      "rating": 7.15453,
       "weight": 1.4742,
       "playtime": 30,
       "best_counts": [
@@ -4246,6 +4344,7 @@
       "name": "Love Letter",
       "year": 2012,
       "rank": 370,
+      "rating": 7.12216,
       "weight": 1.1842,
       "playtime": 20,
       "best_counts": [
@@ -4277,6 +4376,7 @@
       "name": "The Mind",
       "year": 2018,
       "rank": 1129,
+      "rating": 6.58918,
       "weight": 1.0733,
       "playtime": 20,
       "best_counts": [
@@ -4305,6 +4405,7 @@
       "name": "Camel Up",
       "year": 2014,
       "rank": 650,
+      "rating": 6.87506,
       "weight": 1.502,
       "playtime": 30,
       "best_counts": [
@@ -4339,6 +4440,7 @@
       "name": "Deep Sea Adventure",
       "year": 2014,
       "rank": 941,
+      "rating": 6.68521,
       "weight": 1.1835,
       "playtime": 30,
       "best_counts": [
@@ -4369,6 +4471,7 @@
       "name": "Cockroach Poker",
       "year": 2004,
       "rank": 1102,
+      "rating": 6.60243,
       "weight": 1.0966,
       "playtime": 20,
       "best_counts": [
@@ -4398,6 +4501,7 @@
       "name": "For Sale",
       "year": 1997,
       "rank": 358,
+      "rating": 7.14127,
       "weight": 1.2486,
       "playtime": 30,
       "best_counts": [
@@ -4428,6 +4532,7 @@
       "name": "Take 5",
       "year": 1994,
       "rank": 677,
+      "rating": 6.85862,
       "weight": 1.1889,
       "playtime": 45,
       "best_counts": [
@@ -4465,6 +4570,7 @@
       "name": "Bohnanza",
       "year": 1997,
       "rank": 545,
+      "rating": 6.96347,
       "weight": 1.6667,
       "playtime": 45,
       "best_counts": [
@@ -4498,6 +4604,7 @@
       "name": "Chinatown",
       "year": 1999,
       "rank": 387,
+      "rating": 7.10817,
       "weight": 2.2237,
       "playtime": 60,
       "best_counts": [
@@ -4530,6 +4637,7 @@
       "name": "L.L.A.M.A.",
       "year": 2019,
       "rank": 1977,
+      "rating": 6.27558,
       "weight": 1.0521,
       "playtime": 20,
       "best_counts": [
@@ -4563,6 +4671,7 @@
       "name": "Crokinole",
       "year": 1876,
       "rank": 45,
+      "rating": 7.80222,
       "weight": 1.2306,
       "playtime": 30,
       "best_counts": [
@@ -4587,6 +4696,7 @@
       "name": "KLASK",
       "year": 2014,
       "rank": 261,
+      "rating": 7.26008,
       "weight": 1.0447,
       "playtime": 10,
       "best_counts": [
@@ -4610,6 +4720,7 @@
       "name": "Junk Art",
       "year": 2016,
       "rank": 624,
+      "rating": 6.90295,
       "weight": 1.193,
       "playtime": 30,
       "best_counts": [
@@ -4642,6 +4753,7 @@
       "name": "G\u00f9g\u014dng",
       "year": 2018,
       "rank": 491,
+      "rating": 7.01694,
       "weight": 3.0873,
       "playtime": 90,
       "best_counts": [
@@ -4665,44 +4777,45 @@
       "users_rated": 9685
     },
     {
-      "id": 192457,
+      "id": 1323,
       "name": "Cry Havoc",
-      "year": 2016,
-      "rank": 1024,
-      "weight": 3.2911,
-      "playtime": 120,
+      "year": 1981,
+      "rank": 4684,
+      "rating": 5.81455,
+      "weight": 2.2742,
+      "playtime": 240,
       "best_counts": [
-        3,
-        4
+        2
       ],
-      "best_count": 4,
+      "best_count": 2,
       "signals": [
-        "Fighting",
-        "Miniatures",
-        "Science Fiction",
+        "Medieval",
         "Wargame",
-        "Area Majority / Influence",
-        "Area Movement",
-        "Deck, Bag, and Pool Building",
-        "Events",
-        "Hand Management",
-        "Multi-Use Cards",
-        "Point to Point Movement",
-        "Variable Player Powers",
-        "Victory Points as a Resource"
+        "Dice Rolling",
+        "Grid Movement",
+        "Hexagon Grid",
+        "Line of Sight",
+        "Modular Board",
+        "Movement Points",
+        "Ratio / Combat Results Table",
+        "Scenario / Mission / Campaign Game",
+        "Simulation",
+        "Variable Set-up"
       ],
-      "families": [],
+      "families": [
+        "Game: Cry Havoc System"
+      ],
       "best_votes": {
-        "3": 44,
-        "4": 94
+        "2": 7
       },
-      "users_rated": 7155
+      "users_rated": 797
     },
     {
       "id": 92415,
       "name": "Skull",
       "year": 2011,
       "rank": 498,
+      "rating": 7.00911,
       "weight": 1.1178,
       "playtime": 45,
       "best_counts": [
@@ -4735,6 +4848,7 @@
       "name": "Just One",
       "year": 2018,
       "rank": 159,
+      "rating": 7.43591,
       "weight": 1.0329,
       "playtime": 60,
       "best_counts": [
@@ -4766,6 +4880,7 @@
       "name": "Codenames",
       "year": 2015,
       "rank": 163,
+      "rating": 7.42716,
       "weight": 1.2536,
       "playtime": 15,
       "best_counts": [
@@ -4801,6 +4916,7 @@
       "name": "Decrypto",
       "year": 2018,
       "rank": 117,
+      "rating": 7.54674,
       "weight": 1.8259,
       "playtime": 45,
       "best_counts": [
@@ -4832,6 +4948,7 @@
       "name": "Coup",
       "year": 2012,
       "rank": 724,
+      "rating": 6.83151,
       "weight": 1.4151,
       "playtime": 15,
       "best_counts": [
@@ -4865,6 +4982,7 @@
       "name": "The Resistance: Avalon",
       "year": 2012,
       "rank": 239,
+      "rating": 7.30035,
       "weight": 1.7397,
       "playtime": 30,
       "best_counts": [
@@ -4911,6 +5029,7 @@
       "name": "The Resistance",
       "year": 2009,
       "rank": 468,
+      "rating": 7.03721,
       "weight": 1.5908,
       "playtime": 30,
       "best_counts": [
@@ -4954,6 +5073,7 @@
       "name": "Fantasy Realms",
       "year": 2017,
       "rank": 273,
+      "rating": 7.23947,
       "weight": 1.8141,
       "playtime": 20,
       "best_counts": [
@@ -4984,6 +5104,7 @@
       "name": "One Night Ultimate Werewolf",
       "year": 2014,
       "rank": 687,
+      "rating": 6.85247,
       "weight": 1.3815,
       "playtime": 10,
       "best_counts": [
@@ -5024,6 +5145,7 @@
       "name": "Deception: Murder in Hong Kong",
       "year": 2014,
       "rank": 293,
+      "rating": 7.21268,
       "weight": 1.5887,
       "playtime": 20,
       "best_counts": [
@@ -5065,6 +5187,7 @@
       "name": "Spyfall",
       "year": 2014,
       "rank": 1121,
+      "rating": 6.59366,
       "weight": 1.2298,
       "playtime": 15,
       "best_counts": [
@@ -5105,6 +5228,7 @@
       "name": "Codenames: Pictures",
       "year": 2016,
       "rank": 510,
+      "rating": 6.99656,
       "weight": 1.2351,
       "playtime": 15,
       "best_counts": [
@@ -5137,6 +5261,7 @@
       "name": "Two Rooms and a Boom",
       "year": 2013,
       "rank": 1229,
+      "rating": 6.54435,
       "weight": 1.4845,
       "playtime": 20,
       "best_counts": [
@@ -5209,6 +5334,7 @@
       "name": "Wavelength",
       "year": 2019,
       "rank": 537,
+      "rating": 6.97359,
       "weight": 1.1047,
       "playtime": 45,
       "best_counts": [
@@ -5238,6 +5364,7 @@
       "name": "Monikers",
       "year": 2015,
       "rank": 305,
+      "rating": 7.20364,
       "weight": 1.09,
       "playtime": 60,
       "best_counts": [
@@ -5278,6 +5405,7 @@
       "name": "Telestrations",
       "year": 2009,
       "rank": 354,
+      "rating": 7.14582,
       "weight": 1.0692,
       "playtime": 30,
       "best_counts": [

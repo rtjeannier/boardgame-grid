@@ -107,6 +107,7 @@ class BggClient:
             name=name_el.get("value"),
             year=int(item.find("yearpublished").get("value")),
             rank=int(rank),
+            rating=float(rank_el.get("bayesaverage")),
             weight=float(ratings.find("averageweight").get("value")),
             playtime=int(item.find("playingtime").get("value")),
             best_counts=best_counts,

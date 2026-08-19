@@ -18,20 +18,31 @@ single cell holding the whole space for the collection builder.
 
 import numpy as np
 
-from .config import QUALITY_FLOOR, SIMILARITY_EXPONENT
+from .config import QUALITY_EXPONENT, QUALITY_FLOOR, SIMILARITY_EXPONENT
 
 
-def quality(rank: int, ranks: list[int]) -> float:
-    """Map a game's rank to [QUALITY_FLOOR, 1] by percentile within its pool.
+def quality(rating: float, ratings: list[float]) -> float:
+    """Map a game's rating to [QUALITY_FLOOR, 1] against the whole population.
 
-    The best game in the pool covers at its full genre loadings; the worst
-    still covers at QUALITY_FLOOR of them — good games cast bigger shadows on
-    the radar chart, but no game is invisible.
+    Weighted by BGG's Bayesian average, not by rank position, and normalised
+    globally rather than within a cell. Both parts matter.
+
+    Percentile-within-cell used to squash the top flat: in an 857-game cell
+    holding ranks 3 to 4991, Orleans (#35) and Rajas of the Ganges (#170) came
+    out at 0.996 and 0.975 — a 135-place gap worth 0.02 — because both sat in
+    the same top 5% of that pool. A game's quality also swung with whichever
+    other games happened to share its cell, which is no property of the game.
+
+    QUALITY_EXPONENT then decides how much better a better game is. Rating
+    alone is a narrow band (8.39 at #1 down to 5.79 at #5000, so the whole
+    ladder spans 31%); raising the normalised score to a power above 1 widens
+    the gap between the top and the middle without inventing an ordering.
     """
-    if len(ranks) < 2:
+    lo, hi = min(ratings), max(ratings)
+    if hi <= lo:
         return 1.0
-    worse = sum(r > rank for r in ranks)
-    return QUALITY_FLOOR + (1 - QUALITY_FLOOR) * worse / (len(ranks) - 1)
+    normalised = (rating - lo) / (hi - lo)
+    return QUALITY_FLOOR + (1 - QUALITY_FLOOR) * normalised ** QUALITY_EXPONENT
 
 
 def axis_coverage(weight_rows: list[np.ndarray], n_axes: int) -> np.ndarray:

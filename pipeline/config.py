@@ -84,7 +84,15 @@ PICKS_PER_CELL = 5        # stop after this many picks per cell
 # A game covers each genre axis with "probability" quality × loading; a set's
 # coverage per axis is 1-∏(1-w); greedy adds whatever fills the most empty
 # radar-chart area, stopping when the best remaining gain is below the floor.
-QUALITY_FLOOR = 0.4       # worst-ranked game still covers this fraction of its loadings
+QUALITY_FLOOR = 0.2       # worst-rated game still covers this fraction of its loadings
+
+# How sharply a better rating beats a worse one. `quality` normalises BGG's
+# Bayesian average across the population and raises it to this power, so >1
+# widens the gap between the top and the middle. Needed because the rating band
+# is narrow — #1 scores 8.39 and #5000 scores 5.79 — and rank position is worse
+# still: it is a dense ordering of that same narrow band.
+QUALITY_EXPONENT = 2.0
+
 # Retuned from 0.15 when loadings moved from L2 to L1 normalisation: every game
 # now carries total mass 1.0 rather than ~2.2, so gains shrank by about that
 # factor and the floor follows them down.

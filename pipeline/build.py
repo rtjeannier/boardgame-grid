@@ -76,12 +76,12 @@ def build(dataset_path, assigner_name):
         the cell (see pipeline/coverage.quality)."""
         col, row = key            # axis labels, in the order build_cells crossed them
         pool = cells[key]
-        ranks = [g.rank for g in pool]
+        ratings = [g.rating for g in pool]
 
         def weight(g):
             # Mirrors CoverageScorer exactly, membership included, so the radar
             # the frontend draws is the one selection was scored against.
-            return memberships[(key, g.id)] * coverage.quality(g.rank, ranks) * space.loadings[g.id]
+            return memberships[(key, g.id)] * coverage.quality(g.rating, ratings) * space.loadings[g.id]
 
         return {
             "column": col,
