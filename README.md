@@ -123,26 +123,41 @@ pick this branch and the **`/docs`** folder. The site goes live at
    World War II`, `Action / Dexterity · Stacking and Balancing`. Nobody labels
    the genres; they are read off the data.
 
-   Signals are agglomerated into a tree, and the axes are the **maximal**
-   subtrees that still hang together: walk down from the root and take a branch
-   as soon as its members genuinely co-occur, so an axis is the largest group
-   that is still one genre rather than the tightest pair inside it. This
-   deliberately does *not* partition the tags — cutting the tree into exactly K
-   clusters forces every tag somewhere, and the weakly correlated ones pile into
-   one residual drawer (measured at 424 tags spanning 4335 of 5000 games, which
-   swallowed dexterity whole). Tags left outside the cores then join whichever
-   core they most resemble, so nothing is lost: without that step 633 games
-   carry no tag on any axis, and a game with no genre can never be picked.
+   **Base-rate tags are paired off first.** `Hand Management` marks 1634 of
+   5000 games and `Card Game` 1483 — those are base rates, not kinds of game,
+   and any genre founded on one covers most of the corpus. So a tag over
+   `GENRE_BASE_RATE` is dropped and survives only paired with another such tag
+   (`Card Game + Hand Management`), which is specific enough to name a kind of
+   game where neither half was. Ordinary tags are left completely alone; pairing
+   them instead shreds them into fragments that only recombine into themselves.
 
-   A group only counts as a genre if it is some game's *primary* genre, for at
-   least a tenth of the games an even split would give it. Reach alone is not
-   enough: `Age of Reason · American Revolutionary War` was carried by 76 games
-   and passed every size test, yet exactly *one* game in 5000 was more that than
-   anything else — it described nothing while taking a fifteenth of the chart.
+   **Genres are then claimed tightest-first.** Each round agglomerates whatever
+   signals are unclaimed, takes the most cohesive group that reaches enough
+   games, grows it while it holds `GENRE_GROWTH` of the tightness it started
+   with, and removes it from the pool. Taking the tightest thing first is what
+   stops a genre being founded on a seed and then accreting: selecting by
+   coverage instead let a two-tag `Set Collection · Open Drafting` seed grow
+   into a 1142-game genre by absorbing hand management, worker placement and
+   deck building, none of which its name mentions.
 
-   `GENRE_AXIS_TARGET` is the only knob. It caps how far a genre may reach, sets
-   the floor on primary games, and fixes the cohesion threshold — whatever makes
-   exactly that many genres survive, found by bisection rather than tuned.
+   **The count is cut by nestedness, not size.** Discovery yields about
+   `GENRE_DISCOVER` genres; the rest are pruned by dropping whichever most lives
+   *inside* another. That order is the whole trick — by size or tightness the
+   small distinctive genres go first (dexterity is 124 games, cohesion 0.48),
+   whereas by containment the redundant sub-genres go: `Modern Warfare · Vietnam
+   War` is 94% inside the wargame genre, while dexterity is only 27% inside
+   anything. Dexterity therefore survives all the way down to six axes.
+
+   **The radar is lopsided on purpose**, because the corpus is: the eight genres
+   run from 50% of all games down to 3%. Every build prints the worst
+   containment so redundancy stays visible.
+
+   Tags outside the chosen genres join whichever they most resemble, and they
+   move in *coherent blocs* rather than one at a time — placing them
+   individually tore dexterity apart, sending `Action / Dexterity` to dice
+   rolling and `Stacking and Balancing` to tile laying. A bloc goes where it fits
+   best *per tag already there*, so the biggest genre does not swallow every
+   leftover simply by being nearest to everything.
 
    The axes follow the *corpus*: the committed top-5000 capture yields
    `Action / Dexterity`, `Real-time` and `Deduction · Murder / Mystery`, while a
@@ -292,7 +307,10 @@ Everything lives in `pipeline/config.py`:
 - **Player columns** — `PLAYER_COLUMNS` (label + inclusive count range).
 - **Number of weight rows** — `WEIGHT_ROW_COUNT`. Rows are quantiles of the
   actual population, so they stay balanced whatever you pick.
-- **Feature space** — `GENRE_AXIS_TARGET` (how many genre axes to discover),
+- **Feature space** — `GENRE_LIMIT` (how many genre axes), `GENRE_BASE_RATE`
+  (when a tag is too common to found a genre), `GENRE_GROWTH` (how far a genre
+  may widen from its seed), `GENRE_DISCOVER` (how many to find before pruning),
+  `GENRE_AXIS_TARGET` (the smallest genre worth having),
   `WEIGHT_SCALE` / `PLAYTIME_SCALE` (how much the continuous stats matter vs
   genre).
 - **Coverage** — `QUALITY_FLOOR` (how much the worst-rated game still covers),

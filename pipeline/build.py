@@ -23,13 +23,14 @@ from . import buckets, coverage, dataset
 from .assign import ArchetypeScorer, CoverageScorer, MmrScorer, allocate
 from .config import (
     ALTERNATES_PER_CELL,
+    GENRE_NAME_SEPARATOR,
     OUTPUT_JSON,
     PICKS_PER_CELL,
     PLAYER_COLUMNS,
     SEED_DATASET,
     WEIGHT_ROW_COUNT,
 )
-from .features import build_feature_space
+from .features import build_feature_space, genre_overlap
 
 
 def build(dataset_path, assigner_name):
@@ -128,6 +129,16 @@ def build(dataset_path, assigner_name):
     OUTPUT_JSON.write_text(json.dumps(payload, indent=2))
     print(f"Wrote {OUTPUT_JSON.name} — {len(games)} games, "
           f"{len(payload['cells'])} filled cells ({source} data, {assigner_name} assigner)")
+
+    # Genres are only useful if they ask different questions, so say how far
+    # apart they came out. A worst pair creeping up means axis discovery has
+    # started manufacturing near-duplicates (see features.genre_overlap).
+    overlap = genre_overlap(space)
+    worst, a, b = overlap[0]
+    print(f"  {len(space.dimension_names)} genres, overlap "
+          f"mean {sum(v for v, _, _ in overlap) / len(overlap):.3f}, worst {worst:.3f} "
+          f"({space.dimension_names[a].split(GENRE_NAME_SEPARATOR)[0]} / "
+          f"{space.dimension_names[b].split(GENRE_NAME_SEPARATOR)[0]})")
 
 
 def main():

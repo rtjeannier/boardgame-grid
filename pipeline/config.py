@@ -65,21 +65,67 @@ ALTERNATES_PER_CELL = 6
 # genre dimensions factored out of the mechanic/category matrix, plus weight
 # and playtime. Per-cell selection then maximises coverage of that space.
 
-# How many radar axes to aim for. This is the *only* knob on axis discovery —
-# every other bound derives from it. A spoke should hold roughly one K-th of the
-# population, so `n / K` is the target reach and anything 10x smaller or 10x
-# larger is rejected outright; the cohesion threshold that yields K spokes is
-# then found by binary search rather than set by hand. Raising it to 20 buys
-# `Trick-taking`, `Constrained Bidding` and `Cooperative Game` as their own
-# spokes, at the cost of one same-core pair (see features._harvest_cores).
+# The smallest genre worth having: one tenth of an even share, so
+# `n / GENRE_AXIS_TARGET / 10` games — 33 on the live top 5000. A group of tags
+# reaching fewer than that is not a kind of game, and the search stops when
+# nothing bigger is left. This does *not* set the number of axes; see
+# GENRE_LIMIT.
 GENRE_AXIS_TARGET = 15
 GENRE_TOP_SIGNALS = 3     # signals used to name a dimension for display
 
-# Dimension names join their signals with this. It cannot be " / ": BGG tag
-# names contain that string ("Action / Dexterity", "Murder / Mystery"), and the
-# frontend splits on it to take a spoke's primary label — which would render the
-# dexterity axis as "Action". web/src/{Radar,Detail,Collection}.jsx split on it.
+# Dimension names join their signals with this, and it doubles as the mark
+# between the halves of a compound tag (`Card Game · Hand Management`). It
+# cannot be " / ": BGG tag names contain that string ("Action / Dexterity",
+# "Murder / Mystery"), and the frontend splits on it to take a spoke's primary
+# label — which would render the dexterity axis as "Action".
+# web/src/{Radar,Detail,Collection}.jsx split on it.
 GENRE_NAME_SEPARATOR = " · "
+
+# Joins the two halves of a compound signal. Distinct from the separator above
+# so a genre's name can be built from the distinct tags its signals mention.
+GENRE_COMPOUND = " + "
+
+# How much a genre's signals must actually co-occur, as mean pairwise cosine.
+# The main lever on how many genres come out: at 0.05 the corpus settles at five
+# (dexterity gets folded in with real-time), at 0.10 six, at 0.15 nine, at 0.20
+# ten but only 92% of games end up in any genre at all.
+GENRE_MIN_COHESION = 0.10
+
+# A tag carried by more than this share of the corpus is a base rate, not a kind
+# of game. `Hand Management` marks 1634 of 5000 games and `Card Game` 1483, so
+# any genre founded on one is enormous — left alone they anchor a single genre
+# covering 62% of everything. Such tags are dropped and survive only paired with
+# each other (`Card Game × Hand Management`), which is specific enough to name a
+# kind of game where neither half was. See features._signal_space for why only
+# base x base pairing works and base x ordinary does not.
+GENRE_BASE_RATE = 0.20
+
+# How much of its starting tightness a genre may lose as it grows. Each genre
+# starts from the most cohesive group left and widens while it holds this share
+# of that. Relative because genres differ in how tight they naturally are —
+# `Wargame · Simulation` opens at 0.63 and dexterity at 0.48, so a fixed bar
+# either strangles dexterity or lets the card-game cluster swell to 86% of the
+# corpus.
+GENRE_GROWTH = 0.4
+
+# How many genres to keep. Discovery yields about 18; the rest are pruned by
+# `features._prune_nested`, which drops whichever genre most lives inside
+# another. That order matters: by size or by tightness the small distinctive
+# genres go first (dexterity is 124 games, cohesion 0.48), whereas by
+# containment the redundant sub-genres go — `Modern Warfare` is 94% inside the
+# wargame genre — and dexterity survives all the way down to six.
+#
+# The radar is expected to be lopsided, because the corpus is: at eight the
+# genres run from 50% of all games down to 3%.
+# How many genres to discover before pruning. Left to run, the search keeps
+# splitting until the tag pool empties — about 40 — and the extra genres are
+# real but marginal (`Trivia`, `Move Through Deck`). Discovering more is not
+# free: pruning then has more candidates to keep and drops different ones, and
+# at 24 and 40 the surviving eight lose Economic and Sports to those marginals.
+# Eighteen is where the survivors are the recognisable kinds.
+GENRE_DISCOVER = 18
+
+GENRE_LIMIT = 8
 
 # Contribution of the continuous stats to distances, relative to genre loadings
 # (which are L2-normalised per game). Within a cell weight is nearly constant,

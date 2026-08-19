@@ -7,6 +7,9 @@ const SHORT = {
   'Deck, Bag, and Pool Building': 'Deck Building',
   'Network and Route Building': 'Route Building',
   'Variable Player Powers': 'Player Powers',
+  'Simultaneous Action Selection': 'Simultaneous',
+  'Cooperative Game': 'Co-op',
+  'Area Majority / Influence': 'Area Majority',
 }
 const label = (dim) => {
   const first = primary(dim)
@@ -23,10 +26,18 @@ const label = (dim) => {
 const WRAP = 10
 const wrap = (text) => {
   const lines = []
-  for (const word of text.split(' ')) {
+  for (let word of text.split(' ')) {
+    // A single word longer than the line has to be broken, or it hangs off the
+    // chart however the rest is wrapped. Genre names come from the data, so the
+    // long ones cannot all be anticipated by hand ("Simultaneous").
+    while (word.length > WRAP) {
+      lines.push(`${word.slice(0, WRAP - 1)}-`)
+      word = word.slice(WRAP - 1)
+    }
     const last = lines.length - 1
-    if (last >= 0 && lines[last].length + 1 + word.length <= WRAP) lines[last] += ` ${word}`
-    else lines.push(word)
+    if (last >= 0 && lines[last].length + 1 + word.length <= WRAP && !lines[last].endsWith('-')) {
+      lines[last] += ` ${word}`
+    } else lines.push(word)
   }
   return lines
 }
