@@ -49,6 +49,7 @@ from .config import (
     GENRE_GROWTH,
     GENRE_DISCOVER,
     GENRE_LIMIT,
+    GENRE_INTERACTION,
     GENRE_MIN_COHESION,
     GENRE_MIN_LIFT,
     GENRE_NAME_SEPARATOR,
@@ -327,13 +328,69 @@ def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:
 
     names = list(vocab)
     columns = [incidence[:, j] for j in range(len(vocab))]
+    paired = set()
     for a, first in enumerate(base):
         for second in base[a + 1:]:
             both = incidence[:, first] * incidence[:, second]
             if both.sum() >= floor:
                 names.append(f"{vocab[first]}{GENRE_COMPOUND}{vocab[second]}")
                 columns.append(both)
+                paired.add((first, second))
+
+    for first, second in _interactions(games, incidence, carried, floor):
+        if (first, second) not in paired:
+            names.append(f"{vocab[first]}{GENRE_COMPOUND}{vocab[second]}")
+            columns.append(incidence[:, first] * incidence[:, second])
     return names, np.stack(columns, axis=1)
+
+
+def _interactions(games: list[Game], incidence: np.ndarray,
+                  carried: np.ndarray, floor: float) -> list[tuple[int, int]]:
+    """Tag pairs that mean more together than either tag means alone.
+
+    The base-rate rule above answers "is this tag too broad to be a genre", and
+    pairs those tags to split them. This answers the opposite question — is a
+    specific kind of game hiding inside two ordinary tags, where neither tag
+    names it. `Auction / Bidding` is a grab bag and so is `Network and Route
+    Building`, but together they are the 18xx family.
+
+    Measured as how much tighter the pair's games are than the better parent's,
+    using the same mean-pairwise-cosine cohesion that genre discovery runs on,
+    over `_similarity_space` vectors so a game's core tags decide it. A pair has
+    to clear `GENRE_INTERACTION` and the same shared-game floor as any compound.
+
+    Tags carried by fewer than twice the shared-game floor are not considered.
+    Cohesion over a handful of games is mostly noise, and two tags that small
+    could not clear the floor between them anyway.
+    """
+    vectors = _similarity_space(games)
+    matrix = np.stack([vectors[g.id] for g in games])
+
+    def cohesion(rows: np.ndarray) -> float:
+        """Mean pairwise cosine among these games; O(1) from the vector sum."""
+        size = len(rows)
+        if size < 2:
+            return 0.0
+        total = matrix[rows].sum(axis=0)
+        return (float(total @ total) - size) / (size * (size - 1))
+
+    usable = [j for j in range(incidence.shape[1]) if carried[j] >= floor * 2]
+    alone = {j: cohesion(np.flatnonzero(incidence[:, j] > 0)) for j in usable}
+
+    found = []
+    for first in usable:
+        here = np.flatnonzero(incidence[:, first] > 0)
+        shared = incidence[here].sum(axis=0)
+        sums = incidence[here].T @ matrix[here]    # every partner at once
+        for second in usable:
+            if second <= first or shared[second] < floor:
+                continue
+            size = int(shared[second])
+            together = (float(sums[second] @ sums[second]) - size) / (size * (size - 1))
+            parent = max(alone[first], alone[second])
+            if parent > 0 and together >= GENRE_INTERACTION * parent:
+                found.append((first, second))
+    return found
 
 
 def _harvest_cores(incidence: np.ndarray, target: int) -> list[list[int]]:

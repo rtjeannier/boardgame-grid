@@ -179,6 +179,32 @@ GENRE_BASE_RATE = 0.125
 # stripped of what defines it.
 GENRE_MIN_LIFT = 1.3
 
+# How much tighter a *pair* of tags must be than either tag alone before the
+# pair earns a signal of its own. Base-rate compounds exist to split tags too
+# big to be a genre; this catches the opposite case — a specific kind of game
+# hiding inside two ordinary tags, where neither tag names it.
+#
+# `Auction / Bidding` is a grab bag and so is `Network and Route Building`, but
+# together they are the 18xx family and their games hang together 2.16x better
+# than either parent's do. Likewise `Stock Holding + Trains` at 1.78 and
+# `Deduction + Voting` at 1.89. Measured as mean pairwise similarity among the
+# games carrying both, over the same for whichever parent scores higher.
+#
+# At 1.7 this admits 24 pairs. Four of them are abstract-strategy pairs, and
+# together they found an `Abstract Strategy · Pattern Building` axis — Azul,
+# Patchwork, Cartographers, Sagrada, Go — that the corpus has no room for
+# otherwise. `Puzzle + Real-time` likewise merges the dexterity and real-time
+# families into one axis.
+#
+# Lower is emphatically not better, because a surviving compound is a genre
+# *candidate*, not a refinement: a tag and a compound containing it have high
+# cosine by construction, so every extra pair competes to found an axis. At 1.55
+# Crokinole becomes a party game and mean name-truth falls to 72%, at 1.45 it
+# becomes a voting game at 54%. Replacing the base-rate compounds with these
+# instead of adding to them is worse still (54-71%) — the two rules do different
+# jobs and both are needed.
+GENRE_INTERACTION = 1.7
+
 # Contribution of the continuous stats to distances, relative to genre loadings
 # (which are L2-normalised per game). Within a cell weight is nearly constant,
 # so genre naturally dominates; these keep playtime/weight as mild tiebreakers.

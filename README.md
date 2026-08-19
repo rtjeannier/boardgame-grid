@@ -129,8 +129,19 @@ pick this branch and the **`/docs`** folder. The site goes live at
    anchor one covering most of everything. So every *pair* of such tags also
    becomes a signal (`Card Game + Hand Management`), specific enough to name a
    kind of game where neither half was; several genres exist only because of
-   them. Ordinary tags are left completely alone — pairing them instead shreds
-   them into fragments that only recombine into themselves.
+   them. Ordinary tags are not paired wholesale — doing that shreds them into
+   fragments that only recombine into themselves.
+
+   **A few pairs earn a signal by interaction instead** (`GENRE_INTERACTION`),
+   answering the opposite question: is a specific kind of game hiding inside two
+   *ordinary* tags, where neither names it? A pair qualifies when its games hang
+   together far better than either tag's do alone — `Auction / Bidding` is a
+   grab bag and so is `Network and Route Building`, but together they are the
+   18xx family, 2.16× tighter than either parent. Twenty-four pairs clear the
+   bar, and four of them are abstract-strategy pairs that between them found the
+   `Abstract Strategy · Pattern Building` axis (Azul, Patchwork, Go, Sagrada).
+   The bar is high on purpose: a surviving compound is a genre *candidate*, not
+   a refinement, so every extra pair competes to found an axis.
 
    The base tags are **kept** alongside their compounds. A tag connects every
    game carrying it; a compound connects only games sharing that exact pair, and
