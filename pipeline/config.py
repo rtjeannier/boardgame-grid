@@ -155,8 +155,10 @@ GENRE_DISCOVER = 18
 # the line between "broad kind of game" and "thing games do".
 GENRE_BASE_RATE = 0.125
 
-# How much a signal must beat chance to join a genre at all. Signals that miss
-# are dropped outright rather than filed somewhere they do not belong.
+# How much a signal must beat chance for its assigned genre to be tenable. A
+# signal that misses is re-homed where it does beat chance most, and dropped
+# only if it beats chance *nowhere* — a strictly lower bar, since a home can be
+# a bad one without the signal being worthless.
 #
 # A leftover signal's weight is the share of its games sitting in the genre it
 # joined, and that share was never compared against how big the genre is. The
@@ -177,6 +179,14 @@ GENRE_BASE_RATE = 0.125
 #
 # Genres keep their own founding signals regardless, so a genre can never be
 # stripped of what defines it.
+#
+# Using this same value for the drop was too aggressive. `Dice` is carried by
+# 423 games and its best lift is 1.07 — informative about no genre in
+# particular, but not nothing — and discarding it left roll-and-writes with no
+# signal for what they are. That's Pretty Clever!, Trek 12 and Monza then came
+# out as wargames on the strength of `Dice Rolling + Solo / Solitaire Game`,
+# which is mostly about solo wargames. Dropping only below chance restores four
+# signals, moves six games out of the wargame genre and changes nothing else.
 GENRE_MIN_LIFT = 1.3
 
 # How much tighter a *pair* of tags must be than either tag alone before the

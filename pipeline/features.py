@@ -719,7 +719,14 @@ def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray
             # 4.30. Blocs still move together (see `_unplaced_groups`); this
             # only re-homes what would otherwise leave the bloc entirely.
             axis = int(np.argmax(lift[:, signal]))
-            if lift[axis, signal] < GENRE_MIN_LIFT:
+            # Re-home readily, drop reluctantly. A signal is only worthless if
+            # it beats chance *nowhere*, which is a lower bar than the one that
+            # decides a home is untenable. Holding both to GENRE_MIN_LIFT threw
+            # away `Dice` — 423 games, best lift 1.07 — leaving roll-and-writes
+            # with no signal for what they are, so That's Pretty Clever!, Trek
+            # 12 and Monza came out wargames on the strength of `Dice Rolling +
+            # Solo / Solitaire Game`, which is really about solo wargames.
+            if lift[axis, signal] < 1.0:
                 continue                # fits nowhere: genuinely not evidence
         membership[signal, axis] = shares[axis, signal]
     return membership
