@@ -1,0 +1,881 @@
+{
+  "1|0": [
+    [
+      244522,
+      "That's Pretty Clever!",
+      0.375
+    ],
+    [
+      295947,
+      "Cascadia",
+      0.348
+    ],
+    [
+      370591,
+      "Dorfromantik: The Board Game",
+      0.274
+    ],
+    [
+      429293,
+      "The Lord of the Rings: The Fellowship of the Ring \u2013 Trick-Taking Game",
+      0.193
+    ],
+    [
+      156336,
+      "Onirim (Second Edition)",
+      0.177
+    ]
+  ],
+  "1|1": [
+    [
+      350933,
+      "The Guild of Merchant Explorers",
+      0.396
+    ],
+    [
+      306735,
+      "Under Falling Skies",
+      0.331
+    ],
+    [
+      420033,
+      "Vantage",
+      0.31
+    ],
+    [
+      43570,
+      "Friday",
+      0.228
+    ],
+    [
+      281259,
+      "The Isle of Cats",
+      0.221
+    ]
+  ],
+  "1|2": [
+    [
+      356123,
+      "Turing Machine",
+      0.602
+    ],
+    [
+      277659,
+      "Final Girl",
+      0.548
+    ],
+    [
+      183394,
+      "Viticulture Essential Edition",
+      0.305
+    ],
+    [
+      146652,
+      "Legendary Encounters: An Alien Deck Building Game",
+      0.26
+    ],
+    [
+      198928,
+      "Iberia",
+      0.201
+    ]
+  ],
+  "1|3": [
+    [
+      285774,
+      "Marvel Champions: The Card Game",
+      0.737
+    ],
+    [
+      304783,
+      "Hadrian's Wall",
+      0.499
+    ],
+    [
+      255984,
+      "Sleeping Gods",
+      0.451
+    ],
+    [
+      312484,
+      "Lost Ruins of Arnak",
+      0.361
+    ],
+    [
+      216132,
+      "Clans of Caledonia",
+      0.244
+    ]
+  ],
+  "1|4": [
+    [
+      177736,
+      "A Feast for Odin",
+      0.687
+    ],
+    [
+      162886,
+      "Spirit Island",
+      0.649
+    ],
+    [
+      192135,
+      "Too Many Bones",
+      0.541
+    ],
+    [
+      337627,
+      "Voidfall",
+      0.448
+    ],
+    [
+      247763,
+      "Underwater Cities",
+      0.303
+    ]
+  ],
+  "2|0": [
+    [
+      521,
+      "Crokinole",
+      0.825
+    ],
+    [
+      165722,
+      "KLASK",
+      0.73
+    ],
+    [
+      294484,
+      "Unmatched: Cobble & Fog",
+      0.492
+    ],
+    [
+      224037,
+      "Codenames: Duet",
+      0.425
+    ],
+    [
+      158600,
+      "Hanamikoji",
+      0.419
+    ]
+  ],
+  "2|1": [
+    [
+      421006,
+      "The Lord of the Rings: Duel for Middle-earth",
+      0.819
+    ],
+    [
+      373106,
+      "Sky Team",
+      0.726
+    ],
+    [
+      268864,
+      "Undaunted: Normandy",
+      0.583
+    ],
+    [
+      2655,
+      "Hive",
+      0.468
+    ],
+    [
+      374173,
+      "Star Wars: The Deckbuilding Game",
+      0.439
+    ]
+  ],
+  "2|2": [
+    [
+      279537,
+      "The Search for Planet X",
+      0.749
+    ],
+    [
+      157354,
+      "Five Tribes: The Djinns of Naqala",
+      0.696
+    ],
+    [
+      191189,
+      "Aeon's End",
+      0.545
+    ],
+    [
+      366161,
+      "Wingspan Asia",
+      0.5
+    ],
+    [
+      14105,
+      "Commands & Colors: Ancients",
+      0.418
+    ]
+  ],
+  "2|3": [
+    [
+      338960,
+      "Slay the Spire: The Board Game",
+      0.872
+    ],
+    [
+      84876,
+      "The Castles of Burgundy",
+      0.796
+    ],
+    [
+      124742,
+      "Android: Netrunner",
+      0.655
+    ],
+    [
+      231733,
+      "Obsession",
+      0.577
+    ],
+    [
+      182874,
+      "Grand Austria Hotel",
+      0.525
+    ]
+  ],
+  "2|4": [
+    [
+      342942,
+      "Ark Nova",
+      0.998
+    ],
+    [
+      115746,
+      "War of the Ring: Second Edition",
+      0.912
+    ],
+    [
+      205637,
+      "Arkham Horror: The Card Game",
+      0.746
+    ],
+    [
+      12333,
+      "Twilight Struggle",
+      0.703
+    ],
+    [
+      187645,
+      "Star Wars: Rebellion",
+      0.61
+    ]
+  ],
+  "3|0": [
+    [
+      233867,
+      "Welcome To...",
+      0.606
+    ],
+    [
+      230802,
+      "Azul",
+      0.555
+    ],
+    [
+      329839,
+      "So Clover!",
+      0.365
+    ],
+    [
+      148228,
+      "Splendor",
+      0.341
+    ],
+    [
+      298047,
+      "Marvel United",
+      0.284
+    ]
+  ],
+  "3|1": [
+    [
+      414317,
+      "Harmonies",
+      0.734
+    ],
+    [
+      293014,
+      "Nidavellir",
+      0.433
+    ],
+    [
+      242302,
+      "Space Base",
+      0.39
+    ],
+    [
+      140934,
+      "Arboretum",
+      0.343
+    ],
+    [
+      266524,
+      "Parks",
+      0.368
+    ]
+  ],
+  "3|2": [
+    [
+      365717,
+      "Clank!: Catacombs",
+      0.685
+    ],
+    [
+      253344,
+      "Cthulhu: Death May Die",
+      0.625
+    ],
+    [
+      284653,
+      "Mind MGMT: The Psychic Espionage \u201cGame.\u201d",
+      0.546
+    ],
+    [
+      132531,
+      "Roll for the Galaxy",
+      0.4
+    ],
+    [
+      155426,
+      "Castles of Mad King Ludwig",
+      0.341
+    ]
+  ],
+  "3|3": [
+    [
+      316554,
+      "Dune: Imperium",
+      0.95
+    ],
+    [
+      167791,
+      "Terraforming Mars",
+      0.824
+    ],
+    [
+      367966,
+      "Endeavor: Deep Sea",
+      0.613
+    ],
+    [
+      436217,
+      "The Lord of the Rings: Fate of the Fellowship",
+      0.53
+    ],
+    [
+      42,
+      "Tigris & Euphrates",
+      0.385
+    ]
+  ],
+  "3|4": [
+    [
+      174430,
+      "Gloomhaven",
+      0.998
+    ],
+    [
+      182028,
+      "Through the Ages: A New Story of Civilization",
+      0.866
+    ],
+    [
+      418059,
+      "SETI: Search for Extraterrestrial Intelligence",
+      0.794
+    ],
+    [
+      284378,
+      "Kanban EV",
+      0.62
+    ],
+    [
+      220308,
+      "Gaia Project",
+      0.573
+    ]
+  ],
+  "4|0": [
+    [
+      244521,
+      "Quacks",
+      0.686
+    ],
+    [
+      413246,
+      "Bomb Busters",
+      0.662
+    ],
+    [
+      217372,
+      "The Quest for El Dorado",
+      0.423
+    ],
+    [
+      342070,
+      "Thunder Road: Vendetta",
+      0.364
+    ],
+    [
+      178900,
+      "Codenames",
+      0.346
+    ]
+  ],
+  "4|1": [
+    [
+      324856,
+      "The Crew: Mission Deep Sea",
+      0.785
+    ],
+    [
+      12,
+      "Ra",
+      0.695
+    ],
+    [
+      271324,
+      "It's a Wonderful World",
+      0.403
+    ],
+    [
+      295486,
+      "My City",
+      0.342
+    ],
+    [
+      110327,
+      "Lords of Waterdeep",
+      0.336
+    ]
+  ],
+  "4|2": [
+    [
+      161936,
+      "Pandemic Legacy: Season 1",
+      0.999
+    ],
+    [
+      266507,
+      "Clank! Legacy: Acquisitions Incorporated",
+      0.723
+    ],
+    [
+      205059,
+      "Mansions of Madness: Second Edition",
+      0.536
+    ],
+    [
+      220877,
+      "Rajas of the Ganges",
+      0.436
+    ],
+    [
+      155821,
+      "Inis",
+      0.381
+    ]
+  ],
+  "4|3": [
+    [
+      124361,
+      "Concordia",
+      0.805
+    ],
+    [
+      169786,
+      "Scythe",
+      0.734
+    ],
+    [
+      170216,
+      "Blood Rage",
+      0.663
+    ],
+    [
+      3076,
+      "Puerto Rico",
+      0.654
+    ],
+    [
+      122515,
+      "Keyflower",
+      0.546
+    ]
+  ],
+  "4|4": [
+    [
+      224517,
+      "Brass: Birmingham",
+      1.0
+    ],
+    [
+      237182,
+      "Root",
+      0.782
+    ],
+    [
+      321608,
+      "Hegemony: Lead Your Class to Victory",
+      0.723
+    ],
+    [
+      251661,
+      "Oathsworn: Into the Deepwood",
+      0.544
+    ],
+    [
+      102794,
+      "Caverna: The Cave Farmers",
+      0.664
+    ]
+  ],
+  "5|0": [
+    [
+      318243,
+      "Hitster",
+      0.54
+    ],
+    [
+      254640,
+      "Just One",
+      0.446
+    ],
+    [
+      260605,
+      "Camel Up (Second Edition)",
+      0.372
+    ],
+    [
+      192291,
+      "Sushi Go Party!",
+      0.318
+    ],
+    [
+      172,
+      "For Sale",
+      0.28
+    ]
+  ],
+  "5|1": [
+    [
+      366013,
+      "Heat: Pedal to the Metal",
+      0.763
+    ],
+    [
+      68448,
+      "7 Wonders",
+      0.505
+    ],
+    [
+      118,
+      "Modern Art",
+      0.375
+    ],
+    [
+      245655,
+      "The King's Dilemma",
+      0.273
+    ],
+    [
+      356033,
+      "Libertalia: Winds of Galecrest",
+      0.246
+    ]
+  ],
+  "5|2": [
+    [
+      390092,
+      "Ticket to Ride Legacy: Legends of the West",
+      0.602
+    ],
+    [
+      39463,
+      "Cosmic Encounter",
+      0.502
+    ],
+    [
+      54998,
+      "Cyclades",
+      0.375
+    ],
+    [
+      246684,
+      "Smartphone Inc.",
+      0.249
+    ],
+    [
+      18,
+      "RoboRally",
+      0.221
+    ]
+  ],
+  "5|3": [
+    [
+      93,
+      "El Grande",
+      0.673
+    ],
+    [
+      37111,
+      "Battlestar Galactica: The Board Game",
+      0.561
+    ],
+    [
+      38453,
+      "Space Alert",
+      0.478
+    ],
+    [
+      164153,
+      "Star Wars: Imperial Assault",
+      0.466
+    ],
+    [
+      43015,
+      "Hansa Teutonica",
+      0.452
+    ]
+  ],
+  "5|4": [
+    [
+      167355,
+      "Nemesis",
+      0.753
+    ],
+    [
+      246900,
+      "Eclipse: Second Dawn for the Galaxy",
+      0.469
+    ],
+    [
+      4098,
+      "Age of Steam",
+      0.436
+    ],
+    [
+      332686,
+      "John Company: Second Edition",
+      0.394
+    ],
+    [
+      18602,
+      "Caylus",
+      0.22
+    ]
+  ],
+  "6-8|0": [
+    [
+      225694,
+      "Decrypto",
+      0.84
+    ],
+    [
+      150145,
+      "Skull King",
+      0.386
+    ],
+    [
+      454103,
+      "Magical Athlete",
+      0.362
+    ],
+    [
+      150,
+      "PitchCar",
+      0.23
+    ],
+    [
+      158899,
+      "Colt Express",
+      0.213
+    ]
+  ],
+  "6-8|1": [
+    [
+      171131,
+      "Captain Sonar",
+      0.79
+    ],
+    [
+      258779,
+      "Planet Unknown",
+      0.288
+    ],
+    [
+      302723,
+      "Forgotten Waters",
+      0.208
+    ],
+    [
+      46,
+      "Medici",
+      0.195
+    ],
+    [
+      295374,
+      "Long Shot: The Dice Game",
+      0.194
+    ]
+  ],
+  "6-8|2": [
+    [
+      339789,
+      "Welcome to the Moon",
+      0.389
+    ],
+    [
+      15062,
+      "Shadows over Camelot",
+      0.223
+    ],
+    [
+      197376,
+      "Charterstone",
+      0.201
+    ],
+    [
+      162007,
+      "Steampunk Rally",
+      0.123
+    ],
+    [
+      5,
+      "Acquire",
+      0.119
+    ]
+  ],
+  "6-8|3": [
+    [
+      397598,
+      "Dune: Imperium \u2013 Uprising",
+      0.4
+    ],
+    [
+      2651,
+      "Power Grid",
+      0.31
+    ],
+    [
+      121,
+      "Dune",
+      0.213
+    ],
+    [
+      133848,
+      "Euphoria: Build a Better Dystopia",
+      0.122
+    ],
+    [
+      17133,
+      "Railways of the World",
+      0.104
+    ]
+  ],
+  "6-8|4": [
+    [
+      233078,
+      "Twilight Imperium: Fourth Edition",
+      0.977
+    ],
+    [
+      103343,
+      "A Game of Thrones: The Board Game (Second Edition)",
+      0.386
+    ],
+    [
+      62219,
+      "Dominant Species",
+      0.307
+    ],
+    [
+      71,
+      "Civilization",
+      0.213
+    ],
+    [
+      421,
+      "1830: Railways & Robber Barons",
+      0.182
+    ]
+  ],
+  "8+|0": [
+    [
+      156546,
+      "Monikers",
+      0.751
+    ],
+    [
+      351040,
+      "Ready Set Bet",
+      0.201
+    ],
+    [
+      188834,
+      "Secret Hitler",
+      0.131
+    ],
+    [
+      432,
+      "Take 5",
+      0.114
+    ],
+    [
+      153016,
+      "Telestrations: 12 Player Party Pack",
+      0.066
+    ]
+  ],
+  "8+|1": [
+    [
+      271601,
+      "Feed the Kraken",
+      0.34
+    ],
+    [
+      37904,
+      "Formula D",
+      0.111
+    ],
+    [
+      315767,
+      "Cartographers Heroes",
+      0.082
+    ],
+    [
+      51,
+      "Ricochet Robots",
+      0.032
+    ]
+  ],
+  "8+|2": [],
+  "8+|3": [
+    [
+      240980,
+      "Blood on the Clocktower",
+      0.979
+    ],
+    [
+      267609,
+      "Guards of Atlantis II",
+      0.119
+    ]
+  ],
+  "8+|4": [
+    [
+      202426,
+      "Sidereal Confluence",
+      0.193
+    ]
+  ]
+}

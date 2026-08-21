@@ -6,3 +6,6 @@ numpy>=1.26
 scipy>=1.11
 scikit-learn>=1.4
 requests>=2.31
+
+# Tests: golden selection output + the report metrics (pytest tests/).
+pytest>=8.0

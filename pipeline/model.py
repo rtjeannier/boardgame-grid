@@ -44,11 +44,12 @@ class Game:
     # All three are needed because Best alone is a preference ordering, not a
     # verdict on a count — see buckets.player_memberships.
     player_poll: dict[int, list[int]]
-    # How many people have rated the game — a proxy for how hard BGG's tagging
-    # has been looked at. Tag count tracks popularity (rank vs tag count
-    # correlates -0.35), so a sparsely-tagged game is usually unread rather than
-    # genuinely simple; features.py uses this to decide how much of a game's
-    # claimed genre split to believe.
+    # How many people have rated the game. Nothing in the pipeline reads it:
+    # it once weighted how much of a game's claimed genre split to believe, and
+    # that use was removed in c211708 when genre axes moved to tag
+    # co-occurrence. Kept because it is what tells a reader whether a rating is
+    # worth anything — 8.4 from 60,000 voters and 8.4 from 300 are not the same
+    # claim — and the frontend should say so.
     users_rated: int
 
     @property

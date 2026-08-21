@@ -67,6 +67,45 @@ python -m pipeline.build --assigner mmr      # distance-based alternative
 python -m pipeline.build --assigner greedy   # archetype-taxonomy baseline
 ```
 
+**Measure a change (the four numbers):**
+
+```bash
+python -m pipeline.build --report                 # seed data
+python -m pipeline.build --report --dataset data/games.json
+python -m pipeline.build --output /tmp/grid.json  # measure without touching the committed grid
+```
+
+Every genre or selection change in this repo is judged on the same four numbers,
+so comparisons hold across changes:
+
+- **Cohesion** — do a genre's games actually resemble each other, as a multiple
+  of the corpus null? The unbiased one: it does not care what a genre is called.
+- **Name-truth** — does a genre's leading tag describe its members? Measured per
+  *axis*, since a spoke sums several axes and is named after one of them.
+  Biased toward genres named after one dominant tag, which is why cohesion sits
+  beside it.
+- **Median pick rank**, and how much of the shelf sits past #1000.
+- **Slots filled.**
+
+Four canaries — Ark Nova, Terraforming Mars, Wingspan, Brass: Birmingham — are
+reported alongside as a smoke test. A canary dropping out can be *correct*:
+Terraforming Mars is 0.740 similar to Gaia Project, already shelved, and
+`COLLECTION_WEIGHT` exists precisely to make a second heavy engine-builder less
+welcome. Check why before treating it as a regression. `tests/golden/baseline.md`
+records the current reading for both datasets.
+
+**Run the tests:**
+
+```bash
+pytest tests/                        # ~5s, seed dataset only
+python -m tests.regenerate_golden    # after a change that is *meant* to move picks
+```
+
+`tests/golden/seed_picks.json` pins what every cell shelves and what it was
+worth. Everything runs against the seed, because `data/games.json`,
+`data/cache/` and `boardgames_ranks.csv` are gitignored and the seed is the only
+dataset a fresh clone can reproduce.
+
 **Build or evaluate a collection (the Collection tab):**
 
 ```bash

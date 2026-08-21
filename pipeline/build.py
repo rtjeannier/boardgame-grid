@@ -18,6 +18,7 @@ with no axes at all to search the whole space.
 
 import argparse
 import json
+from pathlib import Path
 
 import numpy as np
 
@@ -33,9 +34,10 @@ from .config import (
     WEIGHT_ROW_COUNT,
 )
 from .features import build_feature_space, genre_overlap
+from .report import build_report, format_report
 
 
-def build(dataset_path, assigner_name):
+def build(dataset_path, assigner_name, want_report=False, output=None):
     source, generated_at, games = dataset.load_dataset(dataset_path)
     space = build_feature_space(games)
     weight_rows = buckets.build_weight_rows([g.weight for g in games], WEIGHT_ROW_COUNT)
@@ -131,9 +133,10 @@ def build(dataset_path, assigner_name):
         ],
     }
 
-    OUTPUT_JSON.parent.mkdir(parents=True, exist_ok=True)
-    OUTPUT_JSON.write_text(json.dumps(payload, indent=2))
-    print(f"Wrote {OUTPUT_JSON.name} — {len(games)} games, "
+    output = Path(output) if output else OUTPUT_JSON
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(payload, indent=2))
+    print(f"Wrote {output.name} — {len(games)} games, "
           f"{len(payload['cells'])} filled cells ({source} data, {assigner_name} assigner)")
 
     # Genres are only useful if they ask different questions, so say how far
@@ -146,6 +149,13 @@ def build(dataset_path, assigner_name):
           f"({space.dimension_names[a].split(GENRE_NAME_SEPARATOR)[0]} / "
           f"{space.dimension_names[b].split(GENRE_NAME_SEPARATOR)[0]})")
 
+    if want_report:
+        print()
+        print(format_report(build_report(space, games, results,
+                                         PICKS_PER_CELL, source)))
+
+    return payload
+
 
 def main():
     parser = argparse.ArgumentParser(description="Build the board-game grid JSON from a dataset.")
@@ -153,8 +163,14 @@ def main():
                         help="dataset file to build from (default: the seed proxy)")
     parser.add_argument("--assigner", choices=["coverage", "mmr", "greedy"], default="coverage",
                         help="per-cell selection strategy (default: probabilistic coverage)")
+    parser.add_argument("--report", action="store_true",
+                        help="print the four numbers this repo judges changes on")
+    parser.add_argument("--output", default=None,
+                        help="where to write the grid (default: web/public/grid.json). "
+                             "Point it elsewhere to measure without touching the "
+                             "committed artifact.")
     args = parser.parse_args()
-    build(args.dataset, args.assigner)
+    build(args.dataset, args.assigner, want_report=args.report, output=args.output)
 
 
 if __name__ == "__main__":
