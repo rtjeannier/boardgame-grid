@@ -11,12 +11,14 @@ export { ratingSpans, coverageWeights } from './quality.js';
 export { buildWeightRows, buildCells } from './membership.js';
 export { CoverageScorer } from './scorer.js';
 export { allocate } from './allocate.js';
+export { toGridData } from './present.js';
 
 import { indexContract } from './contract.js';
 import { ratingSpans, coverageWeights } from './quality.js';
 import { buildWeightRows, buildCells } from './membership.js';
 import { CoverageScorer } from './scorer.js';
 import { allocate } from './allocate.js';
+import { toGridData } from './present.js';
 
 export const DEFAULT_COLUMNS = [
   { label: '1', lo: 1, hi: 1 }, { label: '2', lo: 2, hi: 2 },
@@ -72,6 +74,7 @@ export function buildGrid(contract, {
   const ownedRows = new Set(rowsOf(owned));
   return {
     ix, rows, cells: results,
+    data: toGridData(ix, results, cells, rows, columns),
     grid: results.map((cell) => ({
       ...cell,
       picks: cell.picks.map((g, i) => ({

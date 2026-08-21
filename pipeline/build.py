@@ -202,7 +202,7 @@ def main():
     args = parser.parse_args()
     build(args.dataset, args.assigner, want_report=args.report,
           output=args.output, params=Params.load(args.config),
-          contract_path=(args.contract or None) if args.contract is not None else None)
+          contract_path=args.contract)
 
 
 if __name__ == "__main__":

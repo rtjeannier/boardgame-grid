@@ -4,7 +4,7 @@ import { primary } from './genres.js'
 
 // The grid itself: player count across the top, complexity down the side.
 // Rows are drawn heaviest-first so complexity rises as you scan upward.
-export default function Grid({ data, active, selected, onSelect }) {
+export default function Grid({ data, active, selected, onSelect, owned = new Set() }) {
   const { playerColumns, weightRows, genreDimensions } = data.meta
   const rowsTopDown = [...weightRows].reverse()
 
@@ -40,6 +40,7 @@ export default function Grid({ data, active, selected, onSelect }) {
                 <Cell
                   key={col}
                   cell={cell}
+                  owned={owned}
                   genres={genreDimensions}
                   active={active}
                   selected={isSelected}
@@ -54,23 +55,38 @@ export default function Grid({ data, active, selected, onSelect }) {
   )
 }
 
-function Cell({ cell, genres, active, selected, onSelect }) {
+function Cell({ cell, genres, active, selected, onSelect, owned }) {
   if (!cell) return <div className="cell cell--empty" />
 
   const extra = cell.candidateCount - cell.assignments.length
+  const mine = cell.assignments.filter(({ game }) => owned.has(game.id)).length
+  // Once a shelf is loaded, what a cell is missing matters more than what it
+  // holds: the gap is how many of its slots hold nothing the reader owns.
+  const gap = owned.size ? cell.assignments.length - mine : 0
+
   return (
     <button className={`cell ${selected ? 'cell--selected' : ''}`} onClick={onSelect}>
       {cell.assignments.map(({ game }) => {
         const dim = active.size > 0 && !active.has(game.genre)
+        const have = owned.has(game.id)
         return (
-          <span key={game.id} className={`pick ${dim ? 'pick--dim' : ''}`}
-            title={`${primary(game.genre ?? '—')} · weight ${game.weight}`}>
+          <span key={game.id}
+            className={`pick ${dim ? 'pick--dim' : ''} ${have ? 'pick--owned' : ''}`}
+            title={`${primary(game.genre ?? '—')} · weight ${game.weight}` +
+              (have ? ' · on your shelf' : '')}>
             <span className="dot" style={{ background: colorFor(game.genre, genres) }} />
             <span className="pick__name">{game.name}</span>
           </span>
         )
       })}
-      {extra > 0 && <span className="cell__more">+{extra} more</span>}
+      <span className="cell__foot">
+        {owned.size > 0 && (
+          <span className={`cell__gap ${gap === 0 ? 'cell__gap--full' : ''}`}>
+            {gap === 0 ? 'all yours' : `${gap} to fill`}
+          </span>
+        )}
+        {extra > 0 && <span className="cell__more">+{extra} more</span>}
+      </span>
     </button>
   )
 }

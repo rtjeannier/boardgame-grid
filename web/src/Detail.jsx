@@ -9,7 +9,7 @@ import { primary } from './genres.js'
 // games that lost their slot. Games (picks and alternates alike) are
 // multi-selectable: the radar draws the selection's combined coverage from
 // the origin, or each game as its own overlaid polygon.
-export default function Detail({ cell, meta, active, onClose }) {
+export default function Detail({ cell, meta, active, onClose, owned = new Set(), onBan, onOwn }) {
   const row = meta.weightRows.find((r) => r.index === cell.row)
   const dims = meta.genreDimensions
   const [selected, setSelected] = useState(() => new Set())
@@ -74,6 +74,7 @@ export default function Detail({ cell, meta, active, onClose }) {
               <span className="dot" style={{ background: colorFor(game.genre, meta.genreDimensions) }} />
               <div className="detail__game">
                 <a href={game.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{game.name}</a>
+                {owned.has(game.id) && <span className="tag tag--owned">yours</span>}
                 <span className="muted">
                   {primary(game.genre ?? '—')}
                   {gain != null && ` · +${gain.toFixed(2)} coverage`}
@@ -81,6 +82,18 @@ export default function Detail({ cell, meta, active, onClose }) {
                 <Genres genres={game.genres} />
                 <Stats game={game} />
               </div>
+              <span className="detail__actions">
+                {onOwn && (
+                  <button className="chipbtn" title="I own this"
+                    onClick={(e) => { e.stopPropagation(); onOwn(game.id) }}>
+                    {owned.has(game.id) ? '− shelf' : '+ shelf'}
+                  </button>
+                )}
+                {onBan && (
+                  <button className="chipbtn chipbtn--ban" title="Never suggest this"
+                    onClick={(e) => { e.stopPropagation(); onBan(game.id) }}>✕</button>
+                )}
+              </span>
             </li>
           )
         })}
@@ -95,6 +108,7 @@ export default function Detail({ cell, meta, active, onClose }) {
                 <span className="dot dot--muted" />
                 <div className="detail__game">
                   <a href={game.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{game.name}</a>
+                {owned.has(game.id) && <span className="tag tag--owned">yours</span>}
                   <Stats game={game} />
                 </div>
               </li>

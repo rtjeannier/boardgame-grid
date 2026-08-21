@@ -22,10 +22,8 @@ data/boardgames_ranks.csv
 # The built site (docs/) and web/public/grid.json ARE committed on purpose:
 # GitHub Pages serves docs/, and the grid JSON is the reviewable output.
 
-# The built contract is a generated artifact, like grid.json — but far larger
-# (~2 MB) and rebuilt by every `build --contract`, so unlike grid.json it is not
-# worth committing. The parity fixtures under tests/parity/ ARE committed: they
-# are the seed-scale inputs the JS engine is measured against, and a fresh clone
-# cannot regenerate them without a live capture.
-web/public/grid.contract.json
-docs/grid.contract.json
+# web/public/grid.contract.json is committed for the same reason grid.json is:
+# the site is what GitHub Pages serves, and the contract is now the data it runs
+# on. It is also built from the live capture, which is gitignored, so a fresh
+# clone could not regenerate it. The parity fixtures under tests/parity/ are
+# committed for the same reason at seed scale.

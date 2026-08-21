@@ -108,7 +108,7 @@ worth. Everything runs against the seed, because `data/games.json`,
 `data/cache/` and `boardgames_ranks.csv` are gitignored and the seed is the only
 dataset a fresh clone can reproduce.
 
-**Build or evaluate a collection (the Collection tab):**
+**Build or evaluate a collection from the command line:**
 
 ```bash
 python -m pipeline.collection --anchors "CATAN" --size 15   # fill around anchors
@@ -147,6 +147,37 @@ npm install
 npm run build        # emits the static site into ../docs
 npm run dev          # or run it locally with hot reload
 ```
+
+## Your shelf
+
+The site's second tab is the reader's own collection. Drop a BoardGameGeek CSV
+export on it — matching is by `objectid`, so nothing hinges on spelling — and
+the grid sorts what you own into four answers:
+
+- **Earned their slot** — beat everything else for a cell they reach.
+- **Kept regardless** — pinned by you, whatever the maths says.
+- **Cut** — you own it and something else won every cell it reaches. Often a
+  second edition, or a game a near-neighbour already covers.
+- **Suggested** — worth acquiring, per cell.
+
+Owning a game is deliberately *not* pinning it. Pin the whole collection and the
+cut list is empty by construction: the grid agrees with whatever you already have
+and can tell you nothing. So owned games compete like any other, and only
+keepers are pinned.
+
+A working import leaves rows unmatched, which is why they are classified rather
+than counted: expansions are excluded from the corpus by construction — BGG ranks
+them in a separate subtype, so none of the 39,585 in the ranks dump carries a
+main-list rank. A shelf of forty games and thirty expansions leaves thirty rows
+unmatched with nothing wrong.
+
+Games can also be **banned** — X one out of the grid, and selection re-runs
+without it. Usually one cell changes; occasionally more, when the banned game was
+holding near-duplicates off the shelf. Banning beats keeping, so banning
+something you own is how you say you want rid of it.
+
+Everything the reader sets — axes, depth, genre weights, shelf, bans — lives in
+`localStorage` and in the page's URL, so a configured grid can be sent to someone.
 
 ## The contract, and the engine on the other side of it
 
@@ -482,7 +513,7 @@ dataset instead of one cell:
 - **Gaps**: any genre axis still under 50% covered is reported with the three
   best games to fill it. `--evaluate` skips the filling and just audits the
   anchors — "what does my shelf cover, what's missing?"
-- **Unique contribution** (shown as a bar in the Collection tab): how much
+- **Unique contribution**: how much
   total coverage would vanish if a game were removed. There is deliberately
   no hard guard against later picks crowding out an anchor — instead the
   anchor's shrinking bar makes the redundancy visible, and you decide.

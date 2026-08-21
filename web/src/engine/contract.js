@@ -61,6 +61,7 @@ export function indexContract(contract) {
   const rating = new Float64Array(n);
   const weight = new Float64Array(n);
   const names = new Array(n);
+  const xy = new Float64Array(n * 2);
   const rowOf = new Map();
 
   for (let i = 0; i < n; i++) {
@@ -68,6 +69,7 @@ export function indexContract(contract) {
     ids[i] = g.id; rank[i] = g.rank; year[i] = g.year;
     usersRated[i] = g.usersRated; playtime[i] = g.playtime;
     rating[i] = g.rating; weight[i] = g.weight; names[i] = g.name;
+    xy[i * 2] = g.xy[0]; xy[i * 2 + 1] = g.xy[1];
     rowOf.set(g.id, i);
   }
 
@@ -109,7 +111,7 @@ export function indexContract(contract) {
 
   return {
     n, nAxes, simDims,
-    ids, rowOf, names, rank, year, rating, usersRated, weight, playtime,
+    ids, rowOf, names, rank, year, rating, usersRated, weight, playtime, xy,
     embedding, sim, playerFit, kin, thin,
     postings: invert(sim, n, simDims),
     groupOf, ratingLo, ratingHi, axisNames,
