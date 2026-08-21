@@ -97,8 +97,10 @@ records the current reading for both datasets.
 **Run the tests:**
 
 ```bash
-pytest tests/                        # ~5s, seed dataset only
+pytest tests/                        # ~35s, seed dataset only
+cd web && npm test                   # JS engine vs Python, 13 cases
 python -m tests.regenerate_golden    # after a change that is *meant* to move picks
+python -m tests.parity.generate      # ...and to refresh the JS fixtures
 ```
 
 `tests/golden/seed_picks.json` pins what every cell shelves and what it was
@@ -145,6 +147,30 @@ npm install
 npm run build        # emits the static site into ../docs
 npm run dev          # or run it locally with hot reload
 ```
+
+## The contract, and the engine on the other side of it
+
+Selection has to re-run in the browser — change a genre weight or ban a game and
+the grid moves — while the model stays offline in Python. So `pipeline/contract.py`
+emits one file, and `web/src/engine/` reads it:
+
+```bash
+python -m pipeline.build --dataset data/games.json --contract
+```
+
+The rule that keeps the model replaceable is that the contract carries **resolved
+quantities, never the knobs that produced them**. The interface computes a game's
+quality from its rating and its genre's rating span; it never learns a
+`quality_exponent` exists. A different model — text embeddings, an LLM taxonomy, a
+hand-written list — fills the same shape without the interface noticing.
+
+Two implementations of one formula drift, so `web/test/parity.test.js` runs the JS
+engine over the same inputs Python used and asserts the same games in the same
+order, across thirteen configurations. Both sides read the *quantised* numbers the
+contract carries: asking the browser to reproduce precision it was never given is
+asking for something neither engine can deliver.
+
+Live capture: 2.0 MB raw, ~600 KB gzipped, and a full recompute in ~120 ms.
 
 ## Publish on GitHub Pages
 

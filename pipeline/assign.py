@@ -97,7 +97,8 @@ class CoverageScorer:
 
     def __init__(self, loadings: dict, similarity: dict | None, ratings: dict[int, float],
                  spoke_of: list[int] | None = None,
-                 sel: Selection = DEFAULTS.selection):
+                 sel: Selection = DEFAULTS.selection,
+                 axis_room: np.ndarray | None = None):
         self.loadings = loadings
         self.similarity = similarity
         # A game's strongest genre — the kind it counts as for the one-per-cell
@@ -130,6 +131,19 @@ class CoverageScorer:
         # coverage.genre_quality.
         self.sel = sel
         self.genre = coverage.genre_weights(loadings, ratings, sel)
+        # How much space each axis offers. A reader who discounts a genre gets a
+        # *shorter spoke*: a game filling it fills less, and at zero there is
+        # nothing there to gain.
+        #
+        # Never scaled loadings. `take` reduces `uncovered` by what a game
+        # covers, so scaling a disliked genre's loadings makes that axis fill
+        # more slowly — it stays the emptiest region of the chart and the
+        # allocator chases it, which is the opposite of what was asked. It would
+        # also move peak-relative genre membership, and with it every genre's
+        # rating span, corrupting quality everywhere with nothing to flag it.
+        n_axes = len(next(iter(loadings.values())))
+        self.axis_room = (np.ones(n_axes) if axis_room is None
+                          else np.asarray(axis_room, dtype=float))
 
     def begin(self, cells, memberships):
         self.weights = {}
@@ -166,8 +180,7 @@ class CoverageScorer:
             self.pool_kind[key] = np.array([self.primary[g.id] for g in pool],
                                            dtype=np.int64)
             self.pool_memb[key] = np.array([memberships[(key, g.id)] for g in pool])
-        n_axes = len(next(iter(self.loadings.values())))
-        self.uncovered = {key: np.ones(n_axes) for key in cells}
+        self.uncovered = {key: self.axis_room.copy() for key in cells}
         self.chosen = {key: [] for key in cells}
         self.kinds = {key: set() for key in cells}
         self.shelved = []               # every id placed anywhere, for the below
@@ -387,7 +400,7 @@ class CoverageScorer:
         self._shelf_cols = [self._shelf_cols[i] for i in keep]
 
     def reset_cell(self, key):
-        self.uncovered[key] = np.ones(len(self.uncovered[key]))
+        self.uncovered[key] = self.axis_room.copy()
         for gid in self.chosen[key]:
             if gid in self.shelved:
                 self.shelved.remove(gid)

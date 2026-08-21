@@ -101,6 +101,23 @@ class Collection:
             out[key] = min(caps)
         return out
 
+    def axis_room(self, spoke_names: list[str], spoke_of) -> "list[float] | None":
+        """Per axis, how much space its spoke offers. `None` when untouched.
+
+        Weights are set per *spoke* because that is what a reader can reason
+        about — twelve named families, against seventy-seven mined axes.
+        """
+        if not self.genre_weights:
+            return None
+        by_index = {i: float(self.genre_weights[name])
+                    for i, name in enumerate(spoke_names)
+                    if name in self.genre_weights}
+        unknown = set(self.genre_weights) - set(spoke_names)
+        if unknown:
+            raise ValueError(
+                f"unknown genre(s) in genre_weights: {', '.join(sorted(unknown))}")
+        return [by_index.get(int(s), 1.0) for s in spoke_of]
+
     def columns(self) -> list[dict]:
         """Back into the shape `buckets.PlayerCountAxis` expects.
 

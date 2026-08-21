@@ -25,7 +25,7 @@ import numpy as np
 from . import buckets, coverage, dataset
 from .assign import ArchetypeScorer, CoverageScorer, MmrScorer, allocate
 from .config import OUTPUT_JSON, SEED_DATASET
-from .contract import build_contract
+from .contract import PLACES, QuantisedSpace, build_contract, quantise_games
 from .contract import write as write_contract
 from .params import DEFAULTS, Params
 from .features import build_feature_space, genre_overlap
@@ -50,7 +50,9 @@ def build(dataset_path, assigner_name, want_report=False, output=None,
 
     scorer = {
         "coverage": lambda: CoverageScorer(space.loadings, space.similarity, ratings,
-                                          space.spoke_of, sel),
+                                          space.spoke_of, sel,
+                                          coll.axis_room(space.dimension_names,
+                                                         space.spoke_of)),
         "mmr": lambda: MmrScorer(space.vectors, params.baseline),
         "greedy": lambda: ArchetypeScorer(),
     }[assigner_name]()
@@ -148,8 +150,26 @@ def build(dataset_path, assigner_name, want_report=False, output=None,
           f"{space.dimension_names[b].split(pres.genre_name_separator)[0]})")
 
     if contract_path is not None:
+        # `defaultPicks` is recomputed on the quantised space rather than reusing
+        # the grid above. The contract carries rounded numbers, so a precomputed
+        # grid derived from exact ones is a grid the browser cannot reproduce —
+        # it would paint on load and then visibly change on first interaction,
+        # for no reason a reader could see.
+        qgames = quantise_games(games)
+        qspace = QuantisedSpace(space)
+        qcells, qmemb = buckets.build_cells(
+            qgames, [buckets.PlayerCountAxis(coll.columns(), sel, places=PLACES),
+                     buckets.WeightAxis(
+                         buckets.build_weight_rows([g.weight for g in qgames],
+                                                   coll.weight_rows), sel)], sel)
+        qresults = allocate(
+            qcells, qmemb,
+            CoverageScorer(qspace.loadings, qspace.similarity,
+                           {g.id: g.rating for g in qgames}, qspace.spoke_of, sel,
+                           coll.axis_room(space.dimension_names, space.spoke_of)),
+            coll.capacity(qcells), alternates_limit=pres.alternates_per_cell, sel=sel)
         size = write_contract(
-            build_contract(games, space, results, source, generated_at, params),
+            build_contract(qgames, qspace, qresults, source, generated_at, params),
             Path(contract_path) if contract_path else None)
         print(f"  contract {size / 1024:.0f} KB raw")
 

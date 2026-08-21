@@ -42,7 +42,8 @@ def player_column_for(game: Game, columns: list[dict] | None = None) -> str | No
     return _column_of(peak, columns) if peak else None
 
 
-def player_fit(game: Game, sel: Selection = DEFAULTS.selection) -> dict[int, float]:
+def player_fit(game: Game, sel: Selection = DEFAULTS.selection,
+               places: int | None = None) -> dict[int, float]:
     """How well this game works at each player count, peak-relative, in (0, 1].
 
     The vote maths with no columns involved: approval share among counts the
@@ -94,11 +95,18 @@ def player_fit(game: Game, sel: Selection = DEFAULTS.selection) -> dict[int, flo
         scores[int(count)] = (best + sel.recommended_weight * recommended) / total
 
     peak = max(scores.values(), default=0.0)
-    return {count: score / peak for count, score in scores.items()} if peak > 0 else {}
+    if peak <= 0:
+        return {}
+    fit = {count: score / peak for count, score in scores.items()}
+    # `places` rounds to what the contract carries, so a grid computed here and
+    # one computed in the browser are working from the same numbers rather than
+    # from numbers that agree to five decimals.
+    return fit if places is None else {c: round(v, places) for c, v in fit.items()}
 
 
 def player_memberships(game: Game, columns: list[dict] | None = None,
-                       sel: Selection = DEFAULTS.selection) -> dict[str, float]:
+                       sel: Selection = DEFAULTS.selection,
+                       places: int | None = None) -> dict[str, float]:
     """How strongly this game belongs to each player-count column, in (0, 1].
 
     `player_fit` answers this per count; a column is one or more counts under a
@@ -107,7 +115,7 @@ def player_memberships(game: Game, columns: list[dict] | None = None,
     """
     columns = columns if columns is not None else DEFAULTS.collection.columns()
     by_column: dict[str, float] = {}
-    for count, fit in player_fit(game, sel).items():
+    for count, fit in player_fit(game, sel, places).items():
         col = _column_of(count, columns)
         if col is None:
             continue
@@ -209,12 +217,13 @@ class PlayerCountAxis:
     name = "players"
 
     def __init__(self, columns: list[dict] | None = None,
-                 sel: Selection = DEFAULTS.selection):
+                 sel: Selection = DEFAULTS.selection, places: int | None = None):
         self.columns = columns if columns is not None else DEFAULTS.collection.columns()
         self.sel = sel
+        self.places = places
 
     def memberships(self, game: Game) -> dict[str, float]:
-        return player_memberships(game, self.columns, self.sel)
+        return player_memberships(game, self.columns, self.sel, self.places)
 
 
 class WeightAxis:
