@@ -232,12 +232,12 @@ body {
 /* ---------- Settings panel ------------------------------------------------ */
 .controls { position: sticky; top: 0; z-index: 20; margin-bottom: 1rem; }
 .controls__toggle {
-  background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
-  color: var(--ink); padding: .5rem .85rem; cursor: pointer; font: inherit;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text); padding: .5rem .85rem; cursor: pointer; font: inherit;
 }
 .controls__toggle:hover { border-color: var(--accent); }
 .controls__body {
-  margin-top: .6rem; background: var(--panel); border: 1px solid var(--line);
+  margin-top: .6rem; background: var(--surface); border: 1px solid var(--border);
   border-radius: 8px; padding: 1rem 1.15rem;
   display: grid; gap: 1.4rem; grid-template-columns: repeat(auto-fit, minmax(17rem, 1fr));
   max-height: 70vh; overflow-y: auto;
@@ -256,18 +256,18 @@ body {
 .controls__slider input[type=range] { width: 100%; accent-color: var(--accent); }
 .controls__check { display: flex; gap: .45rem; align-items: center; font-size: .82rem; margin: .5rem 0; }
 .controls__reset {
-  grid-column: 1 / -1; justify-self: start; background: none; border: 1px solid var(--line);
+  grid-column: 1 / -1; justify-self: start; background: none; border: 1px solid var(--border);
   color: var(--muted); border-radius: 5px; padding: .35rem .7rem; cursor: pointer; font: inherit;
 }
 .coledit__row { display: flex; gap: .3rem; align-items: center; margin-bottom: .3rem; }
 .coledit__label { width: 4rem; }
 .coledit__num { width: 3.4rem; }
 .coledit input {
-  background: var(--bg); border: 1px solid var(--line); color: var(--ink);
+  background: var(--bg); border: 1px solid var(--border); color: var(--text);
   border-radius: 4px; padding: .25rem .4rem; font: inherit; font-size: .8rem;
 }
 .coledit__drop, .coledit__actions button {
-  background: none; border: 1px solid var(--line); color: var(--muted);
+  background: none; border: 1px solid var(--border); color: var(--muted);
   border-radius: 4px; cursor: pointer; font: inherit; font-size: .78rem; padding: .22rem .5rem;
 }
 .coledit__actions { display: flex; gap: .4rem; margin-top: .5rem; }
@@ -280,21 +280,21 @@ body {
 .cell__gap--full { color: var(--muted); }
 .detail__actions { display: flex; gap: .3rem; align-items: flex-start; }
 .chipbtn {
-  background: none; border: 1px solid var(--line); color: var(--muted);
+  background: none; border: 1px solid var(--border); color: var(--muted);
   border-radius: 4px; cursor: pointer; font: inherit; font-size: .7rem; padding: .15rem .4rem;
 }
-.chipbtn:hover { border-color: var(--accent); color: var(--ink); }
+.chipbtn:hover { border-color: var(--accent); color: var(--text); }
 .chipbtn--ban:hover { border-color: #c56; color: #c56; }
 .tag { font-size: .65rem; padding: .05rem .35rem; border-radius: 3px; margin-left: .35rem; }
 .tag--owned { background: var(--accent); color: var(--bg); }
 
 /* ---------- Shelf --------------------------------------------------------- */
 .shelf { display: grid; gap: 1.2rem; }
-.shelf__panel { background: var(--panel); border: 1px solid var(--line); border-radius: 8px; padding: 1.1rem 1.25rem; }
+.shelf__panel { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 1.1rem 1.25rem; }
 .shelf__panel h2 { margin: 0 0 .3rem; font-size: 1rem; }
 .shelf__actions { display: flex; gap: .6rem; align-items: center; margin: .8rem 0; }
 .shelf__actions button, .shelf__search input {
-  background: var(--bg); border: 1px solid var(--line); color: var(--ink);
+  background: var(--bg); border: 1px solid var(--border); color: var(--text);
   border-radius: 5px; padding: .4rem .7rem; font: inherit; cursor: pointer;
 }
 .shelf__actions .link { background: none; border: none; color: var(--muted); text-decoration: underline; }
@@ -303,14 +303,74 @@ body {
 .shelf__matches, .shelf__list { list-style: none; padding: 0; margin: .5rem 0 0; }
 .shelf__matches li, .shelf__list li {
   display: flex; justify-content: space-between; align-items: center; gap: .6rem;
-  padding: .3rem 0; border-bottom: 1px solid var(--line); font-size: .84rem;
+  padding: .3rem 0; border-bottom: 1px solid var(--border); font-size: .84rem;
 }
 .shelf__matches button, .shelf__list button {
-  background: none; border: 1px solid var(--line); color: var(--muted);
+  background: none; border: 1px solid var(--border); color: var(--muted);
   border-radius: 4px; cursor: pointer; font: inherit; font-size: .72rem; padding: .15rem .5rem;
 }
 .shelf__row-actions { display: flex; gap: .3rem; }
 .shelf__group { margin-top: 1.2rem; }
 .shelf__group h3 { margin: 0 0 .2rem; font-size: .88rem; }
-.shelf__report { background: var(--bg); border: 1px solid var(--line); border-radius: 6px; padding: .7rem .85rem; font-size: .82rem; }
+.shelf__report { background: var(--bg); border: 1px solid var(--border); border-radius: 6px; padding: .7rem .85rem; font-size: .82rem; }
 .shelf__report ul { margin: .4rem 0 0; padding-left: 1.1rem; color: var(--muted); }
+
+/* ---------- Search results ------------------------------------------------
+   The row is the control, so it gets the whole hit area and a real focus ring:
+   a list of names beside a column of Add buttons invites clicking the name,
+   which then does nothing. */
+.results {
+  list-style: none; margin: .4rem 0 0; padding: 0;
+  border: 1px solid var(--border); border-radius: var(--radius);
+  background: var(--surface); overflow: hidden;
+  max-height: 19rem; overflow-y: auto;
+}
+.results li + li { border-top: 1px solid var(--border); }
+.results__row {
+  display: grid; width: 100%; align-items: center; gap: .7rem;
+  grid-template-columns: 1.25rem 1fr auto auto;
+  padding: .55rem .75rem; background: none; border: 0;
+  color: var(--text); font: inherit; font-size: .86rem;
+  text-align: left; cursor: pointer;
+}
+.results__row:hover { background: var(--surface-2); }
+.results__row:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.results__tick {
+  display: grid; place-items: center; width: 1.25rem; height: 1.25rem;
+  border-radius: 50%; border: 1px solid var(--border);
+  color: var(--muted); font-size: .8rem; line-height: 1;
+}
+.results__row:hover .results__tick { border-color: var(--accent); color: var(--accent); }
+.results__row.is-on .results__tick {
+  background: var(--accent); border-color: var(--accent); color: var(--surface);
+}
+.results__name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.results__meta { color: var(--muted); font-size: .76rem; font-variant-numeric: tabular-nums; }
+.results__state {
+  color: var(--muted); font-size: .7rem; text-transform: uppercase;
+  letter-spacing: .07em; opacity: 0; min-width: 5.5rem; text-align: right;
+}
+.results__row:hover .results__state,
+.results__row:focus-visible .results__state,
+.results__row.is-on .results__state { opacity: 1; }
+.results__row.is-on .results__state { color: var(--accent); }
+.results__none { margin: .6rem 0 0; font-size: .82rem; }
+
+/* The search field itself: it was inheriting the UA default black on a dark
+   ground, because the token it named did not exist. */
+.shelf__search input {
+  background: var(--surface); color: var(--text); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: .5rem .7rem; width: 100%;
+}
+.shelf__search input::placeholder { color: var(--muted); }
+.shelf__search input:focus-visible { outline: 2px solid var(--accent); outline-offset: -1px; }
+
+/* A cut game gets a reason, not a shrug. */
+.shelf__list--reasons li { align-items: flex-start; padding: .5rem 0; }
+.shelf__why { display: grid; gap: .15rem; }
+.shelf__why em { font-style: normal; font-size: .78rem; color: var(--muted); line-height: 1.45; }
+.shelf__spot {
+  background: none; border: 0; padding: 0; font: inherit; color: var(--text);
+  text-align: left; cursor: pointer; border-bottom: 1px dotted var(--border);
+}
+.shelf__spot:hover { color: var(--accent); border-bottom-color: var(--accent); }

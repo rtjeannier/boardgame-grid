@@ -108,9 +108,24 @@ export default function Detail({ cell, meta, active, onClose, owned = new Set(),
                 <span className="dot dot--muted" />
                 <div className="detail__game">
                   <a href={game.url} target="_blank" rel="noreferrer" onClick={(e) => e.stopPropagation()}>{game.name}</a>
-                {owned.has(game.id) && <span className="tag tag--owned">yours</span>}
+                  {owned.has(game.id) && <span className="tag tag--owned">yours</span>}
                   <Stats game={game} />
                 </div>
+                {/* A runner-up is where "I already own that" and "never offer me
+                    that" are most often true, so it needs the same two actions
+                    the picks have. */}
+                <span className="detail__actions">
+                  {onOwn && (
+                    <button className="chipbtn" title="I own this"
+                      onClick={(e) => { e.stopPropagation(); onOwn(game.id) }}>
+                      {owned.has(game.id) ? '− shelf' : '+ shelf'}
+                    </button>
+                  )}
+                  {onBan && (
+                    <button className="chipbtn chipbtn--ban" title="Never suggest this"
+                      onClick={(e) => { e.stopPropagation(); onBan(game.id) }}>✕</button>
+                  )}
+                </span>
               </li>
             ))}
           </ul>

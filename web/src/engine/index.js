@@ -12,6 +12,8 @@ export { buildWeightRows, buildCells } from './membership.js';
 export { CoverageScorer } from './scorer.js';
 export { allocate } from './allocate.js';
 export { toGridData } from './present.js';
+export { explainCut, cutSentence, similarityBetween } from './explain.js';
+export { analyseShelf, coverageOf, spokeVector } from './shelf.js';
 
 import { indexContract } from './contract.js';
 import { ratingSpans, coverageWeights } from './quality.js';
@@ -73,7 +75,11 @@ export function buildGrid(contract, {
 
   const ownedRows = new Set(rowsOf(owned));
   return {
-    ix, rows, cells: results,
+    ix, rows,
+    // `cells` are the candidate pools with their weights; `results` is what the
+    // allocation made of them. Both are wanted — explaining why a game was cut
+    // needs the pools, which say what it could ever have reached.
+    cells, results, weights,
     data: toGridData(ix, results, cells, rows, columns),
     grid: results.map((cell) => ({
       ...cell,
