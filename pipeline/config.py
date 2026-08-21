@@ -317,7 +317,53 @@ GENRE_SCARCITY = 0.5
 # Retuned from 0.15 when loadings moved from L2 to L1 normalisation: every game
 # now carries total mass 1.0 rather than ~2.2, so gains shrank by about that
 # factor and the floor follows them down.
-GAIN_FLOOR = 0.10         # stop picking when the best marginal gain drops below this
+# How little a game may add and still be shelved. Two ways to decide a shelf is
+# full: by count — fill every cell to capacity while candidates remain, which is
+# 0 here — or by quality, where a cell stops once nothing worthwhile is left.
+#
+# It is worth knowing what a low gain actually means, because the name suggests
+# "bad game" and it does not. Gain is membership x quality x loading against the
+# still-uncovered chart, and membership dominates: Poker scores 0.03 in the
+# nine-plus Medium-Heavy cell because its membership *there* is 0.11 — the
+# community rates it at lower counts — while Blood on the Clocktower, which
+# belongs at 1.00, scores 0.94. At 0.10 the grid stopped 7 slots short of full.
+GAIN_FLOOR = 0.0
+
+# How much the rest of the shelf pulls on a cell's choice, as an exponent on
+# how new a game is against everything already placed anywhere. Zero ignores the
+# collection entirely and each cell is filled in isolation; one weighs the whole
+# shelf as heavily as the cell itself.
+#
+# Filling the cell is the point, so this is deliberately gentle. That the
+# collection already holds three deck-builders should make a fourth slightly
+# less welcome, not disqualify it — and a second edition of something already
+# shelved is the far end of that same idea rather than a separate rule. The
+# first round feels none of it, since nothing is shelved yet, so the best game
+# for a cell always wins its slot and the pull only builds over later rounds.
+#
+# Measured on the live top 5000, with `improve_collection` following it: at 0.10
+# no re-recording survives anywhere on the grid and median pick rank is 267,
+# against 267 and one survivor at 0. Raising it further only costs rank — 0.25
+# reaches the same zero at median 276 — so this is set as low as does the job.
+#
+# It does displace Terraforming Mars, which is the mechanism working rather than
+# failing: TM is 0.740 similar to Gaia Project, already shelved, and it competes
+# in four of the most crowded cells on the grid against Brass, Ark Nova,
+# Gloomhaven and War of the Ring. A second heavy engine-builder is exactly what
+# this is meant to make slightly less welcome.
+COLLECTION_WEIGHT = 0.10
+
+# How much of a slot's value a replacement must retain before a re-recording is
+# swapped out for it — see `assign.improve_collection`. A fraction, not a fixed
+# margin, because cell gains span 0.03 to 0.94 and a flat tolerance would mean
+# nothing at one end and everything at the other.
+#
+# Only ever a swap: a cell with nothing to put in the slot keeps what it has.
+# At 0.75 the grid trades `7 Wonders (Second Edition)` (retaining 0.75 of the
+# slot), `Gloomhaven: Jaws of the Lion` (0.92) and `Ticket to Ride: Europe`
+# (0.90), and leaves the Telestrations pair alone because replacing it would
+# retain only 0.56.
+REPLACEMENT_KEEP = 0.75
 
 # Duplicate suppression. A candidate's gain is scaled by
 # (1 - similarity_to_nearest_pick ** SIMILARITY_EXPONENT), where similarity is

@@ -29,13 +29,20 @@ column with games that were 35% solo.
 import math
 import re
 from dataclasses import dataclass
+from collections.abc import Callable
 from typing import Protocol
 
 import numpy as np
 
 from . import coverage
 from .archetypes import archetypes_for
-from .config import GAIN_FLOOR, GENRE_REPEAT_PENALTY, MMR_LAMBDA
+from .config import (
+    COLLECTION_WEIGHT,
+    GAIN_FLOOR,
+    GENRE_REPEAT_PENALTY,
+    MMR_LAMBDA,
+    REPLACEMENT_KEEP,
+)
 from .model import Game
 
 
@@ -139,21 +146,45 @@ class CoverageScorer:
         self.uncovered = {key: np.ones(n_axes) for key in cells}
         self.chosen = {key: [] for key in cells}
         self.kinds = {key: set() for key in cells}
+        self.shelved = []               # every id placed anywhere, for the below
 
     def score(self, key, game):
         raw = float(self.weights[(key, game.id)] @ self.uncovered[key])
         value = raw * coverage.novelty(game.id, self.chosen[key], self.similarity)
         if self.primary[game.id] in self.kinds[key]:
             value *= GENRE_REPEAT_PENALTY
+        # ...and a gentler pull from the rest of the shelf. Filling this cell is
+        # the point; that the collection already holds three deck-builders only
+        # makes a fourth slightly less welcome, wherever it sits. A second
+        # edition of something already shelved is the far end of the same idea
+        # rather than a separate rule.
+        #
+        # This has to be similarity, not coverage: a collection-wide `uncovered`
+        # is near zero on every axis after a hundred-odd picks, so it damps
+        # everything equally instead of telling duplicates from newcomers.
+        #
+        # Note the first round feels none of this — nothing is shelved yet — so
+        # the best game for a cell always wins its slot, and the pull only
+        # builds over later rounds.
+        if COLLECTION_WEIGHT and self.shelved:
+            # Excluding the game itself: the repair pass scores games that are
+            # already placed, and a game is not a duplicate of itself.
+            others = [gid for gid in self.shelved if gid != game.id]
+            if others:
+                value *= coverage.novelty(game.id, others, self.similarity) ** COLLECTION_WEIGHT
         return value
 
     def take(self, key, game):
         self.uncovered[key] *= 1.0 - self.weights[(key, game.id)]
         self.chosen[key].append(game.id)
         self.kinds[key].add(self.primary[game.id])
+        self.shelved.append(game.id)
 
     def reset_cell(self, key):
         self.uncovered[key] = np.ones(len(self.uncovered[key]))
+        for gid in self.chosen[key]:
+            if gid in self.shelved:
+                self.shelved.remove(gid)
         self.chosen[key] = []
         self.kinds[key] = set()
 
@@ -238,59 +269,98 @@ class ArchetypeScorer:
 
 # --- The allocator ----------------------------------------------------------
 
-def _lineages(cells: dict) -> dict[int, set[int]]:
-    """game id -> every id that is the *same game*, itself included.
+def _rerecordings(chosen: dict) -> set[int]:
+    """Placed games that say nothing a placed sibling does not already say.
 
-    A shelf should not hold `7 Wonders` and `7 Wonders (Second Edition)`, and
-    `novelty` cannot stop it: those two score 0.79 while `Secret Hitler` and
-    `Blood on the Clocktower` — genuinely different games — score 0.84. No
-    similarity threshold separates them, because the second edition is simply
-    recorded with fewer tags (eleven, every one of them also on the first).
+    Two games in a family are not the same game. `Wingspan Asia` brings
+    `Economic` and `Push Your Luck`, `Codenames: Duet` brings `Cooperative
+    Game`, `Dune: Imperium – Uprising` brings three tags Dune: Imperium has not;
+    those are different games and keep their slots when they are best in them.
 
-    BGG's `Game:` families almost do it, but not alone: `Game: Werewolf / Mafia`
-    gathers thirty unrelated social-deduction games. What separates a lineage
-    from a theme is that a lineage is *named* — `Game: 7 Wonders` names the game
-    its members descend from, and they carry that name, where not one of the
-    thirty werewolf games is called "Werewolf / Mafia".
+    What marks a *re-recording* is containment: every tag on one entry is
+    already on the other, so nothing distinguishes them to any part of this
+    pipeline. `7 Wonders (Second Edition)` carries eleven tags and every one is
+    on `7 Wonders`. The impoverished side is the one to reconsider, since it is
+    the less informative record of the same game.
 
-    So the question is asked of the family rather than of the pair: when most of
-    its members carry its name it is a lineage, and then *all* of them are, name
-    or not. That is what catches `Wyrmspan` — three of the five in `Game:
-    Wingspan` say Wingspan, so the family is a lineage and Wyrmspan and Finspan
-    belong to it — and `Iberia`, a Pandemic reskin, in a family where ten of
-    seventeen carry the name. `Werewolf / Mafia` stays at nought of thirty.
+    Only games sharing a BGG `Game:` family are compared, so two unrelated games
+    that happen to be sparsely tagged are not mistaken for each other.
 
-    It is deliberately a little broad: `7 Wonders` and `7 Wonders Duel` count as
-    one lineage, as do `Brass: Birmingham` and `Brass: Lancashire`. Those are
-    different games, but a 175-slot shelf has no room for two of either.
-
-    Families named for something none of their members is called are missed —
-    `Game: Ganz Schön Clever` really is the lineage behind That's Pretty Clever!
-    and Twice as Clever!, and `Game: Schotten-Totten` behind Battle Line. There
-    is nothing in the data to catch those short of matching on tags, which is
-    what fails in the first place.
+    A caveat worth knowing: `Splendor` and `Splendor Duel` are genuinely
+    different games that BGG has tagged identically. Nothing here can tell them
+    apart, so they read as one game — the honest consequence of the data.
     """
-    games = {g.id: g for pool in cells.values() for g in pool}
-    members: dict[str, list[Game]] = {}
-    for game in games.values():
-        for family in game.families:
-            members.setdefault(family, []).append(game)
+    placed = [g for games in chosen.values() for g in games]
+    redundant: set[int] = set()
+    for i, a in enumerate(placed):
+        for b in placed[i + 1:]:
+            if not set(a.families) & set(b.families):
+                continue
+            sa, sb = set(a.signals), set(b.signals)
+            if sa <= sb and len(sa) <= len(sb):
+                redundant.add(a.id if sa < sb or a.rank > b.rank else b.id)
+            elif sb <= sa:
+                redundant.add(b.id)
+    return redundant
 
-    lineage = {gid: {gid} for gid in games}
-    for family, kin in members.items():
-        named = re.sub(r"\s*\(.*?\)\s*", " ", family.split(":", 1)[-1]).strip().lower()
-        if not named or len(kin) < 2:
+
+def improve_collection(keys, cells, scorer, chosen, gains, taken, keep) -> list[tuple]:
+    """Swap out re-recordings the collection gains nothing from holding twice.
+
+    Only ever a swap, never a removal: a cell that has nothing to put in the
+    slot keeps what it has. That is the whole difference from blocking a game
+    outright, which drops it whether or not the cell can cover the gap.
+
+    `keep` is how much of the slot's value the replacement must retain, as a
+    fraction rather than a fixed margin — cell gains span 0.03 to 0.94, so a
+    flat tolerance would be meaningless at one end and ruinous at the other.
+
+    Returns the swaps it made, which is also the shape a "what to cut, what to
+    add" report wants.
+    """
+    swapped = []
+    for gid in _rerecordings(chosen):
+        key = next((k for k in keys if any(g.id == gid for g in chosen[k])), None)
+        if key is None:
             continue
-        carry = sum(1 for g in kin if named in g.name.lower())
-        if carry * 2 < len(kin):        # a theme, not a lineage
-            continue
-        joined = {g.id for g in kin}
-        for gid in joined:
-            lineage[gid] |= joined
-    return lineage
+        game = next(g for g in chosen[key] if g.id == gid)
+        here = scorer.score(key, game)
+        rest = [g for g in chosen[key] if g.id != gid]
+        scorer.reset_cell(key)
+        for other in rest:
+            scorer.take(key, other)
+        best, best_score = None, 0.0
+        for candidate in cells[key]:
+            if candidate.id in taken:
+                continue
+            value = scorer.score(key, candidate)
+            if value > best_score:
+                best, best_score = candidate, value
+        if best is not None and best_score >= keep * here:
+            chosen[key] = rest + [best]
+            gains.pop((key, gid), None)
+            gains[(key, best.id)] = best_score
+            taken.discard(gid)
+            taken.add(best.id)
+            scorer.take(key, best)
+            swapped.append((key, game, best))
+        else:
+            chosen[key] = rest + [game]
+            scorer.take(key, game)
+    return swapped
 
 
-def allocate(cells: dict, memberships: dict, scorer: Scorer, max_per_cell: int,
+def _capacity_lookup(capacity) -> Callable[[tuple], int]:
+    """Normalise a capacity given as a number, a mapping or a callable."""
+    if callable(capacity):
+        return capacity
+    if isinstance(capacity, dict):
+        return lambda key: capacity.get(key, 0)
+    return lambda key: capacity
+
+
+def allocate(cells: dict, memberships: dict, scorer: Scorer,
+             capacity: int | dict | Callable[[tuple], int],
              seeded: dict | None = None, alternates_limit: int = 0,
              gain_floor: float = GAIN_FLOOR) -> dict:
     """Fill every cell, placing each game at most once across all of them.
@@ -299,6 +369,19 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer, max_per_cell: int,
     both from `buckets.build_cells`. `seeded` pre-places games in a cell without
     them competing for a slot — the collection builder's anchors.
 
+    `capacity` is how many games a cell may hold: one number for the whole grid,
+    or a lookup when cells differ. It is per cell rather than global so an
+    imported collection can put six games in one cell and two in another without
+    the allocator caring.
+
+    `gain_floor` is how *little* a game may add and still be shelved. It stops a
+    cell short of capacity, so at 0 a cell always fills while candidates remain
+    — which is the point of "maximise the cell". Note what it really excludes is
+    games that barely reach the cell at all: gain is membership x quality x
+    loading against the still-uncovered chart, and Poker scores 0.03 in the
+    nine-plus Medium-Heavy cell because its *membership there is 0.11*, not
+    because it is a poor game.
+
     Rounds, not one long greedy: every cell bids, a contested game goes to
     whichever cell scores it highest, losers re-bid, and nothing commits until
     the round ends. Bidding and repair alternate until a whole pass changes
@@ -306,46 +389,50 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer, max_per_cell: int,
     leave the cell it came from a slot short — that is how one cell finished
     with four picks while `A Gentle Rain` sat unclaimed and scoring 0.32.
 
-    Taking a game takes its whole lineage with it (see `_lineages`), so a
-    re-implementation cannot fill a slot elsewhere on the grid.
+    Filling is the primary goal, so a cell keeps taking its best remaining
+    candidate until it reaches capacity or runs out. Whether the collection as a
+    whole would rather it took something else is a separate, secondary question,
+    settled afterwards by `improve_collection`.
     """
     keys = sorted(cells)                 # deterministic: contests must not
     scorer.begin(cells, memberships)     # hinge on dict iteration order
+    room = _capacity_lookup(capacity)
 
     chosen = {key: [] for key in keys}
     gains: dict[tuple, float] = {}
     taken: set[int] = set()
-    lineage = _lineages(cells)
 
     for key, games in (seeded or {}).items():
         for game in games:
             scorer.take(key, game)
             chosen[key].append(game)
-            taken |= lineage[game.id]
+            taken.add(game.id)
 
     # Bid until nothing more clears the floor, repair, then bid again in case
     # repair emptied a slot. Bounded by the number of slots, since every pass
     # that continues has filled at least one.
-    for _ in range(len(keys) * max_per_cell):
+    for _ in range(sum(room(k) for k in keys) + len(keys)):
         awards = _bid_round(keys, cells, memberships, scorer, chosen, taken,
-                            max_per_cell, gain_floor)
+                            room, gain_floor)
         if not awards:
-            _repair(keys, memberships, scorer, chosen, gains, max_per_cell, seeded or {})
+            _repair(keys, memberships, scorer, chosen, gains, room, seeded or {})
             awards = _bid_round(keys, cells, memberships, scorer, chosen, taken,
-                                max_per_cell, gain_floor)
+                                room, gain_floor)
             if not awards:
                 break
-        # A round commits together, so two of the same lineage can win at once —
-        # Telestrations and its 12-player pack came out of one round in
-        # different cells. The better bid keeps the game; the other cell simply
-        # bids again next round.
+        # A round commits together, so apply best bid first and skip anything
+        # already claimed — two cells can be awarded the same game only if the
+        # round handed it out twice, which the guard below makes harmless.
         for key, (game, gain) in sorted(awards.items(), key=lambda kv: -kv[1][1]):
             if game.id in taken:
                 continue
-            taken |= lineage[game.id]
+            taken.add(game.id)
             gains[(key, game.id)] = gain
             scorer.take(key, game)
             chosen[key].append(game)
+
+    # Cells are as full as they can be; now let the collection have its say.
+    improve_collection(keys, cells, scorer, chosen, gains, taken, REPLACEMENT_KEEP)
 
     results = {}
     for key in keys:
@@ -362,12 +449,12 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer, max_per_cell: int,
     return results
 
 
-def _bid_round(keys, cells, memberships, scorer, chosen, taken, max_per_cell,
+def _bid_round(keys, cells, memberships, scorer, chosen, taken, room,
                gain_floor) -> dict:
     """One round of deferred acceptance; returns {cell key: (Game, score)}."""
     held: dict[int, tuple] = {}          # game id -> (cell key, score, Game)
     blocked: dict[tuple, set[int]] = {key: set() for key in keys}
-    pending = [k for k in keys if len(chosen[k]) < max_per_cell]
+    pending = [k for k in keys if len(chosen[k]) < room(k)]
 
     while pending:
         key = pending.pop(0)
@@ -400,7 +487,7 @@ def _bid_round(keys, cells, memberships, scorer, chosen, taken, max_per_cell,
     return {key: (game, score) for _, (key, score, game) in held.items()}
 
 
-def _repair(keys, memberships, scorer, chosen, gains, max_per_cell, seeded) -> None:
+def _repair(keys, memberships, scorer, chosen, gains, room, seeded) -> None:
     """Move a game if some cell with room would value it more.
 
     A round commits its awards together, so a cell that valued a game more may
@@ -426,7 +513,7 @@ def _repair(keys, memberships, scorer, chosen, gains, max_per_cell, seeded) -> N
                     continue
                 here = scorer.score(key, game)
                 for other in keys:
-                    if other == key or len(chosen[other]) >= max_per_cell:
+                    if other == key or len(chosen[other]) >= room(other):
                         continue
                     if (other, game.id) not in memberships:
                         continue          # game doesn't reach that cell at all

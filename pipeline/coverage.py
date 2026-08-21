@@ -97,7 +97,7 @@ def novelty(game_id: int,
     independent event, which is wrong for duplicates — two copies of one game
     are perfectly correlated, not independent. So a clone collects credit on
     every axis its original only partly covers, worth `sum(w) - 1` (0.65 for
-    Twilight Imperium, 1.24 for Wingspan) — comfortably above GAIN_FLOOR. That
+    Twilight Imperium, 1.24 for Wingspan) — enough to win a slot outright. That
     is how both Twilight Imperium editions ended up in one cell.
 
     Scaling by this factor removes the credit at its source. Similarity is the

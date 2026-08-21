@@ -328,12 +328,33 @@ first pick before any cell takes its second**, and a thin cell can't be picked
 clean by a well-stocked neighbour helping itself repeatedly. A repair pass
 afterwards moves a game if some cell with room would gain more from it.
 
-The **opening round bids by rank**, later rounds by coverage gain. Against an
-empty radar a game's gain is just the sum of its loadings, so without this the
-widest-spread game wins the first slot however mediocre it is; the opening pick
-should answer "what is the best game here", and coverage takes over once there
-is something on the chart to complement. Picking stops when nothing left would
-add much (`GAIN_FLOOR`), so rich cells naturally get more picks than thin ones.
+**Every round is scored the same way, including the first.** The opening pick
+used to be forced to the best-ranked game, because under L2-normalised loadings
+a game's value against an empty cell grew with how many genres it touched.
+Under L1 an empty cell's best bid is already its best-rated, best-fitting game,
+so forcing rank on top only overrode membership.
+
+A cell fills to capacity while candidates remain. `GAIN_FLOOR` is the other way
+to decide a shelf is full — stop once nothing worthwhile is left — and it is
+worth knowing that a low gain mostly means *this game barely reaches this cell*,
+not *this game is bad*: Poker scores 0.03 in the nine-plus Medium-Heavy cell
+because its membership there is 0.11, while Blood on the Clocktower, which
+belongs at 1.00, scores 0.94.
+
+**The cell comes first, the collection second.** Filling a cell well is the
+goal; that the shelf already holds three deck-builders only makes a fourth
+slightly less welcome, wherever it sits (`COLLECTION_WEIGHT`). Because every
+cell takes its first pick before any cell takes its second, the opening round
+feels none of this — the best game for a cell always wins its slot — and the
+pull only builds over later rounds.
+
+**Re-recordings are swapped out, siblings are not.** Two games in a family are
+not the same game: `Wingspan Asia` brings `Economic` and `Push Your Luck`,
+`Codenames: Duet` brings `Cooperative Game`, and both keep their slots. What
+marks a re-recording is containment — every tag on `7 Wonders (Second Edition)`
+is already on `7 Wonders`, so nothing here can tell them apart. Those are
+swapped for the best free candidate in the same cell, and only when one exists
+(`REPLACEMENT_KEEP`), so a cell is never emptied for the sake of tidiness.
 
 **One game per kind.** That formula treats a genre as a *quantity to fill*
 rather than a kind to represent, so a second game of the same kind still gets
@@ -417,7 +438,10 @@ Everything lives in `pipeline/config.py`:
   genre).
 - **Coverage** — `QUALITY_FLOOR` (how much the worst-rated game still covers),
   `QUALITY_EXPONENT` (how sharply a better rating beats a worse one),
-  `GAIN_FLOOR` (when to stop picking), `COLLECTION_SIZE`, `PICKS_PER_CELL`.
+  `GAIN_FLOOR` (how little a game may add and still be shelved; 0 fills every
+  cell), `COLLECTION_WEIGHT` (how much the rest of the shelf pulls on a cell's
+  choice), `REPLACEMENT_KEEP` (how good a swap must be to retire a
+  re-recording), `COLLECTION_SIZE`, `PICKS_PER_CELL`.
 - **Membership** — `RECOMMENDED_WEIGHT` (how much a "this works" vote counts
   against a "this is the best" vote), `MEMBERSHIP_FLOOR` (how far below its peak
   column a game still counts), `WEIGHT_TAPER` (how far a weight row bleeds past

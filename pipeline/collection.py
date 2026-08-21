@@ -80,7 +80,7 @@ def build_collection(dataset_path, anchor_tokens, size, evaluate_only):
     scorer = CoverageScorer(space.loadings, space.similarity, ratings, space.spoke_of)
     picks = []
     if not evaluate_only:
-        results = allocate(cells, memberships, scorer, max_per_cell=size,
+        results = allocate(cells, memberships, scorer, capacity=size,
                            seeded={(): anchors})
         picks = [a for a in results[()].assignments if a.game.id not in anchor_ids]
 
