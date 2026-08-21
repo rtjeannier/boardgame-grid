@@ -30,6 +30,16 @@ class Game:
     # signals feed the clustered genre axes, where family tokens would pollute
     # the axis names; only the similarity space uses these.
     families: list[str]
+    # BGG "boardgameimplementation" links, as ids, in both directions — its
+    # explicit statement that one game is a reimplementation of another. Where a
+    # family says "these are related", this says "this IS that game, redone".
+    # Inside `Game: Werewolf / Mafia`, thirty unrelated social-deduction games,
+    # these links are silent between the unrelated ones and present only within
+    # real lineages, which is what no heuristic over names or tags managed.
+    #
+    # Ids rather than names, since names are not stable and a link may point at
+    # a game outside the captured slice.
+    reimplements: list[int]
     # The whole suggested-players poll: count -> [best, recommended, not_rec].
     # All three are needed because Best alone is a preference ordering, not a
     # verdict on a count — see buckets.player_memberships.
@@ -52,6 +62,8 @@ class Game:
             rating=d["rating"], weight=d["weight"], playtime=d["playtime"],
             best_counts=d["best_counts"], best_count=d["best_count"],
             signals=d["signals"], families=d["families"],
+            # Absent from datasets captured before implementation links were read.
+            reimplements=d.get("reimplements", []),
             # JSON object keys are strings; the poll is keyed by player count.
             player_poll={int(k): v for k, v in d["player_poll"].items()},
             users_rated=d["users_rated"],
@@ -64,6 +76,7 @@ class Game:
             "rating": self.rating, "weight": self.weight, "playtime": self.playtime,
             "best_counts": self.best_counts, "best_count": self.best_count,
             "signals": self.signals, "families": self.families,
+            "reimplements": self.reimplements,
             "player_poll": self.player_poll,
             "users_rated": self.users_rated,
         }

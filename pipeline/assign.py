@@ -42,6 +42,7 @@ from .config import (
     GENRE_REPEAT_PENALTY,
     MMR_LAMBDA,
     REPLACEMENT_KEEP,
+    SIMILARITY_EXPONENT,
 )
 from .model import Game
 
@@ -148,6 +149,17 @@ class CoverageScorer:
         self.kinds = {key: set() for key in cells}
         self.shelved = []               # every id placed anywhere, for the below
 
+        # Where each game can sit, and which games BGG calls the same design.
+        # Together these say whether a reimplementation actually went anywhere.
+        self.reach = {}
+        for (key, gid), degree in memberships.items():
+            self.reach.setdefault(gid, {})[key] = degree
+        self.kin = {}
+        for pool in cells.values():
+            for game in pool:
+                self.kin[game.id] = set(game.reimplements)
+        self._ground = {}
+
     def score(self, key, game):
         raw = float(self.weights[(key, game.id)] @ self.uncovered[key])
         value = raw * coverage.novelty(game.id, self.chosen[key], self.similarity)
@@ -171,8 +183,61 @@ class CoverageScorer:
             # already placed, and a game is not a duplicate of itself.
             others = [gid for gid in self.shelved if gid != game.id]
             if others:
-                value *= coverage.novelty(game.id, others, self.similarity) ** COLLECTION_WEIGHT
+                fresh = coverage.novelty(game.id, others, self.similarity)
+                fresh = min(fresh, 1.0 - self._redone(game.id, others) ** SIMILARITY_EXPONENT)
+                value *= fresh ** COLLECTION_WEIGHT
         return value
+
+    def _redone(self, gid: int, shelved: list[int]) -> float:
+        """How much of this game the shelf already holds, as a redoing of it.
+
+        Tag similarity misses this: `7 Wonders Duel` and `The Lord of the Rings:
+        Duel for Middle-earth` score 0.583, barely above two unrelated games,
+        because each carries tags the other lacks. BGG states plainly that one
+        reimplements the other, and `Game.reimplements` now carries that.
+
+        But a lineage is only redundant if it *stayed put*. A reimplementation
+        that moves a game to a different player count, or a different weight, is
+        a new thing worth shelving beside its parent; one that changes neither
+        is the same game again. That is what the grid already measures, so the
+        answer is how much two games' cell memberships overlap.
+
+        Nothing here names an axis — it reads what `buckets.build_cells` handed
+        us, so the test follows whatever the grid is sorting on. Under players x
+        weight, `7 Wonders` and `7 Wonders Duel` score 0.00 and both belong;
+        under a playtime axis they score 1.00 and one of them is redundant,
+        which is right, because at 30 minutes each they *are* the same offer.
+        And the player axis dominates the weight axis for free: a moved player
+        count zeroes the overlap where a moved weight only halves it, because
+        the columns are discrete and the rows overlap.
+
+        With no axes at all — the collection builder's single cell — every game
+        overlaps everything at 1.0, so this collapses to the lineage link alone.
+        Which is correct: with no grid to move within, a redoing is a duplicate.
+        """
+        kin = self.kin.get(gid)
+        if not kin:
+            return 0.0
+        worst = 0.0
+        for other in shelved:
+            if other not in kin:
+                continue
+            pair = (gid, other) if gid < other else (other, gid)
+            if pair not in self._ground:
+                self._ground[pair] = self._overlap(gid, other)
+            worst = max(worst, self._ground[pair])
+        return worst
+
+    def _overlap(self, a: int, b: int) -> float:
+        """Cosine between two games' cell-membership vectors."""
+        here, there = self.reach.get(a, {}), self.reach.get(b, {})
+        shared = set(here) | set(there)
+        if not shared:
+            return 0.0
+        x = np.array([here.get(k, 0.0) for k in shared])
+        y = np.array([there.get(k, 0.0) for k in shared])
+        scale = np.linalg.norm(x) * np.linalg.norm(y)
+        return float(x @ y / scale) if scale else 0.0
 
     def take(self, key, game):
         self.uncovered[key] *= 1.0 - self.weights[(key, game.id)]
@@ -269,8 +334,8 @@ class ArchetypeScorer:
 
 # --- The allocator ----------------------------------------------------------
 
-def _rerecordings(chosen: dict) -> set[int]:
-    """Placed games that say nothing a placed sibling does not already say.
+def _rerecordings(chosen: dict, overlap=None) -> dict[int, float]:
+    """Placed games the shelf already has, and how strongly, in 0..1.
 
     Two games in a family are not the same game. `Wingspan Asia` brings
     `Economic` and `Push Your Luck`, `Codenames: Duet` brings `Cooperative
@@ -289,18 +354,38 @@ def _rerecordings(chosen: dict) -> set[int]:
     A caveat worth knowing: `Splendor` and `Splendor Duel` are genuinely
     different games that BGG has tagged identically. Nothing here can tell them
     apart, so they read as one game — the honest consequence of the data.
+
+    The second source is BGG's own `boardgameimplementation` link, which states
+    what containment can only infer. It is what catches `7 Wonders Duel` and
+    `The Lord of the Rings: Duel for Middle-earth`: each carries tags the other
+    lacks, so containment calls them different games and their tag similarity is
+    0.583, barely above two unrelated titles — but BGG says plainly that one
+    redoes the other. Strength there is `overlap`, how much of the grid the two
+    still share, so a redoing that moved somewhere new is barely flagged and one
+    that moved nowhere is flagged outright.
     """
     placed = [g for games in chosen.values() for g in games]
-    redundant: set[int] = set()
+    redundant: dict[int, float] = {}
+
+    def flag(gid, strength):
+        redundant[gid] = max(redundant.get(gid, 0.0), strength)
+
     for i, a in enumerate(placed):
         for b in placed[i + 1:]:
+            # BGG saying outright that one redoes the other, weighted by how
+            # much of the grid they still share. A redoing that moved to another
+            # player count or weight is a new game; one that moved nowhere is
+            # the same game twice. `overlap` reads cell memberships, so what
+            # counts as "moved" follows whatever axes the grid was built on.
+            if overlap is not None and (b.id in a.reimplements or a.id in b.reimplements):
+                flag(b.id if b.rank > a.rank else a.id, overlap(a.id, b.id))
             if not set(a.families) & set(b.families):
                 continue
             sa, sb = set(a.signals), set(b.signals)
             if sa <= sb and len(sa) <= len(sb):
-                redundant.add(a.id if sa < sb or a.rank > b.rank else b.id)
+                flag(a.id if sa < sb or a.rank > b.rank else b.id, 1.0)
             elif sb <= sa:
-                redundant.add(b.id)
+                flag(b.id, 1.0)
     return redundant
 
 
@@ -318,8 +403,16 @@ def improve_collection(keys, cells, scorer, chosen, gains, taken, keep) -> list[
     Returns the swaps it made, which is also the shape a "what to cut, what to
     add" report wants.
     """
+    # Lineage needs the cell-membership overlap, which only a scorer that keeps
+    # per-cell state can answer. Without it this falls back to containment
+    # alone, which is what the simpler scorers get.
+    overlap = getattr(scorer, "_overlap", None)
+    redone = getattr(scorer, "_redone", lambda gid, shelved: 0.0)
+
     swapped = []
-    for gid in _rerecordings(chosen):
+    for gid, strength in _rerecordings(chosen, overlap).items():
+        if strength <= 0.0:
+            continue        # a redoing that went somewhere new is not redundant
         key = next((k for k in keys if any(g.id == gid for g in chosen[k])), None)
         if key is None:
             continue
@@ -329,14 +422,26 @@ def improve_collection(keys, cells, scorer, chosen, gains, taken, keep) -> list[
         scorer.reset_cell(key)
         for other in rest:
             scorer.take(key, other)
+        # The replacement must be less redundant than what it replaces, or the
+        # swap achieves nothing — without this, `7 Wonders` was replaced by
+        # `7 Wonders (Second Edition)`, which is the case this whole pass exists
+        # to prevent.
+        elsewhere = [g.id for k in keys for g in chosen[k] if g.id != gid]
         best, best_score = None, 0.0
         for candidate in cells[key]:
             if candidate.id in taken:
                 continue
+            if redone(candidate.id, elsewhere) >= strength:
+                continue
             value = scorer.score(key, candidate)
             if value > best_score:
                 best, best_score = candidate, value
-        if best is not None and best_score >= keep * here:
+        # How good the replacement must be, sliding with how redundant the game
+        # is. A game the shelf fully duplicates is worth replacing at `keep` of
+        # its slot; one that barely overlaps has to be replaced by something
+        # outright better. No threshold to pick — the strength is the dial.
+        bar = keep + (1.0 - keep) * (1.0 - strength)
+        if best is not None and best_score >= bar * here:
             chosen[key] = rest + [best]
             gains.pop((key, gid), None)
             gains[(key, best.id)] = best_score

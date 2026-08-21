@@ -117,6 +117,7 @@ class BggClient:
             best_count=best_count,
             signals=_signals(item),
             families=_families(item),
+            reimplements=_reimplementations(item),
             player_poll=poll,
             users_rated=int(ratings.find("usersrated").get("value")),
         )
@@ -200,6 +201,29 @@ def _signals(item: ET.Element) -> list[str]:
     """BGG mechanic + category names — the raw material for archetype matching."""
     wanted = {"boardgamemechanic", "boardgamecategory"}
     return [link.get("value") for link in item.findall("link") if link.get("type") in wanted]
+
+
+def _reimplementations(item: ET.Element) -> list[int]:
+    """BGG's explicit "this game is that game, redone" links, as ids.
+
+    Read in *both* directions. BGG marks the reverse with `inbound="true"` —
+    "reimplemented by" rather than "reimplements" — and for our purposes they
+    say the same thing: these two are one design lineage.
+
+    This is the authoritative version of what `_families` only hints at. A
+    family gathers `Blood on the Clocktower`, `Secret Hitler` and twenty-eight
+    other werewolf games that share nothing but a premise; the implementation
+    links between them are empty, while `The Resistance` really does link to
+    `Avalon` and `Quest`. Nothing inferred from names or tag overlap came close.
+
+    Precise but not exhaustive: BGG does not link `Gloomhaven` to `Jaws of the
+    Lion`, so the heuristics downstream still earn their place.
+    """
+    return sorted({
+        int(link.get("id"))
+        for link in item.findall("link[@type='boardgameimplementation']")
+        if link.get("id")
+    })
 
 
 def _families(item: ET.Element) -> list[str]:

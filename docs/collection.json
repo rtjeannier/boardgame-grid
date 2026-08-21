@@ -1,7 +1,7 @@
 {
   "meta": {
     "source": "live",
-    "generatedAt": "2026-08-19T05:02:18+00:00",
+    "generatedAt": "2026-08-21T17:25:57+00:00",
     "size": 15,
     "anchors": [],
     "dimensions": [
@@ -86,6 +86,10 @@
       "families": [
         "Game: Brass"
       ],
+      "reimplements": [
+        28720,
+        452264
+      ],
       "player_poll": {
         "1": [
           0,
@@ -161,6 +165,7 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -264,6 +269,10 @@
       "families": [
         "Game: Gloomhaven"
       ],
+      "reimplements": [
+        340909,
+        390478
+      ],
       "player_poll": {
         "1": [
           155,
@@ -359,6 +368,7 @@
       "families": [
         "Game: Werewolf / Mafia"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -536,6 +546,7 @@
       "families": [
         "Game: Dune: Imperium"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           22,
@@ -636,6 +647,7 @@
       "families": [
         "Game: Twilight Struggle"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           11,
@@ -721,6 +733,9 @@
       "families": [
         "Game: A Feast for Odin"
       ],
+      "reimplements": [
+        450923
+      ],
       "player_poll": {
         "1": [
           136,
@@ -804,6 +819,12 @@
       ],
       "families": [
         "Game: Ra"
+      ],
+      "reimplements": [
+        12589,
+        35503,
+        59753,
+        422796
       ],
       "player_poll": {
         "1": [
@@ -898,6 +919,7 @@
       "families": [
         "Game: Heat \u2013 Pedal to the Metal"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           83,
@@ -1009,6 +1031,9 @@
       "families": [
         "Game: Twilight Imperium"
       ],
+      "reimplements": [
+        12493
+      ],
       "player_poll": {
         "1": [
           2,
@@ -1107,6 +1132,10 @@
       "families": [
         "Game: Pandemic"
       ],
+      "reimplements": [
+        30549,
+        221107
+      ],
       "player_poll": {
         "1": [
           21,
@@ -1196,6 +1225,11 @@
       "families": [
         "Game: The Castles of Burgundy"
       ],
+      "reimplements": [
+        191977,
+        232988,
+        433382
+      ],
       "player_poll": {
         "1": [
           10,
@@ -1277,6 +1311,7 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -1381,6 +1416,10 @@
         "Turn Order: Time Track"
       ],
       "families": [],
+      "reimplements": [
+        358557,
+        414648
+      ],
       "player_poll": {
         "1": [
           50,
@@ -1456,6 +1495,9 @@
         "Score-and-Reset Game"
       ],
       "families": [],
+      "reimplements": [
+        270131
+      ],
       "player_poll": {
         "1": [
           0,

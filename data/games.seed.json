@@ -1,6 +1,6 @@
 {
   "source": "seed",
-  "generatedAt": "2026-08-19T05:02:18+00:00",
+  "generatedAt": "2026-08-21T17:25:57+00:00",
   "games": [
     {
       "id": 224517,
@@ -39,6 +39,10 @@
       ],
       "families": [
         "Game: Brass"
+      ],
+      "reimplements": [
+        28720,
+        452264
       ],
       "player_poll": {
         "1": [
@@ -102,6 +106,9 @@
       "families": [
         "Game: Ark Nova"
       ],
+      "reimplements": [
+        441696
+      ],
       "player_poll": {
         "1": [
           226,
@@ -157,6 +164,10 @@
       ],
       "families": [
         "Game: Pandemic"
+      ],
+      "reimplements": [
+        30549,
+        221107
       ],
       "player_poll": {
         "1": [
@@ -233,6 +244,10 @@
       "families": [
         "Game: Gloomhaven"
       ],
+      "reimplements": [
+        340909,
+        390478
+      ],
       "player_poll": {
         "1": [
           155,
@@ -293,6 +308,7 @@
       "families": [
         "Game: Dune: Imperium"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           22,
@@ -364,6 +380,7 @@
       "families": [
         "Game: Dune: Imperium"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           77,
@@ -433,6 +450,9 @@
       "families": [
         "Game: Twilight Imperium"
       ],
+      "reimplements": [
+        12493
+      ],
       "player_poll": {
         "1": [
           2,
@@ -498,6 +518,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        9609
+      ],
       "player_poll": {
         "1": [
           1,
@@ -560,6 +583,11 @@
       ],
       "families": [
         "Game: Terraforming Mars"
+      ],
+      "reimplements": [
+        296108,
+        328871,
+        470271
       ],
       "player_poll": {
         "1": [
@@ -628,6 +656,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -688,6 +717,7 @@
       "families": [
         "Game: Spirit Island"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           599,
@@ -759,6 +789,7 @@
       "families": [
         "Game: Gloomhaven"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           125,
@@ -817,6 +848,9 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [
+        120677
+      ],
       "player_poll": {
         "1": [
           67,
@@ -867,6 +901,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           30,
@@ -921,6 +956,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           77,
@@ -979,6 +1015,7 @@
       "families": [
         "Game: Twilight Struggle"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           11,
@@ -1025,6 +1062,11 @@
       ],
       "families": [
         "Game: The Castles of Burgundy"
+      ],
+      "reimplements": [
+        191977,
+        232988,
+        433382
       ],
       "player_poll": {
         "1": [
@@ -1079,6 +1121,9 @@
       ],
       "families": [
         "Game: Through the Ages"
+      ],
+      "reimplements": [
+        25613
       ],
       "player_poll": {
         "1": [
@@ -1143,6 +1188,9 @@
       "families": [
         "Game: 7 Wonders Duel"
       ],
+      "reimplements": [
+        173346
+      ],
       "player_poll": {
         "1": [
           1,
@@ -1198,6 +1246,7 @@
       "families": [
         "Game: Gloomhaven"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           33,
@@ -1250,6 +1299,9 @@
       ],
       "families": [
         "Game: Great Western Trail"
+      ],
+      "reimplements": [
+        341169
       ],
       "player_poll": {
         "1": [
@@ -1313,6 +1365,11 @@
       "families": [
         "Game: Brass"
       ],
+      "reimplements": [
+        65901,
+        224517,
+        452264
+      ],
       "player_poll": {
         "1": [
           0,
@@ -1375,6 +1432,9 @@
       ],
       "families": [
         "Game: Eclipse (Lautapelit.fi)"
+      ],
+      "reimplements": [
+        72125
       ],
       "player_poll": {
         "1": [
@@ -1448,6 +1508,10 @@
         "Game: 7 Wonders",
         "Game: 7 Wonders Duel"
       ],
+      "reimplements": [
+        68448,
+        421006
+      ],
       "player_poll": {
         "1": [
           13,
@@ -1499,6 +1563,11 @@
       ],
       "families": [
         "Game: Nemesis"
+      ],
+      "reimplements": [
+        310100,
+        381248,
+        465821
       ],
       "player_poll": {
         "1": [
@@ -1569,6 +1638,9 @@
       "families": [
         "Game: Scythe"
       ],
+      "reimplements": [
+        226320
+      ],
       "player_poll": {
         "1": [
           67,
@@ -1637,6 +1709,9 @@
       "families": [
         "Game: A Feast for Odin"
       ],
+      "reimplements": [
+        450923
+      ],
       "player_poll": {
         "1": [
           136,
@@ -1699,6 +1774,10 @@
       "families": [
         "Game: Clank!"
       ],
+      "reimplements": [
+        201808,
+        383010
+      ],
       "player_poll": {
         "1": [
           0,
@@ -1757,6 +1836,9 @@
       ],
       "families": [
         "Game: Concordia"
+      ],
+      "reimplements": [
+        256916
       ],
       "player_poll": {
         "1": [
@@ -1824,6 +1906,7 @@
       "families": [
         "Game: Lost Ruins of Arnak"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           114,
@@ -1878,6 +1961,13 @@
       "families": [
         "Game: Great Western Trail"
       ],
+      "reimplements": [
+        193738,
+        238620,
+        364011,
+        380607,
+        431305
+      ],
       "player_poll": {
         "1": [
           19,
@@ -1927,6 +2017,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           12,
@@ -1981,6 +2072,9 @@
       "families": [
         "Game: Arkham Horror \u2013 The Card Game"
       ],
+      "reimplements": [
+        359609
+      ],
       "player_poll": {
         "1": [
           290,
@@ -2033,6 +2127,7 @@
       "families": [
         "Game: Root"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           6,
@@ -2088,6 +2183,10 @@
       ],
       "families": [
         "Game: Orl\u00e9ans"
+      ],
+      "reimplements": [
+        287275,
+        364641
       ],
       "player_poll": {
         "1": [
@@ -2150,6 +2249,11 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [
+        220308,
+        364186,
+        383179
+      ],
       "player_poll": {
         "1": [
           0,
@@ -2216,6 +2320,7 @@
       "families": [
         "Game: Too Many Bones"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           156,
@@ -2270,6 +2375,11 @@
       ],
       "families": [
         "Game: Wingspan"
+      ],
+      "reimplements": [
+        410201,
+        436126,
+        473508
       ],
       "player_poll": {
         "1": [
@@ -2337,6 +2447,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        182340
+      ],
       "player_poll": {
         "1": [
           861,
@@ -2392,6 +2505,7 @@
       "families": [
         "Game: Barrage"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           11,
@@ -2444,6 +2558,7 @@
       "families": [
         "Game: Hegemony"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -2492,6 +2607,10 @@
       ],
       "families": [
         "Game: Kanban"
+      ],
+      "reimplements": [
+        109276,
+        328124
       ],
       "player_poll": {
         "1": [
@@ -2545,6 +2664,9 @@
       ],
       "families": [
         "Game: Viticulture"
+      ],
+      "reimplements": [
+        128621
       ],
       "player_poll": {
         "1": [
@@ -2609,6 +2731,9 @@
       "families": [
         "Game: The Crew"
       ],
+      "reimplements": [
+        284083
+      ],
       "player_poll": {
         "1": [
           0,
@@ -2657,6 +2782,7 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -2715,6 +2841,14 @@
       "families": [
         "Game: Everdell"
       ],
+      "reimplements": [
+        375852,
+        394106,
+        425005,
+        436821,
+        455843,
+        468395
+      ],
       "player_poll": {
         "1": [
           20,
@@ -2771,6 +2905,7 @@
       "families": [
         "Game: Heat \u2013 Pedal to the Metal"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           83,
@@ -2838,6 +2973,7 @@
       "families": [
         "Game: Marvel Champions \u2013 The Card Game"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           561,
@@ -2897,6 +3033,9 @@
       "families": [
         "Game: Clank!"
       ],
+      "reimplements": [
+        201808
+      ],
       "player_poll": {
         "1": [
           10,
@@ -2950,6 +3089,9 @@
       ],
       "families": [
         "Game: Ticket to Ride (Official)"
+      ],
+      "reimplements": [
+        9209
       ],
       "player_poll": {
         "1": [
@@ -3006,6 +3148,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -3064,6 +3207,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           53,
@@ -3116,6 +3260,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           67,
@@ -3176,6 +3321,11 @@
       ],
       "families": [
         "Game: Pax Pamir"
+      ],
+      "reimplements": [
+        155255,
+        198843,
+        287682
       ],
       "player_poll": {
         "1": [
@@ -3238,6 +3388,7 @@
       "families": [
         "Game: Cthulhu: Death may Die"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           41,
@@ -3298,6 +3449,9 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [
+        120677
+      ],
       "player_poll": {
         "1": [
           4,
@@ -3355,6 +3509,10 @@
       ],
       "families": [
         "Game: Puerto Rico"
+      ],
+      "reimplements": [
+        8217,
+        166669
       ],
       "player_poll": {
         "1": [
@@ -3422,6 +3580,7 @@
       "families": [
         "Game: On Mars"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           15,
@@ -3477,6 +3636,10 @@
       "families": [
         "Game: Pandemic"
       ],
+      "reimplements": [
+        30549,
+        221107
+      ],
       "player_poll": {
         "1": [
           6,
@@ -3529,6 +3692,10 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        433007,
+        446815
+      ],
       "player_poll": {
         "1": [
           128,
@@ -3588,6 +3755,7 @@
       "families": [
         "Game: Anachrony"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           32,
@@ -3640,6 +3808,10 @@
       ],
       "families": [
         "Game: Caverna (Uwe Rosenberg)"
+      ],
+      "reimplements": [
+        31260,
+        220520
       ],
       "player_poll": {
         "1": [
@@ -3709,6 +3881,9 @@
       ],
       "families": [
         "Game: Pandemic"
+      ],
+      "reimplements": [
+        30549
       ],
       "player_poll": {
         "1": [
@@ -3781,6 +3956,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           40,
@@ -3833,6 +4009,16 @@
       ],
       "families": [
         "Game: Agricola"
+      ],
+      "reimplements": [
+        102794,
+        119890,
+        200680,
+        205418,
+        210625,
+        255262,
+        359999,
+        440149
       ],
       "player_poll": {
         "1": [
@@ -3902,6 +4088,7 @@
       "families": [
         "Game: Werewolf / Mafia"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -4046,6 +4233,10 @@
       "families": [
         "Game: Blood Rage"
       ],
+      "reimplements": [
+        23985,
+        449472
+      ],
       "player_poll": {
         "1": [
           0,
@@ -4096,6 +4287,7 @@
       "families": [
         "Game: Obsession"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           62,
@@ -4146,6 +4338,9 @@
       ],
       "families": [
         "Game: Grand Austria Hotel"
+      ],
+      "reimplements": [
+        398898
       ],
       "player_poll": {
         "1": [
@@ -4199,6 +4394,9 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [
+        262477
+      ],
       "player_poll": {
         "1": [
           8,
@@ -4258,6 +4456,10 @@
         "Game: Endeavor",
         "Game: Endeavor Deep Sea"
       ],
+      "reimplements": [
+        33160,
+        233398
+      ],
       "player_poll": {
         "1": [
           19,
@@ -4315,6 +4517,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           41,
@@ -4366,6 +4569,9 @@
       ],
       "families": [
         "Game: Great Western Trail"
+      ],
+      "reimplements": [
+        341169
       ],
       "player_poll": {
         "1": [
@@ -4425,6 +4631,11 @@
       "families": [
         "Game: Pandemic"
       ],
+      "reimplements": [
+        30549,
+        161936,
+        314040
+      ],
       "player_poll": {
         "1": [
           9,
@@ -4481,6 +4692,10 @@
       "families": [
         "Game: Sleeping Gods"
       ],
+      "reimplements": [
+        358320,
+        361284
+      ],
       "player_poll": {
         "1": [
           180,
@@ -4533,6 +4748,15 @@
       ],
       "families": [
         "Game: Power Grid"
+      ],
+      "reimplements": [
+        12166,
+        33434,
+        39336,
+        106662,
+        155873,
+        407181,
+        424395
       ],
       "player_poll": {
         "1": [
@@ -4598,6 +4822,7 @@
       "families": [
         "Game: Tzolk'in \u2013 The Mayan Calendar"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -4653,6 +4878,7 @@
       "families": [
         "Game: Clans of Caledonia"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           16,
@@ -4719,6 +4945,9 @@
       "families": [
         "Game: Mansions of Madness (Second Edition)"
       ],
+      "reimplements": [
+        83330
+      ],
       "player_poll": {
         "1": [
           52,
@@ -4781,6 +5010,10 @@
       "families": [
         "Game: The Quacks of Quedlinburg"
       ],
+      "reimplements": [
+        354886,
+        409496
+      ],
       "player_poll": {
         "1": [
           2,
@@ -4835,6 +5068,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        33759
+      ],
       "player_poll": {
         "1": [
           167,
@@ -4883,6 +5119,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           78,
@@ -4936,6 +5173,7 @@
       "families": [
         "Game: Le Havre"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           24,
@@ -4993,6 +5231,9 @@
       "families": [
         "Game: Android \u2013 Netrunner (LCG)"
       ],
+      "reimplements": [
+        1301
+      ],
       "player_poll": {
         "1": [
           2,
@@ -5037,6 +5278,7 @@
       "families": [
         "Game: The Gallerist"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           8,
@@ -5093,6 +5335,9 @@
       ],
       "families": [
         "Game: Agricola"
+      ],
+      "reimplements": [
+        31260
       ],
       "player_poll": {
         "1": [
@@ -5157,6 +5402,10 @@
       "families": [
         "Game: Star Wars Imperial Assault"
       ],
+      "reimplements": [
+        17226,
+        104162
+      ],
       "player_poll": {
         "1": [
           16,
@@ -5211,6 +5460,9 @@
         "Sudden Death Ending"
       ],
       "families": [],
+      "reimplements": [
+        323609
+      ],
       "player_poll": {
         "1": [
           1,
@@ -5267,6 +5519,7 @@
       "families": [
         "Game: Wingspan"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           10,
@@ -5310,6 +5563,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           12,
@@ -5372,6 +5626,7 @@
       "families": [
         "Game: Maracaibo"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           39,
@@ -5426,6 +5681,7 @@
       "families": [
         "Game: Revive"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           19,
@@ -5480,6 +5736,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        130518
+      ],
       "player_poll": {
         "1": [
           2,
@@ -5536,6 +5795,11 @@
       ],
       "families": [
         "Game: Race for the Galaxy"
+      ],
+      "reimplements": [
+        132531,
+        205597,
+        255692
       ],
       "player_poll": {
         "1": [
@@ -5602,6 +5866,7 @@
       "families": [
         "Game: Kingdom Death Monster"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           113,
@@ -5651,6 +5916,11 @@
       ],
       "families": [
         "Game: The Crew"
+      ],
+      "reimplements": [
+        324856,
+        462192,
+        467257
       ],
       "player_poll": {
         "1": [
@@ -5708,6 +5978,9 @@
       "families": [
         "Game: Final Girl"
       ],
+      "reimplements": [
+        134253
+      ],
       "player_poll": {
         "1": [
           150,
@@ -5752,6 +6025,7 @@
       "families": [
         "Game: Five Tribes"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           4,
@@ -5805,6 +6079,14 @@
       ],
       "families": [
         "Game: Azul"
+      ],
+      "reimplements": [
+        256226,
+        287954,
+        346965,
+        363247,
+        431038,
+        473359
       ],
       "player_poll": {
         "1": [
@@ -5863,6 +6145,7 @@
       "families": [
         "Game: Arcs"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -5915,6 +6198,7 @@
       "families": [
         "Game: El Grande"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -5973,6 +6257,7 @@
       "families": [
         "Game: Fields of Arle"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           71,
@@ -6016,6 +6301,13 @@
       ],
       "families": [
         "Game: Clank!"
+      ],
+      "reimplements": [
+        233371,
+        266507,
+        365717,
+        383010,
+        469932
       ],
       "player_poll": {
         "1": [
@@ -6074,6 +6366,9 @@
       ],
       "families": [
         "Game: Concordia"
+      ],
+      "reimplements": [
+        124361
       ],
       "player_poll": {
         "1": [
@@ -6144,6 +6439,9 @@
       ],
       "families": [
         "Game: Eclipse (Lautapelit.fi)"
+      ],
+      "reimplements": [
+        246900
       ],
       "player_poll": {
         "1": [
@@ -6220,6 +6518,9 @@
       "families": [
         "Game: Arkham Horror \u2013 The Card Game"
       ],
+      "reimplements": [
+        205637
+      ],
       "player_poll": {
         "1": [
           28,
@@ -6273,6 +6574,7 @@
       "families": [
         "Game: Lords of Waterdeep"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -6334,6 +6636,10 @@
       ],
       "families": [
         "Game: Aeon's End"
+      ],
+      "reimplements": [
+        352179,
+        386538
       ],
       "player_poll": {
         "1": [
@@ -6398,6 +6704,9 @@
       "families": [
         "Game: Galactic Cruise"
       ],
+      "reimplements": [
+        468800
+      ],
       "player_poll": {
         "1": [
           10,
@@ -6442,6 +6751,7 @@
         "Score-and-Reset Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -6495,6 +6805,9 @@
       "families": [
         "Game: Splendor"
       ],
+      "reimplements": [
+        148228
+      ],
       "player_poll": {
         "1": [
           1,
@@ -6547,6 +6860,7 @@
       "families": [
         "Game: Teotihuacan"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           11,
@@ -6598,6 +6912,12 @@
       ],
       "families": [
         "Game: Ra"
+      ],
+      "reimplements": [
+        12589,
+        35503,
+        59753,
+        422796
       ],
       "player_poll": {
         "1": [
@@ -6656,6 +6976,9 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        421310
+      ],
       "player_poll": {
         "1": [
           0,
@@ -6714,6 +7037,10 @@
       ],
       "families": [
         "Game: Dominant Species"
+      ],
+      "reimplements": [
+        96260,
+        262941
       ],
       "player_poll": {
         "1": [
@@ -6777,6 +7104,10 @@
         "Turn Order: Time Track"
       ],
       "families": [],
+      "reimplements": [
+        358557,
+        414648
+      ],
       "player_poll": {
         "1": [
           50,
@@ -6826,6 +7157,7 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -6910,6 +7242,12 @@
       "families": [
         "Game: 7 Wonders"
       ],
+      "reimplements": [
+        173346,
+        316377,
+        346703,
+        446231
+      ],
       "player_poll": {
         "1": [
           4,
@@ -6977,6 +7315,9 @@
       "families": [
         "Game: Through the Ages"
       ],
+      "reimplements": [
+        182028
+      ],
       "player_poll": {
         "1": [
           5,
@@ -7041,6 +7382,9 @@
       "families": [
         "Game: Robinson Crusoe \u2013 Adventures on the Cursed Island"
       ],
+      "reimplements": [
+        192455
+      ],
       "player_poll": {
         "1": [
           448,
@@ -7099,6 +7443,9 @@
       "families": [
         "Game: The Quest for El Dorado"
       ],
+      "reimplements": [
+        452799
+      ],
       "player_poll": {
         "1": [
           1,
@@ -7155,6 +7502,9 @@
       "families": [
         "Game: The Voyages of Marco Polo"
       ],
+      "reimplements": [
+        283948
+      ],
       "player_poll": {
         "1": [
           1,
@@ -7208,6 +7558,7 @@
       "families": [
         "Game: Trickerion"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -7259,6 +7610,9 @@
       ],
       "families": [
         "Game: Wingspan"
+      ],
+      "reimplements": [
+        266192
       ],
       "player_poll": {
         "1": [
@@ -7325,6 +7679,7 @@
       "families": [
         "Game: Inis"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -7384,6 +7739,10 @@
         "Voting"
       ],
       "families": [],
+      "reimplements": [
+        111124,
+        340466
+      ],
       "player_poll": {
         "1": [
           3,
@@ -7454,6 +7813,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           22,
@@ -7507,6 +7867,10 @@
       ],
       "families": [
         "Game: Dwellings of Eldervale"
+      ],
+      "reimplements": [
+        358661,
+        429653
       ],
       "player_poll": {
         "1": [
@@ -7572,6 +7936,10 @@
       "families": [
         "Game: Nemesis"
       ],
+      "reimplements": [
+        167355,
+        381248
+      ],
       "player_poll": {
         "1": [
           8,
@@ -7631,6 +7999,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           8,
@@ -7690,6 +8059,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           24,
@@ -7743,6 +8113,7 @@
         "Trick-taking"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           25,
@@ -7801,6 +8172,11 @@
       "families": [
         "Game: Tigris & Euphrates"
       ],
+      "reimplements": [
+        19419,
+        244114,
+        371688
+      ],
       "player_poll": {
         "1": [
           1,
@@ -7850,6 +8226,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -7904,6 +8281,10 @@
       ],
       "families": [
         "Game: Dominion"
+      ],
+      "reimplements": [
+        184207,
+        209419
       ],
       "player_poll": {
         "1": [
@@ -7977,6 +8358,10 @@
       "families": [
         "Game: Keyflower"
       ],
+      "reimplements": [
+        205507,
+        252446
+      ],
       "player_poll": {
         "1": [
           0,
@@ -8035,6 +8420,9 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [
+        301880
+      ],
       "player_poll": {
         "1": [
           5,
@@ -8095,6 +8483,10 @@
       ],
       "families": [
         "Game: Age of Steam"
+      ],
+      "reimplements": [
+        17133,
+        27833
       ],
       "player_poll": {
         "1": [
@@ -8170,6 +8562,9 @@
       "families": [
         "Game: Tainted Grail"
       ],
+      "reimplements": [
+        360366
+      ],
       "player_poll": {
         "1": [
           302,
@@ -8226,6 +8621,9 @@
       ],
       "families": [
         "Game: Eldritch Horror"
+      ],
+      "reimplements": [
+        15987
       ],
       "player_poll": {
         "1": [
@@ -8299,6 +8697,10 @@
       "families": [
         "Game: Caylus"
       ],
+      "reimplements": [
+        27364,
+        284818
+      ],
       "player_poll": {
         "1": [
           0,
@@ -8364,6 +8766,9 @@
       "families": [
         "Game: Troyes"
       ],
+      "reimplements": [
+        284584
+      ],
       "player_poll": {
         "1": [
           7,
@@ -8416,6 +8821,7 @@
       "families": [
         "Game: Lorenzo il Magnifico"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -8474,6 +8880,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           139,
@@ -8535,6 +8942,9 @@
       "families": [
         "Game: Mombasa"
       ],
+      "reimplements": [
+        359438
+      ],
       "player_poll": {
         "1": [
           0,
@@ -8585,6 +8995,14 @@
       ],
       "families": [
         "Game: Dominion"
+      ],
+      "reimplements": [
+        89383,
+        112335,
+        120206,
+        184207,
+        209418,
+        426589
       ],
       "player_poll": {
         "1": [
@@ -8637,6 +9055,7 @@
       "families": [
         "Game: Hansa Teutonica"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -8695,6 +9114,11 @@
       "families": [
         "Game: Patchwork"
       ],
+      "reimplements": [
+        246639,
+        264239,
+        362693
+      ],
       "player_poll": {
         "1": [
           5,
@@ -8732,6 +9156,7 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -8785,6 +9210,10 @@
       ],
       "families": [
         "Game: Forest Shuffle"
+      ],
+      "reimplements": [
+        438402,
+        463296
       ],
       "player_poll": {
         "1": [
@@ -8844,6 +9273,7 @@
       "families": [
         "Game: Aeon's End"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           29,
@@ -8893,6 +9323,7 @@
       "families": [
         "Game: Russian Railroads"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -8956,6 +9387,10 @@
       ],
       "families": [
         "Game: Twilight Imperium"
+      ],
+      "reimplements": [
+        26055,
+        233078
       ],
       "player_poll": {
         "1": [
@@ -9025,6 +9460,7 @@
       "families": [
         "Game: The Elder Scrolls Betrayal of the Second Era"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           69,
@@ -9089,6 +9525,7 @@
       "families": [
         "Game: Rising Sun"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -9154,6 +9591,9 @@
       "families": [
         "Game: Vinhos"
       ],
+      "reimplements": [
+        42052
+      ],
       "player_poll": {
         "1": [
           4,
@@ -9206,6 +9646,10 @@
       ],
       "families": [
         "Game: Yokohama"
+      ],
+      "reimplements": [
+        264637,
+        335736
       ],
       "player_poll": {
         "1": [
@@ -9261,6 +9705,10 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        22827,
+        474883
+      ],
       "player_poll": {
         "1": [
           2,
@@ -9310,6 +9758,9 @@
         "Score-and-Reset Game"
       ],
       "families": [],
+      "reimplements": [
+        241611
+      ],
       "player_poll": {
         "1": [
           0,
@@ -9378,6 +9829,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           134,
@@ -9435,6 +9887,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           39,
@@ -9489,6 +9942,9 @@
       ],
       "families": [
         "Game: Pandemic"
+      ],
+      "reimplements": [
+        30549
       ],
       "player_poll": {
         "1": [
@@ -9547,6 +10003,10 @@
       ],
       "families": [
         "Game: Codenames"
+      ],
+      "reimplements": [
+        301628,
+        450782
       ],
       "player_poll": {
         "1": [
@@ -9618,6 +10078,9 @@
       "families": [
         "Game: Clank!"
       ],
+      "reimplements": [
+        201808
+      ],
       "player_poll": {
         "1": [
           9,
@@ -9675,6 +10138,9 @@
       "families": [
         "Game:  Andromeda's Edge"
       ],
+      "reimplements": [
+        271055
+      ],
       "player_poll": {
         "1": [
           14,
@@ -9728,6 +10194,7 @@
       "families": [
         "Game: Tyrants of the Underdark"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -9785,6 +10252,7 @@
       "families": [
         "Game: Too Many Bones"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           21,
@@ -9843,6 +10311,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           20,
@@ -9910,6 +10379,7 @@
       "families": [
         "Game: Champions of Midgard"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -9963,6 +10433,10 @@
       ],
       "families": [
         "Game: Rajas of the Ganges"
+      ],
+      "reimplements": [
+        318553,
+        410625
       ],
       "player_poll": {
         "1": [
@@ -10018,6 +10492,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        283317
+      ],
       "player_poll": {
         "1": [
           443,
@@ -10074,6 +10551,7 @@
       "families": [
         "Game: Magic The Gathering"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -10130,6 +10608,7 @@
         "Tech Trees / Tech Tracks"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           318,
@@ -10200,6 +10679,21 @@
       "families": [
         "Game: Pandemic"
       ],
+      "reimplements": [
+        150658,
+        161936,
+        192153,
+        198928,
+        221107,
+        234671,
+        260428,
+        301919,
+        314040,
+        329670,
+        342848,
+        370913,
+        436217
+      ],
       "player_poll": {
         "1": [
           176,
@@ -10263,6 +10757,9 @@
       "families": [
         "Game: Race for the Galaxy"
       ],
+      "reimplements": [
+        28143
+      ],
       "player_poll": {
         "1": [
           5,
@@ -10317,6 +10814,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -10356,6 +10854,9 @@
       ],
       "families": [
         "Game: Dominion"
+      ],
+      "reimplements": [
+        36218
       ],
       "player_poll": {
         "1": [
@@ -10412,6 +10913,12 @@
       "families": [
         "Game: Star Realms"
       ],
+      "reimplements": [
+        179303,
+        198994,
+        407812,
+        422345
+      ],
       "player_poll": {
         "1": [
           6,
@@ -10453,6 +10960,10 @@
       ],
       "families": [
         "Game: Ticket to Ride (Official)"
+      ],
+      "reimplements": [
+        9209,
+        218208
       ],
       "player_poll": {
         "1": [
@@ -10512,6 +11023,9 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        418812
+      ],
       "player_poll": {
         "1": [
           1,
@@ -10566,6 +11080,10 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        437306,
+        458651
+      ],
       "player_poll": {
         "1": [
           11,
@@ -10625,6 +11143,7 @@
       "families": [
         "Game: War Chest"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -10674,6 +11193,12 @@
         "Simulation"
       ],
       "families": [],
+      "reimplements": [
+        290359,
+        354570,
+        366495,
+        401978
+      ],
       "player_poll": {
         "1": [
           11,
@@ -10723,6 +11248,7 @@
       "families": [
         "Game: Cartographers"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           88,
@@ -10906,6 +11432,7 @@
       "families": [
         "Game: Res Arcana"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -10961,6 +11488,9 @@
       "families": [
         "Game: The Lord of the Rings \u2013 The Card Game (LCG)"
       ],
+      "reimplements": [
+        349067
+      ],
       "player_poll": {
         "1": [
           246,
@@ -11007,6 +11537,9 @@
       ],
       "families": [
         "Game: It's a Wonderful World"
+      ],
+      "reimplements": [
+        327711
       ],
       "player_poll": {
         "1": [
@@ -11063,6 +11596,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           213,
@@ -11125,6 +11659,9 @@
       "families": [
         "Game: Stone Age"
       ],
+      "reimplements": [
+        191004
+      ],
       "player_poll": {
         "1": [
           1,
@@ -11173,6 +11710,7 @@
         "Tug of War"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -11219,6 +11757,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           40,
@@ -11276,6 +11815,9 @@
       "families": [
         "Game: Unmatched"
       ],
+      "reimplements": [
+        3284
+      ],
       "player_poll": {
         "1": [
           1,
@@ -11330,6 +11872,10 @@
       ],
       "families": [
         "Game: Istanbul (AEG)"
+      ],
+      "reimplements": [
+        235488,
+        379037
       ],
       "player_poll": {
         "1": [
@@ -11397,6 +11943,9 @@
       "families": [
         "Game: Terraforming Mars Ares Expedition"
       ],
+      "reimplements": [
+        167791
+      ],
       "player_poll": {
         "1": [
           57,
@@ -11450,6 +11999,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           10,
@@ -11505,6 +12055,10 @@
       ],
       "families": [
         "Game: 7 Wonders"
+      ],
+      "reimplements": [
+        68448,
+        346703
       ],
       "player_poll": {
         "1": [
@@ -11582,6 +12136,7 @@
       "families": [
         "Game: Xia: Legends of a Drift System"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           14,
@@ -11638,6 +12193,9 @@
       "families": [
         "Game: Great Western Trail"
       ],
+      "reimplements": [
+        341169
+      ],
       "player_poll": {
         "1": [
           5,
@@ -11689,6 +12247,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           24,
@@ -11749,6 +12308,9 @@
       "families": [
         "Game: Legendary (Upper Deck Entertainment)"
       ],
+      "reimplements": [
+        129437
+      ],
       "player_poll": {
         "1": [
           54,
@@ -11807,6 +12369,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -11845,6 +12408,13 @@
       ],
       "families": [
         "Game: Ganz Sch\u00f6n Clever"
+      ],
+      "reimplements": [
+        269210,
+        316546,
+        354892,
+        366162,
+        454235
       ],
       "player_poll": {
         "1": [
@@ -11899,6 +12469,10 @@
       ],
       "families": [
         "Game: Kemet"
+      ],
+      "reimplements": [
+        297562,
+        336849
       ],
       "player_poll": {
         "1": [
@@ -11957,6 +12531,9 @@
       ],
       "families": [
         "Game: Glen More"
+      ],
+      "reimplements": [
+        66362
       ],
       "player_poll": {
         "1": [
@@ -12017,6 +12594,10 @@
       "families": [
         "Game: The City of Kings"
       ],
+      "reimplements": [
+        338460,
+        431718
+      ],
       "player_poll": {
         "1": [
           26,
@@ -12074,6 +12655,11 @@
       "families": [
         "Game: Star Wars X-Wing Miniatures Game"
       ],
+      "reimplements": [
+        139771,
+        155689,
+        252328
+      ],
       "player_poll": {
         "1": [
           3,
@@ -12116,6 +12702,7 @@
       "families": [
         "Game: Sherlock Holmes Consulting Detective"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           104,
@@ -12191,6 +12778,9 @@
       "families": [
         "Game: The Voyages of Marco Polo"
       ],
+      "reimplements": [
+        171623
+      ],
       "player_poll": {
         "1": [
           2,
@@ -12246,6 +12836,10 @@
       ],
       "families": [
         "Game: Endeavor"
+      ],
+      "reimplements": [
+        33160,
+        367966
       ],
       "player_poll": {
         "1": [
@@ -12308,6 +12902,9 @@
       ],
       "families": [
         "Game: Earth"
+      ],
+      "reimplements": [
+        467570
       ],
       "player_poll": {
         "1": [
@@ -12375,6 +12972,10 @@
       "families": [
         "Game: Dune (Avalon Hill original)"
       ],
+      "reimplements": [
+        121,
+        341165
+      ],
       "player_poll": {
         "1": [
           1,
@@ -12433,6 +13034,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -12472,6 +13074,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -12533,6 +13136,9 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [
+        233867
+      ],
       "player_poll": {
         "1": [
           55,
@@ -12594,6 +13200,9 @@
         "Voting"
       ],
       "families": [],
+      "reimplements": [
+        211716
+      ],
       "player_poll": {
         "1": [
           11,
@@ -12654,6 +13263,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           12,
@@ -12706,6 +13316,12 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [
+        260937,
+        281075,
+        339789,
+        392449
+      ],
       "player_poll": {
         "1": [
           46,
@@ -12882,6 +13498,7 @@
         "Tug of War"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           12,
@@ -12924,6 +13541,7 @@
       "families": [
         "Game: Meadow (Rebel Studio)"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           24,
@@ -12977,6 +13595,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -13038,6 +13657,9 @@
       "families": [
         "Game: This War of Mine (Awaken Realms)"
       ],
+      "reimplements": [
+        440146
+      ],
       "player_poll": {
         "1": [
           415,
@@ -13098,6 +13720,9 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [
+        40381
+      ],
       "player_poll": {
         "1": [
           1,
@@ -13155,6 +13780,9 @@
         "Take That"
       ],
       "families": [],
+      "reimplements": [
+        804
+      ],
       "player_poll": {
         "1": [
           0,
@@ -13214,6 +13842,10 @@
       "families": [
         "Game: Memoir '44"
       ],
+      "reimplements": [
+        551,
+        444481
+      ],
       "player_poll": {
         "1": [
           7,
@@ -13266,6 +13898,9 @@
         "Hand Management"
       ],
       "families": [],
+      "reimplements": [
+        115746
+      ],
       "player_poll": {
         "1": [
           1,
@@ -13315,6 +13950,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           14,
@@ -13367,6 +14003,7 @@
       "families": [
         "Game: The Red Cathedral"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -13423,6 +14060,9 @@
       "families": [
         "Game: Sagrada"
       ],
+      "reimplements": [
+        369751
+      ],
       "player_poll": {
         "1": [
           24,
@@ -13471,6 +14111,7 @@
       "families": [
         "Game: Space Base"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -13532,6 +14173,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        30
+      ],
       "player_poll": {
         "1": [
           5,
@@ -13587,6 +14231,11 @@
       ],
       "families": [
         "Game: Clash of Cultures"
+      ],
+      "reimplements": [
+        40765,
+        146244,
+        167825
       ],
       "player_poll": {
         "1": [
@@ -13644,6 +14293,14 @@
       ],
       "families": [
         "Game: Cosmic Encounter"
+      ],
+      "reimplements": [
+        15,
+        40529,
+        40531,
+        204837,
+        298572,
+        313010
       ],
       "player_poll": {
         "1": [
@@ -13714,6 +14371,11 @@
       "families": [
         "Game: Descent \u2013 Journeys in the Dark"
       ],
+      "reimplements": [
+        17226,
+        164153,
+        322708
+      ],
       "player_poll": {
         "1": [
           23,
@@ -13769,6 +14431,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -13809,6 +14472,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        464279
+      ],
       "player_poll": {
         "1": [
           53,
@@ -13863,6 +14529,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           4,
@@ -13915,6 +14582,11 @@
       "families": [
         "Game: Castles of Mad King Ludwig"
       ],
+      "reimplements": [
+        223278,
+        258036,
+        326945
+      ],
       "player_poll": {
         "1": [
           2,
@@ -13960,6 +14632,7 @@
         "Square Grid"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -14011,6 +14684,14 @@
       "families": [
         "Game: The Resistance",
         "Game: Werewolf / Mafia"
+      ],
+      "reimplements": [
+        41114,
+        162890,
+        163322,
+        316287,
+        317030,
+        367396
       ],
       "player_poll": {
         "1": [
@@ -14094,6 +14775,24 @@
       "families": [
         "Game: Carcassonne"
       ],
+      "reimplements": [
+        4390,
+        6779,
+        7717,
+        12902,
+        16216,
+        34615,
+        41010,
+        131014,
+        137492,
+        147303,
+        163370,
+        180564,
+        182082,
+        206940,
+        230751,
+        256065
+      ],
       "player_poll": {
         "1": [
           8,
@@ -14162,6 +14861,9 @@
       "families": [
         "Game: A Game of Thrones \u2013 The Board Game"
       ],
+      "reimplements": [
+        6472
+      ],
       "player_poll": {
         "1": [
           3,
@@ -14220,6 +14922,10 @@
       "families": [
         "Game: Ticket to Ride (Official)"
       ],
+      "reimplements": [
+        9209,
+        371140
+      ],
       "player_poll": {
         "1": [
           0,
@@ -14264,6 +14970,12 @@
       ],
       "families": [
         "Game: Splendor"
+      ],
+      "reimplements": [
+        293296,
+        364073,
+        406291,
+        453472
       ],
       "player_poll": {
         "1": [
@@ -14315,6 +15027,9 @@
       ],
       "families": [
         "Game: Azul"
+      ],
+      "reimplements": [
+        230802
       ],
       "player_poll": {
         "1": [
@@ -14373,6 +15088,11 @@
       ],
       "families": [
         "Game: Railways of the World"
+      ],
+      "reimplements": [
+        4098,
+        68228,
+        142303
       ],
       "player_poll": {
         "1": [
@@ -14435,6 +15155,12 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        343562,
+        397897,
+        423434,
+        437705
+      ],
       "player_poll": {
         "1": [
           29,
@@ -14491,6 +15217,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           14,
@@ -14546,6 +15273,10 @@
       ],
       "families": [
         "Game: Captain Sonar"
+      ],
+      "reimplements": [
+        231819,
+        470574
       ],
       "player_poll": {
         "1": [
@@ -14618,6 +15349,9 @@
       "families": [
         "Game: Village"
       ],
+      "reimplements": [
+        172381
+      ],
       "player_poll": {
         "1": [
           0,
@@ -14668,6 +15402,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -14712,6 +15447,7 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -14796,6 +15532,7 @@
       "families": [
         "Game: Suburbia"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           12,
@@ -14848,6 +15585,7 @@
       "families": [
         "Game: Sea Salt & Paper"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -14902,6 +15640,7 @@
       "families": [
         "Game: Faraway"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -14972,6 +15711,7 @@
         "Voting"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -15028,6 +15768,13 @@
       "families": [
         "Game: Commands & Colors Ancients"
       ],
+      "reimplements": [
+        62222,
+        199182,
+        209003,
+        259066,
+        286358
+      ],
       "player_poll": {
         "1": [
           2,
@@ -15077,6 +15824,7 @@
       "families": [
         "Game: Ankh \u2013 Gods of Egypt"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -15133,6 +15881,9 @@
         "Simultaneous Action Selection"
       ],
       "families": [],
+      "reimplements": [
+        432229
+      ],
       "player_poll": {
         "1": [
           0,
@@ -15192,6 +15943,7 @@
       "families": [
         "Game: Aeon's End"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           16,
@@ -15235,6 +15987,7 @@
         "Pattern Building"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -15268,6 +16021,9 @@
         "Score-and-Reset Game"
       ],
       "families": [],
+      "reimplements": [
+        270131
+      ],
       "player_poll": {
         "1": [
           0,
@@ -15309,6 +16065,27 @@
       ],
       "families": [
         "Game: Ticket to Ride (Official)"
+      ],
+      "reimplements": [
+        14996,
+        21348,
+        31627,
+        34127,
+        202670,
+        205125,
+        225244,
+        244525,
+        253284,
+        258140,
+        276894,
+        309113,
+        329841,
+        362541,
+        366488,
+        371140,
+        388036,
+        390092,
+        403221
       ],
       "player_poll": {
         "1": [
@@ -15372,6 +16149,10 @@
       "families": [
         "Game: Nemesis"
       ],
+      "reimplements": [
+        167355,
+        310100
+      ],
       "player_poll": {
         "1": [
           4,
@@ -15432,6 +16213,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -15476,6 +16258,7 @@
         "Point to Point Movement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -15511,6 +16294,7 @@
         "Cooperative Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -15573,6 +16357,9 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [
+        273779
+      ],
       "player_poll": {
         "1": [
           236,
@@ -15607,6 +16394,7 @@
       "families": [
         "Game: Star Realms"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -15654,6 +16442,7 @@
       "families": [
         "Game: Werewolf / Mafia"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -15737,6 +16526,10 @@
       "families": [
         "Game: Camel Up"
       ],
+      "reimplements": [
+        153938,
+        378848
+      ],
       "player_poll": {
         "1": [
           1,
@@ -15806,6 +16599,10 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [
+        351476,
+        359394
+      ],
       "player_poll": {
         "1": [
           0,
@@ -15862,6 +16659,9 @@
       "families": [
         "Game: Cyclades"
       ],
+      "reimplements": [
+        380619
+      ],
       "player_poll": {
         "1": [
           0,
@@ -15915,6 +16715,12 @@
         "Tags"
       ],
       "families": [],
+      "reimplements": [
+        347117,
+        359152,
+        428664,
+        459101
+      ],
       "player_poll": {
         "1": [
           3,
@@ -15981,6 +16787,9 @@
       "families": [
         "Game: Nations"
       ],
+      "reimplements": [
+        157809
+      ],
       "player_poll": {
         "1": [
           8,
@@ -16039,6 +16848,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           70,
@@ -16087,6 +16897,9 @@
       "families": [
         "Game: Codenames"
       ],
+      "reimplements": [
+        249821
+      ],
       "player_poll": {
         "1": [
           0,
@@ -16128,6 +16941,9 @@
         "Turn Order: Progressive"
       ],
       "families": [],
+      "reimplements": [
+        475404
+      ],
       "player_poll": {
         "1": [
           23,
@@ -16186,6 +17002,9 @@
       ],
       "families": [
         "Game: Century (Plan B Games)"
+      ],
+      "reimplements": [
+        209685
       ],
       "player_poll": {
         "1": [
@@ -16251,6 +17070,11 @@
       "families": [
         "Game: La Granja"
       ],
+      "reimplements": [
+        195528,
+        341945,
+        368386
+      ],
       "player_poll": {
         "1": [
           5,
@@ -16300,6 +17124,9 @@
         "Variable Phase Order"
       ],
       "families": [],
+      "reimplements": [
+        383037
+      ],
       "player_poll": {
         "1": [
           5,
@@ -16339,6 +17166,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           16,
@@ -16403,6 +17231,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -16455,6 +17284,10 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        35634,
+        450860
+      ],
       "player_poll": {
         "1": [
           0,
@@ -16505,6 +17338,19 @@
       ],
       "families": [
         "Game: Legendary (Upper Deck Entertainment)"
+      ],
+      "reimplements": [
+        146652,
+        174570,
+        195571,
+        200171,
+        210290,
+        256874,
+        285157,
+        373105,
+        426580,
+        440775,
+        458319
       ],
       "player_poll": {
         "1": [
@@ -16563,6 +17409,10 @@
       "families": [
         "Game: Dinosaur Island/Dinosaur World"
       ],
+      "reimplements": [
+        317457,
+        318009
+      ],
       "player_poll": {
         "1": [
           5,
@@ -16612,6 +17462,9 @@
       "families": [
         "Game: Hanamikoji"
       ],
+      "reimplements": [
+        322339
+      ],
       "player_poll": {
         "1": [
           0,
@@ -16650,6 +17503,9 @@
         "Trick-taking"
       ],
       "families": [],
+      "reimplements": [
+        191071
+      ],
       "player_poll": {
         "1": [
           0,
@@ -16721,6 +17577,9 @@
       ],
       "families": [
         "Game: Sushi Go!"
+      ],
+      "reimplements": [
+        133473
       ],
       "player_poll": {
         "1": [
@@ -16796,6 +17655,10 @@
       "families": [
         "Game: Western Legends"
       ],
+      "reimplements": [
+        420894,
+        440691
+      ],
       "player_poll": {
         "1": [
           1,
@@ -16858,6 +17721,9 @@
       "families": [
         "Game: Flamme Rouge"
       ],
+      "reimplements": [
+        395256
+      ],
       "player_poll": {
         "1": [
           8,
@@ -16913,6 +17779,9 @@
       ],
       "families": [
         "Game: Zombicide"
+      ],
+      "reimplements": [
+        113924
       ],
       "player_poll": {
         "1": [
@@ -16979,6 +17848,9 @@
       "families": [
         "Game: Unmatched"
       ],
+      "reimplements": [
+        3284
+      ],
       "player_poll": {
         "1": [
           0,
@@ -17037,6 +17909,7 @@
         "Game: Deception \u2013 Murder in Hong Kong",
         "Game: Werewolf / Mafia"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -17129,6 +18002,7 @@
       "families": [
         "Game: Isle of Skye (Lookout Games)"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -17185,6 +18059,10 @@
         "Variable Phase Order"
       ],
       "families": [],
+      "reimplements": [
+        128063,
+        175199
+      ],
       "player_poll": {
         "1": [
           0,
@@ -17238,6 +18116,14 @@
       "families": [
         "Game: MicroMacro"
       ],
+      "reimplements": [
+        338834,
+        364766,
+        398162,
+        430886,
+        458752,
+        464930
+      ],
       "player_poll": {
         "1": [
           73,
@@ -17288,6 +18174,9 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [
+        412865
+      ],
       "player_poll": {
         "1": [
           3,
@@ -17359,6 +18248,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -17403,6 +18293,7 @@
         "Zone of Control"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -17459,6 +18350,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           48,
@@ -17520,6 +18412,7 @@
       "families": [
         "Game: Unconscious Mind"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           13,
@@ -17573,6 +18466,7 @@
       "families": [
         "Game: Aeon's End"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           26,
@@ -17632,6 +18526,7 @@
         "Zone of Control"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -17687,6 +18582,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           47,
@@ -17742,6 +18638,9 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [
+        394852
+      ],
       "player_poll": {
         "1": [
           0,
@@ -17855,6 +18754,9 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        429895
+      ],
       "player_poll": {
         "1": [
           0,
@@ -17906,6 +18808,7 @@
         "Open Drafting"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -17985,6 +18888,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           62,
@@ -18032,6 +18936,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -18088,6 +18993,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           11,
@@ -18137,6 +19043,9 @@
       ],
       "families": [
         "Game: Hero Realms"
+      ],
+      "reimplements": [
+        147020
       ],
       "player_poll": {
         "1": [
@@ -18191,6 +19100,9 @@
       ],
       "families": [
         "Game: Kemet"
+      ],
+      "reimplements": [
+        127023
       ],
       "player_poll": {
         "1": [
@@ -18247,6 +19159,12 @@
       ],
       "families": [
         "Game: Love Letter"
+      ],
+      "reimplements": [
+        129622,
+        353470,
+        406459,
+        472581
       ],
       "player_poll": {
         "1": [
@@ -18306,6 +19224,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -18356,6 +19275,12 @@
       ],
       "families": [
         "Game: Santorini"
+      ],
+      "reimplements": [
+        9963,
+        315631,
+        386166,
+        439107
       ],
       "player_poll": {
         "1": [
@@ -18410,6 +19335,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -18475,6 +19401,7 @@
       "families": [
         "Game: Star Realms"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           16,
@@ -18531,6 +19458,9 @@
       "families": [
         "Game: The Lord of the Rings \u2013 The Card Game (LCG)"
       ],
+      "reimplements": [
+        77423
+      ],
       "player_poll": {
         "1": [
           63,
@@ -18580,6 +19510,7 @@
         "Tech Trees / Tech Tracks"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -18628,6 +19559,9 @@
       ],
       "families": [
         "Game: Kanban"
+      ],
+      "reimplements": [
+        284378
       ],
       "player_poll": {
         "1": [
@@ -18688,6 +19622,9 @@
       "families": [
         "Game: Galaxy Trucker"
       ],
+      "reimplements": [
+        336794
+      ],
       "player_poll": {
         "1": [
           1,
@@ -18738,6 +19675,11 @@
         "Variable Phase Order"
       ],
       "families": [],
+      "reimplements": [
+        3307,
+        109125,
+        226562
+      ],
       "player_poll": {
         "1": [
           0,
@@ -18793,6 +19735,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -18848,6 +19791,9 @@
       ],
       "families": [
         "Game: Viticulture"
+      ],
+      "reimplements": [
+        183394
       ],
       "player_poll": {
         "1": [
@@ -18910,6 +19856,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        472060
+      ],
       "player_poll": {
         "1": [
           12,
@@ -18961,6 +19910,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           220,
@@ -19011,6 +19961,7 @@
       "families": [
         "Game: Dice Throne"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -19074,6 +20025,11 @@
       ],
       "families": [
         "Game: Dorfromantik"
+      ],
+      "reimplements": [
+        424774,
+        449931,
+        474300
       ],
       "player_poll": {
         "1": [
@@ -19146,6 +20102,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           40,
@@ -19210,6 +20167,7 @@
       "families": [
         "Game: Cloudspire"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           115,
@@ -19262,6 +20220,12 @@
       "families": [
         "Game: Kingdomino"
       ],
+      "reimplements": [
+        260941,
+        281960,
+        340041,
+        378001
+      ],
       "player_poll": {
         "1": [
           2,
@@ -19308,6 +20272,13 @@
       "families": [
         "Game: Schotten-Totten"
       ],
+      "reimplements": [
+        372,
+        297985,
+        322864,
+        340252,
+        417997
+      ],
       "player_poll": {
         "1": [
           1,
@@ -19344,6 +20315,9 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [
+        368975
+      ],
       "player_poll": {
         "1": [
           1,
@@ -19401,6 +20375,7 @@
       "families": [
         "Game: Lewis & Clark"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           14,
@@ -19456,6 +20431,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        24565
+      ],
       "player_poll": {
         "1": [
           3,
@@ -19516,6 +20494,7 @@
       "families": [
         "Game: Hive"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -19558,6 +20537,7 @@
       "families": [
         "Game: United"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           34,
@@ -19617,6 +20597,7 @@
       "families": [
         "Game: Oath"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           4,
@@ -19674,6 +20655,10 @@
       ],
       "families": [
         "Game: Ethnos"
+      ],
+      "reimplements": [
+        380938,
+        432527
       ],
       "player_poll": {
         "1": [
@@ -19740,6 +20725,7 @@
       "families": [
         "Game: Imperium (Osprey Games)"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           272,
@@ -19786,6 +20772,7 @@
         "Simulation"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -19824,6 +20811,7 @@
         "Race"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -19882,6 +20870,10 @@
       "families": [
         "Game: Rococo"
       ],
+      "reimplements": [
+        296100,
+        427202
+      ],
       "player_poll": {
         "1": [
           1,
@@ -19933,6 +20925,7 @@
         "Simultaneous Action Selection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -19983,6 +20976,7 @@
         "Turn Order: Progressive"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -20032,6 +21026,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -20091,6 +21086,7 @@
       "families": [
         "Game: Endless Winter"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           10,
@@ -20141,6 +21137,11 @@
       "families": [
         "Game: Lost Cities"
       ],
+      "reimplements": [
+        34585,
+        42487,
+        244795
+      ],
       "player_poll": {
         "1": [
           1,
@@ -20186,6 +21187,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           19,
@@ -20237,6 +21239,9 @@
       ],
       "families": [
         "Game: Steam"
+      ],
+      "reimplements": [
+        4098
       ],
       "player_poll": {
         "1": [
@@ -20298,6 +21303,12 @@
       "families": [
         "Game: Detective \u2013 A Modern Crime Board Game (Portal Games)"
       ],
+      "reimplements": [
+        293531,
+        299255,
+        329713,
+        355276
+      ],
       "player_poll": {
         "1": [
           21,
@@ -20353,6 +21364,9 @@
       "families": [
         "Game: Cthulhu Wars"
       ],
+      "reimplements": [
+        326485
+      ],
       "player_poll": {
         "1": [
           0,
@@ -20403,6 +21417,14 @@
       "families": [
         "Game: Chronicles of Crime"
       ],
+      "reimplements": [
+        300300,
+        302098,
+        302312,
+        454131,
+        454695,
+        454698
+      ],
       "player_poll": {
         "1": [
           78,
@@ -20450,6 +21472,13 @@
       ],
       "families": [
         "Game: Telestrations"
+      ],
+      "reimplements": [
+        153016,
+        173761,
+        216798,
+        302463,
+        460891
       ],
       "player_poll": {
         "1": [
@@ -20525,6 +21554,9 @@
         "Game: Arkham Horror",
         "Game: Arkham Horror (Third Edition)"
       ],
+      "reimplements": [
+        15987
+      ],
       "player_poll": {
         "1": [
           29,
@@ -20589,6 +21621,11 @@
       "families": [
         "Game: Summoner Wars"
       ],
+      "reimplements": [
+        58281,
+        93260,
+        158889
+      ],
       "player_poll": {
         "1": [
           0,
@@ -20628,6 +21665,9 @@
       ],
       "families": [
         "Game: Dixit"
+      ],
+      "reimplements": [
+        138547
       ],
       "player_poll": {
         "1": [
@@ -20717,6 +21757,9 @@
         "Selection Order Bid"
       ],
       "families": [],
+      "reimplements": [
+        318709
+      ],
       "player_poll": {
         "1": [
           1,
@@ -20780,6 +21823,7 @@
       "families": [
         "Game: Seasons"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -20834,6 +21878,7 @@
       "families": [
         "Game:  Keep the Heroes Out!"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           44,
@@ -20888,6 +21933,7 @@
       "families": [
         "Game:  Dead Reckoning"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           4,
@@ -20943,6 +21989,7 @@
       "families": [
         "Game:  The Guild of Merchant Explorers"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           48,
@@ -20990,6 +22037,7 @@
       "families": [
         "Game: Onitama"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -21032,6 +22080,7 @@
         "Game: T.I.M.E Stories \u2013 White Cycle",
         "Game: T.I.M.E Stories / TIME Stories"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -21088,6 +22137,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -21140,6 +22190,7 @@
         "Predictive Bid"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -21205,6 +22256,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -21263,6 +22315,9 @@
         "Simulation"
       ],
       "families": [],
+      "reimplements": [
+        198953
+      ],
       "player_poll": {
         "1": [
           3,
@@ -21318,6 +22373,9 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        383206
+      ],
       "player_poll": {
         "1": [
           5,
@@ -21383,6 +22441,29 @@
       "families": [
         "Game: Love Letter"
       ],
+      "reimplements": [
+        158339,
+        158340,
+        162660,
+        168584,
+        169611,
+        175307,
+        189504,
+        196326,
+        198522,
+        198740,
+        200699,
+        277085,
+        294648,
+        300802,
+        304285,
+        324415,
+        339905,
+        361207,
+        397638,
+        411404,
+        436219
+      ],
       "player_poll": {
         "1": [
           2,
@@ -21436,6 +22517,10 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [
+        40237,
+        396332
+      ],
       "player_poll": {
         "1": [
           5,
@@ -21512,6 +22597,9 @@
       "families": [
         "Game: Arcadia Quest"
       ],
+      "reimplements": [
+        257193
+      ],
       "player_poll": {
         "1": [
           2,
@@ -21566,6 +22654,9 @@
       "families": [
         "Game:  The King Is Dead"
       ],
+      "reimplements": [
+        172996
+      ],
       "player_poll": {
         "1": [
           1,
@@ -21617,6 +22708,7 @@
       "families": [
         "Game: Navegador"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -21670,6 +22762,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           94,
@@ -21716,6 +22809,9 @@
       ],
       "families": [
         "Game: The Manhattan Project"
+      ],
+      "reimplements": [
+        429401
       ],
       "player_poll": {
         "1": [
@@ -21775,6 +22871,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           208,
@@ -21826,6 +22923,9 @@
       ],
       "families": [
         "Game: Innovation"
+      ],
+      "reimplements": [
+        388367
       ],
       "player_poll": {
         "1": [
@@ -21883,6 +22983,9 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        451034
+      ],
       "player_poll": {
         "1": [
           9,
@@ -21931,6 +23034,10 @@
       ],
       "families": [
         "Game: Cat in the Box"
+      ],
+      "reimplements": [
+        324345,
+        396587
       ],
       "player_poll": {
         "1": [
@@ -21981,6 +23088,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -22039,6 +23147,7 @@
       "families": [
         "Game: Scythe"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           59,
@@ -22097,6 +23206,10 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [
+        54138,
+        410103
+      ],
       "player_poll": {
         "1": [
           0,
@@ -22158,6 +23271,7 @@
       "families": [
         "Game: Dungeon Lords"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -22210,6 +23324,9 @@
       ],
       "families": [
         "Game: Project L"
+      ],
+      "reimplements": [
+        416232
       ],
       "player_poll": {
         "1": [
@@ -22267,6 +23384,12 @@
       "families": [
         "Game: Survive!"
       ],
+      "reimplements": [
+        24037,
+        177147,
+        315048,
+        425428
+      ],
       "player_poll": {
         "1": [
           0,
@@ -22318,6 +23441,9 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [
+        396618
+      ],
       "player_poll": {
         "1": [
           0,
@@ -22381,6 +23507,10 @@
         "Zone of Control"
       ],
       "families": [],
+      "reimplements": [
+        325923,
+        426869
+      ],
       "player_poll": {
         "1": [
           1,
@@ -22428,6 +23558,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           97,
@@ -22486,6 +23617,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           17,
@@ -22543,6 +23675,9 @@
       "families": [
         "Game: Bunny Kingdom"
       ],
+      "reimplements": [
+        457283
+      ],
       "player_poll": {
         "1": [
           1,
@@ -22599,6 +23734,9 @@
       "families": [
         "Game: Century (Plan B Games)"
       ],
+      "reimplements": [
+        232832
+      ],
       "player_poll": {
         "1": [
           0,
@@ -22654,6 +23792,10 @@
       ],
       "families": [
         "Game: Empires (Glenn Drover)"
+      ],
+      "reimplements": [
+        173442,
+        187785
       ],
       "player_poll": {
         "1": [
@@ -22714,6 +23856,7 @@
       "families": [
         "Game: Maracaibo"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           9,
@@ -22762,6 +23905,9 @@
         "Multi-Use Cards"
       ],
       "families": [],
+      "reimplements": [
+        314580
+      ],
       "player_poll": {
         "1": [
           1,
@@ -22820,6 +23966,7 @@
       "families": [
         "Game: Sidereal Confluence"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -22903,6 +24050,9 @@
       "families": [
         "Game: Glass Road"
       ],
+      "reimplements": [
+        420805
+      ],
       "player_poll": {
         "1": [
           42,
@@ -22955,6 +24105,7 @@
         "Turn Order: Pass Order"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -23017,6 +24168,7 @@
       "families": [
         "Game: Werewolf / Mafia"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -23110,6 +24262,9 @@
       "families": [
         "Game: Tiny Epic Galaxies"
       ],
+      "reimplements": [
+        317105
+      ],
       "player_poll": {
         "1": [
           34,
@@ -23174,6 +24329,7 @@
       "families": [
         "Game: Arydia: The Paths We Dare Tread"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           24,
@@ -23223,6 +24379,9 @@
         "Voting"
       ],
       "families": [],
+      "reimplements": [
+        341870
+      ],
       "player_poll": {
         "1": [
           0,
@@ -23280,6 +24439,11 @@
       ],
       "families": [
         "Game: Power Grid"
+      ],
+      "reimplements": [
+        2651,
+        344428,
+        344429
       ],
       "player_poll": {
         "1": [
@@ -23342,6 +24506,9 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [
+        170042
+      ],
       "player_poll": {
         "1": [
           29,
@@ -23399,6 +24566,11 @@
       "families": [
         "Game: Imperial Settlers"
       ],
+      "reimplements": [
+        73369,
+        270836,
+        270844
+      ],
       "player_poll": {
         "1": [
           57,
@@ -23452,6 +24624,7 @@
       "families": [
         "Game: United"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           13,
@@ -23511,6 +24684,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           7,
@@ -23567,6 +24741,9 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [
+        24181
+      ],
       "player_poll": {
         "1": [
           0,
@@ -23633,6 +24810,10 @@
       "families": [
         "Game: Fury of Dracula"
       ],
+      "reimplements": [
+        20963,
+        469328
+      ],
       "player_poll": {
         "1": [
           1,
@@ -23692,6 +24873,10 @@
       "families": [
         "Game: Small World"
       ],
+      "reimplements": [
+        60,
+        309630
+      ],
       "player_poll": {
         "1": [
           3,
@@ -23745,6 +24930,10 @@
         "Trading"
       ],
       "families": [],
+      "reimplements": [
+        319078,
+        378477
+      ],
       "player_poll": {
         "1": [
           20,
@@ -23822,6 +25011,10 @@
       "families": [
         "Game: Nemo's War"
       ],
+      "reimplements": [
+        39232,
+        57804
+      ],
       "player_poll": {
         "1": [
           168,
@@ -23871,6 +25064,9 @@
       ],
       "families": [
         "Game: Summoner Wars"
+      ],
+      "reimplements": [
+        332800
       ],
       "player_poll": {
         "1": [
@@ -23928,6 +25124,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        435861
+      ],
       "player_poll": {
         "1": [
           3,
@@ -23978,6 +25177,9 @@
       ],
       "families": [
         "Game: Wingspan"
+      ],
+      "reimplements": [
+        266192
       ],
       "player_poll": {
         "1": [
@@ -24039,6 +25241,7 @@
       "families": [
         "Game: Destinies"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           47,
@@ -24086,6 +25289,9 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [
+        154809
+      ],
       "player_poll": {
         "1": [
           1,
@@ -24135,6 +25341,7 @@
       "families": [
         "Game: Alien Frontiers"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -24184,6 +25391,7 @@
       "families": [
         "Game: Gizmos"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -24236,6 +25444,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        25
+      ],
       "player_poll": {
         "1": [
           0,
@@ -24285,6 +25496,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           17,
@@ -24341,6 +25553,9 @@
       "families": [
         "Game: Neuroshima Hex"
       ],
+      "reimplements": [
+        238393
+      ],
       "player_poll": {
         "1": [
           1,
@@ -24386,6 +25601,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           7,
@@ -24442,6 +25658,7 @@
         "Hand Management"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -24487,6 +25704,9 @@
         "Tags"
       ],
       "families": [],
+      "reimplements": [
+        455256
+      ],
       "player_poll": {
         "1": [
           5,
@@ -24543,6 +25763,10 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        286537,
+        424929
+      ],
       "player_poll": {
         "1": [
           39,
@@ -24590,6 +25814,7 @@
       "families": [
         "Game: Mindbug"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -24631,6 +25856,9 @@
       ],
       "families": [
         "Game: Unmatched"
+      ],
+      "reimplements": [
+        3284
       ],
       "player_poll": {
         "1": [
@@ -24677,6 +25905,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           8,
@@ -24739,6 +25968,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           32,
@@ -24788,6 +26018,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -24845,6 +26076,7 @@
       "families": [
         "Game: Above and Below"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -24903,6 +26135,7 @@
         "Voting"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -24961,6 +26194,7 @@
       "families": [
         "Game: Tekhenu \u2013 Obelisk of the Sun"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           38,
@@ -25011,6 +26245,11 @@
       ],
       "families": [
         "Game: Dixit"
+      ],
+      "reimplements": [
+        284007,
+        307090,
+        427810
       ],
       "player_poll": {
         "1": [
@@ -25069,6 +26308,16 @@
       "families": [
         "Game: Schotten-Totten"
       ],
+      "reimplements": [
+        760,
+        38387,
+        295155,
+        297985,
+        300930,
+        322864,
+        340252,
+        417997
+      ],
       "player_poll": {
         "1": [
           0,
@@ -25114,6 +26363,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -25162,6 +26412,9 @@
         "Turn Order: Role Order"
       ],
       "families": [],
+      "reimplements": [
+        18258
+      ],
       "player_poll": {
         "1": [
           0,
@@ -25225,6 +26478,9 @@
         "Zone of Control"
       ],
       "families": [],
+      "reimplements": [
+        12891
+      ],
       "player_poll": {
         "1": [
           0,
@@ -25277,6 +26533,7 @@
         "Turn Order: Progressive"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -25333,6 +26590,7 @@
         "Square Grid"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -25383,6 +26641,9 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [
+        190082
+      ],
       "player_poll": {
         "1": [
           1,
@@ -25445,6 +26706,7 @@
         "Track Movement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -25529,6 +26791,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -25579,6 +26842,7 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -25629,6 +26893,7 @@
       "families": [
         "Game: Dungeon Lords"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           4,
@@ -25677,6 +26942,9 @@
         "Trick-taking"
       ],
       "families": [],
+      "reimplements": [
+        358078
+      ],
       "player_poll": {
         "1": [
           86,
@@ -25714,6 +26982,7 @@
         "Trading"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -25767,6 +27036,7 @@
         "Turn Order: Progressive"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -25823,6 +27093,10 @@
       "families": [
         "Game: Puerto Rico"
       ],
+      "reimplements": [
+        3076,
+        166669
+      ],
       "player_poll": {
         "1": [
           2,
@@ -25877,6 +27151,7 @@
       "families": [
         "Game: Pagan Fate of Roanoke"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -25915,6 +27190,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -25972,6 +27248,7 @@
       "families": [
         "Game: Imperium (Osprey Games)"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           117,
@@ -26023,6 +27300,7 @@
       "families": [
         "Game: Blood Bowl"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -26073,6 +27351,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        344768
+      ],
       "player_poll": {
         "1": [
           3,
@@ -26134,6 +27415,11 @@
       ],
       "families": [
         "Game: Mysterium"
+      ],
+      "reimplements": [
+        113997,
+        301767,
+        367206
       ],
       "player_poll": {
         "1": [
@@ -26205,6 +27491,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -26254,6 +27541,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -26304,6 +27592,11 @@
       ],
       "families": [
         "Game: Harry Potter: Hogwarts Battle (The OP)"
+      ],
+      "reimplements": [
+        254192,
+        282418,
+        416284
       ],
       "player_poll": {
         "1": [
@@ -26363,6 +27656,7 @@
       "families": [
         "Game: Cartographers"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           15,
@@ -26551,6 +27845,7 @@
       "families": [
         "Game: Earthborne Rangers"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           67,
@@ -26604,6 +27899,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -26655,6 +27951,7 @@
         "Sudden Death Ending"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           10,
@@ -26697,6 +27994,9 @@
         "Game: BattleLore",
         "Game: BattleLore (Second Edition)"
       ],
+      "reimplements": [
+        25417
+      ],
       "player_poll": {
         "1": [
           2,
@@ -26735,6 +28035,9 @@
       ],
       "families": [
         "Game: Agricola"
+      ],
+      "reimplements": [
+        31260
       ],
       "player_poll": {
         "1": [
@@ -26776,6 +28079,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           7,
@@ -26827,6 +28131,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           13,
@@ -26886,6 +28191,11 @@
       "families": [
         "Game: The Resistance",
         "Game: Werewolf / Mafia"
+      ],
+      "reimplements": [
+        128882,
+        316287,
+        367396
       ],
       "player_poll": {
         "1": [
@@ -26971,6 +28281,9 @@
       "families": [
         "Game: Ghost Stories"
       ],
+      "reimplements": [
+        285984
+      ],
       "player_poll": {
         "1": [
           81,
@@ -27020,6 +28333,7 @@
         "Variable Phase Order"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           7,
@@ -27074,6 +28388,12 @@
       "families": [
         "Game: Ganz Sch\u00f6n Clever"
       ],
+      "reimplements": [
+        244522,
+        316546,
+        366162,
+        407180
+      ],
       "player_poll": {
         "1": [
           48,
@@ -27120,6 +28440,7 @@
         "Point to Point Movement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -27188,6 +28509,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           10,
@@ -27238,6 +28560,7 @@
       "families": [
         "Game: Unsettled"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           12,
@@ -27293,6 +28616,9 @@
       "families": [
         "Game: Unmatched"
       ],
+      "reimplements": [
+        3284
+      ],
       "player_poll": {
         "1": [
           0,
@@ -27343,6 +28669,9 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [
+        67593
+      ],
       "player_poll": {
         "1": [
           1,
@@ -27405,6 +28734,7 @@
       "families": [
         "Game: Spirit Island"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           35,
@@ -27452,6 +28782,7 @@
       "families": [
         "Game: Hitster"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -27531,6 +28862,7 @@
         "Simulation"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -27574,6 +28906,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -27624,6 +28957,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           7,
@@ -27683,6 +29017,9 @@
       "families": [
         "Game: Pandemic"
       ],
+      "reimplements": [
+        30549
+      ],
       "player_poll": {
         "1": [
           31,
@@ -27736,6 +29073,10 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [
+        401168,
+        417920
+      ],
       "player_poll": {
         "1": [
           0,
@@ -27805,6 +29146,7 @@
       "families": [
         "Game: Newton"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           47,
@@ -27853,6 +29195,9 @@
         "Turn Order: Stat-Based"
       ],
       "families": [],
+      "reimplements": [
+        164878
+      ],
       "player_poll": {
         "1": [
           1,
@@ -27903,6 +29248,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           10,
@@ -27956,6 +29302,7 @@
       "families": [
         "Game: Star Wars Armada"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -27999,6 +29346,7 @@
       "families": [
         "Game: Altiplano"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -28062,6 +29410,11 @@
       "families": [
         "Game: Arkham Horror",
         "Game: Arkham Horror (Second Edition)"
+      ],
+      "reimplements": [
+        34,
+        146021,
+        257499
       ],
       "player_poll": {
         "1": [
@@ -28132,6 +29485,9 @@
         "Turn Order: Progressive"
       ],
       "families": [],
+      "reimplements": [
+        468000
+      ],
       "player_poll": {
         "1": [
           120,
@@ -28178,6 +29534,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           6,
@@ -28229,6 +29586,7 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -28285,6 +29643,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        104162
+      ],
       "player_poll": {
         "1": [
           48,
@@ -28334,6 +29695,9 @@
       ],
       "families": [
         "Game: Saint Petersburg"
+      ],
+      "reimplements": [
+        156943
       ],
       "player_poll": {
         "1": [
@@ -28387,6 +29751,9 @@
       ],
       "families": [
         "Game: 51st State"
+      ],
+      "reimplements": [
+        73369
       ],
       "player_poll": {
         "1": [
@@ -28446,6 +29813,9 @@
       "families": [
         "Game: Unmatched"
       ],
+      "reimplements": [
+        3284
+      ],
       "player_poll": {
         "1": [
           14,
@@ -28504,6 +29874,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           11,
@@ -28554,6 +29925,7 @@
         "Predictive Bid"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -28619,6 +29991,16 @@
       "families": [
         "Game: Zombicide"
       ],
+      "reimplements": [
+        113924,
+        331224,
+        338630,
+        339300,
+        351817,
+        366023,
+        401596,
+        422898
+      ],
       "player_poll": {
         "1": [
           17,
@@ -28677,6 +30059,9 @@
         "Simulation"
       ],
       "families": [],
+      "reimplements": [
+        227460
+      ],
       "player_poll": {
         "1": [
           2,
@@ -28720,6 +30105,9 @@
       ],
       "families": [
         "Game: Lords of Hellas"
+      ],
+      "reimplements": [
+        340865
       ],
       "player_poll": {
         "1": [
@@ -28776,6 +30164,13 @@
       ],
       "families": [
         "Game: King of Tokyo"
+      ],
+      "reimplements": [
+        160499,
+        293141,
+        350755,
+        422484,
+        463297
       ],
       "player_poll": {
         "1": [
@@ -28837,6 +30232,7 @@
       "families": [
         "Game: Dice Forge"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -28892,6 +30288,9 @@
       ],
       "families": [
         "Game: Massive Darkness"
+      ],
+      "reimplements": [
+        197070
       ],
       "player_poll": {
         "1": [
@@ -28952,6 +30351,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           8,
@@ -29007,6 +30407,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        65781
+      ],
       "player_poll": {
         "1": [
           0,
@@ -29057,6 +30460,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           46,
@@ -29107,6 +30511,9 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [
+        238024
+      ],
       "player_poll": {
         "1": [
           6,
@@ -29149,6 +30556,7 @@
       "families": [
         "Game: Mage Wars"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -29189,6 +30597,7 @@
       "families": [
         "Game: Codenames"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -29261,6 +30670,10 @@
         "Take That"
       ],
       "families": [],
+      "reimplements": [
+        463441,
+        475144
+      ],
       "player_poll": {
         "1": [
           1,
@@ -29379,6 +30792,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        447484
+      ],
       "player_poll": {
         "1": [
           0,
@@ -29439,6 +30855,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        168512
+      ],
       "player_poll": {
         "1": [
           0,
@@ -29491,6 +30910,9 @@
       ],
       "families": [
         "Game: Azul"
+      ],
+      "reimplements": [
+        230802
       ],
       "player_poll": {
         "1": [
@@ -29546,6 +30968,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -29600,6 +31023,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -29650,6 +31074,10 @@
       "families": [
         "Game: Ticket to Ride (Official)"
       ],
+      "reimplements": [
+        9209,
+        119637
+      ],
       "player_poll": {
         "1": [
           0,
@@ -29699,6 +31127,9 @@
         "Tug of War"
       ],
       "families": [],
+      "reimplements": [
+        232824
+      ],
       "player_poll": {
         "1": [
           1,
@@ -29740,6 +31171,9 @@
         "Variable Phase Order"
       ],
       "families": [],
+      "reimplements": [
+        125618
+      ],
       "player_poll": {
         "1": [
           13,
@@ -29800,6 +31234,7 @@
         "Track Movement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -29852,6 +31287,9 @@
       ],
       "families": [
         "Game: Downforce"
+      ],
+      "reimplements": [
+        932
       ],
       "player_poll": {
         "1": [
@@ -29913,6 +31351,12 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [
+        122943,
+        164506,
+        300523,
+        333553
+      ],
       "player_poll": {
         "1": [
           0,
@@ -29962,6 +31406,10 @@
       ],
       "families": [
         "Game: Endeavor"
+      ],
+      "reimplements": [
+        233398,
+        367966
       ],
       "player_poll": {
         "1": [
@@ -30019,6 +31467,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -30072,6 +31521,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           4,
@@ -30129,6 +31579,7 @@
       "families": [
         "Game: Firefly \u2013 The Game"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           21,
@@ -30180,6 +31631,11 @@
       ],
       "families": [
         "Game: Puerto Rico"
+      ],
+      "reimplements": [
+        3076,
+        8217,
+        165355
       ],
       "player_poll": {
         "1": [
@@ -30233,6 +31689,9 @@
       ],
       "families": [
         "Game: King of Tokyo"
+      ],
+      "reimplements": [
+        70323
       ],
       "player_poll": {
         "1": [
@@ -30296,6 +31755,9 @@
       ],
       "families": [
         "Game: PitchCar"
+      ],
+      "reimplements": [
+        14254
       ],
       "player_poll": {
         "1": [
@@ -30366,6 +31828,7 @@
         "Simultaneous Action Selection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -30423,6 +31886,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        475595
+      ],
       "player_poll": {
         "1": [
           0,
@@ -30484,6 +31950,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           25,
@@ -30546,6 +32013,9 @@
       "families": [
         "Game: Unmatched"
       ],
+      "reimplements": [
+        3284
+      ],
       "player_poll": {
         "1": [
           0,
@@ -30586,6 +32056,7 @@
         "Trading"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -30636,6 +32107,7 @@
         "Hand Management"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -30689,6 +32161,10 @@
       "families": [
         "Game: Bruxelles 189X"
       ],
+      "reimplements": [
+        275913,
+        345155
+      ],
       "player_poll": {
         "1": [
           0,
@@ -30740,6 +32216,7 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -30833,6 +32310,7 @@
       "families": [
         "Game: The Old King's Crown"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           10,
@@ -30883,6 +32361,9 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [
+        375408
+      ],
       "player_poll": {
         "1": [
           17,
@@ -30932,6 +32413,10 @@
       ],
       "families": [
         "Game: MicroMacro"
+      ],
+      "reimplements": [
+        318977,
+        364766
       ],
       "player_poll": {
         "1": [
@@ -30989,6 +32474,9 @@
       ],
       "families": [
         "Game: Civilization"
+      ],
+      "reimplements": [
+        184424
       ],
       "player_poll": {
         "1": [
@@ -31055,6 +32543,9 @@
       "families": [
         "Game: Santa Maria"
       ],
+      "reimplements": [
+        422674
+      ],
       "player_poll": {
         "1": [
           15,
@@ -31110,6 +32601,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        432146
+      ],
       "player_poll": {
         "1": [
           14,
@@ -31166,6 +32660,9 @@
       "families": [
         "Game: Fresco"
       ],
+      "reimplements": [
+        292013
+      ],
       "player_poll": {
         "1": [
           0,
@@ -31216,6 +32713,22 @@
       ],
       "families": [
         "Game: Bohnanza"
+      ],
+      "reimplements": [
+        20136,
+        26946,
+        81100,
+        128412,
+        138703,
+        148000,
+        168452,
+        171419,
+        205867,
+        217261,
+        261341,
+        313649,
+        386906,
+        439088
       ],
       "player_poll": {
         "1": [
@@ -31286,6 +32799,11 @@
         "Turn Order: Progressive"
       ],
       "families": [],
+      "reimplements": [
+        155703,
+        330152,
+        451486
+      ],
       "player_poll": {
         "1": [
           0,
@@ -31343,6 +32861,7 @@
         "Turn Order: Time Track"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           7,
@@ -31396,6 +32915,11 @@
       ],
       "families": [
         "Game: Flash Point: Fire Rescue"
+      ],
+      "reimplements": [
+        74596,
+        415181,
+        446610
       ],
       "player_poll": {
         "1": [
@@ -31459,6 +32983,11 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        350604,
+        412963,
+        460930
+      ],
       "player_poll": {
         "1": [
           52,
@@ -31509,6 +33038,10 @@
       ],
       "families": [
         "Game: Sprawlopolis"
+      ],
+      "reimplements": [
+        408828,
+        459450
       ],
       "player_poll": {
         "1": [
@@ -31567,6 +33100,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        125996
+      ],
       "player_poll": {
         "1": [
           2,
@@ -31623,6 +33159,9 @@
       "families": [
         "Game: Sword & Sorcery"
       ],
+      "reimplements": [
+        442697
+      ],
       "player_poll": {
         "1": [
           67,
@@ -31677,6 +33216,11 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [
+        154509,
+        199966,
+        271349
+      ],
       "player_poll": {
         "1": [
           0,
@@ -31735,6 +33279,9 @@
       "families": [
         "Game: Unmatched"
       ],
+      "reimplements": [
+        3284
+      ],
       "player_poll": {
         "1": [
           0,
@@ -31790,6 +33337,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        242722
+      ],
       "player_poll": {
         "1": [
           1,
@@ -31851,6 +33401,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        3201
+      ],
       "player_poll": {
         "1": [
           1,
@@ -31891,6 +33444,10 @@
       "families": [
         "Game: Space Hulk"
       ],
+      "reimplements": [
+        63091,
+        165838
+      ],
       "player_poll": {
         "1": [
           0,
@@ -31925,6 +33482,9 @@
         "Variable Phase Order"
       ],
       "families": [],
+      "reimplements": [
+        434367
+      ],
       "player_poll": {
         "1": [
           0,
@@ -31971,6 +33531,7 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -32030,6 +33591,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           4,
@@ -32080,6 +33642,9 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [
+        314582
+      ],
       "player_poll": {
         "1": [
           0,
@@ -32133,6 +33698,7 @@
       "families": [
         "Game: Fire in the Lake"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           9,
@@ -32186,6 +33752,11 @@
       ],
       "families": [
         "Game: Colt Express"
+      ],
+      "reimplements": [
+        299027,
+        404447,
+        462063
       ],
       "player_poll": {
         "1": [
@@ -32255,6 +33826,9 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        172386
+      ],
       "player_poll": {
         "1": [
           14,
@@ -32306,6 +33880,9 @@
       "families": [
         "Game: Commands & Colors Napoleonics"
       ],
+      "reimplements": [
+        14105
+      ],
       "player_poll": {
         "1": [
           1,
@@ -32347,6 +33924,9 @@
       ],
       "families": [
         "Game: Pandemic"
+      ],
+      "reimplements": [
+        30549
       ],
       "player_poll": {
         "1": [
@@ -32401,6 +33981,7 @@
       "families": [
         "Game: Stockpile"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -32457,6 +34038,9 @@
       ],
       "families": [
         "Game: Sherlock Holmes Consulting Detective"
+      ],
+      "reimplements": [
+        6266
       ],
       "player_poll": {
         "1": [
@@ -32528,6 +34112,7 @@
       "families": [
         "Game: Compile"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -32575,6 +34160,7 @@
       "families": [
         "Game: Mice and Mystics"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           23,
@@ -32630,6 +34216,10 @@
       ],
       "families": [
         "Game: Citadels"
+      ],
+      "reimplements": [
+        478,
+        13291
       ],
       "player_poll": {
         "1": [
@@ -32696,6 +34286,9 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [
+        412563
+      ],
       "player_poll": {
         "1": [
           0,
@@ -32739,6 +34332,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           10,
@@ -32798,6 +34392,9 @@
       ],
       "families": [
         "Game: Clash of Cultures"
+      ],
+      "reimplements": [
+        299659
       ],
       "player_poll": {
         "1": [
@@ -32861,6 +34458,7 @@
       "families": [
         "Game: Fantastic Factories"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           20,
@@ -32914,6 +34512,7 @@
         "Simultaneous Action Selection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -32969,6 +34568,9 @@
       "families": [
         "Game: Splendor"
       ],
+      "reimplements": [
+        148228
+      ],
       "player_poll": {
         "1": [
           0,
@@ -33019,6 +34621,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        147009
+      ],
       "player_poll": {
         "1": [
           1,
@@ -33066,6 +34671,7 @@
         "Scenario / Mission / Campaign Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -33116,6 +34722,9 @@
         "Paper-and-Pencil"
       ],
       "families": [],
+      "reimplements": [
+        464261
+      ],
       "player_poll": {
         "1": [
           27,
@@ -33169,6 +34778,9 @@
       ],
       "families": [
         "Game: Heroscape"
+      ],
+      "reimplements": [
+        167698
       ],
       "player_poll": {
         "1": [
@@ -33224,6 +34836,7 @@
       "families": [
         "Game: The Manhattan Project"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -33287,6 +34900,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        422041
+      ],
       "player_poll": {
         "1": [
           0,
@@ -33336,6 +34952,9 @@
         "Simulation"
       ],
       "families": [],
+      "reimplements": [
+        268864
+      ],
       "player_poll": {
         "1": [
           3,
@@ -33372,6 +34991,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -33428,6 +35048,9 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [
+        144568
+      ],
       "player_poll": {
         "1": [
           149,
@@ -33488,6 +35111,11 @@
       ],
       "families": [
         "Game: Dune (Avalon Hill original)"
+      ],
+      "reimplements": [
+        104363,
+        283355,
+        341165
       ],
       "player_poll": {
         "1": [
@@ -33550,6 +35178,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        257518
+      ],
       "player_poll": {
         "1": [
           2,
@@ -33604,6 +35235,7 @@
       "families": [
         "Game: Aeon Trespass Odyssey"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           106,
@@ -33659,6 +35291,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -33702,6 +35335,7 @@
       "families": [
         "Game: Quadropolis"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -33748,6 +35382,11 @@
       ],
       "families": [
         "Game: Thunderstone"
+      ],
+      "reimplements": [
+        53953,
+        116998,
+        142961
       ],
       "player_poll": {
         "1": [
@@ -33800,6 +35439,9 @@
       ],
       "families": [
         "Game: Glen More"
+      ],
+      "reimplements": [
+        265188
       ],
       "player_poll": {
         "1": [
@@ -33862,6 +35504,11 @@
       ],
       "families": [
         "Game: Citadels"
+      ],
+      "reimplements": [
+        130060,
+        205398,
+        462402
       ],
       "player_poll": {
         "1": [
@@ -33935,6 +35582,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        447670
+      ],
       "player_poll": {
         "1": [
           1,
@@ -33984,6 +35634,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -34034,6 +35685,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           401,
@@ -34071,6 +35723,10 @@
         "Simulation"
       ],
       "families": [],
+      "reimplements": [
+        133632,
+        197320
+      ],
       "player_poll": {
         "1": [
           1,
@@ -34111,6 +35767,9 @@
       ],
       "families": [
         "Game: Mystic Vale"
+      ],
+      "reimplements": [
+        454724
       ],
       "player_poll": {
         "1": [
@@ -34164,6 +35823,7 @@
       "families": [
         "Game: Potion Explosion"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -34220,6 +35880,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           23,
@@ -34282,6 +35943,9 @@
       ],
       "families": [
         "Game: Shadows over Camelot"
+      ],
+      "reimplements": [
+        129904
       ],
       "player_poll": {
         "1": [
@@ -34353,6 +36017,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           85,
@@ -34388,6 +36053,7 @@
         "Turn Order: Claim Action"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -34441,6 +36107,7 @@
       "families": [
         "Game: Canvas"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           9,
@@ -34500,6 +36167,9 @@
       "families": [
         "Game: Lords of Vegas"
       ],
+      "reimplements": [
+        375769
+      ],
       "player_poll": {
         "1": [
           0,
@@ -34552,6 +36222,7 @@
       "families": [
         "Game: Hanabi"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -34617,6 +36288,9 @@
       "families": [
         "Game: Cyclades"
       ],
+      "reimplements": [
+        54998
+      ],
       "player_poll": {
         "1": [
           0,
@@ -34679,6 +36353,9 @@
       "families": [
         "Game: Imperial Settlers"
       ],
+      "reimplements": [
+        154203
+      ],
       "player_poll": {
         "1": [
           59,
@@ -34725,6 +36402,10 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [
+        368017,
+        431998
+      ],
       "player_poll": {
         "1": [
           0,
@@ -34782,6 +36463,10 @@
         "Score-and-Reset Game"
       ],
       "families": [],
+      "reimplements": [
+        232303,
+        354568
+      ],
       "player_poll": {
         "1": [
           0,
@@ -34839,6 +36524,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        37111
+      ],
       "player_poll": {
         "1": [
           2,
@@ -34896,6 +36584,7 @@
         "Deduction"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           6,
@@ -34952,6 +36641,10 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        65244,
+        245271
+      ],
       "player_poll": {
         "1": [
           14,
@@ -35006,6 +36699,9 @@
       "families": [
         "Game: Thurn and Taxis"
       ],
+      "reimplements": [
+        474145
+      ],
       "player_poll": {
         "1": [
           0,
@@ -35059,6 +36755,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        256883
+      ],
       "player_poll": {
         "1": [
           4,
@@ -35112,6 +36811,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -35160,6 +36860,13 @@
       ],
       "families": [
         "Game: Alhambra"
+      ],
+      "reimplements": [
+        431,
+        58099,
+        66190,
+        313274,
+        373915
       ],
       "player_poll": {
         "1": [
@@ -35224,6 +36931,9 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [
+        447483
+      ],
       "player_poll": {
         "1": [
           0,
@@ -35272,6 +36982,7 @@
         "Open Drafting"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           6,
@@ -35327,6 +37038,11 @@
         "Game: BattleLore",
         "Game: BattleLore (First Edition)"
       ],
+      "reimplements": [
+        67492,
+        146439,
+        444481
+      ],
       "player_poll": {
         "1": [
           2,
@@ -35372,6 +37088,9 @@
       ],
       "families": [
         "Game: Galaxy Trucker"
+      ],
+      "reimplements": [
+        31481
       ],
       "player_poll": {
         "1": [
@@ -35429,6 +37148,13 @@
       "families": [
         "Game: Sheriff of Nottingham"
       ],
+      "reimplements": [
+        3705,
+        22237,
+        104640,
+        298638,
+        396607
+      ],
       "player_poll": {
         "1": [
           0,
@@ -35483,6 +37209,9 @@
         "Stacking and Balancing"
       ],
       "families": [],
+      "reimplements": [
+        448188
+      ],
       "player_poll": {
         "1": [
           0,
@@ -35539,6 +37268,9 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [
+        209136
+      ],
       "player_poll": {
         "1": [
           0,
@@ -35603,6 +37335,41 @@
       "families": [
         "Game: Catan"
       ],
+      "reimplements": [
+        189,
+        1897,
+        3655,
+        3972,
+        4394,
+        5549,
+        5824,
+        6778,
+        13831,
+        20899,
+        24511,
+        25234,
+        27766,
+        38749,
+        38821,
+        52825,
+        67239,
+        91534,
+        103091,
+        117985,
+        123386,
+        144418,
+        147240,
+        161527,
+        172994,
+        194097,
+        229218,
+        244144,
+        282853,
+        284815,
+        408727,
+        451387,
+        464675
+      ],
       "player_poll": {
         "1": [
           1,
@@ -35658,6 +37425,9 @@
       ],
       "families": [
         "Game: Pandemic"
+      ],
+      "reimplements": [
+        30549
       ],
       "player_poll": {
         "1": [
@@ -35724,6 +37494,10 @@
       "families": [
         "Game: Mansions of Madness (First Edition)"
       ],
+      "reimplements": [
+        205059,
+        206547
+      ],
       "player_poll": {
         "1": [
           1,
@@ -35777,6 +37551,9 @@
       ],
       "families": [
         "Game: Imhotep"
+      ],
+      "reimplements": [
+        255674
       ],
       "player_poll": {
         "1": [
@@ -35840,6 +37617,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        10547
+      ],
       "player_poll": {
         "1": [
           0,
@@ -35891,6 +37671,11 @@
         "Re-rolling and Locking"
       ],
       "families": [],
+      "reimplements": [
+        209886,
+        271319,
+        463783
+      ],
       "player_poll": {
         "1": [
           0,
@@ -35946,6 +37731,7 @@
       "families": [
         "Game: Star Wars: Unlimited (Fantasy Flight)"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -35999,6 +37785,9 @@
       "families": [
         "Game: Dinosaur Island/Dinosaur World"
       ],
+      "reimplements": [
+        221194
+      ],
       "player_poll": {
         "1": [
           22,
@@ -36051,6 +37840,11 @@
       ],
       "families": [
         "Game: Descent \u2013 Journeys in the Dark"
+      ],
+      "reimplements": [
+        10640,
+        104162,
+        164153
       ],
       "player_poll": {
         "1": [
@@ -36107,6 +37901,10 @@
       "families": [
         "Game: Risk (Official)"
       ],
+      "reimplements": [
+        181,
+        349769
+      ],
       "player_poll": {
         "1": [
           0,
@@ -36160,6 +37958,11 @@
         "Turn Order: Time Track"
       ],
       "families": [],
+      "reimplements": [
+        200853,
+        309105,
+        353152
+      ],
       "player_poll": {
         "1": [
           9,
@@ -36221,6 +38024,7 @@
       "families": [
         "Game: Space Empires 4X"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           18,
@@ -36271,6 +38075,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           4,
@@ -36324,6 +38129,12 @@
       "families": [
         "Game: Blood Bowl"
       ],
+      "reimplements": [
+        2288,
+        15985,
+        212445,
+        356631
+      ],
       "player_poll": {
         "1": [
           0,
@@ -36370,6 +38181,9 @@
       ],
       "families": [
         "Game: Port Royal"
+      ],
+      "reimplements": [
+        147999
       ],
       "player_poll": {
         "1": [
@@ -36431,6 +38245,7 @@
       "families": [
         "Game: Railroad Ink"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           26,
@@ -36492,6 +38307,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -36541,6 +38357,13 @@
       ],
       "families": [
         "Game: Ingenious"
+      ],
+      "reimplements": [
+        22484,
+        32876,
+        219475,
+        243530,
+        406305
       ],
       "player_poll": {
         "1": [
@@ -36592,6 +38415,7 @@
       "families": [
         "Game: Argent \u2013 The Consortium"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -36645,6 +38469,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           24,
@@ -36706,6 +38531,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           4,
@@ -36764,6 +38590,7 @@
       "families": [
         "Game: Detective \u2013 City of Angels (Van Ryder Games)"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           6,
@@ -36829,6 +38656,9 @@
       "families": [
         "Game: La Granja"
       ],
+      "reimplements": [
+        146886
+      ],
       "player_poll": {
         "1": [
           4,
@@ -36879,6 +38709,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -36920,6 +38751,10 @@
       ],
       "families": [
         "Game: Camel Up"
+      ],
+      "reimplements": [
+        192947,
+        260605
       ],
       "player_poll": {
         "1": [
@@ -36994,6 +38829,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -37056,6 +38892,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           57,
@@ -37107,6 +38944,7 @@
       "families": [
         "Game: Small World"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -37171,6 +39009,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           39,
@@ -37216,6 +39055,9 @@
         "Take That"
       ],
       "families": [],
+      "reimplements": [
+        249746
+      ],
       "player_poll": {
         "1": [
           0,
@@ -37268,6 +39110,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -37320,6 +39163,7 @@
         "Map Reduction"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -37366,6 +39210,9 @@
         "Simultaneous Action Selection"
       ],
       "families": [],
+      "reimplements": [
+        216201
+      ],
       "player_poll": {
         "1": [
           0,
@@ -37439,6 +39286,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -37486,6 +39334,9 @@
       ],
       "families": [
         "Game: Love Letter"
+      ],
+      "reimplements": [
+        129622
       ],
       "player_poll": {
         "1": [
@@ -37549,6 +39400,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           74,
@@ -37585,6 +39437,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -37646,6 +39499,11 @@
       "families": [
         "Game: Star Wars X-Wing Miniatures Game"
       ],
+      "reimplements": [
+        103885,
+        183562,
+        438504
+      ],
       "player_poll": {
         "1": [
           0,
@@ -37683,6 +39541,10 @@
       ],
       "families": [
         "Game: Fleet"
+      ],
+      "reimplements": [
+        121297,
+        328326
       ],
       "player_poll": {
         "1": [
@@ -37734,6 +39596,10 @@
       ],
       "families": [
         "Game: Sushi Go!"
+      ],
+      "reimplements": [
+        192291,
+        271869
       ],
       "player_poll": {
         "1": [
@@ -37796,6 +39662,9 @@
       "families": [
         "Game: Shadows of Brimstone"
       ],
+      "reimplements": [
+        322984
+      ],
       "player_poll": {
         "1": [
           13,
@@ -37849,6 +39718,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -37899,6 +39769,10 @@
       ],
       "families": [
         "Game: Broom Service"
+      ],
+      "reimplements": [
+        34084,
+        192735
       ],
       "player_poll": {
         "1": [
@@ -37960,6 +39834,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        21523
+      ],
       "player_poll": {
         "1": [
           25,
@@ -38011,6 +39888,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           29,
@@ -38059,6 +39937,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -38115,6 +39994,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           82,
@@ -38158,6 +40038,9 @@
         "Variable Phase Order"
       ],
       "families": [],
+      "reimplements": [
+        356033
+      ],
       "player_poll": {
         "1": [
           0,
@@ -38217,6 +40100,10 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [
+        234439,
+        235465
+      ],
       "player_poll": {
         "1": [
           0,
@@ -38273,6 +40160,7 @@
       "families": [
         "Game: Etherfields"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           67,
@@ -38323,6 +40211,10 @@
       ],
       "families": [
         "Game: The Grizzled"
+      ],
+      "reimplements": [
+        231327,
+        335541
       ],
       "player_poll": {
         "1": [
@@ -38381,6 +40273,16 @@
       ],
       "families": [
         "Game: 6 nimmt!"
+      ],
+      "reimplements": [
+        153,
+        31503,
+        40958,
+        136117,
+        205885,
+        268586,
+        286533,
+        433339
       ],
       "player_poll": {
         "1": [
@@ -38459,6 +40361,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -38514,6 +40417,9 @@
       "families": [
         "Game: Azul"
       ],
+      "reimplements": [
+        230802
+      ],
       "player_poll": {
         "1": [
           0,
@@ -38556,6 +40462,7 @@
         "Map Reduction"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -38599,6 +40506,9 @@
       "families": [
         "Game: Unmatched"
       ],
+      "reimplements": [
+        3284
+      ],
       "player_poll": {
         "1": [
           0,
@@ -38638,6 +40548,7 @@
         "Simultaneous Action Selection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -38692,6 +40603,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        462464
+      ],
       "player_poll": {
         "1": [
           0,
@@ -38744,6 +40658,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           24,
@@ -38789,6 +40704,7 @@
         "Pattern Building"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -38842,6 +40758,9 @@
       ],
       "families": [
         "Game: Legends of Andor"
+      ],
+      "reimplements": [
+        295488
       ],
       "player_poll": {
         "1": [
@@ -38898,6 +40817,12 @@
       ],
       "families": [
         "Game: Werewolf / Mafia"
+      ],
+      "reimplements": [
+        142503,
+        176361,
+        339647,
+        368948
       ],
       "player_poll": {
         "1": [
@@ -38977,6 +40902,10 @@
         "Stock Holding"
       ],
       "families": [],
+      "reimplements": [
+        43,
+        94
+      ],
       "player_poll": {
         "1": [
           0,
@@ -39038,6 +40967,9 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [
+        92120
+      ],
       "player_poll": {
         "1": [
           15,
@@ -39102,6 +41034,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -39148,6 +41081,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           6,
@@ -39202,6 +41136,9 @@
       ],
       "families": [
         "Game: Project ELITE"
+      ],
+      "reimplements": [
+        171726
       ],
       "player_poll": {
         "1": [
@@ -39260,6 +41197,10 @@
         "Turn Order: Stat-Based"
       ],
       "families": [],
+      "reimplements": [
+        288169,
+        455906
+      ],
       "player_poll": {
         "1": [
           0,
@@ -39297,6 +41238,7 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -39345,6 +41287,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -39395,6 +41338,9 @@
       ],
       "families": [
         "Game: Carcassonne"
+      ],
+      "reimplements": [
+        822
       ],
       "player_poll": {
         "1": [
@@ -39449,6 +41395,9 @@
       ],
       "families": [
         "Game: Sentinel"
+      ],
+      "reimplements": [
+        335212
       ],
       "player_poll": {
         "1": [
@@ -39505,6 +41454,13 @@
       "families": [
         "Game: Blood Bowl"
       ],
+      "reimplements": [
+        712,
+        2288,
+        3071,
+        212445,
+        318472
+      ],
       "player_poll": {
         "1": [
           0,
@@ -39547,6 +41503,7 @@
       "families": [
         "Game: Euphoria"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -39607,6 +41564,7 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -39663,6 +41621,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        175155
+      ],
       "player_poll": {
         "1": [
           0,
@@ -39721,6 +41682,7 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -39770,6 +41732,9 @@
         "Open Drafting"
       ],
       "families": [],
+      "reimplements": [
+        236191
+      ],
       "player_poll": {
         "1": [
           0,
@@ -39826,6 +41791,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           9,
@@ -39879,6 +41845,7 @@
         "Storytelling"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           8,
@@ -39936,6 +41903,9 @@
         "Simulation"
       ],
       "families": [],
+      "reimplements": [
+        268864
+      ],
       "player_poll": {
         "1": [
           0,
@@ -39973,6 +41943,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -40038,6 +42009,12 @@
       "families": [
         "Game: High Frontier"
       ],
+      "reimplements": [
+        5525,
+        68305,
+        124147,
+        172737
+      ],
       "player_poll": {
         "1": [
           20,
@@ -40091,6 +42068,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -40150,6 +42128,10 @@
       ],
       "families": [
         "Game: HeroQuest"
+      ],
+      "reimplements": [
+        22192,
+        328586
       ],
       "player_poll": {
         "1": [
@@ -40215,6 +42197,11 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        788,
+        377704,
+        432392
+      ],
       "player_poll": {
         "1": [
           5,
@@ -40273,6 +42260,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           4,
@@ -40329,6 +42317,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -40392,6 +42381,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -40448,6 +42438,10 @@
       "families": [
         "Game: Baseball Highlights: 2045"
       ],
+      "reimplements": [
+        224678,
+        329607
+      ],
       "player_poll": {
         "1": [
           15,
@@ -40498,6 +42492,12 @@
       ],
       "families": [
         "Game: Dice Throne"
+      ],
+      "reimplements": [
+        291794,
+        322561,
+        322562,
+        322563
       ],
       "player_poll": {
         "1": [
@@ -40560,6 +42560,7 @@
         "Track Movement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -40628,6 +42629,10 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        10630,
+        25417
+      ],
       "player_poll": {
         "1": [
           4,
@@ -40679,6 +42684,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -40745,6 +42751,7 @@
         "Track Movement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -40798,6 +42805,7 @@
       "families": [
         "Game: Kingdomino"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -40845,6 +42853,9 @@
         "Trading"
       ],
       "families": [],
+      "reimplements": [
+        447850
+      ],
       "player_poll": {
         "1": [
           1,
@@ -40896,6 +42907,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           15,
@@ -40947,6 +42959,13 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        148943,
+        188188,
+        204803,
+        233085,
+        424572
+      ],
       "player_poll": {
         "1": [
           2,
@@ -41007,6 +43026,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -41056,6 +43076,9 @@
       ],
       "families": [
         "Game: Azul"
+      ],
+      "reimplements": [
+        230802
       ],
       "player_poll": {
         "1": [
@@ -41108,6 +43131,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        466295
+      ],
       "player_poll": {
         "1": [
           6,
@@ -41156,6 +43182,12 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [
+        24762,
+        202288,
+        291511,
+        468582
+      ],
       "player_poll": {
         "1": [
           0,
@@ -41221,6 +43253,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        271060
+      ],
       "player_poll": {
         "1": [
           61,
@@ -41269,6 +43304,9 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [
+        25568
+      ],
       "player_poll": {
         "1": [
           0,
@@ -41318,6 +43356,9 @@
       ],
       "families": [
         "Game: Time's Up!"
+      ],
+      "reimplements": [
+        1353
       ],
       "player_poll": {
         "1": [
@@ -41438,6 +43479,7 @@
         "Storytelling"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           6,
@@ -41502,6 +43544,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -41565,6 +43608,9 @@
       "families": [
         "Game: Star Trek: Ascendancy"
       ],
+      "reimplements": [
+        419708
+      ],
       "player_poll": {
         "1": [
           0,
@@ -41610,6 +43656,7 @@
       "families": [
         "Game: Cooper Island"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           12,
@@ -41662,6 +43709,10 @@
         "Secret Unit Deployment"
       ],
       "families": [],
+      "reimplements": [
+        256872,
+        300323
+      ],
       "player_poll": {
         "1": [
           0,
@@ -41708,6 +43759,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -41746,6 +43798,9 @@
       ],
       "families": [
         "Game: Coloretto"
+      ],
+      "reimplements": [
+        27588
       ],
       "player_poll": {
         "1": [
@@ -41800,6 +43855,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -41837,6 +43893,9 @@
       ],
       "families": [
         "Game: Vinhos"
+      ],
+      "reimplements": [
+        175640
       ],
       "player_poll": {
         "1": [
@@ -41886,6 +43945,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           18,
@@ -41937,6 +43997,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           76,
@@ -41987,6 +44048,7 @@
       "families": [
         "Game: Shards of Infinity"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -42041,6 +44103,10 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        284,
+        429962
+      ],
       "player_poll": {
         "1": [
           2,
@@ -42105,6 +44171,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -42154,6 +44221,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           15,
@@ -42203,6 +44271,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -42249,6 +44318,10 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        267271,
+        308388
+      ],
       "player_poll": {
         "1": [
           0,
@@ -42301,6 +44374,9 @@
       ],
       "families": [
         "Game: Pandemic"
+      ],
+      "reimplements": [
+        30549
       ],
       "player_poll": {
         "1": [
@@ -42359,6 +44435,7 @@
         "Pick-up and Deliver"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           9,
@@ -42413,6 +44490,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -42478,6 +44556,10 @@
       "families": [
         "Game: Tigris & Euphrates"
       ],
+      "reimplements": [
+        42,
+        371688
+      ],
       "player_poll": {
         "1": [
           0,
@@ -42529,6 +44611,9 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [
+        59959
+      ],
       "player_poll": {
         "1": [
           1,
@@ -42578,6 +44663,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           29,
@@ -42623,6 +44709,7 @@
         "Turn Order: Progressive"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -42682,6 +44769,11 @@
         "Spelling"
       ],
       "families": [],
+      "reimplements": [
+        223750,
+        338468,
+        385643
+      ],
       "player_poll": {
         "1": [
           3,
@@ -42739,6 +44831,9 @@
       ],
       "families": [
         "Game: Telestrations"
+      ],
+      "reimplements": [
+        46213
       ],
       "player_poll": {
         "1": [
@@ -42827,6 +44922,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -42883,6 +44979,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           13,
@@ -42933,6 +45030,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           8,
@@ -42987,6 +45085,9 @@
       ],
       "families": [
         "Game: Zombicide"
+      ],
+      "reimplements": [
+        113924
       ],
       "player_poll": {
         "1": [
@@ -43052,6 +45153,9 @@
         "Voting"
       ],
       "families": [],
+      "reimplements": [
+        122
+      ],
       "player_poll": {
         "1": [
           0,
@@ -43116,6 +45220,9 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [
+        402215
+      ],
       "player_poll": {
         "1": [
           0,
@@ -43176,6 +45283,10 @@
         "Turn Order: Auction"
       ],
       "families": [],
+      "reimplements": [
+        17710,
+        108429
+      ],
       "player_poll": {
         "1": [
           0,
@@ -43239,6 +45350,7 @@
         "Targeted Clues"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -43315,6 +45427,7 @@
       "families": [
         "Game: Cardia"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -43351,6 +45464,10 @@
         "Turn Order: Time Track"
       ],
       "families": [],
+      "reimplements": [
+        13883,
+        114387
+      ],
       "player_poll": {
         "1": [
           0,
@@ -43402,6 +45519,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -43461,6 +45579,9 @@
       "families": [
         "Game: Ark Nova"
       ],
+      "reimplements": [
+        342942
+      ],
       "player_poll": {
         "1": [
           15,
@@ -43514,6 +45635,12 @@
         "Track Movement"
       ],
       "families": [],
+      "reimplements": [
+        4082,
+        43144,
+        217547,
+        344268
+      ],
       "player_poll": {
         "1": [
           0,
@@ -43565,6 +45692,9 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [
+        427260
+      ],
       "player_poll": {
         "1": [
           1,
@@ -43623,6 +45753,21 @@
       ],
       "families": [
         "Game: Zombicide"
+      ],
+      "reimplements": [
+        176189,
+        224710,
+        248065,
+        251723,
+        264164,
+        286751,
+        331224,
+        339300,
+        351817,
+        355200,
+        366023,
+        383496,
+        463012
       ],
       "player_poll": {
         "1": [
@@ -43691,6 +45836,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           66,
@@ -43742,6 +45888,7 @@
       "families": [
         "Game: BattleCON"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -43801,6 +45948,9 @@
       "families": [
         "Game: Dominant Species"
       ],
+      "reimplements": [
+        62219
+      ],
       "player_poll": {
         "1": [
           0,
@@ -43853,6 +46003,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -43900,6 +46051,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           49,
@@ -43945,6 +46097,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -43999,6 +46152,7 @@
       "families": [
         "Game: Cthulhu: Death may Die"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           7,
@@ -44054,6 +46208,9 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        248117
+      ],
       "player_poll": {
         "1": [
           0,
@@ -44114,6 +46271,9 @@
       ],
       "families": [
         "Game: Conan (Monolith)"
+      ],
+      "reimplements": [
+        222514
       ],
       "player_poll": {
         "1": [
@@ -44176,6 +46336,9 @@
       "families": [
         "Game: A Game of Thrones \u2013 The Board Game"
       ],
+      "reimplements": [
+        103343
+      ],
       "player_poll": {
         "1": [
           0,
@@ -44235,6 +46398,10 @@
       "families": [
         "Game: Between Two Castles of Mad King Ludwig",
         "Game: Castles of Mad King Ludwig"
+      ],
+      "reimplements": [
+        155426,
+        168435
       ],
       "player_poll": {
         "1": [
@@ -44305,6 +46472,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           18,
@@ -44358,6 +46526,12 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        228660,
+        240196,
+        302809,
+        358504
+      ],
       "player_poll": {
         "1": [
           0,
@@ -44426,6 +46600,9 @@
       ],
       "families": [
         "Game: Formula D\u00e9 / Formula D"
+      ],
+      "reimplements": [
+        173
       ],
       "player_poll": {
         "1": [
@@ -44507,6 +46684,7 @@
         "Square Grid"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -44562,6 +46740,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           36,
@@ -44621,6 +46800,9 @@
       "families": [
         "Game: Sub Terra"
       ],
+      "reimplements": [
+        281258
+      ],
       "player_poll": {
         "1": [
           20,
@@ -44679,6 +46861,9 @@
         "Hand Management"
       ],
       "families": [],
+      "reimplements": [
+        263177
+      ],
       "player_poll": {
         "1": [
           0,
@@ -44719,6 +46904,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -44799,6 +46985,10 @@
       "families": [
         "Game: Kingdom Builder"
       ],
+      "reimplements": [
+        303554,
+        443710
+      ],
       "player_poll": {
         "1": [
           1,
@@ -44853,6 +47043,12 @@
         "Turn Order: Progressive"
       ],
       "families": [],
+      "reimplements": [
+        71021,
+        182134,
+        330152,
+        451486
+      ],
       "player_poll": {
         "1": [
           0,
@@ -44911,6 +47107,7 @@
       "families": [
         "Game: Twilight Imperium"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           33,
@@ -44980,6 +47177,20 @@
       ],
       "families": [
         "Game: Time's Up!"
+      ],
+      "reimplements": [
+        36553,
+        37141,
+        38713,
+        46158,
+        57660,
+        174219,
+        230262,
+        376700,
+        400733,
+        427179,
+        447391,
+        462134
       ],
       "player_poll": {
         "1": [
@@ -45103,6 +47314,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -45155,6 +47367,7 @@
       "families": [
         "Game: Moonrakers"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -45205,6 +47418,7 @@
         "Storytelling"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           17,
@@ -45259,6 +47473,7 @@
       "families": [
         "Game: Railroad Ink"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           22,
@@ -45316,6 +47531,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           11,
@@ -45367,6 +47583,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -45423,6 +47640,12 @@
       ],
       "families": [
         "Game: Magic Maze"
+      ],
+      "reimplements": [
+        242740,
+        283135,
+        396749,
+        450086
       ],
       "player_poll": {
         "1": [
@@ -45502,6 +47725,9 @@
       "families": [
         "Game: Elder Sign"
       ],
+      "reimplements": [
+        315937
+      ],
       "player_poll": {
         "1": [
           113,
@@ -45572,6 +47798,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        3931
+      ],
       "player_poll": {
         "1": [
           0,
@@ -45632,6 +47861,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -45687,6 +47917,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           6,
@@ -45762,6 +47993,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -45810,6 +48042,12 @@
         "Targeted Clues"
       ],
       "families": [],
+      "reimplements": [
+        334137,
+        410382,
+        424974,
+        437938
+      ],
       "player_poll": {
         "1": [
           0,
@@ -45884,6 +48122,9 @@
       "families": [
         "Game: Chronicles of Crime"
       ],
+      "reimplements": [
+        239188
+      ],
       "player_poll": {
         "1": [
           15,
@@ -45932,6 +48173,7 @@
         "Simultaneous Action Selection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -45975,6 +48217,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        18833
+      ],
       "player_poll": {
         "1": [
           1,
@@ -46016,6 +48261,7 @@
       "families": [
         "Game: Imperium (Osprey Games)"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           74,
@@ -46075,6 +48321,9 @@
       "families": [
         "Game: A Game of Thrones \u2013 The Card Game (LCG)"
       ],
+      "reimplements": [
+        39953
+      ],
       "player_poll": {
         "1": [
           0,
@@ -46123,6 +48372,11 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        474021,
+        474022,
+        474023
+      ],
       "player_poll": {
         "1": [
           15,
@@ -46174,6 +48428,7 @@
       "families": [
         "Game: Feudum"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -46228,6 +48483,7 @@
       "families": [
         "Game: Disney Villainous"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -46269,6 +48525,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           11,
@@ -46306,6 +48563,10 @@
       ],
       "families": [
         "Game: 7 Wonders"
+      ],
+      "reimplements": [
+        68448,
+        316377
       ],
       "player_poll": {
         "1": [
@@ -46369,6 +48630,11 @@
       "families": [
         "Game: Mr. Jack"
       ],
+      "reimplements": [
+        55427,
+        72287,
+        145645
+      ],
       "player_poll": {
         "1": [
           1,
@@ -46415,6 +48681,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        172965
+      ],
       "player_poll": {
         "1": [
           0,
@@ -46495,6 +48764,7 @@
       "families": [
         "Game: Star Wars Destiny"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -46539,6 +48809,9 @@
       ],
       "families": [
         "Game: Werewolf / Mafia"
+      ],
+      "reimplements": [
+        339647
       ],
       "player_poll": {
         "1": [
@@ -46621,6 +48894,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -46669,6 +48943,9 @@
       ],
       "families": [
         "Game: Ticket to Ride (Official)"
+      ],
+      "reimplements": [
+        9209
       ],
       "player_poll": {
         "1": [
@@ -46724,6 +49001,7 @@
         "Turn Order: Progressive"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -46778,6 +49056,9 @@
       "families": [
         "Game: Sleeping Gods"
       ],
+      "reimplements": [
+        255984
+      ],
       "player_poll": {
         "1": [
           32,
@@ -46828,6 +49109,9 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        437313
+      ],
       "player_poll": {
         "1": [
           46,
@@ -46874,6 +49158,12 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [
+        67600,
+        67601,
+        217201,
+        355459
+      ],
       "player_poll": {
         "1": [
           91,
@@ -46905,6 +49195,7 @@
         "Storytelling"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -46965,6 +49256,9 @@
       "families": [
         "Game: Everdell"
       ],
+      "reimplements": [
+        199792
+      ],
       "player_poll": {
         "1": [
           0,
@@ -47011,6 +49305,12 @@
       ],
       "families": [
         "Game: Ascension Deck Building"
+      ],
+      "reimplements": [
+        145633,
+        304531,
+        325810,
+        469458
       ],
       "player_poll": {
         "1": [
@@ -47059,6 +49359,9 @@
         "Tug of War"
       ],
       "families": [],
+      "reimplements": [
+        296578
+      ],
       "player_poll": {
         "1": [
           6,
@@ -47101,6 +49404,9 @@
         "Turn Order: Progressive"
       ],
       "families": [],
+      "reimplements": [
+        249106
+      ],
       "player_poll": {
         "1": [
           1,
@@ -47149,6 +49455,7 @@
         "Network and Route Building"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -47201,6 +49508,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -47248,6 +49556,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -47306,6 +49615,7 @@
         "Zone of Control"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -47357,6 +49667,15 @@
       "families": [
         "Game: Blood Bowl"
       ],
+      "reimplements": [
+        712,
+        2288,
+        3071,
+        15985,
+        247104,
+        318472,
+        359065
+      ],
       "player_poll": {
         "1": [
           0,
@@ -47399,6 +49718,7 @@
         "Storytelling"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           18,
@@ -47448,6 +49768,9 @@
         "Turn Order: Progressive"
       ],
       "families": [],
+      "reimplements": [
+        32944
+      ],
       "player_poll": {
         "1": [
           0,
@@ -47514,6 +49837,10 @@
       "families": [
         "Game: Escape (Queen Games)"
       ],
+      "reimplements": [
+        149809,
+        310198
+      ],
       "player_poll": {
         "1": [
           6,
@@ -47573,6 +49900,7 @@
       "families": [
         "Game: The Shipwreck Arcana"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -47631,6 +49959,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -47693,6 +50022,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           17,
@@ -47739,6 +50069,7 @@
         "Open Drafting"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           10,
@@ -47787,6 +50118,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -47844,6 +50176,9 @@
         "Voting"
       ],
       "families": [],
+      "reimplements": [
+        425789
+      ],
       "player_poll": {
         "1": [
           1,
@@ -47906,6 +50241,7 @@
         "Turn Order: Time Track"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           18,
@@ -47951,6 +50287,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           84,
@@ -47985,6 +50322,7 @@
       "families": [
         "Game: Disney Villainous"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -48026,6 +50364,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -48079,6 +50418,10 @@
         "Zone of Control"
       ],
       "families": [],
+      "reimplements": [
+        4432,
+        378425
+      ],
       "player_poll": {
         "1": [
           0,
@@ -48133,6 +50476,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           52,
@@ -48177,6 +50521,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -48231,6 +50576,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           25,
@@ -48287,6 +50633,7 @@
       "families": [
         "Game: Oh My Goods!"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           7,
@@ -48334,6 +50681,13 @@
         "Trick-taking"
       ],
       "families": [],
+      "reimplements": [
+        25866,
+        191475,
+        286547,
+        373250,
+        388340
+      ],
       "player_poll": {
         "1": [
           0,
@@ -48389,6 +50743,18 @@
       ],
       "families": [
         "Game: Smart10"
+      ],
+      "reimplements": [
+        297006,
+        303994,
+        340722,
+        354031,
+        432897,
+        447581,
+        452592,
+        460090,
+        468602,
+        471417
       ],
       "player_poll": {
         "1": [
@@ -48461,6 +50827,11 @@
       "families": [
         "Game: Tokaido"
       ],
+      "reimplements": [
+        275215,
+        363183,
+        374359
+      ],
       "player_poll": {
         "1": [
           0,
@@ -48519,6 +50890,7 @@
       "families": [
         "Game: Space Hulk"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           225,
@@ -48580,6 +50952,10 @@
         "Simulation"
       ],
       "families": [],
+      "reimplements": [
+        2299,
+        308119
+      ],
       "player_poll": {
         "1": [
           1,
@@ -48631,6 +51007,10 @@
       "families": [
         "Game: Summoner Wars"
       ],
+      "reimplements": [
+        332800,
+        339263
+      ],
       "player_poll": {
         "1": [
           0,
@@ -48677,6 +51057,9 @@
       "families": [
         "Game: Carcassonne"
       ],
+      "reimplements": [
+        822
+      ],
       "player_poll": {
         "1": [
           0,
@@ -48715,6 +51098,9 @@
         "Voting"
       ],
       "families": [],
+      "reimplements": [
+        472208
+      ],
       "player_poll": {
         "1": [
           0,
@@ -48771,6 +51157,7 @@
       "families": [
         "Game: Ashes \u2013 Rise of the Phoenixborn"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -48819,6 +51206,9 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [
+        71836
+      ],
       "player_poll": {
         "1": [
           154,
@@ -48857,6 +51247,10 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        228959,
+        459520
+      ],
       "player_poll": {
         "1": [
           10,
@@ -48912,6 +51306,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -48963,6 +51358,7 @@
         "Stacking and Balancing"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -49010,6 +51406,9 @@
         "Hand Management"
       ],
       "families": [],
+      "reimplements": [
+        355737
+      ],
       "player_poll": {
         "1": [
           0,
@@ -49067,6 +51466,14 @@
       ],
       "families": [
         "Game: Wits & Wagers"
+      ],
+      "reimplements": [
+        47046,
+        66588,
+        123239,
+        187362,
+        232121,
+        286428
       ],
       "player_poll": {
         "1": [
@@ -49132,6 +51539,9 @@
         "Player Elimination"
       ],
       "families": [],
+      "reimplements": [
+        245136
+      ],
       "player_poll": {
         "1": [
           0,
@@ -49209,6 +51619,9 @@
       "families": [
         "Game: Love Letter"
       ],
+      "reimplements": [
+        129622
+      ],
       "player_poll": {
         "1": [
           0,
@@ -49258,6 +51671,9 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [
+        333055
+      ],
       "player_poll": {
         "1": [
           2,
@@ -49320,6 +51736,10 @@
       "families": [
         "Game: Zombicide"
       ],
+      "reimplements": [
+        113924,
+        286751
+      ],
       "player_poll": {
         "1": [
           13,
@@ -49376,6 +51796,7 @@
         "Network and Route Building"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -49427,6 +51848,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -49476,6 +51898,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -49533,6 +51956,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -49585,6 +52009,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -49651,6 +52076,9 @@
       "families": [
         "Game: Arkwright"
       ],
+      "reimplements": [
+        300664
+      ],
       "player_poll": {
         "1": [
           0,
@@ -49700,6 +52128,12 @@
       "families": [
         "Game: Ganz Sch\u00f6n Clever"
       ],
+      "reimplements": [
+        244522,
+        269210,
+        366162,
+        407180
+      ],
       "player_poll": {
         "1": [
           18,
@@ -49748,6 +52182,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -49795,6 +52230,7 @@
       "families": [
         "Game: KeyForge"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -49837,6 +52273,9 @@
       ],
       "families": [
         "Game: Star Wars X-Wing Miniatures Game"
+      ],
+      "reimplements": [
+        252328
       ],
       "player_poll": {
         "1": [
@@ -49884,6 +52323,9 @@
       "families": [
         "Game: Gloomhaven"
       ],
+      "reimplements": [
+        340909
+      ],
       "player_poll": {
         "1": [
           67,
@@ -49921,6 +52363,9 @@
       ],
       "families": [
         "Game: Diplomacy"
+      ],
+      "reimplements": [
+        250
       ],
       "player_poll": {
         "1": [
@@ -49990,6 +52435,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -50038,6 +52484,9 @@
       ],
       "families": [
         "Game: Century (Plan B Games)"
+      ],
+      "reimplements": [
+        312318
       ],
       "player_poll": {
         "1": [
@@ -50088,6 +52537,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -50138,6 +52588,9 @@
         "Stock Holding"
       ],
       "families": [],
+      "reimplements": [
+        176458
+      ],
       "player_poll": {
         "1": [
           0,
@@ -50208,6 +52661,7 @@
       "families": [
         "Game: Tash-Kalar"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -50265,6 +52719,10 @@
       ],
       "families": [
         "Game: BANG!"
+      ],
+      "reimplements": [
+        3955,
+        177697
       ],
       "player_poll": {
         "1": [
@@ -50333,6 +52791,7 @@
       "families": [
         "Game: Galileo Galilei"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -50382,6 +52841,10 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        324609,
+        440942
+      ],
       "player_poll": {
         "1": [
           12,
@@ -50428,6 +52891,7 @@
         "Tug of War"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -50464,6 +52928,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           6,
@@ -50527,6 +52992,9 @@
       "families": [
         "Game: Race for the Galaxy"
       ],
+      "reimplements": [
+        28143
+      ],
       "player_poll": {
         "1": [
           0,
@@ -50581,6 +53049,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           8,
@@ -50633,6 +53102,7 @@
         "Voting"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -50702,6 +53172,9 @@
         "Simultaneous Action Selection"
       ],
       "families": [],
+      "reimplements": [
+        46800
+      ],
       "player_poll": {
         "1": [
           0,
@@ -50770,6 +53243,10 @@
         "Flicking"
       ],
       "families": [],
+      "reimplements": [
+        29140,
+        62814
+      ],
       "player_poll": {
         "1": [
           1,
@@ -50830,6 +53307,9 @@
       ],
       "families": [
         "Game: Dixit"
+      ],
+      "reimplements": [
+        119657
       ],
       "player_poll": {
         "1": [
@@ -50892,6 +53372,7 @@
       "families": [
         "Game: Dragon Castle"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -50944,6 +53425,10 @@
       ],
       "families": [
         "Game: Fury of Dracula"
+      ],
+      "reimplements": [
+        936,
+        181279
       ],
       "player_poll": {
         "1": [
@@ -51000,6 +53485,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -51056,6 +53542,9 @@
         "Tech Trees / Tech Tracks"
       ],
       "families": [],
+      "reimplements": [
+        268846
+      ],
       "player_poll": {
         "1": [
           2,
@@ -51107,6 +53596,9 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        192945
+      ],
       "player_poll": {
         "1": [
           0,
@@ -51156,6 +53648,7 @@
         "Simulation"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -51193,6 +53686,7 @@
         "Pattern Building"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -51242,6 +53736,7 @@
       "families": [
         "Game: Finca"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -51297,6 +53792,14 @@
       "families": [
         "Game: Blokus"
       ],
+      "reimplements": [
+        6411,
+        16395,
+        21550,
+        97469,
+        286310,
+        342097
+      ],
       "player_poll": {
         "1": [
           2,
@@ -51351,6 +53854,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           9,
@@ -51407,6 +53911,10 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [
+        258036,
+        369635
+      ],
       "player_poll": {
         "1": [
           6,
@@ -51472,6 +53980,7 @@
       "families": [
         "Game: Smash Up"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -51517,6 +54026,9 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [
+        229220
+      ],
       "player_poll": {
         "1": [
           8,
@@ -51568,6 +54080,9 @@
       "families": [
         "Game: The Networks"
       ],
+      "reimplements": [
+        292489
+      ],
       "player_poll": {
         "1": [
           5,
@@ -51618,6 +54133,7 @@
       "families": [
         "Game: Hoplomachus"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           52,
@@ -51654,6 +54170,7 @@
       "families": [
         "Game: A War of Whispers"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -51703,6 +54220,9 @@
       "families": [
         "Game: Century (Plan B Games)"
       ],
+      "reimplements": [
+        283619
+      ],
       "player_poll": {
         "1": [
           0,
@@ -51751,6 +54271,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           4,
@@ -51801,6 +54322,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -51856,6 +54378,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           10,
@@ -52047,6 +54570,9 @@
       "families": [
         "Game: Scythe"
       ],
+      "reimplements": [
+        169786
+      ],
       "player_poll": {
         "1": [
           1,
@@ -52107,6 +54633,7 @@
         "Three Dimensional Movement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -52159,6 +54686,7 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           28,
@@ -52207,6 +54735,9 @@
       ],
       "families": [
         "Game: Blue Moon"
+      ],
+      "reimplements": [
+        471782
       ],
       "player_poll": {
         "1": [
@@ -52266,6 +54797,7 @@
       "families": [
         "Game: Steampunk Rally"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -52338,6 +54870,11 @@
       "families": [
         "Game: Defenders of the Realm"
       ],
+      "reimplements": [
+        169464,
+        311731,
+        391306
+      ],
       "player_poll": {
         "1": [
           14,
@@ -52387,6 +54924,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -52440,6 +54978,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -52492,6 +55031,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           18,
@@ -52540,6 +55080,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           13,
@@ -52593,6 +55134,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -52630,6 +55172,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -52685,6 +55228,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -52743,6 +55287,10 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        254591,
+        392133
+      ],
       "player_poll": {
         "1": [
           25,
@@ -52798,6 +55346,7 @@
       "families": [
         "Game: Leaving Earth"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           90,
@@ -52852,6 +55401,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           6,
@@ -52906,6 +55456,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           31,
@@ -52954,6 +55505,10 @@
         "Roll / Spin and Move"
       ],
       "families": [],
+      "reimplements": [
+        330403,
+        427866
+      ],
       "player_poll": {
         "1": [
           0,
@@ -53011,6 +55566,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -53061,6 +55617,9 @@
         "Dice Rolling"
       ],
       "families": [],
+      "reimplements": [
+        269725
+      ],
       "player_poll": {
         "1": [
           0,
@@ -53104,6 +55663,10 @@
         "Dice Rolling"
       ],
       "families": [],
+      "reimplements": [
+        117959,
+        149975
+      ],
       "player_poll": {
         "1": [
           0,
@@ -53161,6 +55724,10 @@
       ],
       "families": [
         "Game: Love Letter"
+      ],
+      "reimplements": [
+        129622,
+        424784
       ],
       "player_poll": {
         "1": [
@@ -53227,6 +55794,9 @@
       "families": [
         "Game: Shadows of Brimstone"
       ],
+      "reimplements": [
+        322985
+      ],
       "player_poll": {
         "1": [
           3,
@@ -53288,6 +55858,7 @@
         "Victory Points as a Resource"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -53338,6 +55909,10 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [
+        351851,
+        438975
+      ],
       "player_poll": {
         "1": [
           0,
@@ -53385,6 +55960,7 @@
       "families": [
         "Game: Eminent Domain"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -53429,6 +56005,9 @@
         "Hand Management"
       ],
       "families": [],
+      "reimplements": [
+        381819
+      ],
       "player_poll": {
         "1": [
           0,
@@ -53481,6 +56060,9 @@
       "families": [
         "Game: Unmatched"
       ],
+      "reimplements": [
+        3284
+      ],
       "player_poll": {
         "1": [
           0,
@@ -53523,6 +56105,7 @@
       "families": [
         "Game: The Pursuit of Happiness"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           9,
@@ -53567,6 +56150,7 @@
         "Line of Sight"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -53610,6 +56194,9 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        72225
+      ],
       "player_poll": {
         "1": [
           11,
@@ -53656,6 +56243,9 @@
       ],
       "families": [
         "Game: Caverna (Uwe Rosenberg)"
+      ],
+      "reimplements": [
+        102794
       ],
       "player_poll": {
         "1": [
@@ -53709,6 +56299,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -53758,6 +56349,7 @@
         "Open Drafting"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -53826,6 +56418,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           71,
@@ -53865,6 +56458,7 @@
         "Variable Set-up"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -53915,6 +56509,7 @@
         "Scenario / Mission / Campaign Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -53976,6 +56571,14 @@
       ],
       "families": [
         "Game: Disney Villainous"
+      ],
+      "reimplements": [
+        302336,
+        335528,
+        358800,
+        369671,
+        379056,
+        391561
       ],
       "player_poll": {
         "1": [
@@ -54043,6 +56646,7 @@
       "families": [
         "Game: Railroad Ink"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           18,
@@ -54102,6 +56706,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -54153,6 +56758,7 @@
         "Worker Placement, Different Worker Types"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -54205,6 +56811,9 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        457571
+      ],
       "player_poll": {
         "1": [
           1,
@@ -54248,6 +56857,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           55,
@@ -54281,6 +56891,7 @@
       "families": [
         "Game: Warhammer Invasion \u2013 Living Card Game"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           2,
@@ -54324,6 +56935,9 @@
         "Worker Placement with Dice Workers"
       ],
       "families": [],
+      "reimplements": [
+        334646
+      ],
       "player_poll": {
         "1": [
           3,
@@ -54373,6 +56987,7 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -54421,6 +57036,7 @@
       "families": [
         "Game: Disney Villainous"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -54468,6 +57084,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -54517,6 +57134,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           9,
@@ -54564,6 +57182,10 @@
       "families": [
         "Game: Thunderstone",
         "Game: Thunderstone Advance"
+      ],
+      "reimplements": [
+        53953,
+        215341
       ],
       "player_poll": {
         "1": [
@@ -54618,6 +57240,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           28,
@@ -54657,6 +57280,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           3,
@@ -54707,6 +57331,9 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [
+        393000
+      ],
       "player_poll": {
         "1": [
           10,
@@ -54756,6 +57383,9 @@
       ],
       "families": [
         "Game: Raccoon Tycoon"
+      ],
+      "reimplements": [
+        312767
       ],
       "player_poll": {
         "1": [
@@ -54815,6 +57445,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -54871,6 +57502,9 @@
       "families": [
         "Game: Ghost Stories"
       ],
+      "reimplements": [
+        37046
+      ],
       "player_poll": {
         "1": [
           16,
@@ -54920,6 +57554,7 @@
         "Track Movement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -54977,6 +57612,10 @@
         "Variable Phase Order"
       ],
       "families": [],
+      "reimplements": [
+        20551,
+        109125
+      ],
       "player_poll": {
         "1": [
           1,
@@ -55037,6 +57676,7 @@
       "families": [
         "Game: Heroes of Land, Air & Sea"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -55089,6 +57729,9 @@
         "Team-Based Game"
       ],
       "families": [],
+      "reimplements": [
+        468801
+      ],
       "player_poll": {
         "1": [
           1,
@@ -55154,6 +57797,9 @@
       "families": [
         "Game: Saint Petersburg"
       ],
+      "reimplements": [
+        9217
+      ],
       "player_poll": {
         "1": [
           1,
@@ -55215,6 +57861,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           5,
@@ -55263,6 +57910,7 @@
         "Variable Player Powers"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -55322,6 +57970,7 @@
       "families": [
         "Game: Merchants Cove"
       ],
+      "reimplements": [],
       "player_poll": {
         "1": [
           11,
@@ -55376,6 +58025,9 @@
       "families": [
         "Game: Unfair"
       ],
+      "reimplements": [
+        315881
+      ],
       "player_poll": {
         "1": [
           1,
@@ -55429,6 +58081,9 @@
       ],
       "families": [
         "Game: Dixit"
+      ],
+      "reimplements": [
+        427810
       ],
       "player_poll": {
         "1": [
@@ -55489,6 +58144,10 @@
         "Push Your Luck"
       ],
       "families": [],
+      "reimplements": [
+        632,
+        434422
+      ],
       "player_poll": {
         "1": [
           0,
@@ -55550,6 +58209,9 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [
+        393179
+      ],
       "player_poll": {
         "1": [
           1,
@@ -55604,6 +58266,9 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [
+        216597
+      ],
       "player_poll": {
         "1": [
           26,
@@ -55655,6 +58320,7 @@
         "Random Production"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -55704,6 +58370,13 @@
       ],
       "families": [
         "Game: Qwixx"
+      ],
+      "reimplements": [
+        151835,
+        208775,
+        212551,
+        287691,
+        345036
       ],
       "player_poll": {
         "1": [
@@ -55755,6 +58428,7 @@
         "Solo / Solitaire Game"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           7,
@@ -55819,6 +58493,9 @@
       "families": [
         "Game: Clinic"
       ],
+      "reimplements": [
+        156840
+      ],
       "player_poll": {
         "1": [
           5,
@@ -55869,6 +58546,7 @@
         "Tile Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
@@ -55917,6 +58595,7 @@
         "Sudden Death Ending"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -55973,6 +58652,7 @@
         "Set Collection"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           0,
@@ -56023,6 +58703,7 @@
         "Worker Placement"
       ],
       "families": [],
+      "reimplements": [],
       "player_poll": {
         "1": [
           1,
