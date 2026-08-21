@@ -21,6 +21,12 @@ import { gameColor } from './colors.js'
 // Selection lives in the parent (it owns the list rows); the mode toggle is
 // rendered here beside the chart it controls.
 export default function CoverageRadar({ dimensions, games, baseIds, selected, mode, onMode, idleCaption }) {
+  // `baseIds` and `selected` are membership tests, not lists. An array reaches
+  // `.has is not a function` several frames deep in the render, where it reads
+  // as the radar being broken rather than as the caller passing the wrong shape.
+  if (!(baseIds instanceof Set) || !(selected instanceof Set)) {
+    throw new TypeError('CoverageRadar: baseIds and selected must be Sets')
+  }
   const n = dimensions.length
   const chosen = games.filter((g) => selected.has(g.id))
 

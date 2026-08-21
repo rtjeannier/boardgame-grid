@@ -160,7 +160,7 @@ export default function Shelf({ ix, result, settings, update }) {
           <CoverageRadar
             dimensions={ix.groups.map((g) => g.name)}
             games={analysis.unique}
-            baseIds={analysis.unique.map((g) => g.id)}
+            baseIds={new Set(analysis.unique.map((g) => g.id))}
             selected={spotlit} mode={mode} onMode={setMode}
             idleCaption="Click a game below to see what it alone contributes" />
 
