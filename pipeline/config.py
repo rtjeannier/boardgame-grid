@@ -366,6 +366,29 @@ GENRE_SCARCITY = 0.5
 # nine-plus Medium-Heavy cell because its membership *there* is 0.11 — the
 # community rates it at lower counts — while Blood on the Clocktower, which
 # belongs at 1.00, scores 0.94. At 0.10 the grid stopped 7 slots short of full.
+# Measured on the live top 5000, picks per player column:
+#
+#   floor      1    2    3    4    5   6-8   8+   total   median rank
+#   0.00      25   25   25   25   25   25    25     175      267
+#   0.10      25   25   25   25   25   25    19     169      248
+#   0.20      25   25   25   25   25   25    13     163      234
+#   0.30      24   25   25   25   25   25     5     154      215
+#
+# It is entirely self-targeting: every column but `8+` is untouched until 0.30,
+# because `8+` is the only one with barrel-scraping picks to trim. It holds 142
+# candidates against 5,577 for the four-player column, and its median gain is
+# 0.174 against 0.660 — so forcing five games there shelves whatever is left
+# rather than whatever is good. Median pick rank *improves* as the floor rises,
+# for the same reason.
+#
+# This is the data-driven answer to "why does 8+ get as many games as 4?", and it
+# is better than a hand-set per-column capacity because it responds to what is
+# actually in the corpus rather than going stale when the capture changes. The
+# rows do not need it: they are quantiles of the population by construction, so
+# they already hold 3,836-5,162 candidates apiece.
+#
+# Left at 0 so the default grid fills every slot. Raise it to stop shelving
+# games that merely reach a cell.
 GAIN_FLOOR = 0.0
 
 # How much the rest of the shelf pulls on a cell's choice, as an exponent on

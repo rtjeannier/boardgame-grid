@@ -11,17 +11,7 @@
 #
 # The three tiers say who a value belongs to:
 #
-#   [presentation]     display only; changing one never moves a pick
-#   [collection]       what a person manipulates: axes, depth, genre weights
-#   [hyper.selection]  fitted; runs on every recompute, no rebuild needed
-#   [hyper.discovery]  fitted; re-runs tag clustering, forces a rebuild
-#   [hyper.baseline]   reachable only through --assigner mmr
-#
-# The reasoning behind every hyperparameter — what was measured, what failed,
-# why the value is where it is — lives in pipeline/config.py beside the default.
-# Read that before changing one, and re-measure with --report afterwards.
-
-[presentation]
+#   [presentation]
 alternates_per_cell = 6
 suggestions_per_gap = 3
 gap_threshold = 0.5
@@ -36,6 +26,8 @@ genre_compound = " + "
 weight_rows = 5
 picks_per_cell = 5
 collection_size = 15
+picks_per_column = {}
+picks_per_row = {}
 player_columns = [["1", 1, 1], ["2", 2, 2], ["3", 3, 3], ["4", 4, 4], ["5", 5, 5], ["6-8", 6, 8], ["8+", 9, 0]]
 genre_weights = {}
 

@@ -57,6 +57,16 @@ class Collection:
     weight_rows: int = config.WEIGHT_ROW_COUNT
     picks_per_cell: int = config.PICKS_PER_CELL
     collection_size: int = config.COLLECTION_SIZE
+    # Depth need not be uniform. The player columns are fixed ranges over a
+    # lopsided distribution — `8+` holds 142 candidates against 5,577 for `4` —
+    # so the same five slots mean very different things across the grid.
+    #
+    # Prefer `gain_floor` for that particular problem: it trims exactly the thin
+    # column and nothing else, and it tracks the corpus instead of going stale.
+    # These are for preference rather than scarcity — "we are four people, give
+    # me more there" — and for capping a column outright.
+    picks_per_column: dict = field(default_factory=dict)   # column label -> int
+    picks_per_row: dict = field(default_factory=dict)      # row index (str) -> int
     # `hi` is stored as 0 rather than None for the open-ended column, so the
     # in-memory form and the TOML form are the same shape and round-trip.
     player_columns: tuple = tuple(
@@ -67,6 +77,29 @@ class Collection:
     # loadings, because scaling loadings both inverts the behaviour and
     # corrupts genre membership. See the contract's invariants.
     genre_weights: dict = field(default_factory=dict)
+
+    def capacity(self, cell_keys) -> dict | int:
+        """Slots per cell, as the complete mapping `allocate` wants.
+
+        Complete because `assign._capacity_lookup` reads a dict with
+        `.get(key, 0)` — a cell missing from it would silently get no slots at
+        all rather than the default.
+
+        Where a column and a row cap the same cell, the smaller wins: both are
+        ceilings, so a cell at the intersection of "at most 2 at 8+" and "at
+        most 3 in Heavy" holds 2.
+        """
+        if not (self.picks_per_column or self.picks_per_row):
+            return self.picks_per_cell        # the scalar form; nothing to expand
+        out = {}
+        for key in cell_keys:
+            caps = [self.picks_per_cell]
+            if len(key) > 0 and key[0] in self.picks_per_column:
+                caps.append(self.picks_per_column[key[0]])
+            if len(key) > 1 and str(key[1]) in self.picks_per_row:
+                caps.append(self.picks_per_row[str(key[1])])
+            out[key] = min(caps)
+        return out
 
     def columns(self) -> list[dict]:
         """Back into the shape `buckets.PlayerCountAxis` expects.

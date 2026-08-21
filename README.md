@@ -481,6 +481,31 @@ three tiers, because they belong to different people:
 | `[hyper.selection]` | Fitted; runs on every recompute, no rebuild needed |
 | `[hyper.discovery]` | Fitted; re-runs tag clustering, forces a rebuild |
 
+### Uneven shelves
+
+Cells need not hold the same number of games. The player columns are fixed ranges
+over a lopsided distribution — `8+` reaches 142 games where `4` reaches 5,577,
+and its median pick is worth 0.174 against 0.660 — so five slots in each mean
+very different things. The rows do not have this problem: they are quantiles of
+the population, so they hold 3,836–5,162 candidates apiece by construction.
+
+Two ways to fix it, for two different problems:
+
+```toml
+[hyper.selection]
+gain_floor = 0.15            # stop shelving games that merely reach a cell
+
+[collection]
+picks_per_column = { "8+" = 2 }   # or just cap it
+```
+
+Prefer `gain_floor` for scarcity. It is self-targeting — nothing in it names a
+column, and at 0.20 it trims `8+` from 25 picks to 13 while leaving every other
+column untouched — and it tracks the corpus instead of going stale when the
+capture changes. Median pick rank improves as it rises, because it stops
+shelving whatever is left rather than whatever is good. Use `picks_per_column`
+and `picks_per_row` for preference: "we are four people, give me more there".
+
 The **reasoning** stays in `pipeline/config.py`, beside each default — what was
 measured, what failed, and why the value sits where it does. Read that before
 changing one, and re-measure with `--report` afterwards.

@@ -52,7 +52,7 @@ def build(dataset_path, assigner_name, want_report=False, output=None,
         "mmr": lambda: MmrScorer(space.vectors, params.baseline),
         "greedy": lambda: ArchetypeScorer(),
     }[assigner_name]()
-    results = allocate(cells, memberships, scorer, coll.picks_per_cell,
+    results = allocate(cells, memberships, scorer, coll.capacity(cells),
                        alternates_limit=pres.alternates_per_cell, sel=sel)
 
     def primary_genre(g):
