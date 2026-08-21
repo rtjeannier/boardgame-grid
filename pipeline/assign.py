@@ -27,6 +27,7 @@ column with games that were 35% solo.
 """
 
 import math
+import re
 from dataclasses import dataclass
 from typing import Protocol
 
@@ -237,6 +238,58 @@ class ArchetypeScorer:
 
 # --- The allocator ----------------------------------------------------------
 
+def _lineages(cells: dict) -> dict[int, set[int]]:
+    """game id -> every id that is the *same game*, itself included.
+
+    A shelf should not hold `7 Wonders` and `7 Wonders (Second Edition)`, and
+    `novelty` cannot stop it: those two score 0.79 while `Secret Hitler` and
+    `Blood on the Clocktower` — genuinely different games — score 0.84. No
+    similarity threshold separates them, because the second edition is simply
+    recorded with fewer tags (eleven, every one of them also on the first).
+
+    BGG's `Game:` families almost do it, but not alone: `Game: Werewolf / Mafia`
+    gathers thirty unrelated social-deduction games. What separates a lineage
+    from a theme is that a lineage is *named* — `Game: 7 Wonders` names the game
+    its members descend from, and they carry that name, where not one of the
+    thirty werewolf games is called "Werewolf / Mafia".
+
+    So the question is asked of the family rather than of the pair: when most of
+    its members carry its name it is a lineage, and then *all* of them are, name
+    or not. That is what catches `Wyrmspan` — three of the five in `Game:
+    Wingspan` say Wingspan, so the family is a lineage and Wyrmspan and Finspan
+    belong to it — and `Iberia`, a Pandemic reskin, in a family where ten of
+    seventeen carry the name. `Werewolf / Mafia` stays at nought of thirty.
+
+    It is deliberately a little broad: `7 Wonders` and `7 Wonders Duel` count as
+    one lineage, as do `Brass: Birmingham` and `Brass: Lancashire`. Those are
+    different games, but a 175-slot shelf has no room for two of either.
+
+    Families named for something none of their members is called are missed —
+    `Game: Ganz Schön Clever` really is the lineage behind That's Pretty Clever!
+    and Twice as Clever!, and `Game: Schotten-Totten` behind Battle Line. There
+    is nothing in the data to catch those short of matching on tags, which is
+    what fails in the first place.
+    """
+    games = {g.id: g for pool in cells.values() for g in pool}
+    members: dict[str, list[Game]] = {}
+    for game in games.values():
+        for family in game.families:
+            members.setdefault(family, []).append(game)
+
+    lineage = {gid: {gid} for gid in games}
+    for family, kin in members.items():
+        named = re.sub(r"\s*\(.*?\)\s*", " ", family.split(":", 1)[-1]).strip().lower()
+        if not named or len(kin) < 2:
+            continue
+        carry = sum(1 for g in kin if named in g.name.lower())
+        if carry * 2 < len(kin):        # a theme, not a lineage
+            continue
+        joined = {g.id for g in kin}
+        for gid in joined:
+            lineage[gid] |= joined
+    return lineage
+
+
 def allocate(cells: dict, memberships: dict, scorer: Scorer, max_per_cell: int,
              seeded: dict | None = None, alternates_limit: int = 0,
              gain_floor: float = GAIN_FLOOR) -> dict:
@@ -248,7 +301,13 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer, max_per_cell: int,
 
     Rounds, not one long greedy: every cell bids, a contested game goes to
     whichever cell scores it highest, losers re-bid, and nothing commits until
-    the round ends.
+    the round ends. Bidding and repair alternate until a whole pass changes
+    nothing, because `_repair` moves a game to a cell that wants it more and can
+    leave the cell it came from a slot short — that is how one cell finished
+    with four picks while `A Gentle Rain` sat unclaimed and scoring 0.32.
+
+    Taking a game takes its whole lineage with it (see `_lineages`), so a
+    re-implementation cannot fill a slot elsewhere on the grid.
     """
     keys = sorted(cells)                 # deterministic: contests must not
     scorer.begin(cells, memberships)     # hinge on dict iteration order
@@ -256,25 +315,37 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer, max_per_cell: int,
     chosen = {key: [] for key in keys}
     gains: dict[tuple, float] = {}
     taken: set[int] = set()
+    lineage = _lineages(cells)
 
     for key, games in (seeded or {}).items():
         for game in games:
             scorer.take(key, game)
             chosen[key].append(game)
-            taken.add(game.id)
+            taken |= lineage[game.id]
 
-    for _ in range(max_per_cell):
+    # Bid until nothing more clears the floor, repair, then bid again in case
+    # repair emptied a slot. Bounded by the number of slots, since every pass
+    # that continues has filled at least one.
+    for _ in range(len(keys) * max_per_cell):
         awards = _bid_round(keys, cells, memberships, scorer, chosen, taken,
                             max_per_cell, gain_floor)
         if not awards:
-            break
-        for key, (game, gain) in awards.items():
-            taken.add(game.id)
+            _repair(keys, memberships, scorer, chosen, gains, max_per_cell, seeded or {})
+            awards = _bid_round(keys, cells, memberships, scorer, chosen, taken,
+                                max_per_cell, gain_floor)
+            if not awards:
+                break
+        # A round commits together, so two of the same lineage can win at once —
+        # Telestrations and its 12-player pack came out of one round in
+        # different cells. The better bid keeps the game; the other cell simply
+        # bids again next round.
+        for key, (game, gain) in sorted(awards.items(), key=lambda kv: -kv[1][1]):
+            if game.id in taken:
+                continue
+            taken |= lineage[game.id]
             gains[(key, game.id)] = gain
             scorer.take(key, game)
             chosen[key].append(game)
-
-    _repair(keys, memberships, scorer, chosen, gains, max_per_cell, seeded or {})
 
     results = {}
     for key in keys:
