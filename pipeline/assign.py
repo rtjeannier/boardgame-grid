@@ -36,14 +36,7 @@ import numpy as np
 
 from . import coverage
 from .archetypes import archetypes_for
-from .config import (
-    COLLECTION_WEIGHT,
-    GAIN_FLOOR,
-    GENRE_REPEAT_PENALTY,
-    MMR_LAMBDA,
-    REPLACEMENT_KEEP,
-    SIMILARITY_EXPONENT,
-)
+from .params import DEFAULTS, Baseline, Selection
 from .model import Game
 
 
@@ -103,7 +96,8 @@ class CoverageScorer:
     """
 
     def __init__(self, loadings: dict, similarity: dict | None, ratings: dict[int, float],
-                 spoke_of: list[int] | None = None):
+                 spoke_of: list[int] | None = None,
+                 sel: Selection = DEFAULTS.selection):
         self.loadings = loadings
         self.similarity = similarity
         # A game's strongest genre — the kind it counts as for the one-per-cell
@@ -134,7 +128,8 @@ class CoverageScorer:
         # weights are identical wherever it is considered and scores stay
         # comparable across cells, which contests depend on. See
         # coverage.genre_quality.
-        self.genre = coverage.genre_weights(loadings, ratings)
+        self.sel = sel
+        self.genre = coverage.genre_weights(loadings, ratings, sel)
 
     def begin(self, cells, memberships):
         self.weights = {}
@@ -162,9 +157,10 @@ class CoverageScorer:
 
     def score(self, key, game):
         raw = float(self.weights[(key, game.id)] @ self.uncovered[key])
-        value = raw * coverage.novelty(game.id, self.chosen[key], self.similarity)
+        value = raw * coverage.novelty(game.id, self.chosen[key], self.similarity,
+                                       self.sel)
         if self.primary[game.id] in self.kinds[key]:
-            value *= GENRE_REPEAT_PENALTY
+            value *= self.sel.genre_repeat_penalty
         # ...and a gentler pull from the rest of the shelf. Filling this cell is
         # the point; that the collection already holds three deck-builders only
         # makes a fourth slightly less welcome, wherever it sits. A second
@@ -178,14 +174,15 @@ class CoverageScorer:
         # Note the first round feels none of this — nothing is shelved yet — so
         # the best game for a cell always wins its slot, and the pull only
         # builds over later rounds.
-        if COLLECTION_WEIGHT and self.shelved:
+        if self.sel.collection_weight and self.shelved:
             # Excluding the game itself: the repair pass scores games that are
             # already placed, and a game is not a duplicate of itself.
             others = [gid for gid in self.shelved if gid != game.id]
             if others:
-                fresh = coverage.novelty(game.id, others, self.similarity)
-                fresh = min(fresh, 1.0 - self._redone(game.id, others) ** SIMILARITY_EXPONENT)
-                value *= fresh ** COLLECTION_WEIGHT
+                fresh = coverage.novelty(game.id, others, self.similarity, self.sel)
+                fresh = min(fresh, 1.0 - self._redone(game.id, others)
+                            ** self.sel.similarity_exponent)
+                value *= fresh ** self.sel.collection_weight
         return value
 
     def _redone(self, gid: int, shelved: list[int]) -> float:
@@ -237,7 +234,12 @@ class CoverageScorer:
         x = np.array([here.get(k, 0.0) for k in shared])
         y = np.array([there.get(k, 0.0) for k in shared])
         scale = np.linalg.norm(x) * np.linalg.norm(y)
-        return float(x @ y / scale) if scale else 0.0
+        if not scale:
+            return 0.0
+        # Clamped for the same reason as `coverage.novelty`: a cosine that comes
+        # back at 1 + 4e-16 turns `1 - overlap ** n` negative, and a negative
+        # raised to a fractional power is complex in Python.
+        return min(max(float(x @ y / scale), 0.0), 1.0)
 
     def take(self, key, game):
         self.uncovered[key] *= 1.0 - self.weights[(key, game.id)]
@@ -270,8 +272,9 @@ class MmrScorer:
     coverage, but grounded in geometry rather than in filling a chart.
     """
 
-    def __init__(self, vectors: dict):
+    def __init__(self, vectors: dict, baseline: Baseline = DEFAULTS.baseline):
         self.vectors = vectors
+        self.baseline = baseline
 
     def begin(self, cells, memberships):
         self.chosen = {key: [] for key in cells}
@@ -292,8 +295,9 @@ class MmrScorer:
             return self.quality[(key, game.id)]
         here = self.vectors[game.id]
         nearest = min(float(np.linalg.norm(here - self.vectors[p])) for p in picks)
-        return (MMR_LAMBDA * self.quality[(key, game.id)]
-                + (1 - MMR_LAMBDA) * nearest / self.scale[key])
+        lam = self.baseline.mmr_lambda
+        return (lam * self.quality[(key, game.id)]
+                + (1 - lam) * nearest / self.scale[key])
 
     def take(self, key, game):
         self.chosen[key].append(game.id)
@@ -467,7 +471,8 @@ def _capacity_lookup(capacity) -> Callable[[tuple], int]:
 def allocate(cells: dict, memberships: dict, scorer: Scorer,
              capacity: int | dict | Callable[[tuple], int],
              seeded: dict | None = None, alternates_limit: int = 0,
-             gain_floor: float = GAIN_FLOOR) -> dict:
+             sel: Selection = DEFAULTS.selection,
+             gain_floor: float | None = None) -> dict:
     """Fill every cell, placing each game at most once across all of them.
 
     `cells` maps key -> [Game] and `memberships` maps (key, game id) -> degree,
@@ -499,6 +504,7 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
     whole would rather it took something else is a separate, secondary question,
     settled afterwards by `improve_collection`.
     """
+    gain_floor = sel.gain_floor if gain_floor is None else gain_floor
     keys = sorted(cells)                 # deterministic: contests must not
     scorer.begin(cells, memberships)     # hinge on dict iteration order
     room = _capacity_lookup(capacity)
@@ -537,7 +543,8 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
             chosen[key].append(game)
 
     # Cells are as full as they can be; now let the collection have its say.
-    improve_collection(keys, cells, scorer, chosen, gains, taken, REPLACEMENT_KEEP)
+    improve_collection(keys, cells, scorer, chosen, gains, taken,
+                       sel.replacement_keep)
 
     results = {}
     for key in keys:

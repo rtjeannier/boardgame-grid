@@ -22,13 +22,12 @@ import numpy as np
 
 from . import buckets, coverage, dataset
 from .assign import CoverageScorer, allocate
-from .config import COLLECTION_SIZE, ROOT, SEED_DATASET
+from .config import ROOT, SEED_DATASET
+from .params import DEFAULTS, Params
 from .features import build_feature_space
 from .model import Game
 
 OUTPUT = ROOT / "web" / "public" / "collection.json"
-GAP_THRESHOLD = 0.5     # an axis covered below this counts as a gap
-SUGGESTIONS_PER_GAP = 3
 
 
 def find_games(tokens: list[str], games: list[Game]) -> list[Game]:
@@ -49,11 +48,13 @@ def find_games(tokens: list[str], games: list[Game]) -> list[Game]:
     return found
 
 
-def build_collection(dataset_path, anchor_tokens, size, evaluate_only):
+def build_collection(dataset_path, anchor_tokens, size, evaluate_only,
+                     params: Params = DEFAULTS):
     source, generated_at, games = dataset.load_dataset(dataset_path)
-    space = build_feature_space(games)
+    space = build_feature_space(games, params)
+    sel, pres = params.selection, params.presentation
     ratings = {g.id: g.rating for g in games}
-    genre = coverage.genre_weights(space.loadings, ratings)
+    genre = coverage.genre_weights(space.loadings, ratings, sel)
 
     spoke_of = np.asarray(space.spoke_of)
     n_axes = len(space.dimension_names)
@@ -76,12 +77,13 @@ def build_collection(dataset_path, anchor_tokens, size, evaluate_only):
     # anchors are simply seeded into that cell before the rounds begin, so they
     # occupy slots and repel near-duplicates (anchor Wingspan and Wyrmspan stops
     # being a candidate rather than filling a slot beside it).
-    cells, memberships = buckets.build_cells(games, axes=[])
-    scorer = CoverageScorer(space.loadings, space.similarity, ratings, space.spoke_of)
+    cells, memberships = buckets.build_cells(games, axes=[], sel=sel)
+    scorer = CoverageScorer(space.loadings, space.similarity, ratings,
+                            space.spoke_of, sel)
     picks = []
     if not evaluate_only:
         results = allocate(cells, memberships, scorer, capacity=size,
-                           seeded={(): anchors})
+                           seeded={(): anchors}, sel=sel)
         picks = [a for a in results[()].assignments if a.game.id not in anchor_ids]
 
     members = anchors + [a.game for a in picks]
@@ -96,12 +98,12 @@ def build_collection(dataset_path, anchor_tokens, size, evaluate_only):
     member_ids = {g.id for g in members}
     gaps = []
     for d in range(n_axes):
-        if full_coverage[d] >= GAP_THRESHOLD:
+        if full_coverage[d] >= pres.gap_threshold:
             continue
         fills = sorted(
             ((float(weights(g)[d] * uncovered[d]), g) for g in games if g.id not in member_ids),
             key=lambda t: -t[0],
-        )[:SUGGESTIONS_PER_GAP]
+        )[:pres.suggestions_per_gap]
         gaps.append({
             "dimension": space.dimension_names[d],
             "coverage": round(float(full_coverage[d]), 3),
@@ -152,13 +154,17 @@ def main():
     parser.add_argument("--dataset", default=str(SEED_DATASET))
     parser.add_argument("--anchors", default="",
                         help="comma-separated game names or BGG ids to lock in")
-    parser.add_argument("--size", type=int, default=COLLECTION_SIZE,
+    parser.add_argument("--size", type=int, default=None,
                         help="target collection size including anchors")
     parser.add_argument("--evaluate", action="store_true",
                         help="only report what the anchors cover; don't fill")
+    parser.add_argument("--config", default=None,
+                        help="TOML file layered over the defaults")
     args = parser.parse_args()
+    params = Params.load(args.config)
     tokens = [t for t in args.anchors.split(",") if t.strip()]
-    build_collection(args.dataset, tokens, args.size, args.evaluate)
+    size = args.size if args.size is not None else params.collection.collection_size
+    build_collection(args.dataset, tokens, size, args.evaluate, params)
 
 
 if __name__ == "__main__":

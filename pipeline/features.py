@@ -46,22 +46,7 @@ import numpy as np
 from scipy.cluster.hierarchy import fcluster, linkage
 from sklearn.decomposition import PCA
 
-from .config import (
-    GENRE_AXIS_TARGET,
-    GENRE_BASE_RATE,
-    GENRE_COMPOUND,
-    GENRE_GROWTH,
-    GENRE_INTERACTION,
-    GENRE_MIN_COHESION,
-    GENRE_MIN_LIFT,
-    GENRE_NAME_SEPARATOR,
-    GENRE_SCARCITY,
-    GENRE_SPANS,
-    GENRE_SPOKES,
-    GENRE_TOP_SIGNALS,
-    PLAYTIME_SCALE,
-    WEIGHT_SCALE,
-)
+from .params import DEFAULTS, Params
 from .model import Game
 
 
@@ -86,17 +71,18 @@ class FeatureSpace:
     axis_names: list[str]                 # one per underlying axis
 
 
-def build_feature_space(games: list[Game]) -> FeatureSpace:
+def build_feature_space(games: list[Game],
+                        params: Params = DEFAULTS) -> FeatureSpace:
     ids = [g.id for g in games]
 
-    genre = _genre_loadings(games)              # (n_games, n_dims), rows normalised
+    genre = _genre_loadings(games, params)              # (n_games, n_dims), rows normalised
     loadings = genre["loadings"]
     spokes = genre["spokes"]
     dim_names = genre["spoke_names"]
 
     # Continuous stats, z-scored then scaled down so genre dominates distances.
-    weight = _zscore(np.array([g.weight for g in games])) * WEIGHT_SCALE
-    playtime = _zscore(np.log1p([g.playtime for g in games])) * PLAYTIME_SCALE
+    weight = _zscore(np.array([g.weight for g in games])) * params.discovery.continuous_scale
+    playtime = _zscore(np.log1p([g.playtime for g in games])) * params.discovery.continuous_scale
 
     matrix = np.column_stack([loadings, weight, playtime])
 
@@ -104,7 +90,7 @@ def build_feature_space(games: list[Game]) -> FeatureSpace:
     xy = PCA(n_components=2, random_state=0).fit_transform(matrix)
 
     top = {
-        gid: _top_dims(spokes[i], dim_names)
+        gid: _top_dims(spokes[i], dim_names, params)
         for i, gid in enumerate(ids)
     }
     return FeatureSpace(
@@ -193,12 +179,12 @@ def _tag_centrality(present: np.ndarray) -> np.ndarray:
     return np.where(degree > 1, centrality, 1.0)
 
 
-def _genre_loadings(games: list[Game]) -> dict:
+def _genre_loadings(games: list[Game], params: Params) -> dict:
     """Cluster signals into genres, then split each game across them."""
-    vocab, incidence = _signal_space(games)
+    vocab, incidence = _signal_space(games, params)
 
-    cores = _harvest_cores(incidence, GENRE_AXIS_TARGET)
-    membership = _assign_signals(incidence, cores)
+    cores = _harvest_cores(incidence, params.discovery.genre_min_reach, params)
+    membership = _assign_signals(incidence, cores, params)
 
     # How each game's tags divide across the axes, then L1-normalised: every
     # game carries the same *total* genre mass, so the vector says how a game
@@ -224,8 +210,8 @@ def _genre_loadings(games: list[Game]) -> dict:
     # which genre a game counts as. That is intended and is why picks spread
     # more evenly, but it is the broader half of the effect.
     reach = np.array([(incidence[:, core].sum(axis=1) > 0).sum() for core in cores])
-    loadings = _tag_evidence(vocab, incidence, membership) \
-        * np.maximum(reach, 1.0) ** -GENRE_SCARCITY
+    loadings = _tag_evidence(vocab, incidence, membership, params) \
+        * np.maximum(reach, 1.0) ** -params.discovery.genre_scarcity
     mass = loadings.sum(axis=1, keepdims=True)
     # Only a game carrying no signals at all can be zero here — every signal
     # belongs to exactly one axis (see `_assign_signals`). Such a game covers
@@ -236,17 +222,19 @@ def _genre_loadings(games: list[Game]) -> dict:
 
     # Named last: a genre's label depends on which games ended up in it, so the
     # loadings have to exist first (see `_name_genres`).
-    member = (shares >= 0.5 * shares.max(axis=1, keepdims=True)) & (shares > 0)
-    names = _name_genres(cores, incidence, vocab, member)
+    member = ((shares >= params.selection.genre_floor
+               * shares.max(axis=1, keepdims=True)) & (shares > 0))
+    names = _name_genres(cores, incidence, vocab, member, params)
 
     # The radar reads these axes through a smaller set of named families. A
     # spoke's loading is the plain sum of its members', so what is drawn is an
     # aggregation of the vectors the picker scored, not a second calculation.
-    groups = _spokes(incidence, cores, GENRE_SPOKES)
+    groups = _spokes(incidence, cores, params.discovery.genre_spokes)
     spokes = np.stack([shares[:, group].sum(axis=1) for group in groups], axis=1)
-    spoke_member = (spokes >= 0.5 * spokes.max(axis=1, keepdims=True)) & (spokes > 0)
+    spoke_member = ((spokes >= params.selection.genre_floor
+                     * spokes.max(axis=1, keepdims=True)) & (spokes > 0))
     spoke_names = _name_genres([[j for i in group for j in cores[i]] for group in groups],
-                               incidence, vocab, spoke_member)
+                               incidence, vocab, spoke_member, params)
 
     return {"loadings": shares, "names": names, "spokes": spokes,
             "spoke_names": spoke_names,
@@ -255,7 +243,7 @@ def _genre_loadings(games: list[Game]) -> dict:
 
 
 def _tag_evidence(vocab: list[str], incidence: np.ndarray,
-                  membership: np.ndarray) -> np.ndarray:
+                  membership: np.ndarray, params: Params) -> np.ndarray:
     """(n_games x n_genres) — each game's tags, counted once each, per genre.
 
     Every *tag* a game carries is one unit of evidence about what that game is.
@@ -297,13 +285,13 @@ def _tag_evidence(vocab: list[str], incidence: np.ndarray,
     # GENRE_COMPOUND (see `_signal_space`), so the vocabulary already says this.
     mentions: dict[str, list[int]] = {}
     for signal, name in enumerate(vocab):
-        for tag in name.split(GENRE_COMPOUND):
+        for tag in name.split(params.presentation.genre_compound):
             mentions.setdefault(tag, []).append(signal)
 
     evidence = np.zeros((incidence.shape[0], membership.shape[1]))
     for game in range(incidence.shape[0]):
         present = set(np.flatnonzero((incidence[game] > 0) & alive))
-        tags = {tag for signal in present for tag in vocab[signal].split(GENRE_COMPOUND)}
+        tags = {tag for signal in present for tag in vocab[signal].split(params.presentation.genre_compound)}
         for tag in tags:
             carriers = [s for s in mentions[tag] if s in present]
             for signal in carriers:
@@ -312,7 +300,7 @@ def _tag_evidence(vocab: list[str], incidence: np.ndarray,
     return evidence
 
 
-def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:
+def _signal_space(games: list[Game], params: Params) -> tuple[list[str], np.ndarray]:
     """Game x signal incidence, plus a compound for each pair of base-rate tags.
 
     A tag carried by more of the corpus than one genre's even share cannot
@@ -360,13 +348,13 @@ def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:
             incidence[i, index[s]] = 1.0
 
     carried = incidence.sum(axis=0)
-    base = [j for j in range(len(vocab)) if carried[j] > len(games) * GENRE_BASE_RATE]
-    floor = len(games) / GENRE_AXIS_TARGET / 10
+    base = [j for j in range(len(vocab)) if carried[j] > len(games) * params.discovery.genre_base_rate]
+    floor = len(games) / params.discovery.genre_min_reach / params.discovery.genre_reach_divisor
 
     # Tags that span several kinds of game are paired like base tags but do not
     # appear on their own, so a game is a *type* of one rather than merely
     # carrying it (see `_spanning`).
-    spanning = _spanning(vocab, incidence, carried, base, floor)
+    spanning = _spanning(vocab, incidence, carried, base, floor, params)
     base = sorted(base + list(spanning))
 
     names = [s for j, s in enumerate(vocab) if j not in spanning]
@@ -376,19 +364,19 @@ def _signal_space(games: list[Game]) -> tuple[list[str], np.ndarray]:
         for second in base[a + 1:]:
             both = incidence[:, first] * incidence[:, second]
             if both.sum() >= floor:
-                names.append(f"{vocab[first]}{GENRE_COMPOUND}{vocab[second]}")
+                names.append(f"{vocab[first]}{params.presentation.genre_compound}{vocab[second]}")
                 columns.append(both)
                 paired.add((first, second))
 
-    for first, second in _interactions(games, incidence, carried, floor):
+    for first, second in _interactions(games, incidence, carried, floor, params):
         if (first, second) not in paired:
-            names.append(f"{vocab[first]}{GENRE_COMPOUND}{vocab[second]}")
+            names.append(f"{vocab[first]}{params.presentation.genre_compound}{vocab[second]}")
             columns.append(incidence[:, first] * incidence[:, second])
     return names, np.stack(columns, axis=1)
 
 
 def _spanning(vocab: list[str], incidence: np.ndarray, carried: np.ndarray,
-              base: list[int], floor: float) -> set[int]:
+              base: list[int], floor: float, params: Params) -> set[int]:
     """Tags to represent only through their compounds, never on their own.
 
     `Worker Placement` is not one thing. There are worker-placement card games,
@@ -445,9 +433,9 @@ def _spanning(vocab: list[str], incidence: np.ndarray, carried: np.ndarray,
     # — every tag leads *some* cluster once discovery runs to exhaustion, so the
     # question is only meaningful about families a reader would see.
     plain = np.stack([incidence[:, j] for j in range(len(vocab))], axis=1)
-    clusters = _harvest_cores(plain, GENRE_AXIS_TARGET)
+    clusters = _harvest_cores(plain, params.discovery.genre_min_reach, params)
     anchors = set()
-    for group in _spokes(plain, clusters, GENRE_SPOKES):
+    for group in _spokes(plain, clusters, params.discovery.genre_spokes):
         held = [j for c in group for j in clusters[c]]
         anchors.add(max(held, key=lambda j: plain[:, j].sum()))
 
@@ -457,13 +445,13 @@ def _spanning(vocab: list[str], incidence: np.ndarray, carried: np.ndarray,
             continue
         mine = np.flatnonzero(incidence[:, tag] > 0)
         held = cohesion(mine)
-        if not held or cohesion(mine, without=tag) > GENRE_SPANS * held:
+        if not held or cohesion(mine, without=tag) > params.discovery.genre_spans * held:
             continue
         covered = np.zeros(len(mine), dtype=bool)
         for other in base:
             if (incidence[:, tag] * incidence[:, other]).sum() >= floor:
                 covered |= incidence[mine, other] > 0
-        if covered.mean() >= _SPANNING_COVERAGE:
+        if covered.mean() >= params.discovery.spanning_coverage:
             found.add(tag)
     return found
 
@@ -472,12 +460,13 @@ def _spanning(vocab: list[str], incidence: np.ndarray, carried: np.ndarray,
 # since dropping the bare tag leaves them with nothing else. This separates
 # `Worker Placement` at 95% from `Action / Dexterity` at 0%, so it is a
 # well-definedness guard rather than a dial — the nearest other candidates score
-# 81% and 57% and are already excluded for anchoring genres.
-_SPANNING_COVERAGE = 0.90
+# 81% and 57% and are already excluded for anchoring genres. It lives in
+# `config.py` as SPANNING_COVERAGE all the same: a guard is still a magnitude.
 
 
 def _interactions(games: list[Game], incidence: np.ndarray,
-                  carried: np.ndarray, floor: float) -> list[tuple[int, int]]:
+                  carried: np.ndarray, floor: float,
+                  params: Params) -> list[tuple[int, int]]:
     """Tag pairs that mean more together than either tag means alone.
 
     The base-rate rule above answers "is this tag too broad to be a genre", and
@@ -520,12 +509,13 @@ def _interactions(games: list[Game], incidence: np.ndarray,
             size = int(shared[second])
             together = (float(sums[second] @ sums[second]) - size) / (size * (size - 1))
             parent = max(alone[first], alone[second])
-            if parent > 0 and together >= GENRE_INTERACTION * parent:
+            if parent > 0 and together >= params.discovery.genre_interaction * parent:
                 found.append((first, second))
     return found
 
 
-def _harvest_cores(incidence: np.ndarray, target: int) -> list[list[int]]:
+def _harvest_cores(incidence: np.ndarray, target: int,
+                   params: Params) -> list[list[int]]:
     """Genres, tightest first: claim the most coherent group, then the next.
 
     Each signal is a unit vector over the games carrying it, so the cosine
@@ -561,12 +551,12 @@ def _harvest_cores(incidence: np.ndarray, target: int) -> list[list[int]]:
     coherent blocs rather than tag by tag.
     """
     n_games, n_signals = incidence.shape
-    min_reach = n_games / target / 10
+    min_reach = n_games / target / params.discovery.genre_reach_divisor
 
     claimed: list[list[int]] = []
     pool = list(range(n_signals))
     while len(pool) > 1:
-        found = _tightest(incidence[:, pool], min_reach)
+        found = _tightest(incidence[:, pool], min_reach, params)
         if found is None:
             break
         claimed.append([pool[i] for i in found])
@@ -575,7 +565,8 @@ def _harvest_cores(incidence: np.ndarray, target: int) -> list[list[int]]:
     return claimed
 
 
-def _tightest(subset: np.ndarray, min_reach: float) -> list[int] | None:
+def _tightest(subset: np.ndarray, min_reach: float,
+              params: Params) -> list[int] | None:
     """The most cohesive group in `subset`, grown while it still hangs together.
 
     Returns column indices *into `subset`*, or None when nothing left reaches
@@ -610,7 +601,7 @@ def _tightest(subset: np.ndarray, min_reach: float) -> list[int] | None:
         return None
 
     node = seed
-    while node in parent and cohesion[parent[node]] >= GENRE_GROWTH * best:
+    while node in parent and cohesion[parent[node]] >= params.discovery.genre_growth * best:
         node = parent[node]
     return members[node]
 
@@ -650,7 +641,8 @@ def _spokes(incidence: np.ndarray, cores: list[list[int]],
     return [[i for i in range(len(cores)) if labels[i] == g] for g in sorted(set(labels))]
 
 
-def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray:
+def _assign_signals(incidence: np.ndarray, cores: list[list[int]],
+                    params: Params) -> np.ndarray:
     """(n_signals x n_axes) map placing each signal on at most one axis.
 
     The harvested cores define the genres; every signal left over joins the core
@@ -722,7 +714,7 @@ def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray
     # and put `Hand Management` — 1634 games — inside a 46-game trick-taking
     # genre. Size corrects the bias; it should not become the criterion.
     held = np.array([float(len(core)) for core in cores])
-    for group in _unplaced_groups(vectors, home):
+    for group in _unplaced_groups(vectors, home, params):
         # One vote for the whole group, so it lands intact.
         pick = int(np.argmax(resemblance[group].sum(axis=0) / held))
         home[group] = pick
@@ -747,7 +739,7 @@ def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray
         # nothing when the genre is huge: the two largest cover 45% and 55% of
         # the corpus, so a tag scores about half with them by coincidence.
         # Founding signals are exempt — a genre keeps what defines it.
-        if signal not in founding and lift[axis, signal] < GENRE_MIN_LIFT:
+        if signal not in founding and lift[axis, signal] < params.discovery.genre_min_lift:
             # Resemblance put it somewhere it has no business being. Dropping it
             # here would throw away a signal that fits elsewhere perfectly well,
             # so ask where it actually belongs before giving up on it. Placement
@@ -771,7 +763,8 @@ def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray
     return membership
 
 
-def _unplaced_groups(vectors: np.ndarray, home: np.ndarray) -> list[list[int]]:
+def _unplaced_groups(vectors: np.ndarray, home: np.ndarray,
+                     params: Params) -> list[list[int]]:
     """The largest coherent bunches among the signals no genre claimed.
 
     Same rule as genre discovery — maximal subtrees that still hang together —
@@ -801,14 +794,15 @@ def _unplaced_groups(vectors: np.ndarray, home: np.ndarray) -> list[list[int]]:
         if not free:
             continue                          # every signal here already has a genre
         if node >= n_signals and (len(free) < len(members[node])
-                                  or cohesion[node] < GENRE_MIN_COHESION):
+                                  or cohesion[node] < params.discovery.genre_min_cohesion):
             stack.extend(children[node])
             continue
         groups.append(free)
     return groups
 
 
-def genre_overlap(space: FeatureSpace) -> list[tuple[float, int, int]]:
+def genre_overlap(space: FeatureSpace,
+                  params: Params = DEFAULTS) -> list[tuple[float, int, int]]:
     """How much each pair of genres describes the same games, worst first.
 
     Genres are meant to be *different questions* about a game. When two of them
@@ -831,7 +825,8 @@ def genre_overlap(space: FeatureSpace) -> list[tuple[float, int, int]]:
     """
     ids = sorted(space.spokes)
     matrix = np.stack([space.spokes[i] for i in ids])
-    member = (matrix >= 0.5 * matrix.max(axis=1, keepdims=True)) & (matrix > 0)
+    member = ((matrix >= params.selection.genre_floor
+               * matrix.max(axis=1, keepdims=True)) & (matrix > 0))
 
     pairs = []
     for i in range(member.shape[1]):
@@ -843,7 +838,8 @@ def genre_overlap(space: FeatureSpace) -> list[tuple[float, int, int]]:
 
 
 def _name_genres(cores: list[list[int]], incidence: np.ndarray,
-                 vocab: list[str], member: np.ndarray) -> list[str]:
+                 vocab: list[str], member: np.ndarray,
+                 params: Params) -> list[str]:
     """Name every genre, guaranteeing the leading tags are all different.
 
     The frontend shows only a spoke's leading tag, so two genres led by the same
@@ -852,7 +848,7 @@ def _name_genres(cores: list[list[int]], incidence: np.ndarray,
     falls through to its next-best tag, so the pair reads `Card Game` and
     `Set Collection` rather than `Card Game` twice in different colours.
     """
-    ranked = [_defining_order(core, incidence, vocab, member[:, a])
+    ranked = [_defining_order(core, incidence, vocab, member[:, a], params)
               for a, core in enumerate(cores)]
 
     # Strongest claim on a tag wins it; the rest fall through to their next.
@@ -867,12 +863,13 @@ def _name_genres(cores: list[list[int]], incidence: np.ndarray,
     for a, tags in enumerate(ranked):
         mine = next((tag for tag, owner in leaders.items() if owner == a), None)
         ordered = ([mine] if mine else []) + [t for t, _ in tags if t != mine]
-        names.append(GENRE_NAME_SEPARATOR.join(ordered[:GENRE_TOP_SIGNALS]))
+        names.append(params.presentation.genre_name_separator.join(
+            ordered[:params.presentation.genre_top_signals]))
     return names
 
 
 def _defining_order(core: list[int], incidence: np.ndarray, vocab: list[str],
-                    inside: np.ndarray) -> list[tuple[str, float]]:
+                    inside: np.ndarray, params: Params) -> list[tuple[str, float]]:
     """This genre's tags, most *defining* first, with their scores.
 
     Defining, not merely most-used: a tag earns the name by how much of it lands
@@ -917,17 +914,19 @@ def _defining_order(core: list[int], incidence: np.ndarray, vocab: list[str],
     out: list[tuple[str, float]] = []
     seen: set[str] = set()
     for score, signal in sorted(scored, reverse=True):
-        for tag in vocab[signal].split(GENRE_COMPOUND):
+        for tag in vocab[signal].split(params.presentation.genre_compound):
             if tag.casefold() not in seen:
                 seen.add(tag.casefold())
                 out.append((tag, float(score)))
     return out or [("Other", 0.0)]
 
 
-def _top_dims(row: np.ndarray, names: list[str], k: int = 3) -> list[tuple[str, float]]:
+def _top_dims(row: np.ndarray, names: list[str],
+              params: Params = DEFAULTS) -> list[tuple[str, float]]:
     """A game's strongest genre dimensions, for display: [(name, loading)]."""
-    order = np.argsort(row)[::-1][:k]
-    return [(names[j], round(float(row[j]), 2)) for j in order if row[j] > 0.05]
+    order = np.argsort(row)[::-1][:params.presentation.genres_shown_per_game]
+    return [(names[j], round(float(row[j]), 2))
+            for j in order if row[j] > params.presentation.min_loading_shown]
 
 
 def _zscore(values: np.ndarray) -> np.ndarray:

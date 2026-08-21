@@ -24,8 +24,8 @@ described that way rather than as a win.
 
 import numpy as np
 
-from .config import GENRE_NAME_SEPARATOR
 from .features import genre_overlap
+from .params import DEFAULTS, Params
 
 # Four well-known games checked on every build. Not an assertion: a canary
 # dropping out can be correct — COLLECTION_WEIGHT exists precisely to make a
@@ -87,7 +87,8 @@ def cohesion(similarity: dict[int, np.ndarray], ids: list[int],
     }
 
 
-def name_truth(names: list[str], signals: list[list[str]], primary: np.ndarray) -> dict:
+def name_truth(names: list[str], signals: list[list[str]], primary: np.ndarray,
+               separator: str = DEFAULTS.presentation.genre_name_separator) -> dict:
     """Share of a genre's own games that carry the tag it is named after.
 
     Only the *leading* tag counts, because that is all the frontend shows — a
@@ -110,7 +111,7 @@ def name_truth(names: list[str], signals: list[list[str]], primary: np.ndarray) 
         members = np.flatnonzero(primary == g)
         if members.size == 0:
             continue
-        lead = name.split(GENRE_NAME_SEPARATOR)[0].strip().lower()
+        lead = name.split(separator)[0].strip().lower()
         carried = sum(
             1 for i in members
             if any(tag.strip().lower() == lead for tag in signals[i])
@@ -169,7 +170,8 @@ def spread(results: dict, primary_of: dict[int, int]) -> dict:
     }
 
 
-def build_report(space, games, results, capacity, source: str) -> dict:
+def build_report(space, games, results, capacity, source: str,
+                 params: Params = DEFAULTS) -> dict:
     """Everything above, over one build."""
     ids = [g.id for g in games]
     signals = [g.signals for g in games]
@@ -183,7 +185,7 @@ def build_report(space, games, results, capacity, source: str) -> dict:
     axis_primary = np.where(has_signal, axis_matrix.argmax(axis=1), -1)
     spoke_primary = np.where(has_signal, spoke_matrix.argmax(axis=1), -1)
 
-    overlap = genre_overlap(space)
+    overlap = genre_overlap(space, params)
     worst, a, b = overlap[0]
 
     spoke_sizes = np.bincount(spoke_primary[spoke_primary >= 0],
@@ -198,16 +200,18 @@ def build_report(space, games, results, capacity, source: str) -> dict:
         "cohesion_spoke": cohesion(space.similarity, ids, spoke_primary, spoke_matrix.shape[1]),
         # Over axes, using `axis_names` — which nothing else reads. The field
         # was added for this measure and then the measure was never written.
-        "name_truth": name_truth(space.axis_names, signals, axis_primary),
-        "name_truth_spoke": name_truth(space.dimension_names, signals, spoke_primary),
+        "name_truth": name_truth(space.axis_names, signals, axis_primary,
+                                 params.presentation.genre_name_separator),
+        "name_truth_spoke": name_truth(space.dimension_names, signals, spoke_primary,
+                                       params.presentation.genre_name_separator),
         "picks": pick_stats(results, capacity),
         "canaries": canary_status(results),
         "spread": spread(results, dict(zip(ids, spoke_primary))),
         "overlap": {
             "mean": float(np.mean([v for v, _, _ in overlap])),
             "worst": float(worst),
-            "worst_pair": (space.dimension_names[a].split(GENRE_NAME_SEPARATOR)[0],
-                           space.dimension_names[b].split(GENRE_NAME_SEPARATOR)[0]),
+            "worst_pair": (space.dimension_names[a].split(params.presentation.genre_name_separator)[0],
+                           space.dimension_names[b].split(params.presentation.genre_name_separator)[0]),
         },
         "biggest_genre": float(spoke_sizes.max() / max(len(games), 1)),
     }

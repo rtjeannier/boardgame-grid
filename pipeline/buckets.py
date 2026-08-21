@@ -17,38 +17,33 @@ from collections import defaultdict
 from collections.abc import Sequence
 from typing import Protocol
 
-from .config import (
-    CELL_MEMBERSHIP_FLOOR,
-    MEMBERSHIP_FLOOR,
-    PLAYER_COLUMNS,
-    RECOMMENDED_WEIGHT,
-    WEIGHT_ROW_LADDER,
-    WEIGHT_TAPER,
-)
+from .params import DEFAULTS, Presentation, Selection
 from .model import Game
 
 
 # --- Columns: player count --------------------------------------------------
 
-def _column_of(count: int) -> str | None:
-    for col in PLAYER_COLUMNS:
+def _column_of(count: int, columns: list[dict]) -> str | None:
+    for col in columns:
         lo, hi = col["lo"], col["hi"]
         if lo <= count and (hi is None or count <= hi):
             return col["label"]
     return None
 
 
-def player_column_for(game: Game) -> str | None:
+def player_column_for(game: Game, columns: list[dict] | None = None) -> str | None:
     """The single column containing this game's peak player count.
 
     Still used for the `--assigner mmr` / `greedy` paths, which assign one home
     per game. The coverage assigner uses `player_memberships` instead.
     """
+    columns = columns if columns is not None else DEFAULTS.collection.columns()
     peak = game.best_count
-    return _column_of(peak) if peak else None
+    return _column_of(peak, columns) if peak else None
 
 
-def player_memberships(game: Game) -> dict[str, float]:
+def player_memberships(game: Game, columns: list[dict] | None = None,
+                       sel: Selection = DEFAULTS.selection) -> dict[str, float]:
     """How strongly this game belongs to each player-count column, in (0, 1].
 
     A count's score is its *approval share*, `(best + w·recommended) / votes`,
@@ -77,9 +72,10 @@ def player_memberships(game: Game) -> dict[str, float]:
     Empty when no count clears the floor — such a game has no place on the
     player axis and is simply not placed.
     """
+    columns = columns if columns is not None else DEFAULTS.collection.columns()
     by_column: dict[str, float] = {}
     for count, (best, recommended, not_rec) in game.player_poll.items():
-        col = _column_of(count)
+        col = _column_of(count, columns)
         total = best + recommended + not_rec
         if col is None or total == 0:
             continue
@@ -89,10 +85,10 @@ def player_memberships(game: Game) -> dict[str, float]:
         # Recommended / 104 Not, and The Crew at two reads 27 / 243 / 356 —
         # both majority-negative, both eligible on approval share alone. They
         # were previously excluded only by accident, in that at
-        # RECOMMENDED_WEIGHT 0.25 they happened to land under MEMBERSHIP_FLOOR.
+        # RECOMMENDED_WEIGHT 0.25 they happened to land under COLUMN_FLOOR.
         if not_rec > best + recommended:
             continue
-        score = (best + RECOMMENDED_WEIGHT * recommended) / total
+        score = (best + sel.recommended_weight * recommended) / total
         # A column spans several counts (6-8); take its strongest, not the sum,
         # or wide columns would look better merely for being wide.
         by_column[col] = max(by_column.get(col, 0.0), score)
@@ -105,7 +101,7 @@ def player_memberships(game: Game) -> dict[str, float]:
     return {
         col: score / peak
         for col, score in by_column.items()
-        if score / peak >= MEMBERSHIP_FLOOR
+        if score / peak >= sel.column_floor
     }
 
 
@@ -151,7 +147,8 @@ def weight_row_index(weight: float, rows: list[dict]) -> int:
     return rows[-1]["index"]
 
 
-def weight_memberships(weight: float, rows: list[dict]) -> dict[int, float]:
+def weight_memberships(weight: float, rows: list[dict],
+                       sel: Selection = DEFAULTS.selection) -> dict[int, float]:
     """How strongly a weight belongs to each row, in (0, 1].
 
     Full membership inside a row, tapering linearly to zero across WEIGHT_TAPER
@@ -165,10 +162,10 @@ def weight_memberships(weight: float, rows: list[dict]) -> dict[int, float]:
         lo, hi = row["lo"], row["hi"]
         if lo <= weight <= hi:
             memberships[row["index"]] = 1.0
-        elif weight < lo and lo - weight < WEIGHT_TAPER:
-            memberships[row["index"]] = 1.0 - (lo - weight) / WEIGHT_TAPER
-        elif weight > hi and weight - hi < WEIGHT_TAPER:
-            memberships[row["index"]] = 1.0 - (weight - hi) / WEIGHT_TAPER
+        elif weight < lo and lo - weight < sel.weight_taper:
+            memberships[row["index"]] = 1.0 - (lo - weight) / sel.weight_taper
+        elif weight > hi and weight - hi < sel.weight_taper:
+            memberships[row["index"]] = 1.0 - (weight - hi) / sel.weight_taper
     return memberships
 
 
@@ -192,12 +189,22 @@ class Axis(Protocol):
 
 
 class PlayerCountAxis:
-    """Columns: the player counts the community endorses, peak-relative."""
+    """Columns: the player counts the community endorses, peak-relative.
+
+    The column definitions are collection state, not a constant — a user may
+    add, merge or relabel them — so the axis is handed them rather than
+    reaching for a module global.
+    """
 
     name = "players"
 
+    def __init__(self, columns: list[dict] | None = None,
+                 sel: Selection = DEFAULTS.selection):
+        self.columns = columns if columns is not None else DEFAULTS.collection.columns()
+        self.sel = sel
+
     def memberships(self, game: Game) -> dict[str, float]:
-        return player_memberships(game)
+        return player_memberships(game, self.columns, self.sel)
 
 
 class WeightAxis:
@@ -209,14 +216,17 @@ class WeightAxis:
 
     name = "weight"
 
-    def __init__(self, rows: list[dict]):
+    def __init__(self, rows: list[dict], sel: Selection = DEFAULTS.selection):
         self.rows = rows
+        self.sel = sel
 
     def memberships(self, game: Game) -> dict[str, float]:
-        return {str(i): m for i, m in weight_memberships(game.weight, self.rows).items()}
+        return {str(i): m
+                for i, m in weight_memberships(game.weight, self.rows, self.sel).items()}
 
 
-def build_cells(games: list[Game], axes: Sequence[Axis]) -> tuple[dict, dict]:
+def build_cells(games: list[Game], axes: Sequence[Axis],
+                sel: Selection = DEFAULTS.selection) -> tuple[dict, dict]:
     """Cross the axes into cells and place every game in each by degree.
 
     Returns `(cells, memberships)` where `cells` maps a key — a tuple of one
@@ -239,15 +249,16 @@ def build_cells(games: list[Game], axes: Sequence[Axis]) -> tuple[dict, dict]:
                     nxt.append((key + (label,), m * axis_m))
             placements = nxt
         for key, m in placements:
-            if m > CELL_MEMBERSHIP_FLOOR:
+            if m > sel.cell_floor:
                 cells[key].append(game)
                 memberships[(key, game.id)] = m
 
     return dict(cells), memberships
 
 
-def _row_name(index: int, row_count: int) -> str:
+def _row_name(index: int, row_count: int,
+              names: tuple = DEFAULTS.presentation.row_names) -> str:
     """Relative complexity label for a row, lightest (0) to heaviest."""
-    if row_count <= len(WEIGHT_ROW_LADDER):
-        return WEIGHT_ROW_LADDER[index]
+    if row_count <= len(names):
+        return names[index]
     return f"Tier {index + 1}"

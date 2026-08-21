@@ -463,7 +463,27 @@ dataset instead of one cell:
 
 ## Tuning it
 
-Everything lives in `pipeline/config.py`:
+Every tunable is reachable from a config file — nothing that changes behaviour is
+hardcoded in source. `grid.example.toml` lists them all at their defaults:
+
+```bash
+python -m pipeline.build --config grid.example.toml --report
+```
+
+Anything omitted keeps its default, so a sweep file need only name what it
+changes; an unknown key is an error rather than a silent no-op. The values are in
+three tiers, because they belong to different people:
+
+| Tier | Who it belongs to |
+|---|---|
+| `[presentation]` | Display only — changing one never moves a pick |
+| `[collection]` | What a person manipulates: axes, depth, genre weights |
+| `[hyper.selection]` | Fitted; runs on every recompute, no rebuild needed |
+| `[hyper.discovery]` | Fitted; re-runs tag clustering, forces a rebuild |
+
+The **reasoning** stays in `pipeline/config.py`, beside each default — what was
+measured, what failed, and why the value sits where it does. Read that before
+changing one, and re-measure with `--report` afterwards.
 
 - **Player columns** — `PLAYER_COLUMNS` (label + inclusive count range).
 - **Number of weight rows** — `WEIGHT_ROW_COUNT`. Rows are quantiles of the

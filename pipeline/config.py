@@ -66,12 +66,24 @@ ALTERNATES_PER_CELL = 6
 # and playtime. Per-cell selection then maximises coverage of that space.
 
 # The smallest genre worth having: one tenth of an even share, so
-# `n / GENRE_AXIS_TARGET / 10` games — 33 on the live top 5000. A group of tags
+# `n / GENRE_MIN_REACH / 10` games — 33 on the live top 5000. A group of tags
 # reaching fewer than that is not a kind of game, and the search stops when
 # nothing bigger is left. This does *not* set the number of axes — discovery
 # runs to exhaustion; see GENRE_SPOKES for what the radar shows.
-GENRE_AXIS_TARGET = 15
+GENRE_MIN_REACH = 15
+# The second half of that floor, which used to sit inline in `features.py` as a
+# bare `/ 10`. Two numbers were multiplied together to make one threshold and
+# only one of them had a name, so the effective floor could not be read off the
+# config at all.
+GENRE_REACH_DIVISOR = 10
 GENRE_TOP_SIGNALS = 3     # signals used to name a dimension for display
+
+# How much of a spanning tag's games its compounds must still cover before the
+# bare tag may be dropped. A well-definedness guard rather than a dial — the
+# nearest other candidates score 81% and 57% and are already excluded for
+# anchoring genres of their own — but it is still a magnitude that moves the
+# taxonomy, so it belongs here rather than inline in `features.py`.
+SPANNING_COVERAGE = 0.90
 
 # Dimension names join their signals with this, and it doubles as the mark
 # between the halves of a compound tag (`Card Game · Hand Management`). It
@@ -253,11 +265,18 @@ GENRE_INTERACTION = 1.7
 # because the tag *is* their kind, not because it spans kinds.
 GENRE_SPANS = 0.60
 
-# Contribution of the continuous stats to distances, relative to genre loadings
-# (which are L2-normalised per game). Within a cell weight is nearly constant,
-# so genre naturally dominates; these keep playtime/weight as mild tiebreakers.
-WEIGHT_SCALE = 0.25
-PLAYTIME_SCALE = 0.25
+# Contribution of the continuous stats — weight and log-playtime — to distances
+# in the feature space, relative to genre loadings. Within a cell weight is
+# nearly constant, so genre naturally dominates; this keeps playtime and weight
+# as mild tiebreakers.
+#
+# One dial, not two. They were separate and always equal, which suggested a
+# tuning axis that was never used. Note what they actually reach: the matrix
+# they scale feeds the 2-D PCA behind the similarity scatter and `MmrScorer`,
+# and *nothing else*. Coverage selection reads the genre loadings directly, so
+# changing this moves where dots sit on the scatter and does not move a single
+# pick.
+CONTINUOUS_SCALE = 0.25
 
 # MMR (maximal marginal relevance) selection: each step scores every remaining
 # game as  λ·quality + (1-λ)·distance-to-picks  and takes the best. Higher λ
@@ -269,6 +288,26 @@ PICKS_PER_CELL = 5        # stop after this many picks per cell
 # A game covers each genre axis with "probability" quality × loading; a set's
 # coverage per axis is 1-∏(1-w); greedy adds whatever fills the most empty
 # radar-chart area, stopping when the best remaining gain is below the floor.
+# Measured on the live top 5000 by sweeping it against the four numbers, because
+# it looks redundant beside QUALITY_EXPONENT — the floor lifts the middle and the
+# exponent pushes it down, so they appear to be two dials on one quantity. They
+# are not, and the result is the opposite of what the name suggests:
+#
+#   floor   median   past #1000   canaries   genres/cell   cells changed
+#    0.20      267           18        3/4          4.89      — (default)
+#    0.10      266           13        3/4          4.80       20 of 35
+#    0.05      240           12        3/4          4.80       21 of 35
+#    0.00      234           12        4/4          4.71       27 of 35
+#
+# Removing it *improves* pick quality outright — 33 ranks of median, six fewer
+# picks past #1000, and Terraforming Mars comes back — and pays for it in genre
+# spread. That is the trade this constant actually makes: lifting the worst-rated
+# games is what lets a mediocre game cover a thin axis, and a cell reaches past a
+# better-ranked game for the best game of a *kind it lacks*.
+#
+# So it is a diversity dial wearing a quality dial's name, doing the same job as
+# GENRE_REPEAT_PENALTY from the other end. Kept at 0.20 because one game per kind
+# is the design; lower it deliberately if pick quality matters more than spread.
 QUALITY_FLOOR = 0.2       # worst-rated game still covers this fraction of its loadings
 
 # How sharply a better rating beats a worse one. `quality` normalises BGG's
@@ -281,7 +320,7 @@ QUALITY_EXPONENT = 2.0
 # Quality is judged against a game's own genre, not the whole corpus, and this
 # says who counts as being in a genre: any axis carrying at least this share of
 # the game's strongest one. Peak-relative for the same reason the player axis is
-# (see MEMBERSHIP_FLOOR) — it asks "is this what the game is?", not "is this all
+# (see COLUMN_FLOOR) — it asks "is this what the game is?", not "is this all
 # the game is", so a game with two real genres belongs to both.
 #
 # Without this the dexterity axis could never fill. Crokinole *is* the best
@@ -295,7 +334,7 @@ QUALITY_EXPONENT = 2.0
 # every weight by the axis best instead inflates mediocre games on thin axes
 # too, and cost 100 ranks of median pick quality while dropping Ark Nova and
 # Terraforming Mars from the grid. This costs 12 ranks and drops nobody.
-GENRE_MEMBERSHIP_FLOOR = 0.5
+GENRE_FLOOR = 0.5
 
 # How much a genre's scarcity counts in its favour, as an exponent on genre
 # size — IDF over genres. Without it a crowded genre wins on sheer volume: a
@@ -411,7 +450,7 @@ GENRE_REPEAT_PENALTY = 0.35
 # rest are measured against it. So a game uniformly great at 3-6 players scores
 # 1.0 in all four columns. Scoring by share-of-total would instead give it 0.25
 # each and let a mediocre 4-only game beat it, which penalises versatility.
-MEMBERSHIP_FLOOR = 0.25   # drop columns scoring below this fraction of the peak
+COLUMN_FLOOR = 0.25   # drop columns scoring below this fraction of the peak
 
 # How much a "this works" vote counts against a "this is the best" vote. A
 # count's score is (best + RECOMMENDED_WEIGHT * recommended) / total votes.
@@ -429,7 +468,7 @@ MEMBERSHIP_FLOOR = 0.25   # drop columns scoring below this fraction of the peak
 #
 # What a quarter was silently buying is now bought explicitly by the
 # majority-negative guard in `buckets.player_memberships`: counts most voters
-# reject used to be excluded only because they landed under MEMBERSHIP_FLOOR at
+# reject used to be excluded only because they landed under COLUMN_FLOOR at
 # this weight, which is why raising it alone drags crowd games across the grid
 # (Cartographers' nine-plus row, 104 Not against 17 Best, appears at 0.34).
 # With the guard doing that job, columns per game rise only 3.07 -> 3.20 rather
@@ -445,5 +484,21 @@ RECOMMENDED_WEIGHT = 0.5
 WEIGHT_TAPER = 0.15
 
 # Cells below this combined (column x row) membership aren't worth considering.
-CELL_MEMBERSHIP_FLOOR = 0.05
+CELL_FLOOR = 0.05
 COLLECTION_SIZE = 15      # default target size for the collection builder
+
+# --- Presentation ------------------------------------------------------------
+#
+# Display only: none of these changes a single pick. They were scattered across
+# `collection.py` and `features.py`, which made them invisible to anyone reading
+# this file to find out what could be tuned.
+
+# An axis covered below this is *reported* as a gap, with the best games to fill
+# it. Affects what an audit says, never what selection does.
+GAP_THRESHOLD = 0.5
+SUGGESTIONS_PER_GAP = 3
+
+# How many genres to name per game in the output, and the smallest loading worth
+# showing at all — a game's radar is long-tailed and the tail is noise.
+GENRES_SHOWN_PER_GAME = 3
+MIN_LOADING_SHOWN = 0.05

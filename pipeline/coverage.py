@@ -18,15 +18,11 @@ single cell holding the whole space for the collection builder.
 
 import numpy as np
 
-from .config import (
-    GENRE_MEMBERSHIP_FLOOR,
-    QUALITY_EXPONENT,
-    QUALITY_FLOOR,
-    SIMILARITY_EXPONENT,
-)
+from .params import DEFAULTS, Selection
 
 
-def genre_quality(loadings: np.ndarray, ratings: np.ndarray) -> np.ndarray:
+def genre_quality(loadings: np.ndarray, ratings: np.ndarray,
+                  sel: Selection = DEFAULTS.selection) -> np.ndarray:
     """(n_games x n_axes) — how good each game is *for each genre*.
 
     A game's coverage of a genre is quality x loading, and the question quality
@@ -39,7 +35,7 @@ def genre_quality(loadings: np.ndarray, ratings: np.ndarray) -> np.ndarray:
 
     So each axis is scaled against the games that belong to *it* — its own worst
     to its own best — and a genre's leader scores 1.0 whatever the wider
-    population thinks. Membership is peak-relative (GENRE_MEMBERSHIP_FLOOR), so
+    population thinks. Membership is peak-relative (GENRE_FLOOR), so
     a game counts towards every genre that is a real part of it.
 
     Note this is *within genre*, never within cell. A game's genres are a
@@ -55,19 +51,21 @@ def genre_quality(loadings: np.ndarray, ratings: np.ndarray) -> np.ndarray:
     gap between the top and the middle without inventing an ordering.
     """
     ratings = np.asarray(ratings, dtype=float)
-    member = loadings >= GENRE_MEMBERSHIP_FLOOR * loadings.max(axis=1, keepdims=True)
+    member = loadings >= sel.genre_floor * loadings.max(axis=1, keepdims=True)
 
     out = np.zeros_like(loadings)
     for axis in range(loadings.shape[1]):
         here = ratings[member[:, axis]]
         lo, hi = here.min(), here.max()
         normalised = np.clip((ratings - lo) / max(hi - lo, 1e-9), 0.0, 1.0)
-        out[:, axis] = QUALITY_FLOOR + (1 - QUALITY_FLOOR) * normalised ** QUALITY_EXPONENT
+        out[:, axis] = (sel.quality_floor
+                        + (1 - sel.quality_floor) * normalised ** sel.quality_exponent)
     return out
 
 
 def genre_weights(loadings: dict[int, np.ndarray],
-                  ratings: dict[int, float]) -> dict[int, np.ndarray]:
+                  ratings: dict[int, float],
+                  sel: Selection = DEFAULTS.selection) -> dict[int, np.ndarray]:
     """Per game, its quality-scaled loading vector — coverage before membership.
 
     The one place this is computed, so the picker and the radar cannot drift
@@ -76,7 +74,7 @@ def genre_weights(loadings: dict[int, np.ndarray],
     """
     ids = sorted(loadings)
     matrix = np.stack([loadings[i] for i in ids])
-    scaled = matrix * genre_quality(matrix, np.array([ratings[i] for i in ids]))
+    scaled = matrix * genre_quality(matrix, np.array([ratings[i] for i in ids]), sel)
     return {i: scaled[k] for k, i in enumerate(ids)}
 
 
@@ -90,7 +88,8 @@ def axis_coverage(weight_rows: list[np.ndarray], n_axes: int) -> np.ndarray:
 
 def novelty(game_id: int,
             chosen_ids: list[int],
-            similarity: dict[int, np.ndarray] | None) -> float:
+            similarity: dict[int, np.ndarray] | None,
+            sel: Selection = DEFAULTS.selection) -> float:
     """How much of this game is *not* already on the shelf, in [0, 1].
 
     Why this exists: `axis_coverage` treats each game's coverage as an
@@ -109,7 +108,14 @@ def novelty(game_id: int,
         return 1.0
     here = similarity[game_id]
     closest = max(float(here @ similarity[other]) for other in chosen_ids)
-    return 1.0 - max(closest, 0.0) ** SIMILARITY_EXPONENT
+    # Clamped to [0, 1] because a cosine of unit vectors is *mathematically* in
+    # that range but not numerically: 124 pairs on the live capture come out at
+    # 1.0000000000000002, all of them games carrying identical tag sets. The
+    # excess is 4e-16 and would be beneath notice, except that it makes this
+    # return a tiny negative — and `CoverageScorer.score` then raises it to a
+    # fractional power, which in Python yields a *complex number* rather than an
+    # error. The score is silently poisoned until something tries to order it.
+    return 1.0 - min(max(closest, 0.0), 1.0) ** sel.similarity_exponent
 
 
 def unique_contribution(index: int, weight_rows: list[np.ndarray]) -> float:

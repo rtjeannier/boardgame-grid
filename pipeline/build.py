@@ -24,40 +24,36 @@ import numpy as np
 
 from . import buckets, coverage, dataset
 from .assign import ArchetypeScorer, CoverageScorer, MmrScorer, allocate
-from .config import (
-    ALTERNATES_PER_CELL,
-    GENRE_NAME_SEPARATOR,
-    OUTPUT_JSON,
-    PICKS_PER_CELL,
-    PLAYER_COLUMNS,
-    SEED_DATASET,
-    WEIGHT_ROW_COUNT,
-)
+from .config import OUTPUT_JSON, SEED_DATASET
+from .params import DEFAULTS, Params
 from .features import build_feature_space, genre_overlap
 from .report import build_report, format_report
 
 
-def build(dataset_path, assigner_name, want_report=False, output=None):
+def build(dataset_path, assigner_name, want_report=False, output=None,
+          params: Params = DEFAULTS):
     source, generated_at, games = dataset.load_dataset(dataset_path)
-    space = build_feature_space(games)
-    weight_rows = buckets.build_weight_rows([g.weight for g in games], WEIGHT_ROW_COUNT)
+    space = build_feature_space(games, params)
+    sel, coll, pres = params.selection, params.collection, params.presentation
+    weight_rows = buckets.build_weight_rows([g.weight for g in games], coll.weight_rows)
 
     # The grid is just this stratification of the game space. Swap the axes and
     # the same allocator fills whatever cells come out; pass none at all and it
     # builds a collection, which is what pipeline/collection.py does.
     ratings = {g.id: g.rating for g in games}   # population-wide, never per cell
-    axes = [buckets.PlayerCountAxis(), buckets.WeightAxis(weight_rows)]
-    cells, memberships = buckets.build_cells(games, axes)
-    genre = coverage.genre_weights(space.loadings, ratings)
+    axes = [buckets.PlayerCountAxis(coll.columns(), sel),
+            buckets.WeightAxis(weight_rows, sel)]
+    cells, memberships = buckets.build_cells(games, axes, sel)
+    genre = coverage.genre_weights(space.loadings, ratings, sel)
 
     scorer = {
         "coverage": lambda: CoverageScorer(space.loadings, space.similarity, ratings,
-                                          space.spoke_of),
-        "mmr": lambda: MmrScorer(space.vectors),
+                                          space.spoke_of, sel),
+        "mmr": lambda: MmrScorer(space.vectors, params.baseline),
         "greedy": lambda: ArchetypeScorer(),
     }[assigner_name]()
-    results = allocate(cells, memberships, scorer, PICKS_PER_CELL,
-                       alternates_limit=ALTERNATES_PER_CELL)
+    results = allocate(cells, memberships, scorer, coll.picks_per_cell,
+                       alternates_limit=pres.alternates_per_cell, sel=sel)
 
     def primary_genre(g):
         """The mined genre this game is most of — its colour on the grid.
@@ -123,7 +119,7 @@ def build(dataset_path, assigner_name, want_report=False, output=None):
             "generatedAt": generated_at,
             "gameCount": len(games),
             "assigner": assigner_name,
-            "playerColumns": [c["label"] for c in PLAYER_COLUMNS],
+            "playerColumns": [c["label"] for c in coll.columns()],
             "weightRows": weight_rows,
             "genreDimensions": space.dimension_names,
         },
@@ -142,17 +138,17 @@ def build(dataset_path, assigner_name, want_report=False, output=None):
     # Genres are only useful if they ask different questions, so say how far
     # apart they came out. A worst pair creeping up means axis discovery has
     # started manufacturing near-duplicates (see features.genre_overlap).
-    overlap = genre_overlap(space)
+    overlap = genre_overlap(space, params)
     worst, a, b = overlap[0]
     print(f"  {len(space.dimension_names)} genres, overlap "
           f"mean {sum(v for v, _, _ in overlap) / len(overlap):.3f}, worst {worst:.3f} "
-          f"({space.dimension_names[a].split(GENRE_NAME_SEPARATOR)[0]} / "
-          f"{space.dimension_names[b].split(GENRE_NAME_SEPARATOR)[0]})")
+          f"({space.dimension_names[a].split(pres.genre_name_separator)[0]} / "
+          f"{space.dimension_names[b].split(pres.genre_name_separator)[0]})")
 
     if want_report:
         print()
         print(format_report(build_report(space, games, results,
-                                         PICKS_PER_CELL, source)))
+                                         coll.picks_per_cell, source, params)))
 
     return payload
 
@@ -163,6 +159,9 @@ def main():
                         help="dataset file to build from (default: the seed proxy)")
     parser.add_argument("--assigner", choices=["coverage", "mmr", "greedy"], default="coverage",
                         help="per-cell selection strategy (default: probabilistic coverage)")
+    parser.add_argument("--config", default=None,
+                        help="TOML file layered over the defaults. Anything "
+                             "omitted keeps its default value.")
     parser.add_argument("--report", action="store_true",
                         help="print the four numbers this repo judges changes on")
     parser.add_argument("--output", default=None,
@@ -170,7 +169,8 @@ def main():
                              "Point it elsewhere to measure without touching the "
                              "committed artifact.")
     args = parser.parse_args()
-    build(args.dataset, args.assigner, want_report=args.report, output=args.output)
+    build(args.dataset, args.assigner, want_report=args.report,
+          output=args.output, params=Params.load(args.config))
 
 
 if __name__ == "__main__":
