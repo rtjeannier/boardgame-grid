@@ -393,7 +393,8 @@ def _rerecordings(chosen: dict, overlap=None) -> dict[int, float]:
     return redundant
 
 
-def improve_collection(keys, cells, scorer, chosen, gains, taken, keep) -> list[tuple]:
+def improve_collection(keys, cells, scorer, chosen, gains, taken, keep,
+                       pinned: frozenset = frozenset()) -> list[tuple]:
     """Swap out re-recordings the collection gains nothing from holding twice.
 
     Only ever a swap, never a removal: a cell that has nothing to put in the
@@ -406,6 +407,13 @@ def improve_collection(keys, cells, scorer, chosen, gains, taken, keep) -> list[
 
     Returns the swaps it made, which is also the shape a "what to cut, what to
     add" report wants.
+
+    `pinned` is games the caller placed rather than the allocator winning — an
+    imported collection. They are never swapped out, however redundant, because
+    the reader owns them: a shelf holding both `7 Wonders` and
+    `7 Wonders (Second Edition)` is a fact about that shelf, not a mistake for
+    this pass to correct. Reporting the redundancy is useful; deleting someone's
+    game from their own grid and substituting a recommendation is not.
     """
     # Lineage needs the cell-membership overlap, which only a scorer that keeps
     # per-cell state can answer. Without it this falls back to containment
@@ -417,6 +425,8 @@ def improve_collection(keys, cells, scorer, chosen, gains, taken, keep) -> list[
     for gid, strength in _rerecordings(chosen, overlap).items():
         if strength <= 0.0:
             continue        # a redoing that went somewhere new is not redundant
+        if gid in pinned:
+            continue        # the reader owns it; not ours to replace
         key = next((k for k in keys if any(g.id == gid for g in chosen[k])), None)
         if key is None:
             continue
@@ -555,7 +565,9 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
 
     # Cells are as full as they can be; now let the collection have its say.
     improve_collection(keys, cells, scorer, chosen, gains, taken,
-                       sel.replacement_keep)
+                       sel.replacement_keep,
+                       pinned=frozenset(g.id for games in (seeded or {}).values()
+                                        for g in games))
 
     results = {}
     for key in keys:
