@@ -472,7 +472,8 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
              capacity: int | dict | Callable[[tuple], int],
              seeded: dict | None = None, alternates_limit: int = 0,
              sel: Selection = DEFAULTS.selection,
-             gain_floor: float | None = None) -> dict:
+             gain_floor: float | None = None,
+             rejected: set[int] | None = None) -> dict:
     """Fill every cell, placing each game at most once across all of them.
 
     `cells` maps key -> [Game] and `memberships` maps (key, game id) -> degree,
@@ -483,6 +484,12 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
     or a lookup when cells differ. It is per cell rather than global so an
     imported collection can put six games in one cell and two in another without
     the allocator caring.
+
+    `rejected` is games the reader has banned — never shelved, and never offered
+    as an alternate either, since a runner-up you have already turned down is not
+    a suggestion. Selection re-runs in full rather than patching the one slot,
+    which is simpler and more correct: a game is placed at most once across the
+    grid, so removing one can free others it was crowding out.
 
     `gain_floor` is how *little* a game may add and still be shelved. It stops a
     cell short of capacity, so at 0 a cell always fills while candidates remain
@@ -511,10 +518,14 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
 
     chosen = {key: [] for key in keys}
     gains: dict[tuple, float] = {}
-    taken: set[int] = set()
+    # Rejected games start out already claimed, so nothing can bid for them
+    # and the leftovers pass will not offer them as alternates either.
+    taken: set[int] = set(rejected or ())
 
     for key, games in (seeded or {}).items():
         for game in games:
+            if game.id in taken:      # owned *and* rejected: rejection wins,
+                continue              # which is how "I want rid of this" reads
             scorer.take(key, game)
             chosen[key].append(game)
             taken.add(game.id)
