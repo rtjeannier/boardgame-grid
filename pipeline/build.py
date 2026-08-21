@@ -25,13 +25,15 @@ import numpy as np
 from . import buckets, coverage, dataset
 from .assign import ArchetypeScorer, CoverageScorer, MmrScorer, allocate
 from .config import OUTPUT_JSON, SEED_DATASET
+from .contract import build_contract
+from .contract import write as write_contract
 from .params import DEFAULTS, Params
 from .features import build_feature_space, genre_overlap
 from .report import build_report, format_report
 
 
 def build(dataset_path, assigner_name, want_report=False, output=None,
-          params: Params = DEFAULTS):
+          params: Params = DEFAULTS, contract_path=None):
     source, generated_at, games = dataset.load_dataset(dataset_path)
     space = build_feature_space(games, params)
     sel, coll, pres = params.selection, params.collection, params.presentation
@@ -145,6 +147,12 @@ def build(dataset_path, assigner_name, want_report=False, output=None,
           f"({space.dimension_names[a].split(pres.genre_name_separator)[0]} / "
           f"{space.dimension_names[b].split(pres.genre_name_separator)[0]})")
 
+    if contract_path is not None:
+        size = write_contract(
+            build_contract(games, space, results, source, generated_at, params),
+            Path(contract_path) if contract_path else None)
+        print(f"  contract {size / 1024:.0f} KB raw")
+
     if want_report:
         print()
         print(format_report(build_report(space, games, results,
@@ -162,6 +170,9 @@ def main():
     parser.add_argument("--config", default=None,
                         help="TOML file layered over the defaults. Anything "
                              "omitted keeps its default value.")
+    parser.add_argument("--contract", nargs="?", const="", default=None,
+                        help="also emit the model/UI contract "
+                             "(default: web/public/grid.contract.json)")
     parser.add_argument("--report", action="store_true",
                         help="print the four numbers this repo judges changes on")
     parser.add_argument("--output", default=None,
@@ -170,7 +181,8 @@ def main():
                              "committed artifact.")
     args = parser.parse_args()
     build(args.dataset, args.assigner, want_report=args.report,
-          output=args.output, params=Params.load(args.config))
+          output=args.output, params=Params.load(args.config),
+          contract_path=(args.contract or None) if args.contract is not None else None)
 
 
 if __name__ == "__main__":

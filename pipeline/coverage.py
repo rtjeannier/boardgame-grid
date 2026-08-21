@@ -51,16 +51,35 @@ def genre_quality(loadings: np.ndarray, ratings: np.ndarray,
     gap between the top and the middle without inventing an ordering.
     """
     ratings = np.asarray(ratings, dtype=float)
-    member = loadings >= sel.genre_floor * loadings.max(axis=1, keepdims=True)
+    lo, hi = genre_rating_range(loadings, ratings, sel)
 
     out = np.zeros_like(loadings)
     for axis in range(loadings.shape[1]):
-        here = ratings[member[:, axis]]
-        lo, hi = here.min(), here.max()
-        normalised = np.clip((ratings - lo) / max(hi - lo, 1e-9), 0.0, 1.0)
+        normalised = np.clip((ratings - lo[axis]) / max(hi[axis] - lo[axis], 1e-9), 0.0, 1.0)
         out[:, axis] = (sel.quality_floor
                         + (1 - sel.quality_floor) * normalised ** sel.quality_exponent)
     return out
+
+
+def genre_rating_range(loadings: np.ndarray, ratings: np.ndarray,
+                       sel: Selection = DEFAULTS.selection):
+    """Per axis, the rating span of the games that belong to it: `(lo, hi)`.
+
+    Split out because it is the whole of what the frontend needs in order to
+    compute quality itself. Shipping resolved per-game quality would be larger
+    and, worse, would freeze the reference population — filter the corpus and a
+    genre's span moves, so a precomputed quality would quietly be answering a
+    question about games that are no longer on screen.
+
+    Membership is peak-relative, the same test `genre_overlap` and genre naming
+    use: an axis counts as part of a game when it carries at least `genre_floor`
+    of the game's strongest.
+    """
+    ratings = np.asarray(ratings, dtype=float)
+    member = loadings >= sel.genre_floor * loadings.max(axis=1, keepdims=True)
+    lo = np.array([ratings[member[:, a]].min() for a in range(loadings.shape[1])])
+    hi = np.array([ratings[member[:, a]].max() for a in range(loadings.shape[1])])
+    return lo, hi
 
 
 def genre_weights(loadings: dict[int, np.ndarray],

@@ -42,9 +42,16 @@ def player_column_for(game: Game, columns: list[dict] | None = None) -> str | No
     return _column_of(peak, columns) if peak else None
 
 
-def player_memberships(game: Game, columns: list[dict] | None = None,
-                       sel: Selection = DEFAULTS.selection) -> dict[str, float]:
-    """How strongly this game belongs to each player-count column, in (0, 1].
+def player_fit(game: Game, sel: Selection = DEFAULTS.selection) -> dict[int, float]:
+    """How well this game works at each player count, peak-relative, in (0, 1].
+
+    The vote maths with no columns involved: approval share among counts the
+    community does not reject, then divided by the game's best count. Columns
+    are a *reading* of this — several counts grouped under a label — and they
+    are the reader's to redefine, so they are applied afterwards rather than
+    baked in here.
+
+    How strongly this game belongs to each player-count column, in (0, 1].
 
     A count's score is its *approval share*, `(best + w·recommended) / votes`,
     among counts the community does not reject outright. Not its share of Best
@@ -72,37 +79,40 @@ def player_memberships(game: Game, columns: list[dict] | None = None,
     Empty when no count clears the floor — such a game has no place on the
     player axis and is simply not placed.
     """
-    columns = columns if columns is not None else DEFAULTS.collection.columns()
-    by_column: dict[str, float] = {}
+    scores = {}
     for count, (best, recommended, not_rec) in game.player_poll.items():
-        col = _column_of(count, columns)
         total = best + recommended + not_rec
-        if col is None or total == 0:
+        if total == 0:
             continue
         # Never place a game at a count most voters reject. Not Recommended is
         # otherwise only a denominator, and a count can score its way in on
         # sheer turnout: Cartographers at nine-plus reads 17 Best / 78
         # Recommended / 104 Not, and The Crew at two reads 27 / 243 / 356 —
-        # both majority-negative, both eligible on approval share alone. They
-        # were previously excluded only by accident, in that at
-        # RECOMMENDED_WEIGHT 0.25 they happened to land under COLUMN_FLOOR.
+        # both majority-negative, both eligible on approval share alone.
         if not_rec > best + recommended:
             continue
-        score = (best + sel.recommended_weight * recommended) / total
-        # A column spans several counts (6-8); take its strongest, not the sum,
-        # or wide columns would look better merely for being wide.
-        by_column[col] = max(by_column.get(col, 0.0), score)
-    if not by_column:
-        return {}
+        scores[int(count)] = (best + sel.recommended_weight * recommended) / total
 
-    peak = max(by_column.values())
-    if peak <= 0:
-        return {}
-    return {
-        col: score / peak
-        for col, score in by_column.items()
-        if score / peak >= sel.column_floor
-    }
+    peak = max(scores.values(), default=0.0)
+    return {count: score / peak for count, score in scores.items()} if peak > 0 else {}
+
+
+def player_memberships(game: Game, columns: list[dict] | None = None,
+                       sel: Selection = DEFAULTS.selection) -> dict[str, float]:
+    """How strongly this game belongs to each player-count column, in (0, 1].
+
+    `player_fit` answers this per count; a column is one or more counts under a
+    label. A column takes its *strongest* count, not the sum, or wide columns
+    would look better merely for being wide.
+    """
+    columns = columns if columns is not None else DEFAULTS.collection.columns()
+    by_column: dict[str, float] = {}
+    for count, fit in player_fit(game, sel).items():
+        col = _column_of(count, columns)
+        if col is None:
+            continue
+        by_column[col] = max(by_column.get(col, 0.0), fit)
+    return {col: fit for col, fit in by_column.items() if fit >= sel.column_floor}
 
 
 # --- Rows: weight quantiles -------------------------------------------------
