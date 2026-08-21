@@ -12,7 +12,7 @@ export { buildWeightRows, buildCells } from './membership.js';
 export { CoverageScorer } from './scorer.js';
 export { allocate } from './allocate.js';
 export { toGridData } from './present.js';
-export { explainCut, cutSentence, similarityBetween } from './explain.js';
+export { explainCut, cutSentence, howAlike, similarityBetween } from './explain.js';
 export { analyseShelf, coverageOf, spokeVector } from './shelf.js';
 
 import { indexContract } from './contract.js';

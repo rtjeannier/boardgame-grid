@@ -34,6 +34,21 @@ function reach(cells, game) {
 /** A near-duplicate is worth naming; a merely similar game is not. */
 const CLOSE = 0.5;
 
+/**
+ * What a similarity score actually means, in words.
+ *
+ * A cosine is not a percentage of sameness: two unrelated games in this corpus
+ * average 0.125, so zero is not the floor and 0.5 is not "half the same game".
+ * The contract ships the percentiles precisely so this can be said properly.
+ */
+export function howAlike(scale, value) {
+  if (!scale) return `similarity ${value.toFixed(2)}`;
+  if (value >= scale.p99) return 'closer than 99% of all pairs of games';
+  if (value >= scale.p95) return 'closer than 95% of all pairs of games';
+  if (value >= scale.p90) return 'closer than 90% of all pairs of games';
+  return 'more alike than most';
+}
+
 export function explainCut(ix, game, shelved, cells, picksByCell) {
   // 1. The model says outright that another shelved game is a fuller record of
   //    this one — every tag this carries is already on that, in the same family.
@@ -72,7 +87,7 @@ export function explainCut(ix, game, shelved, cells, picksByCell) {
   }
   if (closest && closest.similarity >= CLOSE) {
     return { kind: 'crowded', by: [closest.name], cell: closest.cell,
-             similarity: Math.round(closest.similarity * 100) };
+             similarity: closest.similarity, scale: ix.similarityScale };
   }
 
   // 4. Nothing that specific — it simply lost its cells to better-rated games.
@@ -99,7 +114,11 @@ export function cutSentence(reason, labelFor = (key) => key) {
     case 'reimplemented':
       return `BGG calls this the same design as ${list(reason.by)}, which took the slot.`;
     case 'crowded':
-      return `${reason.similarity}% the same game as ${list(reason.by)}, already shelved in ${cell}.`;
+      // Named as the closest game *already shelved in a cell this one reaches*,
+      // not as its nearest neighbour in the corpus — those are different
+      // claims, and only the first is the reason it lost a slot.
+      return `${howAlike(reason.scale, reason.similarity)} to ${list(reason.by)}, `
+        + `which already holds a slot in ${cell}.`;
     case 'unplaceable':
       return 'Reaches no cell — the community endorses no player count for it.';
     case 'outranked':

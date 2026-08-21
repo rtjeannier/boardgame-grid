@@ -15,7 +15,8 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import {
-  analyseShelf, buildGrid, cutSentence, explainCut, indexContract, similarityBetween,
+  analyseShelf, buildGrid, cutSentence, explainCut, howAlike, indexContract,
+  similarityBetween,
 } from '../src/engine/index.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -101,5 +102,37 @@ test('every cut game gets a sentence, whatever the reason', () => {
     const sentence = cutSentence(explainCut(ix, ix.rowOf.get(id), shelved,
                                             built.cells, picksByCell));
     assert.ok(sentence.length > 10 && !sentence.includes('undefined'), sentence);
+  }
+});
+
+
+test('a similarity is reported against the corpus, not as a percentage of sameness', () => {
+  // The trap this exists to close: 0.5 reads as "half the same game" and is
+  // nothing of the sort. Two unrelated games in this corpus average 0.125, so
+  // zero is not the floor — 0.5 is the 96th percentile.
+  const scale = ix.similarityScale;
+  assert.ok(scale, 'the contract must carry the calibration');
+  assert.ok(scale.mean > 0.05, 'unrelated games do not score zero');
+  assert.ok(scale.p50 < scale.p90 && scale.p90 < scale.p95 && scale.p95 < scale.p99);
+
+  assert.match(howAlike(scale, scale.p99 + 0.01), /99%/);
+  assert.match(howAlike(scale, scale.p95 + 0.01), /95%/);
+  assert.match(howAlike(scale, scale.p90 + 0.01), /90%/);
+  for (const v of [0.1, 0.5, 0.9]) {
+    assert.ok(!howAlike(scale, v).includes('% the same'),
+      'never phrase a cosine as a share of sameness');
+  }
+});
+
+test('a crowded reason names the closest *shelved* game, not the nearest overall', () => {
+  // These are different claims. The nearest neighbour in the corpus may not be
+  // shelved at all, and only the shelved one explains a lost slot.
+  const owned = [...Array(50)].map((_, i) => ix.ids[i * 5]);
+  const { built, shelved, shelvedIds, picksByCell } = context(owned);
+  for (const id of owned.filter((x) => !shelvedIds.has(x))) {
+    const reason = explainCut(ix, ix.rowOf.get(id), shelved, built.cells, picksByCell);
+    if (reason.kind !== 'crowded') continue;
+    const named = ix.names.indexOf(reason.by[0]);
+    assert.ok(shelved.has(named), `${reason.by[0]} is named but not shelved`);
   }
 });

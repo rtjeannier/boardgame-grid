@@ -116,6 +116,7 @@ export function indexContract(contract) {
     postings: invert(sim, n, simDims),
     groupOf, ratingLo, ratingHi, axisNames,
     groups: contract.groups,
+    similarityScale: contract.similarityScale ?? null,
     policy: contract.policy,
     defaultPicks: contract.defaultPicks,
     model: contract.model,

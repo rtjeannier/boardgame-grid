@@ -57,6 +57,22 @@ PLACES = 4
 SPARSE_FLOOR = 1e-4
 
 
+def similarity_percentiles(space, ids) -> dict:
+    """Where a similarity score sits among all pairs in the corpus.
+
+    A cosine is not a percentage of sameness. Two unrelated games already score
+    0.125 on average here, so zero is not the floor and 0.5 is not "half the
+    same game" — it is the 96th percentile. Without these the interface can only
+    quote the raw number, which reads as a claim it is not making.
+    """
+    matrix = np.stack([space.similarity[i] for i in ids]).astype(np.float32)
+    gram = matrix @ matrix.T
+    upper = gram[np.triu_indices(len(ids), 1)]
+    marks = {f"p{q}": float(np.percentile(upper, q)) for q in (50, 75, 90, 95, 99)}
+    marks["mean"] = float(upper.mean())
+    return {k: round(v, 4) for k, v in marks.items()}
+
+
 def quantise(value):
     """Round exactly as the payload does, so nothing sees more than it ships.
 
@@ -205,6 +221,8 @@ def build_contract(games, space, results, source: str, generated_at: str,
         },
         "dimensions": dimensions,
         "groups": groups,
+        # What a similarity score means, since the raw number does not say.
+        "similarityScale": similarity_percentiles(space, ids),
         "games": [
             {
                 "id": g.id, "name": g.name, "year": g.year, "rank": g.rank,
