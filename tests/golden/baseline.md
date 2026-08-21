@@ -42,6 +42,22 @@ written down here.
   biggest genre  20% of corpus
 ```
 
+## Allocation cost
+
+`allocate` on the live capture, before and after batching (`CoverageScorer.score_all`):
+
+| | Live (5000) | Seed (1000) |
+|---|---|---|
+| Per-game scoring | 6.39s | 1.69s |
+| Batched | **0.41s** | **1.26s** |
+
+15.6x on the corpus that matters, and the output is byte-identical. Batching wins
+by scale: with ~652 candidates per cell it removes ~570,000 interpreter round
+trips, but at seed scale (~133 per cell) the NumPy call overhead nearly cancels
+the saving, which is why the two incremental caches matter more than the
+vectorisation itself — a running per-cell maximum and a column store for the
+shelf, both fed by the single similarity column `take` already computes.
+
 ## Agreement with the recorded history
 
 Four of the five figures carried in commit-message bodies reproduce exactly,

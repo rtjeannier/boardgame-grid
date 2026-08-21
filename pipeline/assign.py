@@ -138,11 +138,52 @@ class CoverageScorer:
                 self.weights[(key, game.id)] = (
                     memberships[(key, game.id)] * self.genre[game.id]
                 )
+
+        # --- the same data again, laid out for whole-pool scoring -------------
+        #
+        # `score` answers one game at a time and `score_all` answers a cell at
+        # once. The second exists because the first is where the time goes: it
+        # runs ~570,000 times on the live capture, and each call is a handful of
+        # dict lookups plus several NumPy calls that cost microseconds apiece
+        # whatever the array size. The arithmetic underneath is ~20M
+        # multiply-adds — well under a second's work — so almost all of the 6.5s
+        # was interpreter overhead rather than maths.
+        #
+        # Stacked once here rather than per round: a cell's candidates and their
+        # weights do not change, only `uncovered` does.
+        self._ids = sorted({g.id for pool in cells.values() for g in pool})
+        self._row_of = {gid: i for i, gid in enumerate(self._ids)}
+        self._sim = (np.stack([self.similarity[gid] for gid in self._ids])
+                     if self.similarity else None)
+        self.pool_ids, self.pool_w, self.pool_rows = {}, {}, {}
+        self.pool_kind, self.pool_memb = {}, {}
+        for key, pool in cells.items():
+            self.pool_ids[key] = np.array([g.id for g in pool], dtype=np.int64)
+            self.pool_w[key] = (np.stack([self.weights[(key, g.id)] for g in pool])
+                                if pool else np.zeros((0, 1)))
+            self.pool_rows[key] = np.array([self._row_of[g.id] for g in pool],
+                                           dtype=np.int64)
+            self.pool_kind[key] = np.array([self.primary[g.id] for g in pool],
+                                           dtype=np.int64)
+            self.pool_memb[key] = np.array([memberships[(key, g.id)] for g in pool])
         n_axes = len(next(iter(self.loadings.values())))
         self.uncovered = {key: np.ones(n_axes) for key in cells}
         self.chosen = {key: [] for key in cells}
         self.kinds = {key: set() for key in cells}
         self.shelved = []               # every id placed anywhere, for the below
+        # Similarity of every game to every shelved game, one column per shelved
+        # game, grown as the shelf grows. Recomputing this inside `score_all`
+        # cost O(pool x shelf x 978) *per cell per round* — 22 billion
+        # multiply-adds over a full allocation, and by far the largest single
+        # cost. A column is O(games x 978) once, and reading it back is a max
+        # over ~175 numbers.
+        self._shelf_sims = None
+        self._shelf_cols: list[int] = []
+        # Per cell, each candidate's similarity to the closest game that cell has
+        # already picked. A running maximum, because a cell's picks only ever
+        # grow between resets — so this never needs the pool x picks product that
+        # dominated `score_all`.
+        self.cell_closest = {key: np.zeros(len(pool)) for key, pool in cells.items()}
 
         # Where each game can sit, and which games BGG calls the same design.
         # Together these say whether a reimplementation actually went anywhere.
@@ -184,6 +225,62 @@ class CoverageScorer:
                             ** self.sel.similarity_exponent)
                 value *= fresh ** self.sel.collection_weight
         return value
+
+    def score_all(self, key) -> np.ndarray:
+        """Every candidate in one cell, scored together. Mirrors `score` exactly.
+
+        Same quantities in the same order — raw coverage gain, novelty against
+        this cell's picks, the one-per-kind preference, then the pull from the
+        rest of the shelf — computed over the whole pool instead of one game at
+        a time. Returns scores positionally aligned with `cells[key]`; the caller
+        masks out whatever is already taken.
+        """
+        w = self.pool_w[key]
+        if not len(w):
+            return np.zeros(0)
+        value = w @ self.uncovered[key]                       # raw coverage gain
+
+        rows = self.pool_rows[key]
+        if self._sim is not None and self.chosen[key]:
+            value = value * (1.0 - np.clip(self.cell_closest[key], 0.0, 1.0)
+                             ** self.sel.similarity_exponent)
+
+        if self.kinds[key]:
+            repeats = np.isin(self.pool_kind[key], list(self.kinds[key]))
+            value = np.where(repeats, value * self.sel.genre_repeat_penalty, value)
+
+        if self.sel.collection_weight and self._shelf_cols and self._sim is not None:
+            sims = self._shelf_sims[rows][:, :len(self._shelf_cols)]
+            # A game is not a duplicate of itself: the repair pass rescores
+            # games that are already placed.
+            shelf_ids = np.array(self._shelf_cols)
+            mine = np.isin(self.pool_ids[key], shelf_ids)
+            if mine.any():
+                sims = np.where(self.pool_ids[key][:, None] == shelf_ids[None, :],
+                                -np.inf, sims)
+            closest = sims.max(axis=1)
+            fresh = 1.0 - np.clip(closest, 0.0, 1.0) ** self.sel.similarity_exponent
+            fresh = np.minimum(fresh, self._redone_all(key, rows))
+            value = value * np.clip(fresh, 0.0, None) ** self.sel.collection_weight
+        return value
+
+    def _redone_all(self, key, rows) -> np.ndarray:
+        """`1 - redone**n` per candidate. Only games with a lineage can score."""
+        out = np.ones(len(rows))
+        if not self.shelved:
+            return out
+        # Carrying a reimplementation link is common; having a *shelved*
+        # relative is rare. Testing the intersection first skips almost every
+        # candidate — without it this loop was a third of the whole allocation.
+        shelf = set(self.shelved)
+        for i, gid in enumerate(self.pool_ids[key]):
+            kin = self.kin.get(gid)
+            if not kin or not (kin & shelf):
+                continue
+            others = [g for g in self.shelved if g != gid]
+            if others:
+                out[i] = 1.0 - self._redone(gid, others) ** self.sel.similarity_exponent
+        return out
 
     def _redone(self, gid: int, shelved: list[int]) -> float:
         """How much of this game the shelf already holds, as a redoing of it.
@@ -246,6 +343,48 @@ class CoverageScorer:
         self.chosen[key].append(game.id)
         self.kinds[key].add(self.primary[game.id])
         self.shelved.append(game.id)
+        column = self._shelf_add(game.id)
+        if column is not None:
+            # The same column answers "how close is this candidate to anything
+            # this cell already holds", so the per-cell maximum comes free.
+            np.maximum(self.cell_closest[key], column[self.pool_rows[key]],
+                       out=self.cell_closest[key])
+
+    def _shelf_add(self, gid: int):
+        """One more column: this game's similarity to every game in the corpus."""
+        if self._sim is None or gid not in self._row_of:
+            return None
+        column = self._sim @ self._sim[self._row_of[gid]]
+        if self._shelf_sims is None:
+            self._shelf_sims = np.empty((len(self._ids), 0))
+        n = len(self._shelf_cols)
+        if self._shelf_sims.shape[1] <= n:      # grow in blocks, not per append
+            extra = max(16, self._shelf_sims.shape[1])
+            self._shelf_sims = np.hstack(
+                [self._shelf_sims, np.zeros((len(self._ids), extra))])
+        self._shelf_sims[:, n] = column
+        self._shelf_cols.append(gid)
+        return column
+
+    def _shelf_compact(self) -> None:
+        """Drop the columns of games no longer shelved.
+
+        A column is one game's similarity to the whole corpus, so it does not
+        need recomputing when *other* games leave — compacting is a copy, where
+        rebuilding would be O(shelf x games x 978) every time a cell is replayed.
+        `improve_collection` replays a cell per re-recording it examines, which
+        made the difference between a fast allocation and a slow one.
+        """
+        if self._shelf_sims is None:
+            return
+        remaining = list(self.shelved)
+        keep = []
+        for i, gid in enumerate(self._shelf_cols):
+            if gid in remaining:
+                remaining.remove(gid)     # by count: a cell may be replayed
+                keep.append(i)
+        self._shelf_sims = self._shelf_sims[:, keep].copy()
+        self._shelf_cols = [self._shelf_cols[i] for i in keep]
 
     def reset_cell(self, key):
         self.uncovered[key] = np.ones(len(self.uncovered[key]))
@@ -254,6 +393,8 @@ class CoverageScorer:
                 self.shelved.remove(gid)
         self.chosen[key] = []
         self.kinds[key] = set()
+        self.cell_closest[key][:] = 0.0
+        self._shelf_compact()
 
     def weight_of(self, key, game) -> np.ndarray:
         """The game's quality- and membership-scaled loading vector in this cell.
@@ -441,13 +582,16 @@ def improve_collection(keys, cells, scorer, chosen, gains, taken, keep,
         # `7 Wonders (Second Edition)`, which is the case this whole pass exists
         # to prevent.
         elsewhere = [g.id for k in keys for g in chosen[k] if g.id != gid]
+        # The cell's state is fixed for the whole search, so score it once.
+        values = (scorer.score_all(key) if hasattr(scorer, "score_all")
+                  else np.array([scorer.score(key, c) for c in cells[key]]))
         best, best_score = None, 0.0
-        for candidate in cells[key]:
+        for i, candidate in enumerate(cells[key]):
             if candidate.id in taken:
                 continue
             if redone(candidate.id, elsewhere) >= strength:
                 continue
-            value = scorer.score(key, candidate)
+            value = float(values[i])
             if value > best_score:
                 best, best_score = candidate, value
         # How good the replacement must be, sliding with how redundant the game
@@ -591,20 +735,38 @@ def _bid_round(keys, cells, memberships, scorer, chosen, taken, room,
     blocked: dict[tuple, set[int]] = {key: set() for key in keys}
     pending = [k for k in keys if len(chosen[k]) < room(k)]
 
+    batched = hasattr(scorer, "score_all")
+
     while pending:
         key = pending.pop(0)
-        best, best_score, best_sort = None, 0.0, None
-        for game in cells[key]:
-            if game.id in taken or game.id in blocked[key]:
-                continue
-            value = scorer.score(key, game)
-            if value < gain_floor:
-                continue
+        best, best_score = None, 0.0
+        if batched:
             # Membership breaks ties, so a game is never claimed by a cell it
             # barely reaches while one centred on it wants the same game.
-            sort = (value, memberships[(key, game.id)])
-            if best_sort is None or sort > best_sort:
-                best, best_score, best_sort = game, value, sort
+            # `lexsort` orders by its *last* key first, so this is (value, then
+            # membership) — the same comparison the tuple below makes.
+            pool, values = cells[key], scorer.score_all(key)
+            ids = scorer.pool_ids[key]
+            live = values >= gain_floor
+            if taken:
+                live &= ~np.isin(ids, list(taken))
+            if blocked[key]:
+                live &= ~np.isin(ids, list(blocked[key]))
+            where = np.flatnonzero(live)
+            if len(where):
+                pick = where[np.lexsort((scorer.pool_memb[key][where], values[where]))[-1]]
+                best, best_score = pool[pick], float(values[pick])
+        else:
+            best_sort = None
+            for game in cells[key]:
+                if game.id in taken or game.id in blocked[key]:
+                    continue
+                value = scorer.score(key, game)
+                if value < gain_floor:
+                    continue
+                sort = (value, memberships[(key, game.id)])
+                if best_sort is None or sort > best_sort:
+                    best, best_score, best_sort = game, value, sort
         if best is None:
             continue                     # nothing left worth taking this round
 
