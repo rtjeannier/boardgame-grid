@@ -18,6 +18,8 @@ import argparse
 import json
 from collections import defaultdict
 
+import numpy as np
+
 from . import buckets, coverage, dataset
 from .assign import CoverageScorer, allocate
 from .config import COLLECTION_SIZE, ROOT, SEED_DATASET
@@ -53,13 +55,21 @@ def build_collection(dataset_path, anchor_tokens, size, evaluate_only):
     ratings = {g.id: g.rating for g in games}
     genre = coverage.genre_weights(space.loadings, ratings)
 
+    spoke_of = np.asarray(space.spoke_of)
+    n_axes = len(space.dimension_names)
+
     def weights(g):
-        return genre[g.id]
+        """Quality-scaled loadings, summed into radar spokes.
+
+        Selection below still runs on the full axis set; this is only what gets
+        reported, so the coverage a reader sees aggregates the vectors the
+        picker scored rather than being computed a second way.
+        """
+        return np.bincount(spoke_of, weights=genre[g.id], minlength=n_axes)
 
     anchors = find_games(anchor_tokens, games)
     anchor_ids = {g.id for g in anchors}
     anchor_weights = [weights(g) for g in anchors]
-    n_axes = len(space.dimension_names)
 
     # The collection is the grid with no axes: one cell holding the whole game
     # space. Same allocator, same coverage maths, same duplicate suppression —
@@ -67,7 +77,7 @@ def build_collection(dataset_path, anchor_tokens, size, evaluate_only):
     # occupy slots and repel near-duplicates (anchor Wingspan and Wyrmspan stops
     # being a candidate rather than filling a slot beside it).
     cells, memberships = buckets.build_cells(games, axes=[])
-    scorer = CoverageScorer(space.loadings, space.similarity, ratings)
+    scorer = CoverageScorer(space.loadings, space.similarity, ratings, space.spoke_of)
     picks = []
     if not evaluate_only:
         results = allocate(cells, memberships, scorer, max_per_cell=size,

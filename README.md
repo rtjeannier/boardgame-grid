@@ -174,13 +174,27 @@ pick this branch and the **`/docs`** folder. The site goes live at
    into a 1142-game genre by absorbing hand management, worker placement and
    deck building, none of which its name mentions.
 
-   **The count is cut by nestedness, not size.** Discovery yields about
-   `GENRE_DISCOVER` genres; the rest are pruned by dropping whichever most lives
-   *inside* another. That order is the whole trick — by size or tightness the
-   small distinctive genres go first (dexterity is 124 games, cohesion 0.48),
-   whereas by containment the redundant sub-genres go: `Modern Warfare · Vietnam
-   War` is 94% inside the wargame genre, while dexterity is only 27% inside
-   anything. Dexterity therefore survives all the way down to six axes.
+   **Nothing is discarded; the axes are grouped instead.** Discovery runs until
+   the tag pool empties — 77 clusters on the live capture — and every one is a
+   real axis that selection and coverage run on. For the radar they are grouped
+   into `GENRE_SPOKES` named families, each family the plain sum of its members,
+   so the chart aggregates the vectors the picker scored rather than computing
+   anything of its own.
+
+   Truncating discovery and pruning the rest is what this replaced, and it threw
+   away 65 of the 77. Wargame was left split across five clusters that never
+   recombined while `Racing` and `Sports` were attracted into it — which is how
+   Flamme Rouge and Long Shot: The Dice Game came out as wargames — and whole
+   families were never seen at all: dice, dexterity, racing, roll-and-write,
+   trick-taking, auction, party. Deleted clusters did not even merge cleanly:
+   `Word Game · Spelling` fragmented, one signal to the cooperative genre and
+   one to bluffing. Keeping all 77 raises within-genre game cohesion from 2.58x
+   the corpus null to 3.11x, drops the biggest genre from 32% to 15%, and the
+   picks span 52 distinct genres instead of 12.
+
+   Families are grouped by the **games** they describe, not by their signals.
+   Grouping on signals chains: the big clusters bridge everything and one family
+   ends up holding 96% of the corpus.
 
    **Genres are named by what they describe**, not by what is exclusive to them.
    A tag's label score is the harmonic mean of how much of the tag lands in the
@@ -394,10 +408,10 @@ Everything lives in `pipeline/config.py`:
 - **Player columns** — `PLAYER_COLUMNS` (label + inclusive count range).
 - **Number of weight rows** — `WEIGHT_ROW_COUNT`. Rows are quantiles of the
   actual population, so they stay balanced whatever you pick.
-- **Feature space** — `GENRE_LIMIT` (how many genre axes; `GENRE_BASE_RATE`
-  derives from it), `GENRE_SCARCITY` (how much a rare genre counts for),
+- **Feature space** — `GENRE_SPOKES` (how many radar spokes the axes group
+  into), `GENRE_SCARCITY` (how much a rare genre counts for),
   `GENRE_GROWTH` (how far a genre may widen from its seed),
-  `GENRE_DISCOVER` (how many to find before pruning),
+  `GENRE_BASE_RATE` (how broad a tag must be to earn compounds),
   `GENRE_AXIS_TARGET` (the smallest genre worth having),
   `WEIGHT_SCALE` / `PLAYTIME_SCALE` (how much the continuous stats matter vs
   genre).

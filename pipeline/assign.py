@@ -93,12 +93,33 @@ class CoverageScorer:
     sort of game again. The two sat first and third in one cell.
     """
 
-    def __init__(self, loadings: dict, similarity: dict | None, ratings: dict[int, float]):
+    def __init__(self, loadings: dict, similarity: dict | None, ratings: dict[int, float],
+                 spoke_of: list[int] | None = None):
         self.loadings = loadings
         self.similarity = similarity
         # A game's strongest genre — the kind it counts as for the one-per-cell
         # preference, and the same axis the frontend colours its dot by.
-        self.primary = {gid: int(np.argmax(row)) for gid, row in loadings.items()}
+        #
+        # Judged at the *family* level when one is supplied. The axes are far
+        # finer than the kinds a shelf is built from — 77 of them — so keyed on
+        # the axis this barely fires: 37 cells came out holding two games of the
+        # same kind, against 4 keyed on the family.
+        #
+        # It is the family with the largest *total*, not the family holding the
+        # single strongest axis. Those disagree — a game can lean hardest on one
+        # narrow axis while belonging more to a family that several of its
+        # weaker axes share — and the frontend colours the dot by the total, so
+        # keying on anything else makes the penalty and the colour tell
+        # different stories.
+        if spoke_of is None:
+            self.primary = {gid: int(np.argmax(row)) for gid, row in loadings.items()}
+        else:
+            spoke_of = np.asarray(spoke_of)
+            width = int(spoke_of.max()) + 1
+            self.primary = {
+                gid: int(np.argmax(np.bincount(spoke_of, weights=row, minlength=width)))
+                for gid, row in loadings.items()
+            }
         # Quality is judged against each game's own genre, over the WHOLE
         # population — never a cell. A game's genres belong to the game, so its
         # weights are identical wherever it is considered and scores stay

@@ -10,6 +10,8 @@ const SHORT = {
   'Simultaneous Action Selection': 'Simultaneous',
   'Cooperative Game': 'Co-op',
   'Area Majority / Influence': 'Area Majority',
+  'Card Play Conflict Resolution': 'Card Combat',
+  'Abstract Strategy': 'Abstract',
 }
 const label = (dim) => {
   const first = primary(dim)

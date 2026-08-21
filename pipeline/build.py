@@ -19,6 +19,8 @@ with no axes at all to search the whole space.
 import argparse
 import json
 
+import numpy as np
+
 from . import buckets, coverage, dataset
 from .assign import ArchetypeScorer, CoverageScorer, MmrScorer, allocate
 from .config import (
@@ -47,7 +49,8 @@ def build(dataset_path, assigner_name):
     genre = coverage.genre_weights(space.loadings, ratings)
 
     scorer = {
-        "coverage": lambda: CoverageScorer(space.loadings, space.similarity, ratings),
+        "coverage": lambda: CoverageScorer(space.loadings, space.similarity, ratings,
+                                          space.spoke_of),
         "mmr": lambda: MmrScorer(space.vectors),
         "greedy": lambda: ArchetypeScorer(),
     }[assigner_name]()
@@ -62,7 +65,7 @@ def build(dataset_path, assigner_name):
         taxonomy said 'Set Collection' where the radar said something else, and
         nothing kept the two in step.
         """
-        loading = space.loadings[g.id]
+        loading = space.spokes[g.id]
         if not loading.any():
             return None            # no signals at all; nothing to claim
         return space.dimension_names[int(loading.argmax())]
@@ -94,9 +97,12 @@ def build(dataset_path, assigner_name):
         pool = cells[key]
 
         def weight(g):
-            # Mirrors CoverageScorer exactly, membership included, so the radar
-            # the frontend draws is the one selection was scored against.
-            return memberships[(key, g.id)] * genre[g.id]
+            # Mirrors CoverageScorer exactly, membership included, then summed
+            # into radar spokes, so the chart aggregates the very vector
+            # selection was scored against rather than recomputing anything.
+            fine = memberships[(key, g.id)] * genre[g.id]
+            return np.bincount(space.spoke_of, weights=fine,
+                               minlength=len(space.dimension_names))
 
         return {
             "column": col,

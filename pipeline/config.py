@@ -68,8 +68,8 @@ ALTERNATES_PER_CELL = 6
 # The smallest genre worth having: one tenth of an even share, so
 # `n / GENRE_AXIS_TARGET / 10` games — 33 on the live top 5000. A group of tags
 # reaching fewer than that is not a kind of game, and the search stops when
-# nothing bigger is left. This does *not* set the number of axes; see
-# GENRE_LIMIT.
+# nothing bigger is left. This does *not* set the number of axes — discovery
+# runs to exhaustion; see GENRE_SPOKES for what the radar shows.
 GENRE_AXIS_TARGET = 15
 GENRE_TOP_SIGNALS = 3     # signals used to name a dimension for display
 
@@ -99,35 +99,27 @@ GENRE_MIN_COHESION = 0.10
 # corpus.
 GENRE_GROWTH = 0.4
 
-# How many genres to keep. Discovery yields about 18; the rest are pruned by
-# `features._prune_nested`, which drops whichever genre most lives inside
-# another. That order matters: by size or by tightness the small distinctive
-# genres go first (dexterity is 124 games, cohesion 0.48), whereas by
-# containment the redundant sub-genres go — `Modern Warfare` is 94% inside the
-# wargame genre — and dexterity survives all the way down to six.
+# How many spokes the radar shows. Genres come in two levels: discovery finds
+# every natural cluster in the corpus (77 on the live capture) and *all* of them
+# are real axes that selection and coverage run on, while the radar shows this
+# many named parents, each the exact sum of its children. See
+# `features._spokes`.
+#
+# Nothing is discarded any more. Truncating discovery and then pruning threw
+# away 65 of the 77 and scattered their signals: wargame was left split across
+# five clusters that never recombined while `Racing` and `Sports` were attracted
+# into it, and whole families — dice, dexterity, racing, roll-and-write,
+# trick-taking, auction, party — were never seen at all. Deleted clusters did
+# not even merge cleanly; `Word Game, Spelling` fragmented, one signal to the
+# cooperative genre and one to bluffing.
+#
+# Keeping all 77 measures better on everything: within-genre game cohesion 2.58x
+# -> 3.11x the corpus null, biggest genre 32% -> 15%, and the picks span 52
+# distinct genres instead of 12.
 #
 # The radar is expected to be lopsided, because the corpus is: at twelve the
-# genres run from 31% of all games down to 2%.
-#
-# Eight was too few to hold the corpus honestly. The thematic region — fantasy,
-# adventure, dice, miniatures, variable powers, solo, co-op — came out as one
-# 38% genre whose leading tag described only 44% of its own members, so Root,
-# Quacks and Five Tribes were all filed as cooperative games. That blob is real
-# and resists splitting directly: a tighter `GENRE_GROWTH`, dropping compounds
-# from clustering, and excluding parent/compound pairs from cohesion all made
-# the genre set worse. Simply allowing more genres does split it, because
-# `_prune_nested` stops merging distinct kinds to hit the count: at twelve the
-# biggest genre is 31% and a leading tag describes 80% of its members on
-# average, against 68% at eight.
-GENRE_LIMIT = 12
-
-# How many genres to discover before pruning. Left to run, the search keeps
-# splitting until the tag pool empties — about 40 — and the extra genres are
-# real but marginal (`Trivia`, `Move Through Deck`). Discovering more is not
-# free: pruning then has more candidates to keep and drops different ones, and
-# at 24 and 40 the surviving eight lose Economic and Sports to those marginals.
-# Eighteen is where the survivors are the recognisable kinds.
-GENRE_DISCOVER = 18
+# spokes run from 30% of all games down to 4%.
+GENRE_SPOKES = 12
 
 # A tag carried by more of the corpus than one genre's even share cannot itself
 # be a genre — it is a base rate. `Hand Management` marks 1634 of 5000 games and
@@ -145,8 +137,9 @@ GENRE_DISCOVER = 18
 # The relationship is not monotonic, so this is the right rule and not a smooth
 # dial: 1/6 and 1/10 both give worse genre sets than 1/8.
 #
-# This was `1 / GENRE_LIMIT`, which coincided with an eighth while the limit was
-# eight. Raising the limit to twelve separated them, and the cutoff turns out to
+# This was `1 / GENRE_LIMIT` back when a fixed number of genres was kept, which
+# coincided with an eighth while that limit was eight. Raising it to twelve
+# separated them, and the cutoff turns out to
 # belong where it was: at twelve genres, 1/8 still measures best (a leading tag
 # describes 80% of its genre, against 72% at 1/9, 78% at 1/10 and 65% at 1/12),
 # while 1/10 and 1/12 both lose the dexterity genre and 1/7 loses a canary. It

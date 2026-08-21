@@ -4,12 +4,16 @@ The "genre" of a game isn't one label — a game can be mostly worker-placement
 with a dose of engine-building. We recover that structure from the data:
 
   1. Build a game × signal incidence matrix from BGG mechanic/category names.
-  2. Cluster the *signals* by co-occurrence to discover genres, and take each
-     cluster as one radar axis (see `_harvest_cores`). Axes are therefore named
-     with the actual BGG tags that define them, not with whatever a latent
-     factor happened to load on.
+  2. Cluster the *signals* by co-occurrence to discover genres, taking every
+     cluster the corpus yields — 77 on the live capture (see `_harvest_cores`).
+     Axes are therefore named with the actual BGG tags that define them, not
+     with whatever a latent factor happened to load on.
   3. Each game's loadings = how its tags divide across those axes, normalised to
      sum to 1 — a genre *split*, not a genre *amount*.
+  3b. Those axes are grouped into a dozen named families for the radar to draw
+     (see `_spokes`). Nothing is discarded and a family is the plain sum of its
+     members, so the chart aggregates the vectors selection scored rather than
+     computing anything of its own. Selection itself always sees all 77.
   4. A game's full vector = its genre loadings plus mildly scaled weight and
      log-playtime.
 
@@ -39,7 +43,7 @@ depends on its core tags, not its incidental ones.
 from dataclasses import dataclass
 
 import numpy as np
-from scipy.cluster.hierarchy import linkage
+from scipy.cluster.hierarchy import fcluster, linkage
 from sklearn.decomposition import PCA
 
 from .config import (
@@ -47,14 +51,13 @@ from .config import (
     GENRE_BASE_RATE,
     GENRE_COMPOUND,
     GENRE_GROWTH,
-    GENRE_DISCOVER,
-    GENRE_LIMIT,
     GENRE_INTERACTION,
     GENRE_MIN_COHESION,
     GENRE_MIN_LIFT,
-    GENRE_SPANS,
     GENRE_NAME_SEPARATOR,
     GENRE_SCARCITY,
+    GENRE_SPANS,
+    GENRE_SPOKES,
     GENRE_TOP_SIGNALS,
     PLAYTIME_SCALE,
     WEIGHT_SCALE,
@@ -64,20 +67,32 @@ from .model import Game
 
 @dataclass
 class FeatureSpace:
+    """Genres at two levels: every discovered one, and the families they group into.
+
+    `loadings` is the full set — 77 on the live capture — and is what selection
+    and coverage run on. `spokes` sums each family's members and is what the
+    radar draws, so the chart aggregates the very vectors the picker scored.
+    `spoke_of` maps an axis to its family, which is how the one-kind-per-cell
+    rule stays meaningful when the axes are this fine (see `assign.py`).
+    """
     vectors: dict[int, np.ndarray]        # game id -> full feature vector
-    loadings: dict[int, np.ndarray]       # game id -> genre loadings only (the radar axes)
+    loadings: dict[int, np.ndarray]       # game id -> genre loadings only (all axes)
     projection: dict[int, tuple[float, float]]  # game id -> global 2-D (x, y)
-    top_genres: dict[int, list[tuple[str, float]]]  # id -> [(dim name, loading)]
-    dimension_names: list[str]            # one per latent genre dimension
+    top_genres: dict[int, list[tuple[str, float]]]  # id -> [(spoke name, loading)]
+    dimension_names: list[str]            # one per radar spoke
     similarity: dict[int, np.ndarray]     # id -> unit-norm FULL-space tag vector
+    spokes: dict[int, np.ndarray]         # game id -> per-spoke loadings (summed)
+    spoke_of: list[int]                   # axis index -> spoke index
+    axis_names: list[str]                 # one per underlying axis
 
 
 def build_feature_space(games: list[Game]) -> FeatureSpace:
     ids = [g.id for g in games]
 
     genre = _genre_loadings(games)              # (n_games, n_dims), rows normalised
-    dim_names = genre["names"]
     loadings = genre["loadings"]
+    spokes = genre["spokes"]
+    dim_names = genre["spoke_names"]
 
     # Continuous stats, z-scored then scaled down so genre dominates distances.
     weight = _zscore(np.array([g.weight for g in games])) * WEIGHT_SCALE
@@ -89,7 +104,7 @@ def build_feature_space(games: list[Game]) -> FeatureSpace:
     xy = PCA(n_components=2, random_state=0).fit_transform(matrix)
 
     top = {
-        gid: _top_dims(loadings[i], dim_names)
+        gid: _top_dims(spokes[i], dim_names)
         for i, gid in enumerate(ids)
     }
     return FeatureSpace(
@@ -99,6 +114,9 @@ def build_feature_space(games: list[Game]) -> FeatureSpace:
         top_genres=top,
         dimension_names=dim_names,
         similarity=_similarity_space(games),
+        spokes={gid: spokes[i] for i, gid in enumerate(ids)},
+        spoke_of=genre["spoke_of"],
+        axis_names=genre["names"],
     )
 
 
@@ -179,8 +197,7 @@ def _genre_loadings(games: list[Game]) -> dict:
     """Cluster signals into genres, then split each game across them."""
     vocab, incidence = _signal_space(games)
 
-    cores = _prune_nested(incidence, _harvest_cores(incidence, GENRE_AXIS_TARGET),
-                          GENRE_LIMIT)
+    cores = _harvest_cores(incidence, GENRE_AXIS_TARGET)
     membership = _assign_signals(incidence, cores)
 
     # How each game's tags divide across the axes, then L1-normalised: every
@@ -222,7 +239,19 @@ def _genre_loadings(games: list[Game]) -> dict:
     member = (shares >= 0.5 * shares.max(axis=1, keepdims=True)) & (shares > 0)
     names = _name_genres(cores, incidence, vocab, member)
 
-    return {"loadings": shares, "names": names}
+    # The radar reads these axes through a smaller set of named families. A
+    # spoke's loading is the plain sum of its members', so what is drawn is an
+    # aggregation of the vectors the picker scored, not a second calculation.
+    groups = _spokes(incidence, cores, GENRE_SPOKES)
+    spokes = np.stack([shares[:, group].sum(axis=1) for group in groups], axis=1)
+    spoke_member = (spokes >= 0.5 * spokes.max(axis=1, keepdims=True)) & (spokes > 0)
+    spoke_names = _name_genres([[j for i in group for j in cores[i]] for group in groups],
+                               incidence, vocab, spoke_member)
+
+    return {"loadings": shares, "names": names, "spokes": spokes,
+            "spoke_names": spoke_names,
+            "spoke_of": [next(g for g, group in enumerate(groups) if i in group)
+                         for i in range(len(cores))]}
 
 
 def _tag_evidence(vocab: list[str], incidence: np.ndarray,
@@ -410,11 +439,17 @@ def _spanning(vocab: list[str], incidence: np.ndarray, carried: np.ndarray,
         total = units.sum(axis=0)
         return (float(total @ total) - size) / (size * (size - 1))
 
-    # Which tags already anchor a genre, judged on the space as it stands. Only
-    # the plain columns matter here, so the compounds are left out of the pass.
+    # Which tags already head a genre, judged on the space as it stands. Only
+    # the plain columns matter here, so the compounds are left out of the pass,
+    # and the clusters are grouped to the radar's own granularity before asking
+    # — every tag leads *some* cluster once discovery runs to exhaustion, so the
+    # question is only meaningful about families a reader would see.
     plain = np.stack([incidence[:, j] for j in range(len(vocab))], axis=1)
-    anchors = {j for core in _prune_nested(plain, _harvest_cores(plain, GENRE_AXIS_TARGET),
-                                           GENRE_LIMIT) for j in core}
+    clusters = _harvest_cores(plain, GENRE_AXIS_TARGET)
+    anchors = set()
+    for group in _spokes(plain, clusters, GENRE_SPOKES):
+        held = [j for c in group for j in clusters[c]]
+        anchors.add(max(held, key=lambda j: plain[:, j].sum()))
 
     found = set()
     for tag in range(len(vocab)):
@@ -514,6 +549,14 @@ def _harvest_cores(incidence: np.ndarray, target: int) -> list[list[int]]:
     at 0.63 and dexterity at 0.48, so a fixed bar either strangles one or lets
     the other swell to 86% of the corpus.
 
+    The search runs until the pool empties — 77 clusters on the live capture —
+    and every one of them becomes an axis. Truncating it and pruning the
+    remainder threw away 65 of the 77: wargame was left split across five
+    clusters that never recombined while `Racing` and `Sports` were attracted
+    into it, and dice, dexterity, racing, roll-and-write, trick-taking, auction
+    and party were never discovered at all. The radar reads the 77 through the
+    named parents `_spokes` groups them into.
+
     What is left unclaimed goes to `_assign_signals`, which attaches it in
     coherent blocs rather than tag by tag.
     """
@@ -522,7 +565,7 @@ def _harvest_cores(incidence: np.ndarray, target: int) -> list[list[int]]:
 
     claimed: list[list[int]] = []
     pool = list(range(n_signals))
-    while len(claimed) < GENRE_DISCOVER and len(pool) > 1:
+    while len(pool) > 1:
         found = _tightest(incidence[:, pool], min_reach)
         if found is None:
             break
@@ -572,43 +615,39 @@ def _tightest(subset: np.ndarray, min_reach: float) -> list[int] | None:
     return members[node]
 
 
-def _prune_nested(incidence: np.ndarray, cores: list[list[int]],
-                  limit: int) -> list[list[int]]:
-    """Drop genres that live inside another, until `limit` remain.
+def _spokes(incidence: np.ndarray, cores: list[list[int]],
+            limit: int) -> list[list[int]]:
+    """Group the genres into `limit` families, for the radar to show.
 
-    Reducing the count needs an order, and the obvious ones are wrong. By size
-    the small genres go first, which loses exactly the distinctive ones —
-    dexterity is 124 games. By tightness dexterity also goes, at 0.48 cohesion.
-    Neither can tell "small but its own thing" from "small and peripheral".
+    Returns a list of index lists *into `cores`*. Every genre lands in exactly
+    one family and none is discarded — the algorithm keeps working on all of
+    them, and a family's loading is the plain sum of its members', so the radar
+    aggregates what the picker saw rather than recomputing it.
 
-    Containment can: `Modern Warfare · Vietnam War` is 94% inside the wargame
-    genre and adds nothing, while dexterity is only 27% inside anything and is
-    the third *least* nested genre of eighteen. So the most-contained genre goes
-    first, and dexterity survives down to six.
+    Genres are grouped by the **games** they describe, not by their signals. Two
+    genres are the same family if they cover the same shelf. Grouping on signals
+    instead chains: the big clusters bridge everything and one family ends up
+    holding 96% of the corpus. Ward keeps the merges balanced where average and
+    complete linkage both collapse.
 
-    Re-measured after every drop, because removing a genre re-attracts its
-    signals and changes what everything else contains.
+    What this recovers is the fragmentation that truncated discovery caused.
+    Wargame is five clusters — `Wargame · Hexagon Grid · Simulation`,
+    `Campaign / Battle Card Driven`, `Civil War`, `Age of Reason`, `Modern
+    Warfare` — and they reunite here. `Dice` gathers dice with racing, and
+    `Network and Route Building` assembles the 18xx family out of trains,
+    auctions and stock holding.
+
+    Ward has to place everything, so the least related clusters end up together:
+    one family collects `Nautical`, `Trivia`, `Print & Play`, `Mancala` and a
+    dozen more, and its name is whichever of them leads. That is cosmetic —
+    underneath they are still separate axes, so selection is unaffected.
     """
-    cores = [list(core) for core in cores]
-    while len(cores) > limit:
-        loadings = incidence @ _assign_signals(incidence, cores)
-        mass = loadings.sum(axis=1, keepdims=True)
-        mass[mass == 0] = 1.0
-        share = loadings / mass
-        member = (share >= 0.5 * share.max(axis=1, keepdims=True)) & (share > 0)
-
-        worst, drop = -1.0, 0
-        for i in range(len(cores)):
-            here = member[:, i]
-            if not here.any():
-                worst, drop = 1.0, i     # a genre nobody belongs to goes first
-                break
-            inside = max((here & member[:, j]).sum() / here.sum()
-                         for j in range(len(cores)) if j != i)
-            if inside > worst:
-                worst, drop = inside, i
-        cores.pop(drop)
-    return cores
+    reach = np.stack([incidence[:, core].sum(axis=1) for core in cores])
+    reach /= np.maximum(np.linalg.norm(reach, axis=1, keepdims=True), 1e-9)
+    if len(cores) <= limit:
+        return [[i] for i in range(len(cores))]
+    labels = fcluster(linkage(reach, method="ward"), limit, criterion="maxclust")
+    return [[i for i in range(len(cores)) if labels[i] == g] for g in sorted(set(labels))]
 
 
 def _assign_signals(incidence: np.ndarray, cores: list[list[int]]) -> np.ndarray:
@@ -785,9 +824,13 @@ def genre_overlap(space: FeatureSpace) -> list[tuple[float, int, int]]:
     genre sitting wholly inside a huge one scores near zero: dexterity was 57%
     inside a hand-management genre at a Jaccard of 0.016, which is the failure
     that made `GENRE_BASE_RATE` necessary.
+
+    Measured over the radar spokes, since those are the genres a reader sees and
+    has to tell apart. The axes underneath are meant to overlap — several of
+    them make up one spoke.
     """
-    ids = sorted(space.loadings)
-    matrix = np.stack([space.loadings[i] for i in ids])
+    ids = sorted(space.spokes)
+    matrix = np.stack([space.spokes[i] for i in ids])
     member = (matrix >= 0.5 * matrix.max(axis=1, keepdims=True)) & (matrix > 0)
 
     pairs = []
