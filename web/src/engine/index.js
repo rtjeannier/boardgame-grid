@@ -19,7 +19,7 @@ export { analyseShelf, coverageOf, spokeVector } from './shelf.js';
 import { indexContract } from './contract.js';
 import { ratingSpans, coverageWeights } from './quality.js';
 import { buildWeightRows, buildCells, playerAxis, weightAxis } from './membership.js';
-import { gridDepths, readDepth } from './depth.js';
+import { gridDepths, readDepth, seedInto } from './depth.js';
 
 /** Deep enough for the whole-corpus curve to fall; never a cap on the answer. */
 export const COLLECTION_PROBE = 120;
@@ -47,7 +47,7 @@ export const DEFAULT_ROW_NAMES =
  */
 export function buildGrid(contract, {
   axes = ['players', 'weight'],
-  columns = DEFAULT_COLUMNS, rowCount = 5, rowNames = DEFAULT_ROW_NAMES,
+  columns = DEFAULT_COLUMNS, rowCount = 5, rowNames = DEFAULT_ROW_NAMES, rowEdges = null,
   capacity = 'auto', alternatesLimit = 6, depthOverrides = {}, autoDepthLeftover = null,
   owned = [], keepers = [], banned = [],
   genreWeights = null, include = null, gainFloor = null, policy = null,
@@ -61,7 +61,7 @@ export function buildGrid(contract, {
   const weights = coverageWeights(ix, include ? ratingSpans(ix, include) : null);
   const rows = buildWeightRows(
     include ? [...ix.weight].filter((_, g) => include[g]) : ix.weight,
-    rowCount, rowNames);
+    rowCount, rowNames, rowEdges);
 
   // `axes` is the whole difference between the collection and the grid. Empty
   // is one cell holding everything; one axis gives columns; two gives cells.
@@ -77,6 +77,10 @@ export function buildGrid(contract, {
   // Depth is read from each axis's own curve unless a number was given. With no
   // axes there is nothing to read down, so the collection stops on the gain
   // floor and the ceiling only has to be out of the way.
+  const rowsOf = (ids) => ids.map((id) => ix.rowOf.get(id)).filter((r) => r !== undefined);
+  const rejectedRows = new Set(rowsOf(banned));
+  const keeperRows = rowsOf(keepers);
+
   let depths = null;
   let room = capacity;
   if (capacity === 'auto') {
@@ -91,8 +95,10 @@ export function buildGrid(contract, {
       // the real run is about to use hands it a shelf that is already full.
       const probeCells = buildCells(ix, { axes: [], include });
       const probeScorer = new CoverageScorer(ix, weights, probeCells, { genreWeights });
-      const probe = allocate(ix, probeScorer, probeCells,
-        { capacity: COLLECTION_PROBE, alternatesLimit: 0, gainFloor });
+      const probe = allocate(ix, probeScorer, probeCells, {
+        capacity: COLLECTION_PROBE, alternatesLimit: 0, gainFloor,
+        rejected: rejectedRows, seeded: seedInto(probeCells, keeperRows),
+      });
       const read = readDepth(probe[0]?.gains ?? [],
         { leftover, fallback, places: ix.policy.gainPlaces ?? 3 });
       room = read.depth;
@@ -106,14 +112,14 @@ export function buildGrid(contract, {
         rows: onWeight ? rows : null,
         leftover, fallback, overrides: depthOverrides, genreWeights, include,
         places: ix.policy.gainPlaces ?? 3,
+        rejected: rejectedRows, keepers: keeperRows,
       });
       room = depths.capacity;
     }
   }
 
-  const rowsOf = (ids) => ids.map((id) => ix.rowOf.get(id)).filter((r) => r !== undefined);
   const seeded = new Map();
-  for (const game of rowsOf(keepers)) {
+  for (const game of keeperRows) {
     let best = null, degree = -1;
     for (const cell of cells) {
       const at = cell.games.indexOf(game);
@@ -123,7 +129,7 @@ export function buildGrid(contract, {
   }
 
   const results = allocate(ix, scorer, cells, {
-    capacity: room, seeded, rejected: new Set(rowsOf(banned)), alternatesLimit, gainFloor,
+    capacity: room, seeded, rejected: rejectedRows, alternatesLimit, gainFloor,
   });
 
   const ownedRows = new Set(rowsOf(owned));

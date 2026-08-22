@@ -7,7 +7,9 @@
  */
 
 import { useCallback, useMemo, useReducer } from 'react';
-import { buildGrid, coverageOf, spokeVector } from '../engine/index.js';
+import {
+  DEFAULT_COLUMNS, buildGrid, coverageOf, indexContract, spokeVector,
+} from '../engine/index.js';
 
 export const AXES = [
   { key: 'players', label: 'player count' },
@@ -22,8 +24,22 @@ const initial = {
   axes: [],
   owned: EMPTY, pinned: EMPTY, blocked: EMPTY,
   depthOverrides: {},
+  columns: DEFAULT_COLUMNS,
   rowCount: 5,
+  rowEdges: null,      // null means "quantiles of the corpus", which is the point
+  // Build the collection out of your games alone. The pruning view: with
+  // nothing else in the running, what a game carries is what it carries *for
+  // you*, and a shelf you have nothing for shows up empty.
+  mineOnly: false,
+  panel: null,         // which axis is being configured, if any
   open: null,          // the game whose drawer is showing
+  // What the last block or pin did, so the interface can say so. Blocking a
+  // game re-runs the whole selection rather than patching one slot, which is
+  // more correct — a game is shelved at most once, so removing one frees others
+  // it was crowding out — and also means "what replaced it" cannot be read off
+  // the shelf it left. It is the difference between what was shelved before and
+  // what is shelved now.
+  notice: null,
 };
 
 function toggle(list, id) {
@@ -42,11 +58,23 @@ function reduce(state, action) {
     // else changes, keep this in". Blocking beats pinning, because "I want rid
     // of this" is the stronger statement.
     case 'pin':
-      return { ...state, pinned: toggle(state.pinned, action.id),
-               blocked: state.blocked.filter((x) => x !== action.id) };
+      return { ...state,
+               pinned: toggle(state.pinned, action.id),
+               blocked: state.blocked.filter((x) => x !== action.id),
+               notice: action.was
+                 ? { kind: state.pinned.includes(action.id) ? 'unpin' : 'pin',
+                     id: action.id, name: action.name, was: action.was }
+                 : null };
     case 'block':
-      return { ...state, blocked: toggle(state.blocked, action.id),
-               pinned: state.pinned.filter((x) => x !== action.id) };
+      return { ...state,
+               blocked: toggle(state.blocked, action.id),
+               pinned: state.pinned.filter((x) => x !== action.id),
+               notice: action.was
+                 ? { kind: state.blocked.includes(action.id) ? 'unblock' : 'block',
+                     id: action.id, name: action.name, was: action.was }
+                 : null };
+    case 'dismiss':
+      return { ...state, notice: null };
     case 'depth': {
       const next = { ...state.depthOverrides };
       if (action.value == null) delete next[action.key];
@@ -54,7 +82,18 @@ function reduce(state, action) {
       return { ...state, depthOverrides: next };
     }
     case 'rows':
-      return { ...state, rowCount: action.value, depthOverrides: {} };
+      return { ...state, rowCount: action.value, rowEdges: null, depthOverrides: {} };
+    case 'rowEdge': {
+      const edges = [...(state.rowEdges ?? action.current)];
+      edges[action.at] = action.value;
+      return { ...state, rowEdges: edges, depthOverrides: {} };
+    }
+    case 'columns':
+      return { ...state, columns: action.value, depthOverrides: {} };
+    case 'mineOnly':
+      return { ...state, mineOnly: !state.mineOnly, depthOverrides: {} };
+    case 'panel':
+      return { ...state, panel: state.panel === action.key ? null : action.key };
     case 'open':
       return { ...state, open: action.game };
     case 'reset':
@@ -80,25 +119,50 @@ export function sharesOf(ix, weights, rows) {
 export function useCollection(contract) {
   const [state, dispatch] = useReducer(reduce, initial);
 
-  const built = useMemo(() => buildGrid(contract, {
+  // Indexed once. `buildGrid` takes either the raw contract or the index, and
+  // re-flattening half a megabyte on every click is the difference between a
+  // control that responds and one that stutters.
+  const ix = useMemo(() => indexContract(contract), [contract]);
+
+  const include = useMemo(() => {
+    if (!state.mineOnly || !state.owned.length) return null;
+    const keep = new Uint8Array(ix.n);
+    for (const id of state.owned) {
+      const row = ix.rowOf.get(id);
+      if (row !== undefined) keep[row] = 1;
+    }
+    return keep;
+  }, [ix, state.mineOnly, state.owned]);
+
+  const built = useMemo(() => buildGrid(ix, {
     axes: state.axes,
+    columns: state.columns,
     rowCount: state.rowCount,
+    rowEdges: state.rowEdges,
     owned: state.owned,
     keepers: state.pinned,
     banned: state.blocked,
     depthOverrides: state.depthOverrides,
+    include,
     alternatesLimit: 6,
-  }), [contract, state.axes, state.rowCount, state.owned, state.pinned,
-       state.blocked, state.depthOverrides]);
+  }), [ix, state.axes, state.columns, state.rowCount, state.rowEdges, state.owned,
+       state.pinned, state.blocked, state.depthOverrides, include]);
 
   const actions = useMemo(() => ({
     toggleAxis: (key) => dispatch({ type: 'axis', key }),
     own: (id) => dispatch({ type: 'own', id }),
     ownMany: (ids) => dispatch({ type: 'ownMany', ids }),
-    pin: (id) => dispatch({ type: 'pin', id }),
-    block: (id) => dispatch({ type: 'block', id }),
+    // `was` is the set of ids shelved at the moment you pressed the button.
+    // Without it the interface can only say what you did, never what happened.
+    pin: (id, was, name) => dispatch({ type: 'pin', id, was, name }),
+    block: (id, was, name) => dispatch({ type: 'block', id, was, name }),
+    dismiss: () => dispatch({ type: 'dismiss' }),
     setDepth: (key, value) => dispatch({ type: 'depth', key, value }),
     setRows: (value) => dispatch({ type: 'rows', value }),
+    setRowEdge: (at, value, current) => dispatch({ type: 'rowEdge', at, value, current }),
+    setColumns: (value) => dispatch({ type: 'columns', value }),
+    toggleMineOnly: () => dispatch({ type: 'mineOnly' }),
+    togglePanel: (key) => dispatch({ type: 'panel', key }),
     open: (game) => dispatch({ type: 'open', game }),
     reset: () => dispatch({ type: 'reset' }),
   }), []);

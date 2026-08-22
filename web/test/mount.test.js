@@ -100,7 +100,9 @@ test('the drawer opens over the page and closes on Escape', () => {
   const drawer = document.querySelector('[role="dialog"]');
   assert.ok(drawer, 'the drawer did not open');
   assert.match(drawer.textContent, /What it does/);
-  assert.match(drawer.textContent, /Closest to it in the collection/);
+  assert.match(drawer.textContent, /Games like it/);
+  assert.ok(drawer.querySelector('a[href^="https://boardgamegeek.com/boardgame/"]'),
+    'no link back to BoardGameGeek');
   assert.equal(document.body.style.overflow, 'hidden', 'the page still scrolls behind it');
 
   act(() => document.dispatchEvent(
@@ -140,16 +142,117 @@ test('adding a game reshapes the collection and the radar gains a second shape',
   act(() => root.unmount());
 });
 
-test('pinning a game keeps it, blocking one removes it', () => {
+test('blocking says what it did, lists what is blocked, and can be undone', () => {
   const { host, root } = mount();
-  const before = host.textContent.includes('Brass: Birmingham');
-  assert.ok(before, 'the top game was not there to begin with');
+  const register = () => host.querySelector('table, [class*="list"]')?.textContent
+    ?? host.textContent;
+  assert.ok(register().includes('Brass: Birmingham'), 'nothing to block');
 
   const block = [...host.querySelectorAll('button[aria-label^="Block"]')][0];
   assert.ok(block, 'no block control on the register');
   click(block);
-  assert.ok(!host.textContent.includes('Brass: Birmingham'),
-    'a blocked game is still in the collection');
 
+  // Three things have to be true, and only the first used to be.
+  assert.ok(!register().includes('Brass: Birmingham'), 'it is still shelved');
+  assert.match(host.textContent, /Blocked/, 'nothing said what happened');
+  assert.match(host.textContent, /In: |Nothing took its place/,
+    'it never said what came in instead');
+
+  // The record of what is blocked is a count you open, not a list in the way.
+  const summary = [...host.querySelectorAll('summary')]
+    .find((el) => /\d+ blocked/.test(el.textContent));
+  assert.ok(summary, 'no blocked count in the bar');
+  act(() => { summary.parentElement.open = true; });
+
+  const unblock = host.querySelector('button[aria-label^="Unblock"]');
+  assert.ok(unblock, 'no way to take a game off the blocked list');
+  click(unblock);
+  assert.ok(register().includes('Brass: Birmingham'), 'unblocking did not restore it');
+  act(() => root.unmount());
+});
+
+test('a pin stays visible once it is set', () => {
+  const { host, root } = mount();
+  const pin = [...host.querySelectorAll('button[aria-label^="Pin"]')][0];
+  assert.ok(pin, 'no pin control');
+  click(pin);
+  const pressed = [...host.querySelectorAll('button[aria-pressed="true"]')]
+    .filter((b) => (b.getAttribute('aria-label') || '').startsWith('Unpin'));
+  assert.equal(pressed.length, 1, 'the pin did not stay set');
+  assert.match(host.textContent, /Pinned/, 'nothing said what pinning does');
+  act(() => root.unmount());
+});
+
+test('an axis opens its own settings, in front of the shelves it describes', () => {
+  const { host, root } = mount();
+  click(byText('＋ player count', host));
+
+  // The chip has two jobs now: the body opens the panel, the ✕ turns the axis
+  // off. Clicking the body must not remove the split.
+  const body = [...host.querySelectorAll('button')]
+    .find((b) => b.textContent.startsWith('player count'));
+  click(body);
+  assert.match(host.textContent, /Player groups/);
+  assert.match(host.textContent, /How deep each one goes/);
+  assert.match(host.textContent, /deep/, 'the panel did not report what it read');
+  assert.match(host.textContent, /41 games/, 'opening the panel changed the collection');
+
+  const groups = () => host.querySelectorAll('input[aria-label="Group name"]').length;
+  const was = groups();
+  click(byText('＋ Group', host));
+  assert.equal(groups(), was + 1, 'adding a group did nothing');
+
+  const remove = [...host.querySelectorAll('button[aria-label^="Remove"]')].pop();
+  click(remove);
+  assert.equal(groups(), was, 'removing a group did nothing');
+  act(() => root.unmount());
+});
+
+test('the weight panel adds and removes bands', () => {
+  const { host, root } = mount();
+  click(byText('＋ weight', host));
+  const body = [...host.querySelectorAll('button')]
+    .find((b) => b.textContent.startsWith('weight'));
+  click(body);
+  assert.match(host.textContent, /Weight bands/);
+  assert.match(host.textContent, /Gateway/);
+
+  const fewer = host.querySelector('button[aria-label="Fewer bands"]');
+  assert.ok(fewer, 'no way to take a band away');
+  const bands = () => [...host.querySelectorAll('input[aria-label^="Top of"]')]
+    .map((i) => i.getAttribute('aria-label').replace('Top of ', ''));
+  assert.equal(bands().length, 4, 'five bands have four editable edges');
+  click(fewer);
+  assert.equal(bands().length, 3, 'a band was removed but the edges did not follow');
+  // The ladder spreads rather than truncating, so the heaviest band is still
+  // called Heavy instead of the last name being quietly dropped.
+  assert.deepEqual(bands(), ['Gateway', 'Light', 'Medium-Heavy']);
+  assert.match(host.textContent, /Heavy/);
+  act(() => root.unmount());
+});
+
+test('only-my-games needs games, then builds out of them alone', () => {
+  const { host, root } = mount();
+  const only = () => byText('Only my games', host);
+  assert.ok(only().disabled, 'offered before there was anything to filter to');
+
+  click(byText('My games', host));
+  const search = host.querySelector('input[aria-label="Search for a game"]');
+  for (const term of ['gloomhaven', 'azul']) {
+    act(() => {
+      const setter = Object.getOwnPropertyDescriptor(
+        dom.window.HTMLInputElement.prototype, 'value').set;
+      setter.call(search, term);
+      search.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+    });
+    const hit = [...host.querySelectorAll('button')]
+      .find((b) => b.textContent.trim().startsWith(term[0].toUpperCase()));
+    if (hit) click(hit);
+  }
+
+  click(byText('Collection', host));
+  assert.ok(!only().disabled, 'still refused with games added');
+  click(only());
+  assert.match(host.textContent, /Built out of your/);
   act(() => root.unmount());
 });

@@ -21,6 +21,7 @@ export default function GameItem({
   if (!game) return null;
   const classes = [css.item, VARIANT[variant] ?? VARIANT.row];
   if (game.owned) classes.push(css.mine);
+  if (game.pinned || game.blocked) classes.push(css.marked);
   if (game.blocked) classes.push(css.blocked);
 
   const verbs = actions ? (
@@ -31,10 +32,16 @@ export default function GameItem({
   const open = onOpen ? { onClick: () => onOpen(game), role: 'button', tabIndex: 0 } : {};
 
   if (variant === 'compact') {
+    // The verbs are there but out of the way: a shelf of five names with ten
+    // buttons beside them is a toolbar, not a shelf. They appear on hover and
+    // on keyboard focus, and take the space the rank was using.
     return (
-      <div className={classes.join(' ')} {...open}>
-        <span className={css.name}>{game.name}</span>
-        <span className={css.meta}>{game.rankLabel}</span>
+      <div className={classes.join(' ')}>
+        <span className={css.main} {...open}>
+          <span className={css.name}>{game.name}</span>
+        </span>
+        <span className={css.rankSlot}>{game.rankLabel}</span>
+        {verbs && <span className={css.hoverSlot}>{verbs}</span>}
       </div>
     );
   }

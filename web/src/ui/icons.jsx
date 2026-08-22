@@ -11,11 +11,20 @@ const stroke = {
   strokeLinecap: 'round', strokeLinejoin: 'round',
 };
 
+/**
+ * A thumbtack seen from the side, not a map marker.
+ *
+ * The teardrop this replaces read as a GPS pin — "here is a place" — where the
+ * verb means "this stays put". Cap bar, tapering body, flange, needle.
+ */
 export function Pin({ filled = false, size = 12 }) {
   return (
-    <svg width={size} height={size} viewBox="0 0 12 12" aria-hidden="true"
-         {...stroke} fill={filled ? 'currentColor' : 'none'}>
-      <path d="M6 11.2S9.4 7.4 9.4 5A3.4 3.4 0 1 0 2.6 5c0 2.4 3.4 6.2 3.4 6.2z" />
+    <svg width={size} height={size} viewBox="0 0 24 24" aria-hidden="true"
+         {...stroke} strokeWidth={2}>
+      <path d="M8.5 3h7" />
+      <path d="M10 3v5.5L7.5 11.5v1h9v-1L14 8.5V3z"
+            fill={filled ? 'currentColor' : 'none'} />
+      <path d="M12 12.5V21" />
     </svg>
   );
 }

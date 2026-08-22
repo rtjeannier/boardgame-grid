@@ -4,7 +4,7 @@ import GameItem from '../game/GameItem.jsx';
 import { toGameView } from '../game/view.js';
 import Radar from '../chart/Radar.jsx';
 import { sharesOf } from '../state.js';
-import Board from './Board.jsx';
+import Board, { shelvedNow } from './Board.jsx';
 import css from './Collection.module.css';
 
 /**
@@ -157,11 +157,38 @@ export default function Collection({ built, state, actions, onOpen }) {
                         blocked: state.blocked.includes(p.id),
                       })}
                       onOpen={onOpen}
-                      onPin={(g) => actions.pin(g.id)}
-                      onBlock={(g) => actions.block(g.id)} />
+                      onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
+                      onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
                   </div>
                 ))}
               </div>
+              {shelf.alternates?.length > 0 && (
+                <details className={css.deck}>
+                  <summary className={css.deckHead}>
+                    {shelf.alternates.length} on deck — the next in line, if you
+                    make room
+                  </summary>
+                  <div className={css.list}>
+                    {shelf.alternates.map((a) => {
+                      const row = ix.rowOf.get(a.id);
+                      if (row === undefined) return null;
+                      return (
+                        <div key={a.id} className={css.entry}>
+                          <GameItem
+                            game={toGameView(ix, row, {
+                              owned: state.owned.includes(a.id),
+                              pinned: state.pinned.includes(a.id),
+                              blocked: state.blocked.includes(a.id),
+                            })}
+                            onOpen={onOpen}
+                            onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
+                            onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </details>
+              )}
               <p className={css.foot}>
                 Carries is the share of everything the collection reaches that
                 would be lost without that game. The shares do not add to 100 —

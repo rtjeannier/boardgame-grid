@@ -12,5 +12,23 @@
         border: 1px solid var(--line-2); background: var(--surface);
         color: var(--text-2); cursor: pointer; white-space: nowrap; }
 .chip:hover { border-color: var(--text-3); color: var(--text); }
-.on { background: var(--text); border-color: var(--text); color: var(--surface); }
-.mark { font-size: 10px; opacity: .7; }
+.on { background: var(--text); border-color: var(--text); color: var(--surface);
+      padding: 0 var(--s-4) 0 0; gap: 0; }
+.open { box-shadow: 0 0 0 3px var(--mark-wash); }
+.body { display: inline-flex; align-items: center; gap: var(--s-2);
+        font: inherit; color: inherit; background: none; border: 0; cursor: pointer;
+        padding: var(--s-3) var(--s-3) var(--s-3) var(--s-5); }
+.gear { font-size: 8px; opacity: .8; }
+.mark { font-size: 10px; opacity: .7; background: none; border: 0; color: inherit;
+        cursor: pointer; padding: var(--s-3) var(--s-1); line-height: 1; }
+.mark:hover { opacity: 1; }
+
+/* Build the collection out of your games alone. */
+.only { display: inline-flex; align-items: center; gap: var(--s-3);
+        font-family: var(--font-sans); font-size: 12px; font-weight: 500; line-height: 1;
+        padding: var(--s-3) var(--s-5); border-radius: var(--r-pill);
+        border: 1px solid var(--line-2); background: var(--surface);
+        color: var(--text-2); cursor: pointer; white-space: nowrap; }
+.only:hover { border-color: var(--text-3); color: var(--text); }
+.onlyOn { background: var(--mark-wash); border-color: var(--mark); color: var(--mark); }
+.only:disabled { opacity: .4; cursor: default; }

@@ -58,16 +58,37 @@ export function readDepth(gains, { leftover, fallback, places = 3 }) {
  */
 export function axisDepths(ix, weights, axis, {
   leftover, fallback, places, probe = PROBE, genreWeights = null, include = null,
+  rejected = null, keepers = null,
 } = {}) {
   const cells = buildCells(ix, { axes: [axis], include });
   const scorer = new CoverageScorer(ix, weights, cells, { genreWeights });
-  const results = allocate(ix, scorer, cells, { capacity: probe, alternatesLimit: 0 });
+  // A curve read without the reader's bans and pins is a curve for a different
+  // collection: block a game and the shelf below it fills differently, so the
+  // point where returns fall away moves with it.
+  const results = allocate(ix, scorer, cells, {
+    capacity: probe, alternatesLimit: 0, rejected: rejected ?? undefined,
+    seeded: keepers ? seedInto(cells, keepers) : undefined,
+  });
   const out = new Map();
   for (const cell of results) {
     out.set(cell.key,
       { ...readDepth(cell.gains, { leftover, fallback, places }), key: cell.key });
   }
   return out;
+}
+
+/** Each pinned game into the bucket of this axis it belongs to most. */
+export function seedInto(cells, keepers) {
+  const seeded = new Map();
+  for (const game of keepers) {
+    let best = null, degree = -1;
+    for (const cell of cells) {
+      const at = cell.games.indexOf(game);
+      if (at >= 0 && cell.degree[at] > degree) { best = cell.key; degree = cell.degree[at]; }
+    }
+    if (best != null) seeded.set(best, [...(seeded.get(best) ?? []), game]);
+  }
+  return seeded;
 }
 
 /**
@@ -78,16 +99,26 @@ export function axisDepths(ix, weights, axis, {
  * side. `overrides` is what the reader typed, and it beats both.
  */
 export function gridDepths(ix, weights, { columns, rows, leftover, fallback, places,
-  overrides = {}, probe = PROBE, genreWeights = null, include = null } = {}) {
-  const opts = { leftover, fallback, places, probe, genreWeights, include };
+  overrides = {}, probe = PROBE, genreWeights = null, include = null,
+  rejected = null, keepers = null } = {}) {
+  const opts = { leftover, fallback, places, probe, genreWeights, include,
+                 rejected, keepers };
   const byColumn = columns ? axisDepths(ix, weights, playerAxis(columns), opts) : null;
   const byRow = rows ? axisDepths(ix, weights, weightAxis(rows), opts) : null;
 
   const depthOf = (map, key, kind) => {
-    const set = overrides[`${kind}:${key}`];
-    if (set != null) return { depth: set, auto: false, read: map?.get(key)?.depth ?? null };
     const read = map?.get(key);
-    return { depth: read?.depth ?? fallback, auto: read?.auto ?? false, read: read?.depth ?? null };
+    const set = overrides[`${kind}:${key}`];
+    if (set != null) {
+      return { depth: set, auto: false, set: true, read: read?.depth ?? null, left: read?.left };
+    }
+    return {
+      depth: read?.depth ?? fallback,
+      auto: read?.auto ?? false,
+      set: false,
+      read: read?.depth ?? null,
+      left: read?.left,
+    };
   };
 
   const columnDepth = new Map(

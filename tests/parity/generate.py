@@ -90,7 +90,8 @@ def run(games, space, params, banned=(), keepers=()):
             games, space, {g.id: g.rating for g in games}, sel, coll, rows,
             axis_room=coll.axis_room(space.dimension_names, space.spoke_of),
             column_axis=buckets.PlayerCountAxis(coll.columns(), sel, places=PLACES),
-            row_axis=buckets.WeightAxis(rows, sel))["capacity"]
+            row_axis=buckets.WeightAxis(rows, sel),
+            rejected=set(banned), keepers=keepers)["capacity"]
     else:
         room = coll.capacity(cells)
     results = allocate(cells, memb, scorer, room,

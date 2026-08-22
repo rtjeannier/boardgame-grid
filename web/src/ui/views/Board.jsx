@@ -12,6 +12,14 @@ import css from './Board.module.css';
  * usual move is to disagree with the reading outright.
  */
 
+/** Everything shelved right now, so the next build can be compared against it. */
+export const shelvedNow = (built) =>
+  built.grid.flatMap((c) => c.picks.map((p) => p.id));
+
+/** An empty shelf means two different things, so it says which. */
+const empty = (state) =>
+  (state.mineOnly ? 'nothing of yours' : 'nothing reaches here');
+
 const line = (built, game, state) => toGameView(built.ix, game, {
   owned: state.owned.includes(built.ix.ids[game]),
   pinned: state.pinned.includes(built.ix.ids[game]),
@@ -23,6 +31,33 @@ function Depth({ kind, label, read, actions }) {
   return (
     <DepthField value={read.depth} auto={read.read ?? (read.auto ? read.depth : null)}
                 onChange={(v) => actions.setDepth(`${kind}:${label}`, v)} />
+  );
+}
+
+/**
+ * What did not quite make the shelf.
+ *
+ * Kept out of the way until asked for, because a shelf of five with six
+ * runners-up under it is a list of eleven. Pinning one puts it on: the same verb
+ * as everywhere else, doing the obvious thing.
+ */
+function OnDeck({ cell, built, state, actions, onOpen }) {
+  const next = cell?.alternates ?? [];
+  if (!next.length) return null;
+  return (
+    <details className={css.deck}>
+      <summary className={css.deckHead}>{next.length} on deck</summary>
+      {next.map((a) => {
+        const row = built.ix.rowOf.get(a.id);
+        if (row === undefined) return null;
+        return (
+          <GameItem key={a.id} variant="compact"
+                    game={line(built, row, state)} onOpen={onOpen}
+                    onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
+                    onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
+        );
+      })}
+    </details>
   );
 }
 
@@ -55,11 +90,17 @@ export default function Board({ built, state, actions, onOpen }) {
               </div>
               <div className={css.picks}>
                 {(cell?.picks ?? []).map((p) => (
-                  <GameItem key={p.id} variant="compact" actions={false}
+                  <GameItem key={p.id} variant="compact"
                             game={line(built, ix.rowOf.get(p.id), state)}
-                            onOpen={onOpen} />
+                            onOpen={onOpen}
+                            onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
+                            onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
                 ))}
-                {!cell?.picks?.length && <span className={css.empty}>nothing reaches here</span>}
+                {!cell?.picks?.length && (
+                  <span className={css.empty}>{empty(state)}</span>
+                )}
+                <OnDeck cell={cell} built={built} state={state}
+                        actions={actions} onOpen={onOpen} />
               </div>
             </div>
           );
@@ -109,10 +150,14 @@ function Row({ row, built, state, actions, onOpen, byKey }) {
         return (
           <div key={c.label} className={css.cell}>
             {(cell?.picks ?? []).map((p) => (
-              <GameItem key={p.id} variant="compact" actions={false}
-                        game={line(built, ix.rowOf.get(p.id), state)} onOpen={onOpen} />
+              <GameItem key={p.id} variant="compact"
+                        game={line(built, ix.rowOf.get(p.id), state)} onOpen={onOpen}
+                        onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
+                        onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
             ))}
-            {!cell?.picks?.length && <span className={css.empty}>—</span>}
+            {!cell?.picks?.length && <span className={css.empty}>{empty(state)}</span>}
+            <OnDeck cell={cell} built={built} state={state}
+                    actions={actions} onOpen={onOpen} />
           </div>
         );
       })}

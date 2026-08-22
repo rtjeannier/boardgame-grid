@@ -22,11 +22,24 @@ export function bestAt(ix, row) {
     : counts.join(', ');
 }
 
+/**
+ * The first part of a compound name.
+ *
+ * An axis is named after several tags at once — "Paper-and-Pencil · Bingo ·
+ * Simultaneous Action Selection" — because that is what the cluster is. As a
+ * label it is unreadable and, in a bar chart, it squeezes the bar to nothing.
+ */
+export const lead = (name) => (name ?? '').split(' · ')[0];
+
 /** A game's strongest axes, named. Descriptive only: nothing groups by them. */
 export function axesOf(ix, row, { limit = 3, floor = 0.05 } = {}) {
   const out = [];
   for (let k = ix.embedding.start[row]; k < ix.embedding.start[row + 1]; k++) {
-    out.push({ label: ix.axisNames[ix.embedding.idx[k]], value: ix.embedding.val[k] });
+    out.push({
+      label: lead(ix.axisNames[ix.embedding.idx[k]]),
+      full: ix.axisNames[ix.embedding.idx[k]],
+      value: ix.embedding.val[k],
+    });
   }
   return out
     .filter((a) => a.value > floor)

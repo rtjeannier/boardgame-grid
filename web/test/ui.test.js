@@ -166,7 +166,7 @@ test('the split bar reports which axes are on', () => {
 
 test('depth says whether it read the number or was told it', () => {
   assert.ok(render(h(ui.DepthField, { value: 11, auto: 11 })).includes('auto'));
-  assert.ok(render(h(ui.DepthField, { value: 6, auto: 3 })).includes('auto said 3'));
+  assert.ok(render(h(ui.DepthField, { value: 6, auto: 3 })).includes('set'));
 });
 
 test('every page renders, at every split, empty and with games', async () => {
@@ -187,7 +187,7 @@ test('the views render at each split, and with a shelf of your own', async () =>
     readFileSync(join(WEB, 'public', 'grid.contract.json'), 'utf8'));
   const Collection = (await vite.ssrLoadModule('/src/ui/views/Collection.jsx')).default;
   const Mine = (await vite.ssrLoadModule('/src/ui/views/Mine.jsx')).default;
-  const Settings = (await vite.ssrLoadModule('/src/ui/views/Settings.jsx')).default;
+  const AxisPanel = (await vite.ssrLoadModule('/src/ui/views/AxisPanel.jsx')).default;
   const Drawer = (await vite.ssrLoadModule('/src/ui/views/GameDrawer.jsx')).default;
   const { toGameView } = await vite.ssrLoadModule('/src/ui/game/view.js');
 
@@ -202,7 +202,8 @@ test('the views render at each split, and with a shelf of your own', async () =>
     for (const mine of [[], owned]) {
       const built = engine.buildGrid(contract, { axes, owned: mine });
       const state = { axes, owned: mine, pinned: [], blocked: [],
-                      depthOverrides: {}, rowCount: 5, open: null };
+                      depthOverrides: {}, columns: built.columns, rowCount: 5,
+                      rowEdges: null, mineOnly: false, panel: null, open: null };
       const where = `axes=[${axes}] owned=${mine.length}`;
 
       const collection = render(h(Collection, { built, state, actions, onOpen: noop }));
@@ -218,8 +219,15 @@ test('the views render at each split, and with a shelf of your own', async () =>
         assert.ok(yours.includes('Nothing yet'), `${where}: no empty state`);
       }
 
-      const settings = render(h(Settings, { built, state, actions }));
-      assert.ok(!settings.includes('NaN'), `${where}: NaN in settings`);
+      // The axis panel only exists for an axis that is on.
+      for (const which of axes) {
+        const panel = render(h(AxisPanel, { which, built, state, actions }));
+        assert.ok(panel.length > 0, `${where}: the ${which} panel drew nothing`);
+        assert.ok(!panel.includes('NaN'), `${where}: NaN in the ${which} panel`);
+        assert.ok(/deep|bands|Group/.test(panel),
+          `${where}: the ${which} panel said nothing about its groups`);
+      }
+      assert.equal(render(h(AxisPanel, { which: null, built, state, actions })), '');
 
       // The drawer, on a game that holds a place and on one that does not.
       const shelved = built.grid.flatMap((c) => c.picks)[0];
@@ -228,6 +236,7 @@ test('the views render at each split, and with a shelf of your own', async () =>
       assert.ok(open.includes(game.rankLabel.replace('#', '#')),
         `${where}: drawer lost the game`);
       assert.ok(open.includes('What it does'), `${where}: drawer lost its body`);
+      assert.ok(open.includes('boardgamegeek.com'), `${where}: no BGG link`);
       assert.ok(!open.includes('NaN'), `${where}: NaN in the drawer`);
       assert.equal(render(h(Drawer, { game: null, built, state, actions, onClose: noop })), '');
     }

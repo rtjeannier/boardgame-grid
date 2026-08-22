@@ -6,6 +6,7 @@ import { toGameView } from '../game/view.js';
 import { parseCollectionCsv } from '../importCsv.js';
 import { Search } from '../icons.jsx';
 import { whyCut } from './labels.js';
+import { shelvedNow } from './Board.jsx';
 import css from './Mine.module.css';
 
 /**
@@ -176,8 +177,8 @@ export default function Mine({ built, state, actions, onOpen }) {
               <div key={game.id} className={css.entry}>
                 <GameItem game={game} variant={game.reason ? 'reason' : 'row'}
                           onOpen={onOpen}
-                          onPin={(g) => actions.pin(g.id)}
-                          onBlock={(g) => actions.block(g.id)} />
+                          onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
+                          onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
               </div>
             ))}
           </div>

@@ -4,7 +4,9 @@ import Drawer from '../primitives/Drawer.jsx';
 import Button from '../primitives/Button.jsx';
 import Bars from '../chart/Bars.jsx';
 import { axesOf } from '../game/view.js';
+import { sharesOf } from '../state.js';
 import { Block, Pin } from '../icons.jsx';
+import { shelvedNow } from './Board.jsx';
 import { cellLabeller } from './labels.js';
 import css from './GameDrawer.module.css';
 
@@ -26,30 +28,48 @@ export default function GameDrawer({ game, built, state, actions, onClose }) {
     const row = ix.rowOf.get(game.id);
     if (row === undefined) return null;
 
-    const shelved = grid.flatMap((c) => c.picks.map((p) => ({
-      row: ix.rowOf.get(p.id), cell: c.key, id: p.id,
-    })));
+    const shelfOf = new Map();
+    for (const c of grid) for (const p of c.picks) shelfOf.set(p.id, c.key);
     const home = grid.find((c) => c.picks.some((p) => p.id === game.id));
     const at = home ? home.picks.findIndex((p) => p.id === game.id) : -1;
 
-    // Nearest among games actually shelved — not the nearest in the corpus.
-    // Those are different claims, and only this one tells you whether tonight
-    // would feel repetitive.
-    const near = shelved
-      .filter((s) => s.id !== game.id && s.row !== undefined)
-      .map((s) => ({ ...s, score: engine.similarityBetween(ix, row, s.row) }))
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 5);
+    // Nearest across the whole corpus, not only among games already shelved.
+    // Deciding what to keep means seeing everything like it — including the
+    // near-twin nobody chose, which is exactly the one that makes a game
+    // redundant.
+    const near = [];
+    for (let other = 0; other < ix.n; other++) {
+      if (other === row) continue;
+      const score = engine.similarityBetween(ix, row, other);
+      if (score > 0.2) near.push({ row: other, score });
+    }
+    near.sort((a, b) => b.score - a.score);
+
+    // What the shelf would lose without it: the pruning question, asked of the
+    // shelf it actually holds.
+    let carries = null;
+    if (home) {
+      const rows = home.picks.map((p) => ix.rowOf.get(p.id));
+      carries = sharesOf(ix, weights, rows)[at];
+    }
 
     return {
       row,
       axes: axesOf(ix, row, { limit: 6, floor: 0.03 }),
-      home, at, near,
+      home, at, carries,
+      near: near.slice(0, 6).map((n) => ({
+        ...n,
+        id: ix.ids[n.row],
+        name: ix.names[n.row],
+        rank: ix.rank[n.row],
+        shelf: shelfOf.get(ix.ids[n.row]) ?? null,
+        mine: state.owned.includes(ix.ids[n.row]),
+      })),
       gain: home && at >= 0 ? home.gains?.[at] : null,
       next: home?.alternates?.[0]?.name ?? null,
       scale: ix.similarityScale,
     };
-  }, [game, ix, grid, weights]);
+  }, [game, ix, grid, weights, state.owned]);
 
   if (!open || !detail) return <Drawer open={false} onClose={onClose} />;
 
@@ -62,7 +82,9 @@ export default function GameDrawer({ game, built, state, actions, onClose }) {
       <>
         <h2 className={css.name}>{game.name}</h2>
         <span className={css.sub}>
-          {game.rankLabel} · rated {ix.rating[detail.row].toFixed(2)}
+          {game.rankLabel} · rated {ix.rating[detail.row].toFixed(2)} ·{' '}
+          <a className={css.link} href={`https://boardgamegeek.com/boardgame/${game.id}`}
+             target="_blank" rel="noreferrer">BoardGameGeek ↗</a>
         </span>
         <div className={css.stats}>
           {game.players && <span className={css.stat}><b>{game.players}</b><span>best at</span></span>}
@@ -76,10 +98,10 @@ export default function GameDrawer({ game, built, state, actions, onClose }) {
         <Button tone={owned ? 'primary' : 'default'} onClick={() => actions.own(game.id)}>
           {owned ? 'You own this' : 'I own this'}
         </Button>
-        <Button tone={pinned ? 'primary' : 'default'} onClick={() => actions.pin(game.id)}>
+        <Button tone={pinned ? 'primary' : 'default'} onClick={() => actions.pin(game.id, shelvedNow(built), game.name)}>
           <Pin filled={pinned} /> {pinned ? 'Pinned' : 'Pin'}
         </Button>
-        <Button tone="stop" onClick={() => actions.block(game.id)}>
+        <Button tone="stop" onClick={() => actions.block(game.id, shelvedNow(built), game.name)}>
           <Block /> {blocked ? 'Blocked' : 'Block'}
         </Button>
         <Button tone="later" title="Not built yet">Wishlist</Button>
@@ -95,22 +117,28 @@ export default function GameDrawer({ game, built, state, actions, onClose }) {
       </section>
 
       <section className={css.sec}>
-        <h3 className={css.label}>Closest to it in the collection</h3>
+        <h3 className={css.label}>Games like it</h3>
         <p className={css.blurb}>
-          Not the closest games that exist — the closest ones actually shelved,
-          which is what tells you whether tonight would feel repetitive.
-          {detail.scale && ` Two unrelated games score ${detail.scale.p50.toFixed(2)};
-            anything above ${detail.scale.p90.toFixed(2)} is in the top tenth of all pairs.`}
+          Anywhere in the corpus, not only on the shelves — the near-twin nobody
+          chose is exactly the one that would make this redundant.
+          {detail.scale && ` Two unrelated games score ${detail.scale.p50.toFixed(2)}; `}
+          {detail.scale && `anything above ${detail.scale.p90.toFixed(2)} is in the top tenth of all pairs.`}
         </p>
         <div className={css.like}>
           {detail.near.map((s) => (
             <div key={s.id} className={css.likeRow}>
-              <span className={css.likeName}>{ix.names[s.row]}</span>
-              <span className={css.likeShelf}>{label(s.cell)}</span>
+              <span className={css.likeName}>
+                {s.name} <span className={css.likeRank}>#{s.rank}</span>
+              </span>
+              <span className={css.likeShelf}>
+                {s.mine ? 'yours · ' : ''}{s.shelf != null ? label(s.shelf) : 'not shelved'}
+              </span>
               <span className={css.likeScore}>{s.score.toFixed(2)}</span>
             </div>
           ))}
-          {!detail.near.length && <span className={css.blurb}>Nothing else is shelved yet.</span>}
+          {!detail.near.length && (
+            <span className={css.blurb}>Nothing in the corpus is much like it.</span>
+          )}
         </div>
       </section>
 
@@ -124,6 +152,12 @@ export default function GameDrawer({ game, built, state, actions, onClose }) {
                 <b>{label(detail.home.key)}</b>
                 <em>{detail.at + 1} of {detail.home.picks.length} on that shelf</em>
               </div>
+              {detail.carries != null && (
+                <div className={css.placeRow}>
+                  <span>Carries</span>
+                  <b><em>{(detail.carries * 100).toFixed(0)}%</em> of what that shelf covers</b>
+                </div>
+              )}
               {detail.gain != null && (
                 <div className={css.placeRow}>
                   <span>Added</span>

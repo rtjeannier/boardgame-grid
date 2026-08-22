@@ -277,7 +277,19 @@ def build_cells(games: list[Game], axes: Sequence[Axis],
 
 def _row_name(index: int, row_count: int,
               names: tuple = DEFAULTS.presentation.row_names) -> str:
-    """Relative complexity label for a row, lightest (0) to heaviest."""
-    if row_count <= len(names):
+    """Relative complexity label for a row, lightest (0) to heaviest.
+
+    The ladder is spread evenly across however many rows there are, always
+    keeping its lightest and its heaviest. Taking the first `row_count` names
+    instead left the top band called "Medium-Heavy" whenever a reader asked for
+    four, which reads as a missing row rather than a coarser cut.
+    """
+    if row_count > len(names):
+        return f"Tier {index + 1}"
+    if row_count == len(names):
         return names[index]
-    return f"Tier {index + 1}"
+    ladder = names[:-1]          # the top name is reserved for the full ladder
+    if row_count == 1:
+        return ladder[0]
+    at = round(index * (len(ladder) - 1) / (row_count - 1))
+    return ladder[at]

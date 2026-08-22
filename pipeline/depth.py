@@ -48,18 +48,39 @@ def read_depth(gains, leftover: float, fallback: int) -> dict:
     return {"depth": fallback, "auto": False, "left": left}
 
 
+def _seed_into(cells, memberships, keepers, by_id) -> dict:
+    """Each pinned game into the bucket of this axis it belongs to most."""
+    reach: dict = {}
+    for (key, gid), degree in memberships.items():
+        reach.setdefault(gid, {})[key] = degree
+    seeded: dict = {}
+    for gid in keepers:
+        here = reach.get(gid)
+        if here:
+            seeded.setdefault(max(sorted(here), key=here.get), []).append(by_id[gid])
+    return seeded
+
+
 def axis_depths(games, space, ratings, sel, axis, leftover, fallback,
-                probe: int = PROBE, axis_room=None) -> dict:
+                probe: int = PROBE, axis_room=None,
+                rejected=(), keepers=()) -> dict:
     """Read every bucket of one axis at once.
 
     Runs the allocation with that axis alone and a generous ceiling, which is the
     only way to see the curve: a shelf capped at five never shows what its sixth
     pick would have been worth.
+
+    The reader's bans and pins come too. A curve read without them is a curve for
+    a different collection — block a game and the shelf below it fills
+    differently, so the point where returns fall away moves with it.
     """
     cells, memberships = buckets.build_cells(games, [axis], sel)
     scorer = CoverageScorer(space.loadings, space.similarity, ratings,
                             space.spoke_of, sel, axis_room)
-    results = allocate(cells, memberships, scorer, probe, alternates_limit=0, sel=sel)
+    by_id = {g.id: g for g in games}
+    results = allocate(cells, memberships, scorer, probe, alternates_limit=0, sel=sel,
+                       rejected=set(rejected),
+                       seeded=_seed_into(cells, memberships, keepers, by_id))
     return {key[0]: {**read_depth([a.gain for a in r.assignments], leftover, fallback),
                      "key": key[0]}
             for key, r in results.items()}
@@ -67,7 +88,8 @@ def axis_depths(games, space, ratings, sel, axis, leftover, fallback,
 
 def grid_depths(games, space, ratings, sel, coll, weight_rows,
                 overrides: dict | None = None, probe: int = PROBE,
-                axis_room=None, column_axis=None, row_axis=None) -> dict:
+                axis_room=None, column_axis=None, row_axis=None,
+                rejected=(), keepers=()) -> dict:
     """Depth for every cell, as `allocate` wants it.
 
     A cell takes the smaller of its column's answer and its row's, because both
@@ -83,17 +105,21 @@ def grid_depths(games, space, ratings, sel, coll, weight_rows,
     common = (games, space, ratings, sel)
     column_axis = column_axis or buckets.PlayerCountAxis(coll.columns(), sel)
     row_axis = row_axis or buckets.WeightAxis(weight_rows, sel)
-    by_column = axis_depths(*common, column_axis, leftover, fallback, probe, axis_room)
-    by_row = axis_depths(*common, row_axis, leftover, fallback, probe, axis_room)
+    by_column = axis_depths(*common, column_axis, leftover, fallback, probe,
+                            axis_room, rejected, keepers)
+    by_row = axis_depths(*common, row_axis, leftover, fallback, probe,
+                         axis_room, rejected, keepers)
 
     def resolve(read, key, kind):
-        if f"{kind}:{key}" in overrides:
-            return {"depth": overrides[f"{kind}:{key}"], "auto": False,
-                    "read": read.get(key, {}).get("depth")}
         seen = read.get(key)
+        if f"{kind}:{key}" in overrides:
+            return {"depth": overrides[f"{kind}:{key}"], "auto": False, "set": True,
+                    "read": seen["depth"] if seen else None,
+                    "left": seen["left"] if seen else None}
         return {"depth": seen["depth"] if seen else fallback,
-                "auto": bool(seen and seen["auto"]),
-                "read": seen["depth"] if seen else None}
+                "auto": bool(seen and seen["auto"]), "set": False,
+                "read": seen["depth"] if seen else None,
+                "left": seen["left"] if seen else None}
 
     columns = {c["label"]: resolve(by_column, c["label"], "column")
                for c in coll.columns()}

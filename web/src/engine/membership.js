@@ -26,18 +26,38 @@ export function weightRowEdges(weights, count) {
   return edges;
 }
 
-export function buildWeightRows(weights, count, names = []) {
-  const edges = weightRowEdges(weights, count);
+/**
+ * `edges` overrides the quantile cuts.
+ *
+ * The defaults are quantiles so every band holds a comparable number of games,
+ * which is why they are computed rather than chosen. A reader who moves one is
+ * giving that up deliberately, and the interface says so where they do it.
+ */
+/**
+ * A row's cosmetic name.
+ *
+ * The ladder is spread evenly across however many rows there are, always
+ * keeping its lightest and its heaviest. Taking the first `count` names instead
+ * left the top band called "Medium-Heavy" whenever a reader asked for four,
+ * which reads as a missing row rather than a coarser cut.
+ */
+export function rowName(index, count, names) {
+  if (count > names.length) return `Tier ${index + 1}`;
+  if (count === names.length) return names[index];
+  const ladder = names.slice(0, -1);   // the top name is for the full ladder
+  if (count === 1) return ladder[0];
+  return ladder[Math.round((index * (ladder.length - 1)) / (count - 1))];
+}
+
+export function buildWeightRows(weights, count, names = [], edges = null) {
+  const cuts = edges?.length ? [...edges].sort((a, b) => a - b) : weightRowEdges(weights, count);
   let min = Infinity, max = -Infinity;
   for (const w of weights) { if (w < min) min = w; if (w > max) max = w; }
-  const los = [min, ...edges];
-  const his = [...edges, max];
+  const los = [min, ...cuts];
+  const his = [...cuts, max];
   const round2 = (v) => Math.round(v * 100) / 100;
   return los.map((lo, i) => ({
-    index: i,
-    lo: round2(lo),
-    hi: round2(his[i]),
-    name: count <= names.length ? names[i] : `Tier ${i + 1}`,
+    index: i, lo: round2(lo), hi: round2(his[i]), name: rowName(i, count, names),
   }));
 }
 

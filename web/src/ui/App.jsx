@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react';
 import { SplitBar } from './primitives/index.js';
 import { AXES, useCollection } from './state.js';
+import AxisPanel from './views/AxisPanel.jsx';
+import { Blocked, Notice } from './views/Notice.jsx';
 import Collection from './views/Collection.jsx';
 import Mine from './views/Mine.jsx';
-import Settings from './views/Settings.jsx';
 import GameDrawer from './views/GameDrawer.jsx';
 import { toGameView } from './game/view.js';
 import css from './App.module.css';
@@ -21,7 +22,6 @@ import './tokens.css';
 const PAGES = [
   { key: 'collection', label: 'Collection' },
   { key: 'mine', label: 'My games' },
-  { key: 'settings', label: 'Settings' },
 ];
 
 function standfirst(page, built, owned) {
@@ -30,10 +30,12 @@ function standfirst(page, built, owned) {
       ? 'Your games compete like any other. Pin one and it holds its place regardless.'
       : 'Nothing yet. Add what you own and the collection fills around it instead.';
   }
-  if (page === 'settings') {
-    return 'Everything that shapes the collection but does not belong on top of it.';
-  }
   const total = built.grid.reduce((n, c) => n + c.picks.length, 0);
+  if (built.mineOnly) {
+    return `Built out of your ${owned} games and nothing else. What a game `
+      + 'carries here is what it carries for you — and a shelf you have nothing '
+      + 'for shows up empty.';
+  }
   if (built.axes.length === 0) {
     const cut = built.depths?.cell?.depth;
     return `${total} games that between them reach as much of the board-game space `
@@ -68,9 +70,11 @@ export default function App({ contract }) {
       <header className={css.top}>
         <div>
           <h1 className={css.title}>
-            {page === 'mine' ? 'My games' : page === 'settings' ? 'Settings' : 'The collection'}
+            {page === 'mine' ? 'My games' : 'The collection'}
           </h1>
-          <p className={css.standfirst}>{standfirst(page, built, state.owned.length)}</p>
+          <p className={css.standfirst}>
+            {standfirst(page, { ...built, mineOnly: state.mineOnly }, state.owned.length)}
+          </p>
         </div>
         <nav className={css.nav}>
           {PAGES.map((p) => (
@@ -84,16 +88,20 @@ export default function App({ contract }) {
       </header>
 
       <SplitBar axes={AXES} active={state.axes} count={total}
-                onToggle={actions.toggleAxis} />
+                onToggle={actions.toggleAxis} onOpen={actions.togglePanel}
+                openKey={state.panel} ownedCount={state.owned.length}
+                onlyMine={{ on: state.mineOnly, toggle: actions.toggleMineOnly }}>
+        <Blocked state={state} built={built} actions={actions} />
+      </SplitBar>
+      <AxisPanel which={state.axes.includes(state.panel) ? state.panel : null}
+                 built={built} state={state} actions={actions} />
+      <Notice state={state} built={built} actions={actions} />
 
       {page === 'collection' && (
         <Collection built={built} state={state} actions={actions} onOpen={actions.open} />
       )}
       {page === 'mine' && (
         <Mine built={built} state={state} actions={actions} onOpen={actions.open} />
-      )}
-      {page === 'settings' && (
-        <Settings built={built} state={state} actions={actions} />
       )}
 
       <GameDrawer game={open} built={built} state={state} actions={actions}

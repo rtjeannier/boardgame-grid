@@ -9,6 +9,10 @@
 .stat span { font-family: var(--font-mono); font-size: 9px; font-weight: 500;
              letter-spacing: .07em; text-transform: uppercase; color: var(--text-3); }
 
+.link { color: var(--mark); text-decoration: none; }
+.link:hover { text-decoration: underline; }
+.likeRank { font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
+            font-variant-numeric: tabular-nums; }
 .verbs { display: flex; gap: var(--s-3); flex-wrap: wrap; }
 .sec { display: flex; flex-direction: column; gap: var(--s-5); }
 .label { margin: 0; font-family: var(--font-mono); font-size: 9.5px; font-weight: 500;
