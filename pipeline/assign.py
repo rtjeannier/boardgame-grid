@@ -635,6 +635,17 @@ def _capacity_lookup(capacity) -> Callable[[tuple], int]:
     return lambda key: capacity
 
 
+#: Decimal places a shelved game's gain is reported to.
+#:
+#: It looks like display precision and is not: `depth.read_depth` reads these
+#: numbers to decide where a shelf stops, so both engines must round identically
+#: or they disagree about which fall was sharpest. Measured: at full precision
+#: the weight-3 row with genre 9 discounted cuts at 10, and at three places two
+#: drops tie at 0.120 and it cuts at 8. The contract carries this so the browser
+#: rounds the same way; ties keep the earlier index on both sides.
+GAIN_PLACES = 3
+
+
 def allocate(cells: dict, memberships: dict, scorer: Scorer,
              capacity: int | dict | Callable[[tuple], int],
              seeded: dict | None = None, alternates_limit: int = 0,
@@ -734,7 +745,8 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
             key=lambda g: g.rank,
         )
         results[key] = CellResult(
-            [Assignment(g, round(gains[(key, g.id)], 3) if (key, g.id) in gains else None)
+            [Assignment(g, round(gains[(key, g.id)], GAIN_PLACES)
+                        if (key, g.id) in gains else None)
              for g in chosen[key]],
             leftovers[:alternates_limit],
         )

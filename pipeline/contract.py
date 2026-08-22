@@ -33,6 +33,7 @@ import numpy as np
 from . import buckets, coverage
 from .config import ROOT
 from .params import DEFAULTS, Params
+from .assign import GAIN_PLACES
 
 OUTPUT = ROOT / "web" / "public" / "grid.contract.json"
 VERSION = "boardgame-grid/1"
@@ -184,6 +185,7 @@ def build_contract(games, space, results, source: str, generated_at: str,
                    params: Params = DEFAULTS) -> dict:
     ids = [g.id for g in games]
     sel = params.selection
+    coll = params.collection
     thin = superseded(games)
 
     space = space if isinstance(space, QuantisedSpace) else QuantisedSpace(space)
@@ -255,6 +257,21 @@ def build_contract(games, space, results, source: str, generated_at: str,
             "repeatPenalty": sel.genre_repeat_penalty,
             "gainFloor": sel.gain_floor,
             "replacementKeep": sel.replacement_keep,
+            "gainPlaces": GAIN_PLACES,
+        },
+        # What the interface starts from. Unlike `policy` these *are* settings a
+        # reader may reason about and change; they ship so that first paint and
+        # first interaction agree without the frontend keeping its own copy.
+        "defaults": {
+            "picksPerCell": coll.picks_per_cell,
+            "autoDepth": coll.auto_depth,
+            "autoDepthLeftover": coll.auto_depth_leftover,
+            "weightRows": coll.weight_rows,
+            "rowNames": list(params.presentation.row_names),
+            "playerColumns": [
+                {"label": c["label"], "lo": c["lo"], "hi": c["hi"]}
+                for c in coll.columns()
+            ],
         },
     }
 

@@ -27,6 +27,7 @@ from .assign import ArchetypeScorer, CoverageScorer, MmrScorer, allocate
 from .config import OUTPUT_JSON, SEED_DATASET
 from .contract import PLACES, QuantisedSpace, build_contract, quantise_games
 from .contract import write as write_contract
+from . import depth
 from .params import DEFAULTS, Params
 from .features import build_feature_space, genre_overlap
 from .report import build_report, format_report
@@ -56,7 +57,16 @@ def build(dataset_path, assigner_name, want_report=False, output=None,
         "mmr": lambda: MmrScorer(space.vectors, params.baseline),
         "greedy": lambda: ArchetypeScorer(),
     }[assigner_name]()
-    results = allocate(cells, memberships, scorer, coll.capacity(cells),
+    # Depth is read from each axis's own curve when `auto_depth` is on, and is
+    # the reader's number when it is not. Both are ceilings, and a cell takes
+    # the smaller of its column's and its row's — the same rule either way.
+    if coll.auto_depth:
+        capacity = depth.grid_depths(games, space, ratings, sel, coll, weight_rows,
+                                     axis_room=coll.axis_room(space.dimension_names,
+                                                              space.spoke_of))["capacity"]
+    else:
+        capacity = coll.capacity(cells)
+    results = allocate(cells, memberships, scorer, capacity,
                        alternates_limit=pres.alternates_per_cell, sel=sel)
 
     def primary_genre(g):
@@ -176,7 +186,7 @@ def build(dataset_path, assigner_name, want_report=False, output=None,
     if want_report:
         print()
         print(format_report(build_report(space, games, results,
-                                         coll.picks_per_cell, source, params)))
+                                         capacity, source, params)))
 
     return payload
 

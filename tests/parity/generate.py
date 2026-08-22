@@ -19,7 +19,7 @@ Everything runs on the seed dataset, because a fresh clone can reproduce it.
 import json
 from pathlib import Path
 
-from pipeline import buckets, dataset
+from pipeline import buckets, dataset, depth
 from pipeline.assign import CoverageScorer, allocate
 from pipeline.contract import PLACES, QuantisedSpace, build_contract, quantise_games
 from pipeline.contract import write as write_contract
@@ -33,10 +33,13 @@ MERGED = [("1-2", 1, 2), ("3-4", 3, 4), ("5+", 5, 0)]
 #: the engine disagreed rather than merely that something did.
 CASES = [
     {"name": "defaults", "params": {}, "options": {}},
-    {"name": "shallower cells", "params": {"collection": {"picks_per_cell": 3}},
+    {"name": "shallower cells",
+     "params": {"collection": {"picks_per_cell": 3, "auto_depth": False}},
      "options": {"capacity": 3}},
     {"name": "gain floor trims thin cells",
-     "params": {"selection": {"gain_floor": 0.2}}, "options": {"gainFloor": 0.2}},
+     "params": {"selection": {"gain_floor": 0.2},
+                "collection": {"auto_depth": False}},
+     "options": {"gainFloor": 0.2, "capacity": 5}},
     {"name": "fewer weight rows", "params": {"collection": {"weight_rows": 3}},
      "options": {"rowCount": 3}},
     {"name": "merged player columns",
@@ -44,7 +47,8 @@ CASES = [
      "options": {"columns": [{"label": l, "lo": lo, "hi": hi or None}
                              for l, lo, hi in MERGED]}},
     {"name": "per-column capacity",
-     "params": {"collection": {"picks_per_column": {"8+": 2, "6-8": 3}}},
+     "params": {"collection": {"picks_per_column": {"8+": 2, "6-8": 3},
+                               "auto_depth": False}},
      "options": {}},          # capacity map filled in below
     {"name": "duplicate suppression relaxed",
      "params": {"selection": {"similarity_exponent": 2}},
@@ -52,6 +56,11 @@ CASES = [
     {"name": "collection pull off",
      "params": {"selection": {"collection_weight": 0.0}},
      "options": {"policy": {"collectionWeight": 0.0}}},
+    # Auto depth is the default on both sides, so the case worth pinning is the
+    # other one: a reader who typed a number over it.
+    {"name": "one depth everywhere, set by hand",
+     "params": {"collection": {"auto_depth": False}},
+     "options": {"capacity": 5}},
     {"name": "one game per kind off",
      "params": {"selection": {"genre_repeat_penalty": 1.0}},
      "options": {"policy": {"repeatPenalty": 1.0}}},
@@ -76,7 +85,15 @@ def run(games, space, params, banned=(), keepers=()):
         here = reach.get(gid)
         if here:
             seeded.setdefault(max(sorted(here), key=here.get), []).append(by_id[gid])
-    results = allocate(cells, memb, scorer, coll.capacity(cells),
+    if coll.auto_depth:
+        room = depth.grid_depths(
+            games, space, {g.id: g.rating for g in games}, sel, coll, rows,
+            axis_room=coll.axis_room(space.dimension_names, space.spoke_of),
+            column_axis=buckets.PlayerCountAxis(coll.columns(), sel, places=PLACES),
+            row_axis=buckets.WeightAxis(rows, sel))["capacity"]
+    else:
+        room = coll.capacity(cells)
+    results = allocate(cells, memb, scorer, room,
                        seeded=seeded, alternates_limit=pres.alternates_per_cell,
                        sel=sel, rejected=set(banned))
     return {f"{k[0]}|{k[1]}": [a.game.id for a in r.assignments]

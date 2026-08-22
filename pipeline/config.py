@@ -391,6 +391,28 @@ GENRE_SCARCITY = 0.5
 # games that merely reach a cell.
 GAIN_FLOOR = 0.0
 
+# How decisive a fall in value has to be before the shelf stops there by itself.
+#
+# A shelf could fill until nothing is left, but the interesting question is where
+# it stops paying. Measured over the seed corpus: reading the collection with no
+# axes at all, the twelfth game adds 0.618 and the thirteenth 0.274 — a fall five
+# times larger than any beside it, and the obvious place to stop. Reading down
+# the player columns gives 5, 6, 11, 10, 3 and — at nine-plus — 1, because after
+# Blood on the Clocktower the next best there is worth a quarter as much.
+#
+# Taking the sharpest fall alone is not enough: on a smooth curve it fires early
+# and leaves real value behind (players 4 stopped at 3 with 0.74 still on the
+# table). So the cut only counts when what remains is under this share of what
+# the first pick added. At 0.45 it fired on ten of thirteen readings and declined
+# on the three where the curve is smooth, which then fall back to a set depth.
+#
+# Never read per cell. Thirty-five five-pick sequences are too short to have a
+# knee in them — measured median depth 1, one cell at 19, mostly noise — so it is
+# read once down each column and once across each row, and a cell takes the
+# smaller of the two.
+AUTO_DEPTH_LEFTOVER = 0.45
+AUTO_DEPTH = True
+
 # How much the rest of the shelf pulls on a cell's choice, as an exponent on
 # how new a game is against everything already placed anywhere. Zero ignores the
 # collection entirely and each cell is filled in isolation; one weighs the whole

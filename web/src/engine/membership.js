@@ -85,36 +85,71 @@ export function rowMemberships(weight, rows, policy) {
   return out;
 }
 
+/** An axis: a game row in, `[bucket, membership]` pairs out. */
+export function playerAxis(columns) {
+  return {
+    key: (i) => columns[i].label,
+    of: (ix, g, policy) => columnMemberships(ix, g, columns, policy),
+  };
+}
+
+export function weightAxis(rows) {
+  return {
+    key: (i) => String(i),
+    of: (ix, g, policy) => rowMemberships(ix.weight[g], rows, policy),
+  };
+}
+
 /**
  * Cross the axes into cells and place every game in each by degree.
+ *
+ * The axis list may be empty, and that is the important case: with no axes
+ * there is one cell holding the whole corpus at degree 1, which *is* the
+ * collection. `pipeline/collection.py` says the same thing on the Python side —
+ * "the grid with no axes: one cell holding the whole game space" — so the grid
+ * is a form of the collection rather than a different object. One axis gives
+ * columns; two gives the grid.
  *
  * Returns pools as flat arrays of game rows plus their membership, which is the
  * shape the scorer wants. Cells below `cellFloor` are dropped — quietly the
  * most performance-relevant constant there is, since it keeps a pool in the
  * hundreds rather than at the size of the corpus.
  */
-export function buildCells(ix, { columns, rows, include = null }) {
+export function buildCells(ix, { columns, rows, axes = null, include = null }) {
   const policy = ix.policy;
+  const list = axes ?? [
+    ...(columns ? [playerAxis(columns)] : []),
+    ...(rows ? [weightAxis(rows)] : []),
+  ];
   const cells = new Map();
 
   for (let g = 0; g < ix.n; g++) {
     if (include && !include[g]) continue;
-    const cols = columnMemberships(ix, g, columns, policy);
-    if (!cols.length) continue;
-    const rws = rowMemberships(ix.weight[g], rows, policy);
-    for (const [c, cm] of cols) {
-      for (const [r, rm] of rws) {
-        const degree = cm * rm;
-        if (degree <= policy.cellFloor) continue;
-        const key = `${columns[c].label}|${r}`;
-        let cell = cells.get(key);
-        if (!cell) {
-          cell = { key, column: columns[c].label, row: r, games: [], degree: [] };
-          cells.set(key, cell);
+    let combos = [{ parts: [], degree: 1 }];
+    for (const axis of list) {
+      const next = [];
+      for (const combo of combos) {
+        for (const [i, m] of axis.of(ix, g, policy)) {
+          next.push({ parts: [...combo.parts, axis.key(i)], degree: combo.degree * m });
         }
-        cell.games.push(g);
-        cell.degree.push(degree);
       }
+      combos = next;
+      if (!combos.length) break;
+    }
+    for (const combo of combos) {
+      if (combo.degree <= policy.cellFloor) continue;
+      const key = combo.parts.join('|');
+      let cell = cells.get(key);
+      if (!cell) {
+        cell = {
+          key, labels: combo.parts, games: [], degree: [],
+          column: combo.parts[0], row: combo.parts[1] === undefined
+            ? undefined : Number(combo.parts[1]),
+        };
+        cells.set(key, cell);
+      }
+      cell.games.push(g);
+      cell.degree.push(combo.degree);
     }
   }
 

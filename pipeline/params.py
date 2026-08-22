@@ -56,6 +56,11 @@ class Collection:
     """What a person manipulates. This is exactly the state a UI serialises."""
     weight_rows: int = config.WEIGHT_ROW_COUNT
     picks_per_cell: int = config.PICKS_PER_CELL
+    # Depth need not be chosen at all. `auto_depth` reads each axis's own curve
+    # and stops where the fall is decisive; `picks_per_cell` is what applies
+    # when it is not, and what a reader types over the top of either.
+    auto_depth: bool = config.AUTO_DEPTH
+    auto_depth_leftover: float = config.AUTO_DEPTH_LEFTOVER
     collection_size: int = config.COLLECTION_SIZE
     # Depth need not be uniform. The player columns are fixed ranges over a
     # lopsided distribution — `8+` holds 142 candidates against 5,577 for `4` —

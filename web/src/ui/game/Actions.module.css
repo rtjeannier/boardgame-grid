@@ -1,0 +1,8 @@
+.acts { display: flex; gap: var(--s-1); }
+.act { width: 24px; height: 24px; padding: 0; flex: none;
+       display: grid; place-items: center; border: 1px solid transparent;
+       border-radius: var(--r); background: none; color: var(--text-3); cursor: pointer; }
+.act:hover { border-color: var(--line-2); color: var(--text); background: var(--surface); }
+.on { color: var(--mark); border-color: var(--mark); background: var(--mark-wash); }
+.stop:hover { color: var(--stop); border-color: var(--stop); background: var(--stop-wash); }
+.stop.on { color: var(--stop); border-color: var(--stop); background: var(--stop-wash); }

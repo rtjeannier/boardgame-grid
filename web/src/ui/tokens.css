@@ -1,0 +1,79 @@
+/**
+ * Every colour, space and radius the interface may use, in one place.
+ *
+ * Components are checked against this file: a `.module.css` under `ui/` that
+ * writes a colour literal instead of `var(--token)` fails `test/ui-tokens.test.js`.
+ * That rule exists because the last stylesheet invented `--ink`, `--panel` and
+ * `--line` — none of which were ever defined — and rendered black on black in
+ * eighteen places before anyone noticed.
+ */
+
+:root {
+  --font-sans: "Geist", ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* Ground and surfaces. Neutrals carry a faint warm cast so they read as
+     chosen rather than inherited from the browser. */
+  --bg: #fcfcfb;
+  --surface: #ffffff;
+  --sunken: #f4f4f2;
+  --line: #e6e6e2;
+  --line-2: #d4d4cf;
+
+  --text: #14161a;
+  --text-2: #585d65;
+  --text-3: #8b8f98;
+
+  /* The one accent. It means a quantity — how much of a shelf a game carries —
+     and, as a wash, one state: this is yours. Genre never carries colour. */
+  --mark: #2f5fd0;
+  --mark-wash: #eef3fd;
+  --mark-wash-2: #e0eafb;
+
+  /* A shelf the corpus cannot fill at the depth asked of it. */
+  --short: #8a6100;
+  --short-wash: #fbf4e4;
+  --short-line: #dcc389;
+
+  /* Blocked: never offer this game again. */
+  --stop: #a6383a;
+  --stop-wash: #fbeeee;
+
+  --s-1: 2px;  --s-2: 4px;  --s-3: 6px;  --s-4: 8px;
+  --s-5: 10px; --s-6: 12px; --s-7: 16px; --s-8: 20px;
+  --s-9: 26px; --s-10: 36px; --s-11: 44px;
+
+  --r: 5px;
+  --r-sm: 3px;
+  --r-pill: 20px;
+
+  --shadow-pop: 0 6px 20px rgba(16, 18, 22, .07);
+  --shadow-drawer: -24px 0 56px rgba(12, 14, 18, .12);
+  --shadow-raised: 0 1px 2px rgba(16, 18, 22, .08);
+
+  --scrim: rgba(12, 14, 18, .3);
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Digits that sit in columns always line up. */
+.tnum { font-variant-numeric: tabular-nums; }
+
+:where(button, input, textarea, select):focus-visible {
+  outline: 2px solid var(--mark);
+  outline-offset: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}

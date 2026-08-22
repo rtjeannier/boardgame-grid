@@ -8,7 +8,8 @@
 
 export { indexContract } from './contract.js';
 export { ratingSpans, coverageWeights } from './quality.js';
-export { buildWeightRows, buildCells } from './membership.js';
+export { buildWeightRows, buildCells, playerAxis, weightAxis } from './membership.js';
+export { readDepth, axisDepths, gridDepths, PROBE } from './depth.js';
 export { CoverageScorer } from './scorer.js';
 export { allocate } from './allocate.js';
 export { toGridData } from './present.js';
@@ -17,7 +18,8 @@ export { analyseShelf, coverageOf, spokeVector } from './shelf.js';
 
 import { indexContract } from './contract.js';
 import { ratingSpans, coverageWeights } from './quality.js';
-import { buildWeightRows, buildCells } from './membership.js';
+import { buildWeightRows, buildCells, playerAxis, weightAxis } from './membership.js';
+import { gridDepths } from './depth.js';
 import { CoverageScorer } from './scorer.js';
 import { allocate } from './allocate.js';
 import { toGridData } from './present.js';
@@ -41,8 +43,9 @@ export const DEFAULT_ROW_NAMES =
  * exists to prevent, and it comes straight back through a filter control.
  */
 export function buildGrid(contract, {
+  axes = ['players', 'weight'],
   columns = DEFAULT_COLUMNS, rowCount = 5, rowNames = DEFAULT_ROW_NAMES,
-  capacity = 5, alternatesLimit = 6,
+  capacity = 'auto', alternatesLimit = 6, depthOverrides = {}, autoDepthLeftover = null,
   owned = [], keepers = [], banned = [],
   genreWeights = null, include = null, gainFloor = null, policy = null,
 } = {}) {
@@ -51,12 +54,43 @@ export function buildGrid(contract, {
   // a sweep affordance — never something the interface exposes.
   const ix = policy ? { ...base, policy: { ...base.policy, ...policy } } : base;
 
+  const defaults = base.defaults ?? {};
   const weights = coverageWeights(ix, include ? ratingSpans(ix, include) : null);
   const rows = buildWeightRows(
     include ? [...ix.weight].filter((_, g) => include[g]) : ix.weight,
     rowCount, rowNames);
-  const cells = buildCells(ix, { columns, rows, include });
+
+  // `axes` is the whole difference between the collection and the grid. Empty
+  // is one cell holding everything; one axis gives columns; two gives cells.
+  const onPlayers = axes.includes('players');
+  const onWeight = axes.includes('weight');
+  const axisList = [
+    ...(onPlayers ? [playerAxis(columns)] : []),
+    ...(onWeight ? [weightAxis(rows)] : []),
+  ];
+  const cells = buildCells(ix, { axes: axisList, include });
   const scorer = new CoverageScorer(ix, weights, cells, { genreWeights });
+
+  // Depth is read from each axis's own curve unless a number was given. With no
+  // axes there is nothing to read down, so the collection stops on the gain
+  // floor and the ceiling only has to be out of the way.
+  let depths = null;
+  let room = capacity;
+  if (capacity === 'auto') {
+    const leftover = autoDepthLeftover ?? defaults.autoDepthLeftover ?? 0.45;
+    const fallback = defaults.picksPerCell ?? 5;
+    if (axisList.length === 0) {
+      room = ix.n;
+    } else {
+      depths = gridDepths(ix, weights, {
+        columns: onPlayers ? columns : null,
+        rows: onWeight ? rows : null,
+        leftover, fallback, overrides: depthOverrides, genreWeights, include,
+        places: ix.policy.gainPlaces ?? 3,
+      });
+      room = depths.capacity;
+    }
+  }
 
   const rowsOf = (ids) => ids.map((id) => ix.rowOf.get(id)).filter((r) => r !== undefined);
   const seeded = new Map();
@@ -70,17 +104,18 @@ export function buildGrid(contract, {
   }
 
   const results = allocate(ix, scorer, cells, {
-    capacity, seeded, rejected: new Set(rowsOf(banned)), alternatesLimit, gainFloor,
+    capacity: room, seeded, rejected: new Set(rowsOf(banned)), alternatesLimit, gainFloor,
   });
 
   const ownedRows = new Set(rowsOf(owned));
   return {
-    ix, rows,
+    ix, rows, axes, depths, columns,
     // `cells` are the candidate pools with their weights; `results` is what the
     // allocation made of them. Both are wanted — explaining why a game was cut
     // needs the pools, which say what it could ever have reached.
     cells, results, weights,
-    data: toGridData(ix, results, cells, rows, columns),
+    // The grid shape only means anything when both axes are on.
+    data: onPlayers && onWeight ? toGridData(ix, results, cells, rows, columns) : null,
     grid: results.map((cell) => ({
       ...cell,
       picks: cell.picks.map((g, i) => ({

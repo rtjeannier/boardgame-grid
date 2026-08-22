@@ -127,7 +127,12 @@ def pick_stats(results: dict, capacity) -> dict:
     picks = [a.game for result in results.values() for a in result.assignments]
     ranks = sorted(g.rank for g in picks)
 
-    room = capacity if callable(capacity) else (lambda key: capacity)
+    if callable(capacity):
+        room = capacity
+    elif isinstance(capacity, dict):
+        room = lambda key: capacity.get(key, 0)   # noqa: E731
+    else:
+        room = lambda key: capacity               # noqa: E731
     slots = sum(room(key) for key in results)
 
     return {

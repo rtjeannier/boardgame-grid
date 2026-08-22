@@ -10,7 +10,9 @@
  */
 
 const roomFor = (capacity, key) =>
-  typeof capacity === 'number' ? capacity : (capacity[key] ?? 0);
+  typeof capacity === 'number' ? capacity
+    : capacity instanceof Map ? (capacity.get(key) ?? 0)
+      : (capacity[key] ?? 0);
 
 /** One round of deferred acceptance. Returns cell -> {pool index, score}. */
 function bidRound(scorer, cells, capacity, taken, gainFloor) {

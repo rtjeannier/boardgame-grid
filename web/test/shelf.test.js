@@ -99,11 +99,52 @@ test('discounting a kind to zero thins it out', () => {
     `expected fewer than ${counts[biggest]} picks of the discounted kind, got ${after}`);
 });
 
+const inColumn = (grid, label) =>
+  grid.filter((c) => c.column === label).reduce((n, c) => n + c.picks.length, 0);
+
 test('capping a column shelves fewer games there', () => {
+  // Against a flat depth, not against the default — the default reads depth off
+  // each column's own curve and is already tighter here than this cap.
+  const flat = buildGrid(ix, { capacity: 5 });
   const capacity = {};
-  for (const cell of base.cells) capacity[cell.key] = cell.key.startsWith('8+|') ? 2 : 5;
+  for (const cell of flat.cells) capacity[cell.key] = cell.key.startsWith('8+|') ? 2 : 5;
   const { grid } = buildGrid(ix, { capacity });
-  const thin = grid.filter((c) => c.column === '8+').reduce((n, c) => n + c.picks.length, 0);
-  const before = base.grid.filter((c) => c.column === '8+').reduce((n, c) => n + c.picks.length, 0);
-  assert.ok(thin < before, `${thin} should be fewer than ${before}`);
+  assert.ok(inColumn(grid, '8+') < inColumn(flat.grid, '8+'),
+    `${inColumn(grid, '8+')} should be fewer than ${inColumn(flat.grid, '8+')}`);
+});
+
+test('depth read from the curve is tighter at nine-plus than a flat five', () => {
+  // The point of reading depth rather than setting it: nine-plus has 25 games
+  // that reach it at all, so asking for five a shelf shelves whatever is left.
+  // The curve says one — after the best there, the next is worth a quarter.
+  const flat = buildGrid(ix, { capacity: 5 });
+  assert.ok(inColumn(base.grid, '8+') < inColumn(flat.grid, '8+'),
+    `auto ${inColumn(base.grid, '8+')} should be fewer than flat ${inColumn(flat.grid, '8+')}`);
+  assert.equal(base.depths.columnDepth.get('8+').depth, 1);
+  assert.equal(base.depths.columnDepth.get('8+').auto, true);
+});
+
+test('a smooth curve falls back to the set depth and says so', () => {
+  // Four players slopes rather than falls, so any cut would be arbitrary: the
+  // reading is declined and the number a reader set applies instead.
+  const four = base.depths.columnDepth.get('4');
+  assert.equal(four.auto, false);
+  assert.equal(four.depth, 5);
+});
+
+test('a depth a reader types beats both', () => {
+  const { depths } = buildGrid(ix, { depthOverrides: { 'column:8+': 4 } });
+  assert.equal(depths.columnDepth.get('8+').depth, 4);
+  assert.equal(depths.columnDepth.get('8+').auto, false);
+  assert.equal(depths.columnDepth.get('8+').read, 1);
+});
+
+test('with no axes the collection is one cell that stops on its own', () => {
+  // `buildCells(ix, { axes: [] })` is the collection: one cell, whole corpus.
+  // Python says the same thing, which is what makes the grid a form of it.
+  const { grid } = buildGrid(ix, { axes: [], gainFloor: 0.3 });
+  assert.equal(grid.length, 1);
+  assert.equal(grid[0].key, '');
+  assert.ok(grid[0].picks.length > 5 && grid[0].picks.length < 40,
+    `a collection of ${grid[0].picks.length} is not a collection`);
 });
