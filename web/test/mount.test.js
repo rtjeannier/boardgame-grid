@@ -256,3 +256,27 @@ test('only-my-games needs games, then builds out of them alone', () => {
   assert.match(host.textContent, /Built out of your/);
   act(() => root.unmount());
 });
+
+test('an empty collection is a state, not a crash', () => {
+  const { host, root } = mount();
+  const depth = host.querySelector('input[aria-label="Games on this shelf"]');
+  assert.ok(depth, 'the collection has no depth to clear');
+
+  const type = (value) => act(() => {
+    const setter = Object.getOwnPropertyDescriptor(
+      dom.window.HTMLInputElement.prototype, 'value').set;
+    setter.call(depth, value);
+    depth.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+  });
+
+  type('');                                     // this used to throw
+  assert.match(host.textContent, /Empty\./, 'no empty state');
+  assert.match(host.textContent, /Add Brass: Birmingham/,
+    'an empty collection should offer the best game there is');
+  assert.ok(!host.textContent.includes('NaN'));
+
+  // And back up again, one game at a time, naming each.
+  click(byText('＋ Add Brass: Birmingham', host));
+  assert.match(host.textContent, /Add Gloomhaven/, 'the button did not move on');
+  act(() => root.unmount());
+});

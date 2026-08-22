@@ -37,10 +37,14 @@ function standfirst(page, built, owned) {
       + 'for shows up empty.';
   }
   if (built.axes.length === 0) {
-    const cut = built.depths?.cell?.depth;
+    if (!total) {
+      return 'Empty. Add games one at a time and each will be the one that '
+        + 'reaches furthest into what the others leave uncovered.';
+    }
+    const worked = built.depths?.cell?.auto;
     return `${total} games that between them reach as much of the board-game space `
-      + `as anything can.${cut ? ` It stopped at ${cut} because the next one would `
-      + 'have added less than half what the last did.' : ''}`;
+      + `as anything can.${worked ? ' It stopped there because the next one would '
+      + 'not have added enough to be worth the space.' : ''}`;
   }
   if (built.axes.length === 1) {
     return 'The same question asked once per group. Each fills until its own '

@@ -57,11 +57,11 @@ function Facts({ ix, rows }) {
 function Why({ cell }) {
   if (!cell?.curve?.length) return null;
   const top = Math.max(...cell.curve);
-  const before = cell.curve[cell.depth - 1];
-  const after = cell.curve[cell.depth];
+  const before = cell.depth > 0 ? cell.curve[cell.depth - 1] : null;
+  const after = cell.curve[cell.depth] ?? null;
   return (
     <div className={css.block}>
-      <h2 className={css.label}>Why {cell.depth}</h2>
+      <h2 className={css.label}>{cell.depth === 0 ? 'What it would take' : `Why ${cell.depth}`}</h2>
       <div className={css.curve}>
         {cell.curve.map((v, i) => (
           <span key={i} className={`${css.bar} ${i >= cell.depth ? css.past : ''}`.trim()}
@@ -69,7 +69,7 @@ function Why({ cell }) {
                          opacity: i < cell.depth ? (0.4 + (v / top) * 0.6).toFixed(2) : 1 }} />
         ))}
       </div>
-      {after != null && (
+      {before != null && after != null && (
         <span className={css.cliff}>
           <b>{before.toFixed(2)} → {after.toFixed(2)}</b>
           <span>between game {cell.depth} and game {cell.depth + 1}</span>
@@ -112,6 +112,7 @@ export default function Collection({ built, state, actions, onOpen }) {
   }, [ix, grid, weights, state.owned]);
 
   const total = grid.reduce((n, c) => n + c.picks.length, 0);
+  const last = shelf?.picks?.length ? shelf.picks[shelf.picks.length - 1].gain : null;
 
   return (
     <div className={css.view}>
@@ -159,20 +160,21 @@ export default function Collection({ built, state, actions, onOpen }) {
                 <div className={css.addRow}>
                   <Button onClick={() => actions.setDepth(
                     'collection', (depths.cell.depth ?? shelf.picks.length) + 1)}>
-                    ＋ Add the next best game
+                    ＋ Add {depths.cell.nextName}
                   </Button>
                   <span className={css.addNote}>
-                    {depths.cell.nextName} would come in, adding{' '}
-                    {depths.cell.next?.toFixed(2)} where the last one in added{' '}
-                    {shelf.picks[shelf.picks.length - 1]?.gain?.toFixed(2)}.
+                    {last == null
+                      ? `Adds ${depths.cell.next?.toFixed(2)} — the most of anything left.`
+                      : `Adds ${depths.cell.next?.toFixed(2)}, against ${last.toFixed(2)} for the last one in.`}
                   </span>
-                  {depths.cell.read != null && depths.cell.depth !== depths.cell.read && (
-                    <button type="button" className={css.revert}
-                            onClick={() => actions.setDepth('collection', null)}>
-                      Back to {depths.cell.read}
-                    </button>
-                  )}
                 </div>
+              )}
+              {shelf.picks.length === 0 && (
+                <p className={css.blank}>
+                  Empty. The bars on the left are what each game would add if you
+                  took them in order — the first one adds the most because
+                  nothing is covered yet.
+                </p>
               )}
               <div className={css.list}>
                 {shelf.picks.map((p, i) => (

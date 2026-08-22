@@ -33,9 +33,8 @@
 .addRow { display: flex; align-items: center; gap: var(--s-5); flex-wrap: wrap;
           margin-top: calc(var(--s-2) * -1); }
 .addNote { font-size: 11.5px; line-height: 1.5; color: var(--text-2); }
-.revert { font-family: var(--font-sans); font-size: 11.5px; font-weight: 500;
-          background: none; border: 0; padding: 0; color: var(--mark); cursor: pointer;
-          text-decoration: underline; text-underline-offset: 2px; }
+.blank { margin: var(--s-6) 0 0; font-size: 12.5px; line-height: 1.6;
+         color: var(--text-2); max-width: 62ch; }
 .list { display: flex; flex-direction: column; }
 .entry { padding: var(--s-4) 0; border-top: 1px solid var(--line); }
 .entry:first-child { border-top: 0; }
