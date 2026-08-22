@@ -97,36 +97,44 @@ export function buildGrid(contract, {
       const probeScorer = new CoverageScorer(ix, weights, probeCells, { genreWeights });
       const probe = allocate(ix, probeScorer, probeCells, {
         capacity: COLLECTION_PROBE, alternatesLimit: 0, gainFloor,
-        rejected: rejectedRows, seeded: seedInto(probeCells, keeperRows),
+        rejected: rejectedRows,
       });
       const read = readDepth(probe[0]?.gains ?? [],
         { leftover, fallback, places: ix.policy.gainPlaces ?? 3 });
-      room = read.depth;
+      // The unsplit collection takes an override like any other shelf, under
+      // the key `collection` — there is no column or row to name it by.
+      const set = depthOverrides.collection;
+      room = set == null ? read.depth : Math.max(0, Math.min(COLLECTION_PROBE, set));
       // The curve past the cut is kept: showing where it fell is the only
       // honest way to say why the collection is the size it is.
-      depths = { capacity: room, columnDepth: new Map(), rowDepth: new Map(),
-                 cell: { ...read, curve: (probe[0]?.gains ?? []).slice(0, 24) } };
+      depths = {
+        capacity: room, columnDepth: new Map(), rowDepth: new Map(),
+        cell: {
+          ...read, depth: room, auto: set == null, read: read.depth,
+          // How much the next game would add, so a button can say whether it is
+          // worth pressing rather than only that it exists.
+          next: probe[0]?.gains?.[room] ?? null,
+          nextName: probe[0]?.picks?.[room] == null
+            ? null : ix.names[probe[0].picks[room]],
+          curve: (probe[0]?.gains ?? []).slice(0, 24),
+        },
+      };
     } else {
       depths = gridDepths(ix, weights, {
         columns: onPlayers ? columns : null,
         rows: onWeight ? rows : null,
         leftover, fallback, overrides: depthOverrides, genreWeights, include,
         places: ix.policy.gainPlaces ?? 3,
-        rejected: rejectedRows, keepers: keeperRows,
+        rejected: rejectedRows,
       });
       room = depths.capacity;
     }
   }
 
-  const seeded = new Map();
-  for (const game of keeperRows) {
-    let best = null, degree = -1;
-    for (const cell of cells) {
-      const at = cell.games.indexOf(game);
-      if (at >= 0 && cell.degree[at] > degree) { best = cell.key; degree = cell.degree[at]; }
-    }
-    if (best) seeded.set(best, [...(seeded.get(best) ?? []), game]);
-  }
+  // The unsplit collection is one cell keyed by the empty string, which is
+  // falsy — so `if (best)` silently dropped every pin there, and a pinned game
+  // simply never appeared. `seedInto` gets it right and is the only copy now.
+  const seeded = seedInto(cells, keeperRows);
 
   const results = allocate(ix, scorer, cells, {
     capacity: room, seeded, rejected: rejectedRows, alternatesLimit, gainFloor,

@@ -3,6 +3,8 @@ import { coverageOf, spokeVector } from '../../engine/index.js';
 import GameItem from '../game/GameItem.jsx';
 import { toGameView } from '../game/view.js';
 import Radar from '../chart/Radar.jsx';
+import Button from '../primitives/Button.jsx';
+import DepthField from '../primitives/DepthField.jsx';
 import { sharesOf } from '../state.js';
 import Board, { shelvedNow } from './Board.jsx';
 import css from './Collection.module.css';
@@ -75,9 +77,9 @@ function Why({ cell }) {
       )}
       <p className={css.note}>
         Each bar is what one more game would add to what the others already
-        cover. It stops where the fall is decisive — here, {cell.depth === 1
-          ? 'immediately after the first'
-          : `after the ${cell.depth}th`}.
+        cover. It keeps going while that is at least {Math.round(
+          (cell.bar / (cell.curve[0] || 1)) * 100)}% of what the first one added
+        — the grey bars are the ones that were not.
       </p>
     </div>
   );
@@ -144,8 +146,34 @@ export default function Collection({ built, state, actions, onOpen }) {
             <>
               <div className={css.head}>
                 <h2 className={css.title}>Every game in it</h2>
-                <span className={css.sub}>ordered by how much of the collection each carries</span>
+                <span className={css.depth}>
+                  <DepthField value={depths?.cell?.depth ?? shelf.picks.length}
+                              auto={depths?.cell?.auto ? depths.cell.depth : depths?.cell?.read}
+                              onChange={(v) => actions.setDepth('collection', v)} />
+                </span>
+                <span className={css.sub}>
+                  ordered by how much of the collection each carries
+                </span>
               </div>
+              {depths?.cell?.nextName && (
+                <div className={css.addRow}>
+                  <Button onClick={() => actions.setDepth(
+                    'collection', (depths.cell.depth ?? shelf.picks.length) + 1)}>
+                    ＋ Add the next best game
+                  </Button>
+                  <span className={css.addNote}>
+                    {depths.cell.nextName} would come in, adding{' '}
+                    {depths.cell.next?.toFixed(2)} where the last one in added{' '}
+                    {shelf.picks[shelf.picks.length - 1]?.gain?.toFixed(2)}.
+                  </span>
+                  {depths.cell.read != null && depths.cell.depth !== depths.cell.read && (
+                    <button type="button" className={css.revert}
+                            onClick={() => actions.setDepth('collection', null)}>
+                      Back to {depths.cell.read}
+                    </button>
+                  )}
+                </div>
+              )}
               <div className={css.list}>
                 {shelf.picks.map((p, i) => (
                   <div key={p.id} className={css.entry}>

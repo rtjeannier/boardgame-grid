@@ -13,13 +13,11 @@ import css from './AxisPanel.module.css';
 
 function Reading({ read }) {
   if (!read) return null;
-  const { depth, auto, left } = read;
+  const { depth, auto, read: worked } = read;
   return (
     <span className={`${css.reading} ${auto ? '' : css.fellBack}`.trim()}>
       <b>{depth} deep</b>
-      {auto
-        ? <span>{left == null ? '' : `${Math.round(left * 100)}% left behind`}</span>
-        : <span>no clear stop{left == null ? '' : ` — ${Math.round(left * 100)}% would be left`}</span>}
+      <span>{auto ? 'read' : `set${worked == null ? '' : ` · reads ${worked}`}`}</span>
     </span>
   );
 }
@@ -74,10 +72,11 @@ function Players({ built, state, actions }) {
       <div className={css.block}>
         <h3 className={css.label}>How deep each one goes</h3>
         <p className={css.note}>
-          A group fills until the next game would not be worth the space. Where
-          the fall in value is decisive that is where it stops; where the curve
-          only slopes there is nothing to find, so it takes {built.ix.defaults?.picksPerCell ?? 5} and
-          says so. Click any depth on the shelves below to set it yourself.
+          A group keeps taking games while the next one still adds at least{' '}
+          {Math.round((built.ix.defaults?.autoDepthLeftover ?? 0.45) * 100)}% of what
+          its first one added, and stops at the first that does not. Nine-plus
+          takes one game on that rule; three players takes nine. Click any depth
+          on the shelves below to set it yourself.
         </p>
         {columns.some((c) => c.hi === null && c.lo > 9) === false
           && columns.some((c) => /8\+/.test(c.label) && c.lo === 9) && (

@@ -21,32 +21,32 @@ import { CoverageScorer } from './scorer.js';
 export const PROBE = 40;
 
 /**
- * The cut in one gain sequence.
+ * Where one shelf stops.
  *
- * `leftover` is the whole rule: the sharpest fall only counts as a stopping
- * point when what the next game would still have added is under this share of
- * what the first one added. Without it the rule fires on smooth curves and
- * leaves real value behind.
+ * It keeps taking games while the next still adds at least `leftover` of what
+ * the first one added, and stops at the first that does not. That is the whole
+ * rule, and it is deliberately not "cut at the sharpest fall": the sharpest
+ * fall is a single argmax over the sequence, so removing one game can move it
+ * anywhere. Blocking Dune: Imperium swung a column from eleven to five, because
+ * the largest drop relocated and the old rule then declined to use it at all.
+ *
+ * A threshold on the level is monotone instead — ban a game and the crossing
+ * point shifts by a place or two, never across the shelf. It also never
+ * declines, so there is no second rule to explain and no "fell back" to read.
  */
 export function readDepth(gains, { leftover, fallback, places = 3 }) {
   // Read at the precision both engines publish, never at whatever this one
-  // happens to hold. Python reports a gain to `policy.gainPlaces`, and reading
-  // full precision here cuts the weight-3 row at 10 where Python cuts at 8 —
-  // two drops that tie at 0.120 once rounded. Ties keep the earlier index.
+  // happens to hold. Python reports a gain to `policy.gainPlaces`; reading full
+  // precision here puts the two engines out of step over ties.
   const round = (v) => Math.round(v * 10 ** places) / 10 ** places;
   const g = [...gains].filter((v) => v != null).map(round);
-  if (g.length < 4) return { depth: g.length, auto: true, left: 0 };
+  if (!g.length) return { depth: 0, auto: true, bar: 0, next: null };
 
-  let widest = -Infinity;
-  let at = 1;
-  for (let i = 1; i < g.length; i++) {
-    const drop = g[i - 1] - g[i];
-    if (drop > widest) { widest = drop; at = i; }
-  }
-  const left = g[0] > 0 ? g[at] / g[0] : 1;
-  return left <= leftover
-    ? { depth: at, auto: true, left }
-    : { depth: fallback, auto: false, left };
+  const bar = round(leftover * g[0]);
+  let depth = 0;
+  while (depth < g.length && g[depth] > bar) depth++;
+  if (!depth) depth = Math.min(1, g.length);
+  return { depth, auto: true, bar, next: g[depth] ?? null, fallback };
 }
 
 /**
@@ -58,16 +58,22 @@ export function readDepth(gains, { leftover, fallback, places = 3 }) {
  */
 export function axisDepths(ix, weights, axis, {
   leftover, fallback, places, probe = PROBE, genreWeights = null, include = null,
-  rejected = null, keepers = null,
+  rejected = null,
 } = {}) {
   const cells = buildCells(ix, { axes: [axis], include });
   const scorer = new CoverageScorer(ix, weights, cells, { genreWeights });
-  // A curve read without the reader's bans and pins is a curve for a different
-  // collection: block a game and the shelf below it fills differently, so the
-  // point where returns fall away moves with it.
+  // Bans move the curve; pins do not.
+  //
+  // A banned game is genuinely not available, so the shelf below it really does
+  // fill differently and the point where returns fall away really does move. A
+  // pinned game is still one of the candidates — pinning only says it must be
+  // among them. Seeding it into the probe makes it contribute its coverage
+  // first, which flattens every gain after it and drags the knee an entry
+  // earlier: pin any game at all and the collection quietly shrank from twelve
+  // to eleven. That was an artefact of the measurement, not a finding about the
+  // collection.
   const results = allocate(ix, scorer, cells, {
     capacity: probe, alternatesLimit: 0, rejected: rejected ?? undefined,
-    seeded: keepers ? seedInto(cells, keepers) : undefined,
   });
   const out = new Map();
   for (const cell of results) {
@@ -100,9 +106,8 @@ export function seedInto(cells, keepers) {
  */
 export function gridDepths(ix, weights, { columns, rows, leftover, fallback, places,
   overrides = {}, probe = PROBE, genreWeights = null, include = null,
-  rejected = null, keepers = null } = {}) {
-  const opts = { leftover, fallback, places, probe, genreWeights, include,
-                 rejected, keepers };
+  rejected = null } = {}) {
+  const opts = { leftover, fallback, places, probe, genreWeights, include, rejected };
   const byColumn = columns ? axisDepths(ix, weights, playerAxis(columns), opts) : null;
   const byRow = rows ? axisDepths(ix, weights, weightAxis(rows), opts) : null;
 
@@ -110,14 +115,14 @@ export function gridDepths(ix, weights, { columns, rows, leftover, fallback, pla
     const read = map?.get(key);
     const set = overrides[`${kind}:${key}`];
     if (set != null) {
-      return { depth: set, auto: false, set: true, read: read?.depth ?? null, left: read?.left };
+      return { depth: set, auto: false, set: true, read: read?.depth ?? null, bar: read?.bar };
     }
     return {
       depth: read?.depth ?? fallback,
       auto: read?.auto ?? false,
       set: false,
       read: read?.depth ?? null,
-      left: read?.left,
+      bar: read?.bar,
     };
   };
 

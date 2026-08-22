@@ -57,9 +57,14 @@ test('banning a game removes it and refills its slot', () => {
   const { grid } = buildGrid(ix, { banned: [victim] });
   assert.ok(!shelved(grid).has(victim));
 
+  // Not "the same number of picks": banning changes what that shelf's own curve
+  // looks like, so its depth may move by a place. What must hold is that no
+  // hole was left — the shelf is still full to whatever depth it was given.
   const homeBefore = base.grid.find((c) => c.picks.some((p) => p.id === victim));
-  const homeAfter = grid.find((c) => c.key === homeBefore.key);
-  assert.equal(homeAfter.picks.length, homeBefore.picks.length, 'the slot was refilled');
+  const after = buildGrid(ix, { banned: [victim] });
+  const homeAfter = after.grid.find((c) => c.key === homeBefore.key);
+  assert.equal(homeAfter.picks.length, after.depths.capacity.get(homeBefore.key),
+    'the slot was left empty');
 });
 
 test('a banned game is not offered as an alternate either', () => {
@@ -124,12 +129,17 @@ test('depth read from the curve is tighter at nine-plus than a flat five', () =>
   assert.equal(base.depths.columnDepth.get('8+').auto, true);
 });
 
-test('a smooth curve falls back to the set depth and says so', () => {
-  // Four players slopes rather than falls, so any cut would be arbitrary: the
-  // reading is declined and the number a reader set applies instead.
-  const four = base.depths.columnDepth.get('4');
-  assert.equal(four.auto, false);
-  assert.equal(four.depth, 5);
+test('one game leaving moves a depth by a place, never across the shelf', () => {
+  // The rule this replaces cut at the sharpest fall, which is an argmax: block
+  // one game and the largest drop relocates, so a column swung from eleven to
+  // five. A threshold on the level is monotone.
+  const victim = [...shelved(base.grid)][2];
+  const after = buildGrid(ix, { banned: [victim] });
+  for (const [key, before] of base.depths.columnDepth) {
+    const moved = Math.abs(after.depths.columnDepth.get(key).depth - before.depth);
+    assert.ok(moved <= 2,
+      `column ${key} moved ${before.depth} -> ${after.depths.columnDepth.get(key).depth}`);
+  }
 });
 
 test('a depth a reader types beats both', () => {

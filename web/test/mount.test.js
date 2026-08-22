@@ -76,12 +76,12 @@ test('splitting reshapes the same collection', () => {
   assert.ok(players, 'no control to split by player count');
   click(players);
   assert.match(host.textContent, /One shelf per group/);
-  // 5+6+11+5+10+3+1: four players declines the reading and falls back to five.
-  assert.match(host.textContent, /41 games/);
+  // 5+6+9+9+10+3+1, each column stopping where its own returns fall away.
+  assert.match(host.textContent, /43 games/);
 
   click(byText('＋ weight', host));
   assert.match(host.textContent, /Thirty-five shelves/);
-  assert.match(host.textContent, /176 games/);
+  assert.match(host.textContent, /190 games/);
 
   // And back to one shelf, which is the same object at a different setting.
   click([...host.querySelectorAll('button')]
@@ -195,7 +195,7 @@ test('an axis opens its own settings, in front of the shelves it describes', () 
   assert.match(host.textContent, /Player groups/);
   assert.match(host.textContent, /How deep each one goes/);
   assert.match(host.textContent, /deep/, 'the panel did not report what it read');
-  assert.match(host.textContent, /41 games/, 'opening the panel changed the collection');
+  assert.match(host.textContent, /43 games/, 'opening the panel changed the collection');
 
   const groups = () => host.querySelectorAll('input[aria-label="Group name"]').length;
   const was = groups();

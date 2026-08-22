@@ -391,25 +391,29 @@ GENRE_SCARCITY = 0.5
 # games that merely reach a cell.
 GAIN_FLOOR = 0.0
 
-# How decisive a fall in value has to be before the shelf stops there by itself.
+# How much a game must still add for a shelf to keep taking them.
 #
-# A shelf could fill until nothing is left, but the interesting question is where
-# it stops paying. Measured over the seed corpus: reading the collection with no
-# axes at all, the twelfth game adds 0.618 and the thirteenth 0.274 — a fall five
-# times larger than any beside it, and the obvious place to stop. Reading down
-# the player columns gives 5, 6, 11, 10, 3 and — at nine-plus — 1, because after
-# Blood on the Clocktower the next best there is worth a quarter as much.
+# A shelf fills in order of what each game adds to what is already there, and
+# that sequence falls away as the ground gets covered. The shelf keeps going
+# while the next game would still add at least this share of what its first one
+# added, and stops at the first that would not.
 #
-# Taking the sharpest fall alone is not enough: on a smooth curve it fires early
-# and leaves real value behind (players 4 stopped at 3 with 0.74 still on the
-# table). So the cut only counts when what remains is under this share of what
-# the first pick added. At 0.45 it fired on ten of thirteen readings and declined
-# on the three where the curve is smooth, which then fall back to a set depth.
+# Measured on the seed corpus at 0.45: the collection with no axes at all stops
+# at twelve, which is also where its curve falls off a cliff — the twelfth game
+# adds 0.618 and the thirteenth 0.274. Reading down the player columns gives 5,
+# 6, 9, 9, 10, 3 and, at nine-plus, 1: one game covers what that column needs and
+# the next is worth a quarter as much.
+#
+# An earlier version cut at the *sharpest fall* instead. It found the same twelve
+# and the same one, but it is an argmax over the whole sequence, so removing a
+# single game relocates it: blocking Dune: Imperium swung a column from eleven to
+# five. A threshold on the level is monotone — the crossing point moves a place
+# or two, never across the shelf — and it always produces an answer, so there is
+# no second rule and no "fell back" for a reader to interpret.
 #
 # Never read per cell. Thirty-five five-pick sequences are too short to have a
-# knee in them — measured median depth 1, one cell at 19, mostly noise — so it is
-# read once down each column and once across each row, and a cell takes the
-# smaller of the two.
+# shape — measured median depth 1, one cell at 19, mostly noise — so it is read
+# once down each column and once across each row, and a cell takes the smaller.
 AUTO_DEPTH_LEFTOVER = 0.45
 AUTO_DEPTH = True
 
