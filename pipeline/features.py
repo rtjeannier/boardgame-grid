@@ -43,7 +43,7 @@ depends on its core tags, not its incidental ones.
 from dataclasses import dataclass
 
 import numpy as np
-from scipy.cluster.hierarchy import fcluster, linkage
+from scipy.cluster.hierarchy import fcluster, leaves_list, linkage
 from sklearn.decomposition import PCA
 
 from .params import DEFAULTS, Params
@@ -639,6 +639,53 @@ def _spokes(incidence: np.ndarray, cores: list[list[int]],
         return [[i] for i in range(len(cores))]
     labels = fcluster(linkage(reach, method="ward"), limit, criterion="maxclust")
     return [[i for i in range(len(cores)) if labels[i] == g] for g in sorted(set(labels))]
+
+
+def spoke_families(spokes: np.ndarray, size: int = 2) -> list[int]:
+    """Group the radar spokes into colour families: spoke index -> family index.
+
+    Presentation only. Selection never sees this — it exists because twelve
+    colours cannot be told apart, and grouping them into families of two lets
+    hue carry the family while lightness separates the pair. Measured on the
+    live capture: six families at two lightnesses hold a worst-case separation
+    of ΔE 22.7, against 19.5 for twelve free hues and **8.5** for the palette
+    this replaces, where `Deduction · Party Game` and `Dice · Dice Rolling` were
+    the same colour on a ten-pixel dot.
+
+    Families come from the dendrogram's *order*, not from cutting it. Cutting
+    was tried first, being the obvious thing, and does not work here:
+
+    - There is no natural number of families to find. Merge heights climb almost
+      flat from eleven clusters down to four — 1.163, 1.168, 1.225, 1.243,
+      1.288, 1.294, 1.327 — so any cut is arbitrary.
+    - The cut that six gives is badly unbalanced, and immovably so. `Economic`,
+      `Card Game` and `Area Majority` merge into one family holding 39.6% of the
+      corpus, and they stay together at every cut from five families to eight,
+      while `Network and Route Building` sits alone at 3.9%.
+
+    Ward's leaf ordering places similar spokes adjacent, so walking it in pairs
+    keeps the grouping data-derived while forcing the balance colour needs:
+    10.1% to 22.4% per family on the live capture, every family the same size,
+    and it works unchanged on a corpus whose spokes are entirely different.
+
+    Two honest caveats. Adjacency in the ordering is weaker than kinship — the
+    pairs at the tail are "next to each other" rather than "the same kind of
+    game", which is the same concession `_spokes` makes about Ward having to
+    place everything. And families are not stable across corpora: the seed and
+    the live capture share almost no spoke names, let alone pairings. That is
+    inherent, since the axes follow the corpus, and it is why the palette is
+    generated from whatever the contract carries rather than written down.
+    """
+    reach = spokes.T.astype(float).copy()
+    reach /= np.maximum(np.linalg.norm(reach, axis=1, keepdims=True), 1e-9)
+    n = reach.shape[0]
+    if n <= size:
+        return [0] * n
+    order = leaves_list(linkage(reach, method="ward"))
+    family = [0] * n
+    for position, spoke in enumerate(order):
+        family[int(spoke)] = position // size
+    return family
 
 
 def _assign_signals(incidence: np.ndarray, cores: list[list[int]],

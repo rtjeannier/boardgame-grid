@@ -32,6 +32,7 @@ import numpy as np
 
 from . import buckets, coverage
 from .config import ROOT
+from .features import spoke_families
 from .params import DEFAULTS, Params
 
 OUTPUT = ROOT / "web" / "public" / "grid.contract.json"
@@ -204,8 +205,12 @@ def build_contract(games, space, results, source: str, generated_at: str,
          "ratingLo": float(lo[a]), "ratingHi": float(hi[a])}
         for a in range(loadings.shape[1])
     ]
+    # Colour families. Presentation only — selection never sees them. Hue
+    # carries the family and lightness separates its two members, because twelve
+    # colours cannot be told apart and the palette this replaces proved it.
+    families = spoke_families(np.stack([space.spokes[i] for i in ids]))
     groups = [
-        {"id": s, "name": name,
+        {"id": s, "name": name, "family": families[s],
          "dimensions": [a for a, g in enumerate(spoke_of) if g == s]}
         for s, name in enumerate(space.dimension_names)
     ]
