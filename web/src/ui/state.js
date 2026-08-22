@@ -88,6 +88,11 @@ function reduce(state, action) {
       edges[action.at] = action.value;
       return { ...state, rowEdges: edges, depthOverrides: {} };
     }
+    case 'addRow': {
+      if (state.rowCount >= 6) return state;
+      return { ...state, rowCount: state.rowCount + 1, rowEdges: action.edges,
+               depthOverrides: {} };
+    }
     case 'dropRow': {
       if (state.rowCount <= 2) return state;
       const edges = [...action.edges];
@@ -168,6 +173,7 @@ export function useCollection(contract) {
     setRows: (value) => dispatch({ type: 'rows', value }),
     setRowEdge: (at, value, current) => dispatch({ type: 'rowEdge', at, value, current }),
     setColumns: (value) => dispatch({ type: 'columns', value }),
+    addRow: (edges) => dispatch({ type: 'addRow', edges }),
     dropRow: (at, edges) => dispatch({ type: 'dropRow', at, edges }),
     toggleMineOnly: () => dispatch({ type: 'mineOnly' }),
     togglePanel: (key) => dispatch({ type: 'panel', key }),

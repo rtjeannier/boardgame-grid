@@ -1,4 +1,5 @@
 import Button from '../primitives/Button.jsx';
+import { mergeLast, splitWidest, splitWidestBand } from '../axes.js';
 import css from './AxisPanel.module.css';
 
 /**
@@ -29,44 +30,9 @@ function Players({ built, state, actions }) {
     const next = columns.map((c, j) => (i === j ? { ...c, [key]: value } : c));
     actions.setColumns(next);
   };
-  /**
-   * One more group splits the widest one in two; one fewer merges the last two.
-   *
-   * Both keep the ranges contiguous, which editing them by hand does not — the
-   * fields below let you make a gap, and that is your business, but the stepper
-   * should never make one for you.
-   */
-  const relabel = (lo, hi) => (hi == null ? `${lo}+` : lo === hi ? `${lo}` : `${lo}-${hi}`);
-  const more = () => {
-    let widest = -1, at = -1;
-    columns.forEach((c, i) => {
-      const span = c.hi == null ? Infinity : c.hi - c.lo;
-      if (span > widest && span >= 1) { widest = span; at = i; }
-    });
-    if (at < 0) {                       // every group is a single count already
-      const last = columns[columns.length - 1];
-      const from = (last.hi ?? last.lo) + 1;
-      actions.setColumns([...columns, { label: `${from}+`, lo: from, hi: null }]);
-      return;
-    }
-    const c = columns[at];
-    const mid = c.hi == null ? c.lo : Math.floor((c.lo + c.hi) / 2);
-    actions.setColumns([
-      ...columns.slice(0, at),
-      { lo: c.lo, hi: mid, label: relabel(c.lo, mid) },
-      { lo: mid + 1, hi: c.hi, label: relabel(mid + 1, c.hi) },
-      ...columns.slice(at + 1),
-    ]);
-  };
-  const fewer = () => {
-    if (columns.length < 3) return;
-    const a = columns[columns.length - 2];
-    const b = columns[columns.length - 1];
-    actions.setColumns([
-      ...columns.slice(0, -2),
-      { lo: a.lo, hi: b.hi, label: relabel(a.lo, b.hi) },
-    ]);
-  };
+  const more = () => actions.setColumns(splitWidest(columns));
+  const fewer = () => actions.setColumns(mergeLast(columns));
+
   return (
     <>
       <div className={css.block}>
@@ -146,7 +112,7 @@ function Weight({ built, state, actions }) {
                     onClick={() => actions.setRows(state.rowCount - 1)}>−</button>
             <span>{state.rowCount}</span>
             <button type="button" aria-label="More bands" disabled={state.rowCount >= 6}
-                    onClick={() => actions.setRows(state.rowCount + 1)}>＋</button>
+                    onClick={() => actions.addRow(splitWidestBand(rows))}>＋</button>
           </span>
           <span className={css.countLabel}>bands</span>
           {state.rowEdges && (

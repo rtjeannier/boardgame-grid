@@ -740,10 +740,22 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
     results = {}
     for key in keys:
         picked = {g.id for g in chosen[key]}
-        leftovers = sorted(
-            (g for g in cells[key] if g.id not in picked and g.id not in taken),
-            key=lambda g: g.rank,
-        )
+        # Who is next, which is whoever would add the most to the shelf as it
+        # now stands — not whoever is best known. Ordering these by rank called
+        # the most famous leftover "on deck" when it might add nothing at all.
+        pool = [g for g in cells[key] if g.id not in picked and g.id not in taken]
+        if alternates_limit and pool and hasattr(scorer, "score_all"):
+            # Batched, like the bidding rounds: scoring a few hundred leftovers
+            # one at a time is the same call overhead that made `allocate` the
+            # slowest thing in the pipeline before `score_all` existed.
+            values = scorer.score_all(key)
+            by_id = dict(zip(scorer.pool_ids[key].tolist(), values.tolist()))
+            leftovers = sorted(pool, key=lambda g: (-by_id.get(g.id, 0.0), g.rank))
+        elif alternates_limit and pool:
+            scored = {id(g): scorer.score(key, g) for g in pool}
+            leftovers = sorted(pool, key=lambda g: (-scored[id(g)], g.rank))
+        else:
+            leftovers = sorted(pool, key=lambda g: g.rank)
         results[key] = CellResult(
             [Assignment(g, round(gains[(key, g.id)], GAIN_PLACES)
                         if (key, g.id) in gains else None)

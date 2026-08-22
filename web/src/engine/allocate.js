@@ -220,16 +220,29 @@ export function allocate(ix, scorer, cells, {
   return cells.map((cell) => {
     const picks = cell.chosen.map((i) => cell.games[i]);
     const chosen = new Set(picks);
-    const alternates = [...cell.games]
-      .filter((g) => !chosen.has(g) && !taken.has(g))
-      .sort((a, b) => ix.rank[a] - ix.rank[b])
-      .slice(0, alternatesLimit);
+    // Who is next, which is whoever would add the most to the shelf as it now
+    // stands — not whoever is best known. `scoreAll` reads the cell's uncovered
+    // chart, so after the last pick it answers exactly that question. Ordering
+    // these by rank called the most famous leftover "on deck" when it might add
+    // nothing at all.
+    const queue = [];
+    if (alternatesLimit) {
+      const scores = scorer.scoreAll(cell);
+      for (let i = 0; i < cell.games.length; i++) {
+        const g = cell.games[i];
+        if (chosen.has(g) || taken.has(g)) continue;
+        queue.push([g, scores[i]]);
+      }
+      queue.sort((a, b) => (b[1] - a[1]) || (ix.rank[a[0]] - ix.rank[b[0]]));
+      queue.length = Math.min(queue.length, alternatesLimit);
+    }
     return {
       key: cell.key, column: cell.column, row: cell.row,
       candidateCount: cell.games.length,
       picks,
       gains: picks.map((g) => gains.get(`${cell.key}|${g}`) ?? null),
-      alternates,
+      alternates: queue.map(([g]) => g),
+      alternateGains: queue.map(([, v]) => v),
     };
   });
 }

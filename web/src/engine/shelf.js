@@ -20,23 +20,6 @@ export function spokeVector(ix, weights, game, nGroups) {
   return out;
 }
 
-/**
- * The shape of a set: how much of it sits on each spoke, largest spoke at 1.
- *
- * `coverageOf` answers "is this covered at all?", which is the right question
- * for the model and the wrong one for a picture of a large collection: at 190
- * games every spoke is covered, so the radar was a full circle that a block
- * moved by 0.0000. This does not saturate — the same block moves it 0.03 — and
- * it says something a reader wants anyway, which is what the collection is
- * mostly made of.
- */
-export function mixOf(vectors, nGroups) {
-  const out = new Array(nGroups).fill(0);
-  for (const v of vectors) for (let i = 0; i < nGroups; i++) out[i] += v[i];
-  const top = Math.max(...out);
-  return top > 0 ? out.map((v) => v / top) : out;
-}
-
 /** A set covers a spoke unless every game in it misses: 1 − ∏(1 − wᵢ). */
 export function coverageOf(vectors, nGroups) {
   const out = new Array(nGroups).fill(1);

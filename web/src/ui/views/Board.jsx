@@ -1,6 +1,7 @@
 import DepthField from '../primitives/DepthField.jsx';
 import GameItem from '../game/GameItem.jsx';
 import { toGameView } from '../game/view.js';
+import { splitWidest, splitWidestBand } from '../axes.js';
 import css from './Board.module.css';
 
 /**
@@ -87,13 +88,23 @@ export default function Board({ built, state, actions, onOpen }) {
     const depthMap = onlyPlayers ? depths?.columnDepth : depths?.rowDepth;
     return (
       <div className={css.columns}
-           style={{ gridTemplateColumns: `repeat(${keys.length}, minmax(0, 1fr))` }}>
+           style={{ gridTemplateColumns: `repeat(${keys.length}, minmax(0, 1fr)) 38px` }}>
         {keys.map(({ key, label }) => {
           const cell = byKey.get(key);
           return (
             <div key={key} className={css.column}>
               <div className={css.head}>
-                <b>{label}</b>
+                <span className={css.headLine}>
+                  <b>{label}</b>
+                  <button type="button" className={css.drop}
+                          aria-label={onlyPlayers
+                            ? `Drop the ${label} column` : `Drop the ${label} band`}
+                          disabled={keys.length < 3}
+                          onClick={() => (onlyPlayers
+                            ? actions.setColumns(columns.filter((x) => x.label !== key))
+                            : actions.dropRow(Number(key),
+                              rows.slice(0, -1).map((r) => r.hi)))}>✕</button>
+                </span>
                 <div style={{ marginTop: 'var(--s-3)' }}>
                   <Depth kind={onlyPlayers ? 'column' : 'row'} label={key}
                          read={depthMap?.get(key)} actions={actions} />
@@ -119,13 +130,23 @@ export default function Board({ built, state, actions, onOpen }) {
             </div>
           );
         })}
+        <div className={`${css.column} ${css.addStrip}`}>
+          <button type="button" className={css.add}
+                  aria-label={onlyPlayers ? 'Add a player group' : 'Add a weight band'}
+                  title="Splits the widest in two"
+                  disabled={!onlyPlayers && rows.length >= 6}
+                  onClick={() => (onlyPlayers
+                    ? actions.setColumns(splitWidest(columns))
+                    : actions.addRow(splitWidestBand(rows)))}>＋</button>
+        </div>
       </div>
     );
   }
 
   return (
     <div className={css.board}
-         style={{ gridTemplateColumns: `146px repeat(${columns.length}, minmax(0, 1fr))` }}>
+         style={{ gridTemplateColumns:
+           `146px repeat(${columns.length}, minmax(0, 1fr)) 38px` }}>
       <div className={css.corner}>
         <b>Games per shelf</b>
         <span>Read down each column and across each row. A shelf takes the smaller.</span>
@@ -145,10 +166,25 @@ export default function Board({ built, state, actions, onOpen }) {
           </div>
         </div>
       ))}
+      <div className={`${css.colhead} ${css.addStrip}`}>
+        <button type="button" className={css.add} aria-label="Add a player group"
+                title="Splits the widest group in two"
+                onClick={() => actions.setColumns(splitWidest(columns))}>＋</button>
+      </div>
+
       {[...rows].reverse().map((row) => (
         <Row key={row.index} row={row} built={built} state={state}
              actions={actions} onOpen={onOpen} byKey={byKey} />
       ))}
+
+      <div className={`${css.rowhead} ${css.addStrip}`}>
+        <button type="button" className={css.add} aria-label="Add a weight band"
+                title="Splits the widest band in two"
+                disabled={rows.length >= 6}
+                onClick={() => actions.addRow(splitWidestBand(rows))}>＋</button>
+      </div>
+      {columns.map((c) => <div key={c.label} className={css.spacer} />)}
+      <div className={css.spacer} />
     </div>
   );
 }
@@ -187,6 +223,7 @@ function Row({ row, built, state, actions, onOpen, byKey }) {
           </div>
         );
       })}
+      <div className={css.spacer} />
     </>
   );
 }

@@ -14,7 +14,7 @@ export { CoverageScorer } from './scorer.js';
 export { allocate } from './allocate.js';
 export { toGridData } from './present.js';
 export { explainCut, cutSentence, howAlike, similarityBetween } from './explain.js';
-export { analyseShelf, coverageOf, mixOf, spokeVector } from './shelf.js';
+export { analyseShelf, coverageOf, spokeVector } from './shelf.js';
 
 import { indexContract } from './contract.js';
 import { ratingSpans, coverageWeights } from './quality.js';
@@ -177,7 +177,10 @@ export function buildGrid(contract, {
         id: ix.ids[g], name: ix.names[g], rank: ix.rank[g],
         gain: cell.gains[i], owned: ownedRows.has(g),
       })),
-      alternates: cell.alternates.map((g) => ({ id: ix.ids[g], name: ix.names[g] })),
+      alternates: cell.alternates.map((g, i) => ({
+        id: ix.ids[g], name: ix.names[g], rank: ix.rank[g],
+        gain: cell.alternateGains?.[i] ?? null,
+      })),
     })),
   };
 }

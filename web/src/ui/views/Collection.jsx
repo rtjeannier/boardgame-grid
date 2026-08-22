@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { mixOf, spokeVector } from '../../engine/index.js';
+import { coverageOf, spokeVector } from '../../engine/index.js';
 import GameItem from '../game/GameItem.jsx';
 import { toGameView } from '../game/view.js';
 import Radar from '../chart/Radar.jsx';
@@ -7,6 +7,7 @@ import Button from '../primitives/Button.jsx';
 import DepthField from '../primitives/DepthField.jsx';
 import { sharesOf } from '../state.js';
 import Board, { shelvedNow } from './Board.jsx';
+import { cellLabeller } from './labels.js';
 import css from './Collection.module.css';
 
 /**
@@ -18,10 +19,50 @@ import css from './Collection.module.css';
  * of five are a shape rather than a list.
  */
 
-const spread = (values) => {
-  const at = (n) => values.filter((v) => v <= n).length;
-  return { at };
-};
+/**
+ * The one game it would take next, wherever that is.
+ *
+ * Unsplit there is one shelf and one answer. Split, every shelf has a next in
+ * line and the useful one is whichever would add the most — so the button names
+ * that game and says which shelf it lands on. It is the same question either
+ * way, which is the point: splitting rearranges the collection, it does not
+ * change what you can ask of it.
+ */
+function AddNext({ built, actions }) {
+  const { grid, depths, axes } = built;
+  const label = cellLabeller(built);
+
+  const best = axes.length === 0
+    ? (depths?.cell?.nextName
+      ? { name: depths.cell.nextName, gain: depths.cell.next,
+          key: 'collection', depth: depths.cell.depth, cell: null }
+      : null)
+    : grid
+      .flatMap((c) => (c.alternates[0]
+        ? [{ name: c.alternates[0].name, gain: c.alternates[0].gain,
+             key: `cell:${c.key}`, depth: c.picks.length, cell: c.key }]
+        : []))
+      .sort((a, b) => (b.gain ?? 0) - (a.gain ?? 0))[0];
+  if (!best) return null;
+
+  const last = axes.length === 0
+    ? (grid[0]?.picks?.length ? grid[0].picks[grid[0].picks.length - 1].gain : null)
+    : (grid.find((c) => c.key === best.cell)?.gains?.slice(-1)[0] ?? null);
+
+  return (
+    <div className={css.addRow}>
+      <Button onClick={() => actions.setDepth(best.key, best.depth + 1)}>
+        ＋ Add {best.name}
+      </Button>
+      <span className={css.addNote}>
+        {best.cell ? `Goes on ${label(best.cell)}. ` : ''}
+        {last == null
+          ? `Adds ${best.gain?.toFixed(2)} — the most of anything left.`
+          : `Adds ${best.gain?.toFixed(2)}, against ${last.toFixed(2)} for the last one in.`}
+      </span>
+    </div>
+  );
+}
 
 function Facts({ ix, rows }) {
   const players = (lo, hi) => rows.filter((r) => {
@@ -110,21 +151,22 @@ export default function Collection({ built, state, actions, onOpen }) {
     const n = ix.groups.length;
     const names = ix.groups.map((g) => g.name.split(' · ')[0]);
     const shelved = grid.flatMap((c) => c.picks.map((p) => ix.rowOf.get(p.id)));
-    const reach = mixOf(shelved.map((r) => spokeVector(ix, weights, r, n)), n);
+    // Coverage, not share-of-mix. Share shrinks when you add a game to the
+    // fullest spoke, because everything else is measured against it — which is
+    // arithmetic, not news. Coverage only ever grows.
+    const reach = coverageOf(shelved.map((r) => spokeVector(ix, weights, r, n)), n);
     const mine = state.owned.map((id) => ix.rowOf.get(id)).filter((r) => r !== undefined);
-    if (!mine.length) return { names, values: reach, reference: null };
-    // Each shape normalised to its own largest spoke, so this compares what the
-    // two are *made of* rather than how many games each has. Comparing volume
-    // would only ever say "you own fewer games", which you knew.
+    if (!mine.length) {
+      return { names, values: reach, reference: null, full: Math.min(...reach) > 0.95 };
+    }
     return {
       names,
-      values: mixOf(mine.map((r) => spokeVector(ix, weights, r, n)), n),
+      values: coverageOf(mine.map((r) => spokeVector(ix, weights, r, n)), n),
       reference: reach,
     };
   }, [ix, grid, weights, state.owned]);
 
   const total = grid.reduce((n, c) => n + c.picks.length, 0);
-  const last = shelf?.picks?.length ? shelf.picks[shelf.picks.length - 1].gain : null;
 
   return (
     <div className={css.view}>
@@ -132,16 +174,20 @@ export default function Collection({ built, state, actions, onOpen }) {
         <aside className={css.side}>
           <div className={css.block}>
             <h2 className={css.label}>
-              {radar.reference ? 'Yours against the collection' : 'What it is made of'}
+              {radar.reference ? 'Yours against the collection' : 'What it reaches'}
             </h2>
             <Radar names={radar.names} values={radar.values} reference={radar.reference}
                    label={radar.reference ? 'Yours' : 'The collection'}
                    showGaps={!!radar.reference} size={272} />
             {!radar.reference && (
               <p className={css.note}>
-                Twelve kinds of play, and how much of the collection sits on
-                each — the fullest spoke sets the edge. Add your own games and
-                this draws their shape against it.
+                {radar.full
+                  ? 'At this size the collection reaches every kind of play, so '
+                    + 'the shape is full. Add your own games and this draws '
+                    + 'yours against it, which is where the gaps show.'
+                  : 'Twelve kinds of play, and how far the collection reaches '
+                    + 'into each. Add your own games and this draws them '
+                    + 'against it.'}
               </p>
             )}
           </div>
@@ -169,19 +215,7 @@ export default function Collection({ built, state, actions, onOpen }) {
                   ordered by how much of the collection each carries
                 </span>
               </div>
-              {depths?.cell?.nextName && (
-                <div className={css.addRow}>
-                  <Button onClick={() => actions.setDepth(
-                    'collection', (depths.cell.depth ?? shelf.picks.length) + 1)}>
-                    ＋ Add {depths.cell.nextName}
-                  </Button>
-                  <span className={css.addNote}>
-                    {last == null
-                      ? `Adds ${depths.cell.next?.toFixed(2)} — the most of anything left.`
-                      : `Adds ${depths.cell.next?.toFixed(2)}, against ${last.toFixed(2)} for the last one in.`}
-                  </span>
-                </div>
-              )}
+              <AddNext built={built} actions={actions} />
               {shelf.picks.length === 0 && (
                 <p className={css.blank}>
                   Empty. The bars on the left are what each game would add if you
@@ -247,6 +281,7 @@ export default function Collection({ built, state, actions, onOpen }) {
                 </h2>
                 <span className={css.sub}>{total} games</span>
               </div>
+              <AddNext built={built} actions={actions} />
               <Board built={built} state={state} actions={actions} onOpen={onOpen} />
             </>
           )}

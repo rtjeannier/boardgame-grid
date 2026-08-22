@@ -322,6 +322,31 @@ test('a shelf, a column and a row can each be changed where they are drawn', () 
   const wasBands = bands();
   click(host.querySelector('button[aria-label^="Drop the"][aria-label$="band"]'));
   assert.equal(bands(), wasBands - 1, 'dropping a band did nothing');
+
+  // And back, from the ＋ that sits where the new one appears.
+  click(host.querySelector('button[aria-label="Add a weight band"]'));
+  assert.equal(bands(), wasBands, 'adding a band did nothing');
+  click(host.querySelector('button[aria-label="Add a player group"]'));
+  assert.equal(columns(), wasCols, 'adding a column did nothing');
+  act(() => root.unmount());
+});
+
+test('adding a band splits the widest rather than re-cutting them all', () => {
+  const { host, root } = mount();
+  click(byText('＋ weight', host));
+  const edges = () => [...host.querySelectorAll('input[aria-label^="Top of"]')]
+    .map((i) => Number(i.defaultValue ?? i.value));
+  const body = [...host.querySelectorAll('button')]
+    .find((b) => b.textContent.startsWith('weight'));
+  click(body);
+  const was = edges();
+  click(host.querySelector('button[aria-label="More bands"]'));
+  const now = edges();
+  assert.equal(now.length, was.length + 1, 'no new edge');
+  // Every edge the reader could have set is still there; only one was added.
+  for (const edge of was) {
+    assert.ok(now.includes(edge), `edge ${edge} was thrown away`);
+  }
   act(() => root.unmount());
 });
 
@@ -334,5 +359,29 @@ test('pinning a game that already holds a place changes nothing', () => {
   click(pin);
   assert.equal(list(), before,
     'pinning something already shelved reshuffled the collection');
+  act(() => root.unmount());
+});
+
+test('the next best game is offered at every split, and lands where it says', () => {
+  const { host, root } = mount();
+  const offer = () => (host.textContent.match(/＋ Add ([^\n]+?)(?:Goes on|Adds)/) ?? [])[1];
+
+  assert.ok(byText(`＋ Add ${offer()}`, host), 'nothing offered unsplit');
+  const unsplit = offer();
+
+  click(byText('＋ player count', host));
+  click(byText('＋ weight', host));
+  const split = offer();
+  assert.ok(split, 'the grid offered nothing to add');
+  // Split, the offer names the shelf it would go on — the same question, asked
+  // of thirty-five shelves instead of one.
+  assert.match(host.textContent, /Goes on .+ · /, 'it did not say which shelf');
+
+  const before = Number(host.textContent.match(/(\d+) games/)[1]);
+  click(byText(`＋ Add ${split}`, host));
+  assert.equal(Number(host.textContent.match(/(\d+) games/)[1]), before + 1,
+    'pressing it did not add a game');
+  assert.ok(host.textContent.includes(split.trim()), 'the game it named is not there');
+  void unsplit;
   act(() => root.unmount());
 });
