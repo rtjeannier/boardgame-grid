@@ -19,7 +19,10 @@ export { analyseShelf, coverageOf, spokeVector } from './shelf.js';
 import { indexContract } from './contract.js';
 import { ratingSpans, coverageWeights } from './quality.js';
 import { buildWeightRows, buildCells, playerAxis, weightAxis } from './membership.js';
-import { gridDepths } from './depth.js';
+import { gridDepths, readDepth } from './depth.js';
+
+/** Deep enough for the whole-corpus curve to fall; never a cap on the answer. */
+export const COLLECTION_PROBE = 120;
 import { CoverageScorer } from './scorer.js';
 import { allocate } from './allocate.js';
 import { toGridData } from './present.js';
@@ -80,7 +83,23 @@ export function buildGrid(contract, {
     const leftover = autoDepthLeftover ?? defaults.autoDepthLeftover ?? 0.45;
     const fallback = defaults.picksPerCell ?? 5;
     if (axisList.length === 0) {
-      room = ix.n;
+      // One cell, so there is no column or row to read down — read the cell
+      // itself. Probe deep enough that the curve has somewhere to fall, cut it,
+      // then allocate again at that depth: the capacity is what the allocator
+      // fills toward, so truncating a deeper run is not the same thing.
+      // On its own pools: `allocate` fills `cell.chosen`, so probing the cells
+      // the real run is about to use hands it a shelf that is already full.
+      const probeCells = buildCells(ix, { axes: [], include });
+      const probeScorer = new CoverageScorer(ix, weights, probeCells, { genreWeights });
+      const probe = allocate(ix, probeScorer, probeCells,
+        { capacity: COLLECTION_PROBE, alternatesLimit: 0, gainFloor });
+      const read = readDepth(probe[0]?.gains ?? [],
+        { leftover, fallback, places: ix.policy.gainPlaces ?? 3 });
+      room = read.depth;
+      // The curve past the cut is kept: showing where it fell is the only
+      // honest way to say why the collection is the size it is.
+      depths = { capacity: room, columnDepth: new Map(), rowDepth: new Map(),
+                 cell: { ...read, curve: (probe[0]?.gains ?? []).slice(0, 24) } };
     } else {
       depths = gridDepths(ix, weights, {
         columns: onPlayers ? columns : null,

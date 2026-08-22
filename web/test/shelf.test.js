@@ -13,7 +13,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import { buildGrid, indexContract } from '../src/engine/index.js';
-import { parseCollectionCsv } from '../src/importCsv.js';
+import { parseCollectionCsv } from '../src/ui/importCsv.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ix = indexContract(JSON.parse(readFileSync(
@@ -142,9 +142,13 @@ test('a depth a reader types beats both', () => {
 test('with no axes the collection is one cell that stops on its own', () => {
   // `buildCells(ix, { axes: [] })` is the collection: one cell, whole corpus.
   // Python says the same thing, which is what makes the grid a form of it.
-  const { grid } = buildGrid(ix, { axes: [], gainFloor: 0.3 });
+  const { grid, depths } = buildGrid(ix, { axes: [] });
   assert.equal(grid.length, 1);
   assert.equal(grid[0].key, '');
-  assert.ok(grid[0].picks.length > 5 && grid[0].picks.length < 40,
-    `a collection of ${grid[0].picks.length} is not a collection`);
+  // Twelve, and not by anybody's choosing: the thirteenth game adds 0.27 where
+  // the twelfth added 0.62. Python reads the same number off the same curve.
+  assert.equal(grid[0].picks.length, 12);
+  assert.equal(depths.cell.depth, 12);
+  assert.equal(depths.cell.auto, true);
+  assert.equal(grid[0].picks[0].name, 'Brass: Birmingham');
 });

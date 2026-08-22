@@ -10,7 +10,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { parseCollectionCsv, parseCsv } from '../src/importCsv.js';
+import { parseCollectionCsv, parseCsv } from '../src/ui/importCsv.js';
 
 const ix = { rowOf: new Map([[224517, 0], [266192, 1], [174430, 2]]) };
 

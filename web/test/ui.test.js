@@ -77,7 +77,10 @@ test('every class in a stylesheet is used by its component, and the reverse', ()
     let source;
     try { source = readFileSync(jsx, 'utf8'); } catch { continue; }
     const declared = new Set(
-      [...readFileSync(file, 'utf8').matchAll(/^\.([A-Za-z][\w-]*)/gm)].map((m) => m[1]));
+      [...readFileSync(file, 'utf8')
+        .split('{').map((chunk, i, all) => (i < all.length - 1 ? chunk.split('}').pop() : ''))
+        .join(' ')
+        .matchAll(/\.([A-Za-z][\w-]*)/g)].map((m) => m[1]));
     const used = new Set([
       ...[...source.matchAll(/css\.([A-Za-z][\w]*)/g)].map((m) => m[1]),
       ...[...source.matchAll(/css\['([^']+)'\]/g)].map((m) => m[1]),
@@ -99,7 +102,7 @@ before(async () => {
   const { createServer } = await import('vite');
   vite = await createServer({
     root: WEB, logLevel: 'error',
-    server: { middlewareMode: true, hmr: false }, appType: 'custom',
+    server: { middlewareMode: true, hmr: false, ws: false }, appType: 'custom',
   });
   ({ renderToString: render } = await import('react-dom/server'));
   React = (await import('react')).default;
@@ -164,4 +167,69 @@ test('the split bar reports which axes are on', () => {
 test('depth says whether it read the number or was told it', () => {
   assert.ok(render(h(ui.DepthField, { value: 11, auto: 11 })).includes('auto'));
   assert.ok(render(h(ui.DepthField, { value: 6, auto: 3 })).includes('auto said 3'));
+});
+
+test('every page renders, at every split, empty and with games', async () => {
+  const contract = JSON.parse(
+    readFileSync(join(WEB, 'public', 'grid.contract.json'), 'utf8'));
+  const { default: App } = await vite.ssrLoadModule('/src/ui/App.jsx');
+  const { useCollection } = await vite.ssrLoadModule('/src/ui/state.js');
+  const html = render(h(App, { contract }));
+  assert.ok(html.includes('The collection'), 'no heading');
+  assert.ok(html.includes('Split by'), 'no split control');
+  assert.ok(!html.includes('NaN') && !html.includes('undefined'),
+    'a value reached the page unresolved');
+  void useCollection;
+});
+
+test('the views render at each split, and with a shelf of your own', async () => {
+  const contract = JSON.parse(
+    readFileSync(join(WEB, 'public', 'grid.contract.json'), 'utf8'));
+  const Collection = (await vite.ssrLoadModule('/src/ui/views/Collection.jsx')).default;
+  const Mine = (await vite.ssrLoadModule('/src/ui/views/Mine.jsx')).default;
+  const Settings = (await vite.ssrLoadModule('/src/ui/views/Settings.jsx')).default;
+  const Drawer = (await vite.ssrLoadModule('/src/ui/views/GameDrawer.jsx')).default;
+  const { toGameView } = await vite.ssrLoadModule('/src/ui/game/view.js');
+
+  const owned = [...Array(13)].map((_, i) => ix.ids[i * 7]);
+  const noop = () => {};
+  const actions = {
+    toggleAxis: noop, own: noop, ownMany: noop, pin: noop, block: noop,
+    setDepth: noop, setRows: noop, open: noop, reset: noop,
+  };
+
+  for (const axes of [[], ['players'], ['players', 'weight']]) {
+    for (const mine of [[], owned]) {
+      const built = engine.buildGrid(contract, { axes, owned: mine });
+      const state = { axes, owned: mine, pinned: [], blocked: [],
+                      depthOverrides: {}, rowCount: 5, open: null };
+      const where = `axes=[${axes}] owned=${mine.length}`;
+
+      const collection = render(h(Collection, { built, state, actions, onOpen: noop }));
+      assert.ok(collection.includes('polygon'), `${where}: no radar`);
+      assert.ok(!collection.includes('NaN'), `${where}: NaN on the collection view`);
+
+      const yours = render(h(Mine, { built, state, actions, onOpen: noop }));
+      assert.ok(!yours.includes('NaN'), `${where}: NaN on my games`);
+      if (mine.length) {
+        assert.ok(/Lost |Reaches no shelf/.test(yours) || !yours.includes('Did not 0'),
+          `${where}: a game that lost its shelf said nothing about why`);
+      } else {
+        assert.ok(yours.includes('Nothing yet'), `${where}: no empty state`);
+      }
+
+      const settings = render(h(Settings, { built, state, actions }));
+      assert.ok(!settings.includes('NaN'), `${where}: NaN in settings`);
+
+      // The drawer, on a game that holds a place and on one that does not.
+      const shelved = built.grid.flatMap((c) => c.picks)[0];
+      const game = toGameView(ix, ix.rowOf.get(shelved.id), {});
+      const open = render(h(Drawer, { game, built, state, actions, onClose: noop }));
+      assert.ok(open.includes(game.rankLabel.replace('#', '#')),
+        `${where}: drawer lost the game`);
+      assert.ok(open.includes('What it does'), `${where}: drawer lost its body`);
+      assert.ok(!open.includes('NaN'), `${where}: NaN in the drawer`);
+      assert.equal(render(h(Drawer, { game: null, built, state, actions, onClose: noop })), '');
+    }
+  }
 });

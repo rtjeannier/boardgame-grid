@@ -119,6 +119,7 @@ export function indexContract(contract) {
     similarityScale: contract.similarityScale ?? null,
     policy: contract.policy,
     defaultPicks: contract.defaultPicks,
+    defaults: contract.defaults ?? {},
     model: contract.model,
   };
 }

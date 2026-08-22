@@ -1,0 +1,36 @@
+.view { padding: var(--s-9) var(--s-10) var(--s-11); display: flex;
+        flex-direction: column; gap: var(--s-8); }
+.split { display: grid; grid-template-columns: 300px minmax(0, 1fr);
+         gap: var(--s-10); align-items: start; }
+.side { display: flex; flex-direction: column; gap: var(--s-9);
+        position: sticky; top: var(--s-8); }
+.block { display: flex; flex-direction: column; gap: var(--s-5); }
+.label { margin: 0; font-family: var(--font-mono); font-size: 9.5px; font-weight: 500;
+         letter-spacing: .07em; text-transform: uppercase; color: var(--text-3); }
+.note { margin: 0; font-size: 11.5px; line-height: 1.55; color: var(--text-2); }
+
+/* Why it is the size it is: the curve, with the cut drawn where it fell. */
+.curve { display: flex; align-items: flex-end; gap: var(--s-1); height: 92px; }
+.bar { flex: 1; border-radius: var(--r-sm) var(--r-sm) 0 0; background: var(--mark); }
+.bar.past { background: var(--line-2); }
+.cliff { display: flex; align-items: baseline; gap: var(--s-3); font-size: 11px;
+         color: var(--text-2); }
+.cliff b { font-family: var(--font-mono); font-weight: 500; color: var(--text);
+           font-variant-numeric: tabular-nums; }
+
+.facts { display: flex; flex-direction: column; gap: var(--s-1); }
+.fact { display: flex; justify-content: space-between; font-size: 12px;
+        line-height: 1.45; color: var(--text-2); }
+.fact b { font-family: var(--font-mono); font-weight: 500; color: var(--text);
+          font-variant-numeric: tabular-nums; }
+
+.main { min-width: 0; display: flex; flex-direction: column; gap: var(--s-6); }
+.head { display: flex; align-items: baseline; gap: var(--s-6);
+        padding-bottom: var(--s-4); border-bottom: 1px solid var(--text); }
+.title { margin: 0; font-size: 14px; font-weight: 600; line-height: 1.3; }
+.sub { margin-left: auto; font-size: 11.5px; color: var(--text-3); }
+.list { display: flex; flex-direction: column; }
+.entry { padding: var(--s-4) 0; border-top: 1px solid var(--line); }
+.entry:first-child { border-top: 0; }
+.foot { margin: var(--s-4) 0 0; font-size: 11.5px; line-height: 1.6;
+        color: var(--text-3); max-width: 82ch; }
