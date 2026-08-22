@@ -197,14 +197,17 @@ test('an axis opens its own settings, in front of the shelves it describes', () 
   assert.match(host.textContent, /deep/, 'the panel did not report what it read');
   assert.match(host.textContent, /43 games/, 'opening the panel changed the collection');
 
+  // Player groups get the same stepper the weight bands have.
   const groups = () => host.querySelectorAll('input[aria-label="Group name"]').length;
   const was = groups();
-  click(byText('＋ Group', host));
+  click(host.querySelector('button[aria-label="More groups"]'));
   assert.equal(groups(), was + 1, 'adding a group did nothing');
+  click(host.querySelector('button[aria-label="Fewer groups"]'));
+  assert.equal(groups(), was, 'removing a group did nothing');
 
   const remove = [...host.querySelectorAll('button[aria-label^="Remove"]')].pop();
   click(remove);
-  assert.equal(groups(), was, 'removing a group did nothing');
+  assert.equal(groups(), was - 1, 'the ✕ on a group did nothing');
   act(() => root.unmount());
 });
 
@@ -278,5 +281,58 @@ test('an empty collection is a state, not a crash', () => {
   // And back up again, one game at a time, naming each.
   click(byText('＋ Add Brass: Birmingham', host));
   assert.match(host.textContent, /Add Gloomhaven/, 'the button did not move on');
+  act(() => root.unmount());
+});
+
+test('the radar redraws when the collection changes', () => {
+  const { host, root } = mount();
+  const shape = () => {
+    const all = [...host.querySelectorAll('svg polygon')];
+    return all[all.length - 1]?.getAttribute('points');
+  };
+  const before = shape();
+  assert.ok(before, 'no radar to begin with');
+
+  click([...host.querySelectorAll('button[aria-label^="Block"]')][0]);
+  assert.notEqual(shape(), before, 'the radar kept the shape of a collection that changed');
+  act(() => root.unmount());
+});
+
+test('a shelf, a column and a row can each be changed where they are drawn', () => {
+  const { host, root } = mount();
+  click(byText('＋ player count', host));
+  click(byText('＋ weight', host));
+
+  const columns = () => host.querySelectorAll('button[aria-label^="Drop the"][aria-label$="column"]').length;
+  const wasCols = columns();
+  assert.ok(wasCols > 1, 'no columns to drop');
+
+  // One shelf's depth, set on that shelf, without touching its neighbours.
+  const cellCount = () => host.querySelectorAll('button[aria-label="One more here"]').length;
+  assert.ok(cellCount() > 0, 'no per-shelf control');
+  const before = host.textContent.match(/(\d+) games/)[1];
+  click(host.querySelector('button[aria-label="One more here"]'));
+  const after = host.textContent.match(/(\d+) games/)[1];
+  assert.equal(Number(after), Number(before) + 1, 'one more on one shelf is one more game');
+
+  click(host.querySelector('button[aria-label^="Drop the"][aria-label$="column"]'));
+  assert.equal(columns(), wasCols - 1, 'dropping a column did nothing');
+
+  const bands = () => host.querySelectorAll('button[aria-label^="Drop the"][aria-label$="band"]').length;
+  const wasBands = bands();
+  click(host.querySelector('button[aria-label^="Drop the"][aria-label$="band"]'));
+  assert.equal(bands(), wasBands - 1, 'dropping a band did nothing');
+  act(() => root.unmount());
+});
+
+test('pinning a game that already holds a place changes nothing', () => {
+  const { host, root } = mount();
+  const list = () => [...host.querySelectorAll('[class*="entry"]')]
+    .map((e) => e.textContent.split('#')[0]).join('|');
+  const before = list();
+  const pin = [...host.querySelectorAll('button[aria-label^="Pin"]')][0];
+  click(pin);
+  assert.equal(list(), before,
+    'pinning something already shelved reshuffled the collection');
   act(() => root.unmount());
 });

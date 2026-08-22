@@ -116,6 +116,14 @@ def grid_depths(games, space, ratings, sel, coll, weight_rows,
                for c in coll.columns()}
     rows = {str(r["index"]): resolve(by_row, str(r["index"]), "row")
             for r in weight_rows}
-    capacity = {(label, index): min(c["depth"], r["depth"])
-                for label, c in columns.items() for index, r in rows.items()}
+    # A shelf takes the smaller of its column's answer and its row's, unless the
+    # reader has said otherwise about that one shelf. Per-cell beats both,
+    # because it is the most specific thing anybody said.
+    capacity = {}
+    for label, c in columns.items():
+        for index, r in rows.items():
+            key = (label, index)
+            set_here = overrides.get(f"cell:{label}|{index}")
+            capacity[key] = (min(c["depth"], r["depth"]) if set_here is None
+                             else max(0, set_here))
     return {"capacity": capacity, "columns": columns, "rows": rows}

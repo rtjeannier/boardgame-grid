@@ -43,10 +43,24 @@ function Depth({ kind, label, read, actions }) {
  */
 function OnDeck({ cell, built, state, actions, onOpen }) {
   const next = cell?.alternates ?? [];
-  if (!next.length) return null;
+  const held = cell?.picks?.length ?? 0;
+  const set = (n) => actions.setDepth(`cell:${cell.key}`, Math.max(0, n));
+  if (!cell) return null;
   return (
     <details className={css.deck}>
-      <summary className={css.deckHead}>{next.length} on deck</summary>
+      <summary className={css.deckHead}>
+        {next.length ? `${next.length} on deck` : 'nothing else reaches here'}
+        {/* One shelf's depth, set on that shelf. Grey until the pointer is in
+            the cell, because thirty-five of these would otherwise be the only
+            thing on the screen. */}
+        <span className={css.pm} onClick={(e) => e.preventDefault()}>
+          <button type="button" aria-label="One fewer here" disabled={held === 0}
+                  onClick={() => set(held - 1)}>−</button>
+          <b>{held}</b>
+          <button type="button" aria-label="One more here" disabled={!next.length}
+                  onClick={() => set(held + 1)}>＋</button>
+        </span>
+      </summary>
       {next.map((a) => {
         const row = built.ix.rowOf.get(a.id);
         if (row === undefined) return null;
@@ -118,7 +132,13 @@ export default function Board({ built, state, actions, onOpen }) {
       </div>
       {columns.map((c) => (
         <div key={c.label} className={css.colhead}>
-          <b>{c.label}</b>
+          <span className={css.headLine}>
+            <b>{c.label}</b>
+            <button type="button" className={css.drop} aria-label={`Drop the ${c.label} column`}
+                    disabled={columns.length < 2}
+                    onClick={() => actions.setColumns(
+                      columns.filter((x) => x.label !== c.label))}>✕</button>
+          </span>
           <div style={{ marginTop: 'var(--s-3)' }}>
             <Depth kind="column" label={c.label}
                    read={depths?.columnDepth?.get(c.label)} actions={actions} />
@@ -138,7 +158,13 @@ function Row({ row, built, state, actions, onOpen, byKey }) {
   return (
     <>
       <div className={css.rowhead}>
-        <b>{row.name}</b>
+        <span className={css.headLine}>
+          <b>{row.name}</b>
+          <button type="button" className={css.drop} aria-label={`Drop the ${row.name} band`}
+                  disabled={built.rows.length < 3}
+                  onClick={() => actions.dropRow(
+                    row.index, built.rows.slice(0, -1).map((r) => r.hi))}>✕</button>
+        </span>
         <span className={css.range}>{row.lo.toFixed(2)}–{row.hi.toFixed(2)}</span>
         <div style={{ marginTop: 'var(--s-3)' }}>
           <Depth kind="row" label={String(row.index)}

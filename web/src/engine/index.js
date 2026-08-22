@@ -14,7 +14,7 @@ export { CoverageScorer } from './scorer.js';
 export { allocate } from './allocate.js';
 export { toGridData } from './present.js';
 export { explainCut, cutSentence, howAlike, similarityBetween } from './explain.js';
-export { analyseShelf, coverageOf, spokeVector } from './shelf.js';
+export { analyseShelf, coverageOf, mixOf, spokeVector } from './shelf.js';
 
 import { indexContract } from './contract.js';
 import { ratingSpans, coverageWeights } from './quality.js';
@@ -131,14 +131,36 @@ export function buildGrid(contract, {
     }
   }
 
-  // The unsplit collection is one cell keyed by the empty string, which is
-  // falsy — so `if (best)` silently dropped every pin there, and a pinned game
-  // simply never appeared. `seedInto` gets it right and is the only copy now.
-  const seeded = seedInto(cells, keeperRows);
+  /**
+   * Pin what did not make it, and only that.
+   *
+   * Seeding a game hands it a slot before any bidding, which takes it out of
+   * contention for every other cell that wanted it — so the whole contest
+   * resolves differently. Pinning a game that was *already* the first pick of
+   * its shelf changed three games in the collection and moved seven to other
+   * shelves, which is nonsense: it was already staying.
+   *
+   * So allocate first, then seed only the keepers that lost, and allocate
+   * again. A pin on something already shelved is now the no-op it reads as.
+   */
+  const run = (seeded) => {
+    const pools = seeded ? buildCells(ix, { axes: axisList, include }) : cells;
+    const with_ = seeded ? new CoverageScorer(ix, weights, pools, { genreWeights }) : scorer;
+    return {
+      pools,
+      results: allocate(ix, with_, pools, {
+        capacity: room, seeded: seeded ?? new Map(),
+        rejected: rejectedRows, alternatesLimit, gainFloor,
+      }),
+    };
+  };
 
-  const results = allocate(ix, scorer, cells, {
-    capacity: room, seeded, rejected: rejectedRows, alternatesLimit, gainFloor,
-  });
+  let { pools, results } = run(null);
+  if (keeperRows.length) {
+    const shelved = new Set(results.flatMap((c) => c.picks));
+    const missing = keeperRows.filter((g) => !shelved.has(g));
+    if (missing.length) ({ pools, results } = run(seedInto(pools, missing)));
+  }
 
   const ownedRows = new Set(rowsOf(owned));
   return {
@@ -146,9 +168,9 @@ export function buildGrid(contract, {
     // `cells` are the candidate pools with their weights; `results` is what the
     // allocation made of them. Both are wanted — explaining why a game was cut
     // needs the pools, which say what it could ever have reached.
-    cells, results, weights,
+    cells: pools, results, weights,
     // The grid shape only means anything when both axes are on.
-    data: onPlayers && onWeight ? toGridData(ix, results, cells, rows, columns) : null,
+    data: onPlayers && onWeight ? toGridData(ix, results, pools, rows, columns) : null,
     grid: results.map((cell) => ({
       ...cell,
       picks: cell.picks.map((g, i) => ({

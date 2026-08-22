@@ -76,15 +76,18 @@ def run(games, space, params, banned=(), keepers=()):
     scorer = CoverageScorer(space.loadings, space.similarity,
                             {g.id: g.rating for g in games}, space.spoke_of, sel,
                             coll.axis_room(space.dimension_names, space.spoke_of))
-    seeded = {}
     by_id = {g.id: g for g in games}
     reach = {}
     for (key, gid), degree in memb.items():
         reach.setdefault(gid, {})[key] = degree
-    for gid in keepers:
-        here = reach.get(gid)
-        if here:
-            seeded.setdefault(max(sorted(here), key=here.get), []).append(by_id[gid])
+
+    def seed_for(missing):
+        out = {}
+        for gid in missing:
+            here = reach.get(gid)
+            if here:
+                out.setdefault(max(sorted(here), key=here.get), []).append(by_id[gid])
+        return out
     if coll.auto_depth:
         room = depth.grid_depths(
             games, space, {g.id: g.rating for g in games}, sel, coll, rows,
@@ -94,9 +97,21 @@ def run(games, space, params, banned=(), keepers=()):
             rejected=set(banned))["capacity"]
     else:
         room = coll.capacity(cells)
-    results = allocate(cells, memb, scorer, room,
-                       seeded=seeded, alternates_limit=pres.alternates_per_cell,
-                       sel=sel, rejected=set(banned))
+    # Seed only the pins that lost. Seeding one up front takes it out of
+    # contention for every other cell, so pinning a game that was already the
+    # first pick of its shelf used to change three games and move seven — when
+    # it was already staying. See web/src/engine/index.js, which does the same.
+    def go(seeded):
+        return allocate(cells, memb, scorer, room, seeded=seeded,
+                        alternates_limit=pres.alternates_per_cell,
+                        sel=sel, rejected=set(banned))
+
+    results = go({})
+    if keepers:
+        shelved = {a.game.id for r in results.values() for a in r.assignments}
+        missing = [gid for gid in keepers if gid not in shelved]
+        if missing:
+            results = go(seed_for(missing))
     return {f"{k[0]}|{k[1]}": [a.game.id for a in r.assignments]
             for k, r in results.items()}
 

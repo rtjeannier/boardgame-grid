@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { coverageOf, spokeVector } from '../../engine/index.js';
+import { mixOf, spokeVector } from '../../engine/index.js';
 import GameItem from '../game/GameItem.jsx';
 import { toGameView } from '../game/view.js';
 import Radar from '../chart/Radar.jsx';
@@ -92,8 +92,17 @@ export default function Collection({ built, state, actions, onOpen }) {
   const rows = useMemo(
     () => (shelf ? shelf.picks.map((p) => ix.rowOf.get(p.id)) : []),
     [shelf, ix]);
-  const shares = useMemo(
-    () => (rows.length ? sharesOf(ix, weights, rows) : []), [ix, weights, rows]);
+  // Sorted by what each carries, because that is what the heading claims. In
+  // allocation order it was not: pinning a game already on the shelf seeds it
+  // first and re-orders everything after it, which read as a reshuffle when
+  // nothing about the collection had changed.
+  const register = useMemo(() => {
+    if (!shelf) return [];
+    const carried = sharesOf(ix, weights, rows);
+    return shelf.picks
+      .map((p, i) => ({ pick: p, carries: carried[i] }))
+      .sort((a, b) => b.carries - a.carries);
+  }, [shelf, ix, weights, rows]);
 
   // Two shapes when there is something to compare: what the collection reaches,
   // and what you already own. The distance between them is the whole point.
@@ -101,12 +110,15 @@ export default function Collection({ built, state, actions, onOpen }) {
     const n = ix.groups.length;
     const names = ix.groups.map((g) => g.name.split(' · ')[0]);
     const shelved = grid.flatMap((c) => c.picks.map((p) => ix.rowOf.get(p.id)));
-    const reach = coverageOf(shelved.map((r) => spokeVector(ix, weights, r, n)), n);
+    const reach = mixOf(shelved.map((r) => spokeVector(ix, weights, r, n)), n);
     const mine = state.owned.map((id) => ix.rowOf.get(id)).filter((r) => r !== undefined);
     if (!mine.length) return { names, values: reach, reference: null };
+    // Each shape normalised to its own largest spoke, so this compares what the
+    // two are *made of* rather than how many games each has. Comparing volume
+    // would only ever say "you own fewer games", which you knew.
     return {
       names,
-      values: coverageOf(mine.map((r) => spokeVector(ix, weights, r, n)), n),
+      values: mixOf(mine.map((r) => spokeVector(ix, weights, r, n)), n),
       reference: reach,
     };
   }, [ix, grid, weights, state.owned]);
@@ -120,15 +132,16 @@ export default function Collection({ built, state, actions, onOpen }) {
         <aside className={css.side}>
           <div className={css.block}>
             <h2 className={css.label}>
-              {radar.reference ? 'Yours against the collection' : 'What it reaches'}
+              {radar.reference ? 'Yours against the collection' : 'What it is made of'}
             </h2>
             <Radar names={radar.names} values={radar.values} reference={radar.reference}
                    label={radar.reference ? 'Yours' : 'The collection'}
                    showGaps={!!radar.reference} size={272} />
             {!radar.reference && (
               <p className={css.note}>
-                Twelve kinds of play, and how far the collection reaches into
-                each. Add your own games and this draws them against it.
+                Twelve kinds of play, and how much of the collection sits on
+                each — the fullest spoke sets the edge. Add your own games and
+                this draws their shape against it.
               </p>
             )}
           </div>
@@ -177,11 +190,11 @@ export default function Collection({ built, state, actions, onOpen }) {
                 </p>
               )}
               <div className={css.list}>
-                {shelf.picks.map((p, i) => (
+                {register.map(({ pick: p, carries }) => (
                   <div key={p.id} className={css.entry}>
                     <GameItem
                       game={toGameView(ix, ix.rowOf.get(p.id), {
-                        carries: shares[i],
+                        carries,
                         owned: state.owned.includes(p.id),
                         pinned: state.pinned.includes(p.id),
                         blocked: state.blocked.includes(p.id),

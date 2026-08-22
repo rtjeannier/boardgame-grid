@@ -29,15 +29,60 @@ function Players({ built, state, actions }) {
     const next = columns.map((c, j) => (i === j ? { ...c, [key]: value } : c));
     actions.setColumns(next);
   };
-  const add = () => {
-    const last = columns[columns.length - 1];
-    const from = (last.hi ?? last.lo) + 1;
-    actions.setColumns([...columns, { label: `${from}+`, lo: from, hi: null }]);
+  /**
+   * One more group splits the widest one in two; one fewer merges the last two.
+   *
+   * Both keep the ranges contiguous, which editing them by hand does not — the
+   * fields below let you make a gap, and that is your business, but the stepper
+   * should never make one for you.
+   */
+  const relabel = (lo, hi) => (hi == null ? `${lo}+` : lo === hi ? `${lo}` : `${lo}-${hi}`);
+  const more = () => {
+    let widest = -1, at = -1;
+    columns.forEach((c, i) => {
+      const span = c.hi == null ? Infinity : c.hi - c.lo;
+      if (span > widest && span >= 1) { widest = span; at = i; }
+    });
+    if (at < 0) {                       // every group is a single count already
+      const last = columns[columns.length - 1];
+      const from = (last.hi ?? last.lo) + 1;
+      actions.setColumns([...columns, { label: `${from}+`, lo: from, hi: null }]);
+      return;
+    }
+    const c = columns[at];
+    const mid = c.hi == null ? c.lo : Math.floor((c.lo + c.hi) / 2);
+    actions.setColumns([
+      ...columns.slice(0, at),
+      { lo: c.lo, hi: mid, label: relabel(c.lo, mid) },
+      { lo: mid + 1, hi: c.hi, label: relabel(mid + 1, c.hi) },
+      ...columns.slice(at + 1),
+    ]);
+  };
+  const fewer = () => {
+    if (columns.length < 3) return;
+    const a = columns[columns.length - 2];
+    const b = columns[columns.length - 1];
+    actions.setColumns([
+      ...columns.slice(0, -2),
+      { lo: a.lo, hi: b.hi, label: relabel(a.lo, b.hi) },
+    ]);
   };
   return (
     <>
       <div className={css.block}>
         <h3 className={css.label}>Player groups</h3>
+        <div className={css.tools}>
+          <span className={css.count}>
+            <button type="button" aria-label="Fewer groups" disabled={columns.length < 3}
+                    onClick={fewer}>−</button>
+            <span>{columns.length}</span>
+            <button type="button" aria-label="More groups" onClick={more}>＋</button>
+          </span>
+          <span className={css.countLabel}>groups</span>
+          <Button tone="quiet"
+                  onClick={() => actions.setColumns(built.ix.defaults?.playerColumns
+                    ?? state.columns)}>Back to the defaults</Button>
+        </div>
         <div className={css.rows}>
           {columns.map((c, i) => (
             <div key={`${c.label}-${i}`} className={css.row}>
@@ -61,12 +106,6 @@ function Players({ built, state, actions }) {
               </button>
             </div>
           ))}
-        </div>
-        <div className={css.tools}>
-          <Button onClick={add}>＋ Group</Button>
-          <Button tone="quiet"
-                  onClick={() => actions.setColumns(built.ix.defaults?.playerColumns
-                    ?? state.columns)}>Back to the defaults</Button>
         </div>
       </div>
       <div className={css.block}>

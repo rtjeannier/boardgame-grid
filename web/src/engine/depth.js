@@ -131,14 +131,25 @@ export function gridDepths(ix, weights, { columns, rows, leftover, fallback, pla
   const rowDepth = new Map(
     (rows ?? []).map((r) => [String(r.index), depthOf(byRow, String(r.index), 'row')]));
 
+  // A shelf takes the smaller of its column's answer and its row's, unless the
+  // reader has said otherwise about that one shelf. Per-cell beats both, because
+  // it is the most specific thing anybody said.
   const capacity = new Map();
+  const cellDepth = new Map();
+  const resolve = (key, from) => {
+    const set = overrides[`cell:${key}`];
+    const depth = set == null ? from : Math.max(0, set);
+    capacity.set(key, depth);
+    cellDepth.set(key, { depth, auto: set == null, from });
+  };
+
   for (const [label, c] of columnDepth) {
-    if (!rows) { capacity.set(label, c.depth); continue; }
+    if (!rows) { resolve(label, c.depth); continue; }
     for (const [index, r] of rowDepth) {
-      capacity.set(`${label}|${index}`, Math.min(c.depth, r.depth));
+      resolve(`${label}|${index}`, Math.min(c.depth, r.depth));
     }
   }
-  if (!columns && rows) for (const [index, r] of rowDepth) capacity.set(index, r.depth);
+  if (!columns && rows) for (const [index, r] of rowDepth) resolve(index, r.depth);
 
-  return { capacity, columnDepth, rowDepth };
+  return { capacity, columnDepth, rowDepth, cellDepth };
 }
