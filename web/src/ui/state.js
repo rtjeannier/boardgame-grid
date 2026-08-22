@@ -128,6 +128,25 @@ export function sharesOf(ix, weights, rows) {
   });
 }
 
+/**
+ * Each shelved game's share of what its own shelf covers.
+ *
+ * Per shelf, not per collection: at 190 games the whole-collection version is
+ * 190 coverage passes over 190 vectors, and it answers a less useful question
+ * anyway. "Its shelf barely notices" is what somebody deciding what to sell
+ * wants to hear.
+ */
+export function carriesByGame(built) {
+  const out = new Map();
+  for (const cell of built.grid) {
+    if (!cell.picks.length) continue;
+    const rows = cell.picks.map((p) => built.ix.rowOf.get(p.id));
+    const shares = sharesOf(built.ix, built.weights, rows);
+    cell.picks.forEach((p, i) => out.set(p.id, { carries: shares[i], cell: cell.key }));
+  }
+  return out;
+}
+
 export function useCollection(contract) {
   const [state, dispatch] = useReducer(reduce, initial);
 
@@ -136,15 +155,14 @@ export function useCollection(contract) {
   // control that responds and one that stutters.
   const ix = useMemo(() => indexContract(contract), [contract]);
 
-  const include = useMemo(() => {
-    if (!state.mineOnly || !state.owned.length) return null;
-    const keep = new Uint8Array(ix.n);
-    for (const id of state.owned) {
-      const row = ix.rowOf.get(id);
-      if (row !== undefined) keep[row] = 1;
-    }
-    return keep;
-  }, [ix, state.mineOnly, state.owned]);
+  // "My collection" does not mean "hide everything else". It means every game
+  // you own holds a place, and the rest of the shelf fills from the whole
+  // corpus with things you do not own — so what you are looking at is your
+  // collection and what would best complete it. Filtering the corpus down to
+  // your games could only ever show you what you already knew.
+  const keepers = useMemo(
+    () => (state.mineOnly ? [...new Set([...state.pinned, ...state.owned])] : state.pinned),
+    [state.mineOnly, state.pinned, state.owned]);
 
   const built = useMemo(() => buildGrid(ix, {
     axes: state.axes,
@@ -152,13 +170,12 @@ export function useCollection(contract) {
     rowCount: state.rowCount,
     rowEdges: state.rowEdges,
     owned: state.owned,
-    keepers: state.pinned,
+    keepers,
     banned: state.blocked,
     depthOverrides: state.depthOverrides,
-    include,
     alternatesLimit: 6,
   }), [ix, state.axes, state.columns, state.rowCount, state.rowEdges, state.owned,
-       state.pinned, state.blocked, state.depthOverrides, include]);
+       keepers, state.blocked, state.depthOverrides]);
 
   const actions = useMemo(() => ({
     toggleAxis: (key) => dispatch({ type: 'axis', key }),

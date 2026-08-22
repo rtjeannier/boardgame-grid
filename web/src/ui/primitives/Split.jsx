@@ -48,8 +48,10 @@ export function SplitBar({
           <button type="button" disabled={!ownedCount}
                   className={`${css.only} ${onlyMine.on ? css.onlyOn : ''}`.trim()}
                   aria-pressed={!!onlyMine.on} onClick={onlyMine.toggle}
-                  title={ownedCount ? undefined : 'Add some of your games first'}>
-            Only my games
+                  title={ownedCount
+                    ? 'Hold every game you own and fill the rest around them'
+                    : 'Add some of your games first'}>
+            Build on mine
           </button>
         )}
         {count != null && <span className={css.count}>{`${count} games`}</span>}

@@ -738,12 +738,46 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
                                         for g in games))
 
     results = {}
+    # Everything shelved anywhere, so the leftovers below can leave out games
+    # `improve_collection` would throw straight back. Offering one is a loop:
+    # raise the shelf's depth, it gets placed, it gets swapped out, and the same
+    # name comes up again — which "Add Gloomhaven: Jaws of the Lion" did four
+    # times running while Gloomhaven sat two cells away.
+    placed = [g for k in keys for g in chosen[k]]
+    overlap = getattr(scorer, "_overlap", None)
+    by_family: dict = {}
+    for g in placed:
+        for family in g.families:
+            by_family.setdefault(family, []).append(g)
+    kin_shelved = {g.id for g in placed}
+
+    def thrown_back(game) -> bool:
+        """The candidate side of `_rerecordings`, asked against the shelf."""
+        mine = set(game.signals)
+        for other in placed:
+            if other.id == game.id:
+                continue
+            if overlap is not None and (other.id in game.reimplements
+                                        or game.id in other.reimplements):
+                if game.rank > other.rank and overlap(game.id, other.id) > 0.0:
+                    return True
+        for family in game.families:
+            for other in by_family.get(family, ()):
+                if other.id == game.id:
+                    continue
+                theirs = set(other.signals)
+                if mine <= theirs and len(mine) <= len(theirs):
+                    if mine < theirs or game.rank > other.rank:
+                        return True
+        return False
+
     for key in keys:
         picked = {g.id for g in chosen[key]}
         # Who is next, which is whoever would add the most to the shelf as it
         # now stands — not whoever is best known. Ordering these by rank called
         # the most famous leftover "on deck" when it might add nothing at all.
-        pool = [g for g in cells[key] if g.id not in picked and g.id not in taken]
+        pool = [g for g in cells[key]
+                if g.id not in picked and g.id not in taken and not thrown_back(g)]
         if alternates_limit and pool and hasattr(scorer, "score_all"):
             # Batched, like the bidding rounds: scoring a few hundred leftovers
             # one at a time is the same call overhead that made `allocate` the

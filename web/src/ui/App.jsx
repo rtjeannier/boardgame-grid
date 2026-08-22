@@ -32,9 +32,9 @@ function standfirst(page, built, owned) {
   }
   const total = built.grid.reduce((n, c) => n + c.picks.length, 0);
   if (built.mineOnly) {
-    return `Built out of your ${owned} games and nothing else. What a game `
-      + 'carries here is what it carries for you — and a shelf you have nothing '
-      + 'for shows up empty.';
+    return `Every one of your ${owned} games holds a place, and the rest is what `
+      + 'would best complete them. The ones marked as yours are yours; the rest '
+      + 'are what to add.';
   }
   if (built.axes.length === 0) {
     if (!total) {

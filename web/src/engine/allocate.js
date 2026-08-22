@@ -217,6 +217,20 @@ export function allocate(ix, scorer, cells, {
 
   if (improve) improveCollection(ix, scorer, cells, gains, taken, pinned);
 
+  // Everything shelved anywhere, so the queue below can leave out the games the
+  // improve pass would immediately throw back. Offering one is a loop: raise
+  // the shelf's depth, it gets placed, it gets swapped straight out, and the
+  // same name comes up again — which is exactly what "Add Gloomhaven: Jaws of
+  // the Lion" did four times running while Gloomhaven sat two cells away.
+  const shelvedAll = new Set(cells.flatMap((c) => c.chosen.map((i) => c.games[i])));
+  const wouldBeThrownBack = (game) => {
+    for (const other of ix.thin.get(game) ?? []) if (shelvedAll.has(other)) return true;
+    for (const other of ix.kin.get(game) ?? []) {
+      if (shelvedAll.has(other) && ix.rank[other] < ix.rank[game]) return true;
+    }
+    return false;
+  };
+
   return cells.map((cell) => {
     const picks = cell.chosen.map((i) => cell.games[i]);
     const chosen = new Set(picks);
@@ -230,7 +244,7 @@ export function allocate(ix, scorer, cells, {
       const scores = scorer.scoreAll(cell);
       for (let i = 0; i < cell.games.length; i++) {
         const g = cell.games[i];
-        if (chosen.has(g) || taken.has(g)) continue;
+        if (chosen.has(g) || taken.has(g) || wouldBeThrownBack(g)) continue;
         queue.push([g, scores[i]]);
       }
       queue.sort((a, b) => (b[1] - a[1]) || (ix.rank[a[0]] - ix.rank[b[0]]));

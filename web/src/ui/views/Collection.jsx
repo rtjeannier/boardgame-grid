@@ -5,7 +5,7 @@ import { toGameView } from '../game/view.js';
 import Radar from '../chart/Radar.jsx';
 import Button from '../primitives/Button.jsx';
 import DepthField from '../primitives/DepthField.jsx';
-import { sharesOf } from '../state.js';
+import { carriesByGame, sharesOf } from '../state.js';
 import Board, { shelvedNow } from './Board.jsx';
 import { cellLabeller } from './labels.js';
 import css from './Collection.module.css';
@@ -60,6 +60,49 @@ function AddNext({ built, actions }) {
           ? `Adds ${best.gain?.toFixed(2)} — the most of anything left.`
           : `Adds ${best.gain?.toFixed(2)}, against ${last.toFixed(2)} for the last one in.`}
       </span>
+    </div>
+  );
+}
+
+/**
+ * Which of yours the collection would barely miss.
+ *
+ * The pruning question, and the only one `carries` was ever really for: a game
+ * carrying 4% of its shelf is one the shelf covers almost entirely without it.
+ * It is not advice to sell anything — two of these will be favourites — it is
+ * the arithmetic, said plainly.
+ */
+function CouldGo({ built, state, actions, onOpen }) {
+  const { ix } = built;
+  const carried = useMemo(() => carriesByGame(built), [built]);
+  const mine = state.owned
+    .map((id) => ({ id, ...(carried.get(id) ?? {}) }))
+    .filter((g) => g.carries != null)
+    .sort((a, b) => a.carries - b.carries)
+    .slice(0, 4);
+  if (mine.length < 2) return null;
+  return (
+    <div className={css.block}>
+      <h2 className={css.label}>Yours the shelf would barely miss</h2>
+      <div className={css.list}>
+        {mine.map((g) => (
+          <div key={g.id} className={css.entry}>
+            <GameItem
+              game={toGameView(ix, ix.rowOf.get(g.id), {
+                carries: g.carries, owned: true,
+                pinned: state.pinned.includes(g.id),
+                blocked: state.blocked.includes(g.id),
+              })}
+              onOpen={onOpen}
+              onPin={(x) => actions.pin(x.id, shelvedNow(built), x.name)}
+              onBlock={(x) => actions.block(x.id, shelvedNow(built), x.name)} />
+          </div>
+        ))}
+      </div>
+      <p className={css.note}>
+        Share of what its own shelf covers. Lowest first — drop one and its shelf
+        loses that much.
+      </p>
     </div>
   );
 }
@@ -193,6 +236,7 @@ export default function Collection({ built, state, actions, onOpen }) {
           </div>
 
           {shelf && <Why cell={depths?.cell} />}
+          <CouldGo built={built} state={state} actions={actions} onOpen={onOpen} />
 
           <div className={css.block}>
             <h2 className={css.label}>What it contains</h2>

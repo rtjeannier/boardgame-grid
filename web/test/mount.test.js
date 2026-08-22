@@ -53,6 +53,14 @@ function mount() {
   return { host, root };
 }
 
+/** The collection's size, from the bar — not from whatever prose says "N games". */
+const size = (host) => {
+  const chip = [...host.querySelectorAll('span')]
+    .filter((el) => /^\d+ games$/.test(el.textContent.trim()))
+    .pop();
+  return chip ? Number(chip.textContent.trim().split(' ')[0]) : null;
+};
+
 const byText = (text, within = document) =>
   [...within.querySelectorAll('button, a, [role="button"]')]
     .find((el) => el.textContent.trim() === text);
@@ -234,9 +242,9 @@ test('the weight panel adds and removes bands', () => {
   act(() => root.unmount());
 });
 
-test('only-my-games needs games, then builds out of them alone', () => {
+test('build-on-mine needs games, then holds all of them and fills around', () => {
   const { host, root } = mount();
-  const only = () => byText('Only my games', host);
+  const only = () => byText('Build on mine', host);
   assert.ok(only().disabled, 'offered before there was anything to filter to');
 
   click(byText('My games', host));
@@ -255,8 +263,14 @@ test('only-my-games needs games, then builds out of them alone', () => {
 
   click(byText('Collection', host));
   assert.ok(!only().disabled, 'still refused with games added');
+  const before = size(host);
   click(only());
-  assert.match(host.textContent, /Built out of your/);
+  assert.match(host.textContent, /holds a place, and the rest/);
+  // Not a filter: the collection is still a whole collection, with yours in it.
+  const after = size(host);
+  assert.ok(after >= before,
+    `building on ${before} games should not shrink the collection to ${after}`);
+  assert.match(host.textContent, /Gloomhaven/, 'a game that was added is not held');
   act(() => root.unmount());
 });
 
@@ -377,9 +391,9 @@ test('the next best game is offered at every split, and lands where it says', ()
   // of thirty-five shelves instead of one.
   assert.match(host.textContent, /Goes on .+ · /, 'it did not say which shelf');
 
-  const before = Number(host.textContent.match(/(\d+) games/)[1]);
+  const before = size(host);
   click(byText(`＋ Add ${split}`, host));
-  assert.equal(Number(host.textContent.match(/(\d+) games/)[1]), before + 1,
+  assert.equal(size(host), before + 1,
     'pressing it did not add a game');
   assert.ok(host.textContent.includes(split.trim()), 'the game it named is not there');
   void unsplit;
