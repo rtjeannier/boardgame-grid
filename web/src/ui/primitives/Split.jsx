@@ -23,7 +23,7 @@ export function SplitBar({ axes, active, onToggle, count, children }) {
         );
       })}
       <span className={css.right}>
-        {count != null && <span className={css.count}>{count} games</span>}
+        {count != null && <span className={css.count}>{`${count} games`}</span>}
         {children}
       </span>
     </div>
