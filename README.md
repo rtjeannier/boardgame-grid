@@ -18,6 +18,10 @@ coverage, and see the gaps.
 
 The output is an interactive static site you can host on GitHub Pages.
 
+`CLAUDE.md` carries the working rules — the style guide the interface follows,
+how to change the model without breaking the two engines' agreement, and what to
+measure before claiming anything.
+
 ![grid preview](web/public/preview.png)
 
 ## How it fits together
@@ -197,7 +201,7 @@ hand-written list — fills the same shape without the interface noticing.
 
 Two implementations of one formula drift, so `web/test/parity.test.js` runs the JS
 engine over the same inputs Python used and asserts the same games in the same
-order, across thirteen configurations. Both sides read the *quantised* numbers the
+order, across fourteen configurations. Both sides read the *quantised* numbers the
 contract carries: asking the browser to reproduce precision it was never given is
 asking for something neither engine can deliver.
 
