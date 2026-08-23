@@ -29,11 +29,18 @@ const initial = {
   rowEdges: null,      // null means "quantiles of the corpus", which is the point
   // Hold every game you own and fill the rest around them.
   mineOnly: false,
-  // What stops the fill. `returns` is the read-the-curve rule; `count` is a
-  // global ceiling on how many games there are, which is the same machinery
-  // with every game costing one game. Money and shelf volume are the same
-  // control again with a different cost, the day the data carries one.
-  fill: { rule: 'returns', count: 60 },
+  // What stops the fill. Not a choice between rules — a list of them, each on
+  // or off, each saying whether it limits one shelf or the whole collection.
+  // Every one that is on binds and the smallest wins, the way a column's depth
+  // and a row's already do. Money and shelf volume are the same list again with
+  // a different cost per game, the day the data carries one.
+  limits: [
+    { kind: 'returns', scope: 'shelf', on: true },
+    { kind: 'count', scope: 'shelf', on: false, value: 5 },
+    { kind: 'count', scope: 'total', on: false, value: 60 },
+    { kind: 'budget', scope: 'total', on: false, value: 400 },
+    { kind: 'volume', scope: 'total', on: false, value: 60 },
+  ],
   panel: null,         // which axis is being configured, if any
   open: null,          // the game whose drawer is showing
   // What the last block or pin did, so the interface can say so. Blocking a
@@ -49,10 +56,18 @@ function toggle(list, id) {
   return list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
 }
 
+/**
+ * A depth you set outlives the filter you set it under.
+ *
+ * Every one of these used to clear `depthOverrides`, so turning on a split threw
+ * away three shelf depths you had just typed. A key for a column that no longer
+ * exists simply never matches, which costs nothing; wiping the lot to avoid that
+ * cost everything.
+ */
 function reduce(state, action) {
   switch (action.type) {
     case 'axis':
-      return { ...state, axes: toggle(state.axes, action.key), depthOverrides: {} };
+      return { ...state, axes: toggle(state.axes, action.key) };
     case 'own':
       return { ...state, owned: toggle(state.owned, action.id) };
     case 'ownMany':
@@ -85,30 +100,31 @@ function reduce(state, action) {
       return { ...state, depthOverrides: next };
     }
     case 'rows':
-      return { ...state, rowCount: action.value, rowEdges: null, depthOverrides: {} };
+      return { ...state, rowCount: action.value, rowEdges: null };
     case 'rowEdge': {
       const edges = [...(state.rowEdges ?? action.current)];
       edges[action.at] = action.value;
-      return { ...state, rowEdges: edges, depthOverrides: {} };
+      return { ...state, rowEdges: edges };
     }
     case 'addRow': {
       if (state.rowCount >= 6) return state;
-      return { ...state, rowCount: state.rowCount + 1, rowEdges: action.edges,
-               depthOverrides: {} };
+      return { ...state, rowCount: state.rowCount + 1, rowEdges: action.edges };
     }
     case 'dropRow': {
       if (state.rowCount <= 2) return state;
       const edges = [...action.edges];
       edges.splice(Math.min(action.at, edges.length - 1), 1);
-      return { ...state, rowCount: state.rowCount - 1, rowEdges: edges,
-               depthOverrides: {} };
+      return { ...state, rowCount: state.rowCount - 1, rowEdges: edges };
     }
     case 'columns':
-      return { ...state, columns: action.value, depthOverrides: {} };
+      return { ...state, columns: action.value };
     case 'mineOnly':
-      return { ...state, mineOnly: !state.mineOnly, depthOverrides: {} };
-    case 'fill':
-      return { ...state, fill: { ...state.fill, ...action.value } };
+      return { ...state, mineOnly: !state.mineOnly };
+    case 'limit':
+      return {
+        ...state,
+        limits: state.limits.map((l, i) => (i === action.at ? { ...l, ...action.value } : l)),
+      };
     case 'panel':
       return { ...state, panel: state.panel === action.key ? null : action.key };
     case 'open':
@@ -131,6 +147,21 @@ export function sharesOf(ix, weights, rows) {
     const without = sum(coverageOf(vectors.filter((_, j) => j !== i), n));
     return (total - without) / total;
   });
+}
+
+/** The limit list, as the three things `buildGrid` understands. */
+export function limitsFor(limits) {
+  const live = (kind, scope) =>
+    limits.find((l) => l.on && l.kind === kind && l.scope === scope);
+  const perShelf = live('count', 'shelf');
+  const total = live('count', 'total');
+  return {
+    // Reading the curve is itself a per-shelf limit; with it off, a shelf takes
+    // the number you set and nothing recomputes behind you.
+    capacity: live('returns', 'shelf') ? 'auto' : (perShelf?.value ?? 5),
+    perShelfCap: perShelf ? perShelf.value : null,
+    budget: total ? total.value : null,
+  };
 }
 
 export function useCollection(contract) {
@@ -159,10 +190,10 @@ export function useCollection(contract) {
     keepers,
     banned: state.blocked,
     depthOverrides: state.depthOverrides,
-    budget: state.fill.rule === 'count' ? state.fill.count : null,
+    ...limitsFor(state.limits),
     alternatesLimit: 6,
   }), [ix, state.axes, state.columns, state.rowCount, state.rowEdges, state.owned,
-       keepers, state.blocked, state.depthOverrides, state.fill]);
+       keepers, state.blocked, state.depthOverrides, state.limits]);
 
   const actions = useMemo(() => ({
     toggleAxis: (key) => dispatch({ type: 'axis', key }),
@@ -181,7 +212,7 @@ export function useCollection(contract) {
     dropRow: (at, edges) => dispatch({ type: 'dropRow', at, edges }),
     toggleMineOnly: () => dispatch({ type: 'mineOnly' }),
     togglePanel: (key) => dispatch({ type: 'panel', key }),
-    setFill: (value) => dispatch({ type: 'fill', value }),
+    setLimit: (at, value) => dispatch({ type: 'limit', at, value }),
     open: (game) => dispatch({ type: 'open', game }),
     reset: () => dispatch({ type: 'reset' }),
   }), []);

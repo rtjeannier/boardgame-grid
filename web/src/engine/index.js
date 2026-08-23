@@ -50,6 +50,7 @@ export function buildGrid(contract, {
   columns = DEFAULT_COLUMNS, rowCount = 5, rowNames = DEFAULT_ROW_NAMES, rowEdges = null,
   capacity = 'auto', alternatesLimit = 6, depthOverrides = {}, autoDepthLeftover = null,
   owned = [], keepers = [], banned = [], budget = null, costOf = null,
+  perShelfCap = null,
   genreWeights = null, include = null, gainFloor = null, policy = null,
 } = {}) {
   const base = contract.games ? indexContract(contract) : contract;
@@ -128,6 +129,27 @@ export function buildGrid(contract, {
         rejected: rejectedRows,
       });
       room = depths.capacity;
+    }
+  }
+
+  // A flat ceiling across every shelf, on top of whatever the reading said.
+  // Both are ceilings, so the smaller wins — the same rule a column's answer and
+  // a row's already meet under, and the reason the limits are a list rather than
+  // a choice between them.
+  if (perShelfCap != null) {
+    room = typeof room === 'number'
+      ? Math.min(room, perShelfCap)
+      : new Map([...room].map(([k, v]) => [k, Math.min(v, perShelfCap)]));
+    if (depths) {
+      const trim = (m) => new Map([...(m ?? [])]
+        .map(([k, v]) => [k, { ...v, depth: Math.min(v.depth, perShelfCap) }]));
+      depths = {
+        ...depths,
+        capacity: room,
+        columnDepth: trim(depths.columnDepth),
+        rowDepth: trim(depths.rowDepth),
+        ...(depths.cell ? { cell: { ...depths.cell, depth: room } } : {}),
+      };
     }
   }
 

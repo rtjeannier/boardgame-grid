@@ -96,7 +96,7 @@ export default function App({ contract }) {
                 onToggle={actions.toggleAxis} onOpen={actions.togglePanel}
                 openKey={state.panel} ownedCount={state.owned.length}
                 onlyMine={{ on: state.mineOnly, toggle: actions.toggleMineOnly }}>
-        <FillUntil fill={state.fill} onChange={actions.setFill}
+        <FillUntil limits={state.limits} onChange={actions.setLimit}
                    leftover={built.ix.defaults?.autoDepthLeftover} />
         <Blocked state={state} built={built} actions={actions} />
       </SplitBar>

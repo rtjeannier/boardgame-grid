@@ -1,68 +1,79 @@
 import css from './FillUntil.module.css';
 
 /**
- * What stops the fill.
+ * What stops the fill — a list of limits, not a choice between them.
  *
- * Depth, a budget and shelf volume are the same kind of thing — a limit on how
- * much gets filled — in different units, so they are one control rather than
- * three features. The engine takes a global `budget` and a per-game `costOf`;
- * with every game costing one game, a budget is a number of games, and the day
- * a price or a box size exists it is the same control with a different cost.
+ * Depth, a budget and shelf volume are the same kind of thing, so they are one
+ * control; but they are not alternatives, and a shelf's limit is not the
+ * collection's. Each row is on or off and says whether it binds one shelf or the
+ * whole collection, and every one that is on applies with the smallest winning —
+ * the rule a column's depth and a row's already meet under.
  *
- * The two that cannot work yet are shown rather than hidden, with the reason,
- * because the reason is a fact about the data that a reader should have.
+ * The engine takes a global `budget` and a per-game `costOf`; with every game
+ * costing one game a budget is a number of games, and the day a price or a box
+ * size exists it is this same list with a different cost. The two that cannot
+ * work yet are shown with the reason rather than hidden, because the reason is a
+ * fact about the data a reader should have.
  */
-const RULES = [
-  { key: 'returns', label: 'a game stops paying',
-    detail: 'each shelf reads its own curve' },
-  { key: 'count', label: 'a number of games', unit: 'games' },
-  { key: 'budget', label: 'a budget', why: 'BGG publishes no price' },
-  { key: 'volume', label: 'shelf space', why: 'BGG publishes no box size' },
-];
+const KINDS = {
+  returns: { label: 'a game stops paying', fixed: 'reads each shelf’s own curve' },
+  count: { label: 'a number of games', unit: 'games' },
+  budget: { label: 'a budget', why: 'BGG publishes no price' },
+  volume: { label: 'shelf space', why: 'BGG publishes no box size' },
+};
+const SCOPE = { shelf: 'a shelf', total: 'in total' };
 
-export default function FillUntil({ fill, onChange, leftover }) {
-  const current = RULES.find((r) => r.key === fill.rule) ?? RULES[0];
-  const summary = fill.rule === 'count'
-    ? `${fill.count} games`
-    : `${current.label} · ${Math.round((leftover ?? 0.45) * 100)}%`;
+function summarise(limits, leftover) {
+  const on = limits.filter((l) => l.on);
+  if (!on.length) return 'nothing stops it';
+  return on.map((l) => (l.kind === 'returns'
+    ? `${Math.round((leftover ?? 0.45) * 100)}% returns`
+    : `${l.value} ${l.kind === 'count' ? 'games' : KINDS[l.kind].unit ?? ''} ${SCOPE[l.scope]}`.trim()))
+    .join(' · ');
+}
 
+export default function FillUntil({ limits, onChange, leftover }) {
   return (
     <details className={css.wrap}>
       <summary className={css.summary}>
         <span className={css.label}>Fill until</span>
-        {summary}
+        {summarise(limits, leftover)}
         <span className={css.caret} aria-hidden="true">▾</span>
       </summary>
       <div className={css.pop}>
-        {RULES.map((rule) => {
-          const on = rule.key === fill.rule;
+        {limits.map((limit, at) => {
+          const kind = KINDS[limit.kind];
+          const blocked = !!kind.why;
           return (
-            <div key={rule.key}>
-              <button type="button" disabled={!!rule.why}
-                      className={`${css.option} ${on ? css.on : ''}`.trim()}
-                      aria-pressed={on}
-                      onClick={() => onChange({ rule: rule.key })}>
-                <span className={css.dot} />
-                <span>{rule.label}</span>
-                <span className={css.why}>{rule.why ?? rule.detail ?? ''}</span>
-              </button>
-              {on && rule.unit && (
-                <div className={css.value}>
+            <div key={`${limit.kind}-${limit.scope}`} className={css.row}>
+              <label className={`${css.option} ${blocked ? css.blocked : ''}`.trim()}>
+                <input type="checkbox" className={css.check} checked={limit.on}
+                       disabled={blocked}
+                       onChange={() => onChange(at, { on: !limit.on })} />
+                <span className={css.name}>{kind.label}</span>
+                <span className={css.scope}>
+                  {kind.fixed ?? (blocked ? kind.why : SCOPE[limit.scope])}
+                </span>
+              </label>
+              {limit.on && !blocked && limit.value != null && (
+                <span className={css.value}>
                   <input className={css.num} type="text" inputMode="numeric"
-                         aria-label="How many games" value={fill.count}
+                         aria-label={`${kind.label}, ${SCOPE[limit.scope]}`}
+                         value={limit.value}
                          onChange={(e) => {
                            const n = parseInt(e.target.value, 10);
-                           onChange({ count: Number.isNaN(n) ? 0 : Math.max(0, n) });
+                           onChange(at, { value: Number.isNaN(n) ? 0 : Math.max(0, n) });
                          }} />
-                  <span className={css.unit}>{rule.unit}</span>
-                </div>
+                  <span className={css.unit}>{kind.unit}</span>
+                </span>
               )}
             </div>
           );
         })}
         <p className={css.foot}>
-          A limit on the whole collection, on top of how deep each shelf goes —
-          both are ceilings and the smaller wins.
+          Everything ticked applies at once and the smallest wins. Turn the first
+          one off and a shelf stops reading its own curve — it takes the number
+          you set and nothing recomputes behind you.
         </p>
       </div>
     </details>

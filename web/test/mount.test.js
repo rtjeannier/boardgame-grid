@@ -400,29 +400,55 @@ test('the next best game is offered at every split, and lands where it says', ()
   act(() => root.unmount());
 });
 
-test('fill until a number of games, and the collection follows', () => {
+test('the limits are a list, they combine, and two of them say why not yet', () => {
   const { host, root } = mount();
   const open = [...host.querySelectorAll('summary')]
     .find((el) => el.textContent.includes('Fill until'));
   assert.ok(open, 'no fill rule in the bar');
   act(() => { open.parentElement.open = true; });
 
-  // The two that cannot work yet say why rather than being hidden.
-  const blocked = [...host.querySelectorAll('button[disabled]')]
-    .filter((b) => /budget|shelf space/.test(b.textContent));
-  assert.equal(blocked.length, 2, 'budget and shelf space should be offered and disabled');
-  assert.match(blocked.map((b) => b.textContent).join(' '), /no price|no box size/);
+  // The two that cannot work yet are offered and say why, rather than hidden.
+  const blocked = [...host.querySelectorAll('input[type="checkbox"][disabled]')];
+  assert.equal(blocked.length, 2, 'budget and shelf space should be there and disabled');
+  assert.match(host.textContent, /no price[^]*no box size/);
 
-  click([...host.querySelectorAll('button')].find((b) => b.textContent.includes('a number of games')));
-  const field = host.querySelector('input[aria-label="How many games"]');
-  assert.ok(field, 'no number to set');
+  const boxes = [...host.querySelectorAll('input[type="checkbox"]')];
+  const field = (label) => host.querySelector(`input[aria-label="${label}"]`);
+  const type = (el, value) => act(() => {
+    const setter = Object.getOwnPropertyDescriptor(
+      dom.window.HTMLInputElement.prototype, 'value').set;
+    setter.call(el, value);
+    el.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+  });
+
+  // A total of seven, on top of the reading.
+  click(boxes[2]);
+  type(field('a number of games, in total'), '7');
+  assert.equal(size(host), 7, 'a total limit did not bind');
+
+  // And both at once: the smaller wins, so seven still holds.
+  click([...host.querySelectorAll('input[type="checkbox"]')][1]);
+  type(field('a number of games, a shelf'), '9');
+  assert.equal(size(host), 7, 'two limits should both apply, smallest winning');
+  act(() => root.unmount());
+});
+
+test('a depth you set outlives the filter you set it under', () => {
+  const { host, root } = mount();
+  const depth = () => host.querySelector('input[aria-label="Games on this shelf"]');
   act(() => {
     const setter = Object.getOwnPropertyDescriptor(
       dom.window.HTMLInputElement.prototype, 'value').set;
-    setter.call(field, '7');
-    field.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+    setter.call(depth(), '7');
+    depth().dispatchEvent(new dom.window.Event('input', { bubbles: true }));
   });
-  assert.equal(size(host), 7, 'the collection did not follow the number');
+  assert.equal(size(host), 7);
+
+  // Splitting and unsplitting used to clear every depth typed. It should not.
+  click(byText('＋ player count', host));
+  click([...host.querySelectorAll('button[aria-label^="Stop splitting"]')][0]);
+  assert.equal(depth().value, '7', 'the depth was thrown away by a filter change');
+  assert.equal(size(host), 7, 'the collection did not come back to what was set');
   act(() => root.unmount());
 });
 
