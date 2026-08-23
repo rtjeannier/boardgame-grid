@@ -245,15 +245,22 @@ test('a rebuild is a pure function of the settings', () => {
 });
 
 test('the shipped contract rebuilds fast enough to be a control surface', () => {
-  // Every click rebuilds — a split, a depth, a pin, a block. This is the only
-  // thing standing between a bigger corpus and an app that stutters, so it fails
-  // loudly rather than being noticed in a demo.
-  const budget = 250;
-  buildGrid(ix, { axes: ['players', 'weight'] });
+  // The *shipped* contract, not the seed fixture the rest of this file uses.
+  // Named for it and measuring the other one, this guarded nothing: the seed is
+  // a fifth the size and rebuilds in a fifth the time.
+  //
+  // Every click rebuilds — a split, a depth, a pin, a block — so this is the
+  // only thing between a bigger corpus and an app that stutters. Measured at
+  // ~490ms on an idle machine; the budget is set to catch a regression of that,
+  // not to assert an aspiration. Do not raise it to make a change fit.
+  const shipped = indexContract(JSON.parse(readFileSync(
+    join(HERE, '..', 'public', 'grid.contract.json'), 'utf8')));
+  const budget = 900;
+  buildGrid(shipped, { axes: ['players', 'weight'] });
   let best = Infinity;
   for (let i = 0; i < 3; i++) {
     const t = performance.now();
-    buildGrid(ix, { axes: ['players', 'weight'] });
+    buildGrid(shipped, { axes: ['players', 'weight'] });
     best = Math.min(best, performance.now() - t);
   }
   assert.ok(best < budget, `a two-split rebuild took ${best.toFixed(0)}ms, budget ${budget}ms`);

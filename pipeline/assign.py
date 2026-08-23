@@ -552,6 +552,7 @@ def _rerecordings(chosen: dict, overlap=None) -> dict[int, float]:
     return redundant
 
 
+
 def improve_collection(keys, cells, scorer, chosen, gains, taken, keep,
                        pinned: frozenset = frozenset(),
                        budget: float | None = None, spent: float = 0.0,
@@ -775,11 +776,14 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
             break
 
     # Cells are as full as they can be; now let the collection have its say.
+    pinned = frozenset(g.id for games in (seeded or {}).values() for g in games)
     improve_collection(keys, cells, scorer, chosen, gains, taken,
-                       sel.replacement_keep,
-                       pinned=frozenset(g.id for games in (seeded or {}).values()
-                                        for g in games),
+                       sel.replacement_keep, pinned=pinned,
                        budget=budget, spent=spent, cost_of=cost_of)
+    # A general swap pass belongs here and is not affordable; see the note in
+    # web/src/engine/allocate.js. Both engines leave the same 25 swaps on the
+    # table so they still agree, and the trim analysis buys the invariant by
+    # scoping to the reader's own games instead.
 
     results = {}
     # Everything shelved anywhere, so the leftovers below can leave out games

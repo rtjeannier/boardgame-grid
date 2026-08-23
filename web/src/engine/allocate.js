@@ -256,6 +256,20 @@ export function allocate(ix, scorer, cells, {
                                { budget, spent, costOf });
   }
 
+  // A general swap pass — for every pick, could this shelf take something it
+  // would rather have — was written, measured and taken back out. It works:
+  // 25 such swaps exist on the live grid without it, the best +0.273 (Targi ->
+  // 7 Wonders Duel), and two passes reach exactly zero at every split. It costs
+  // a two-split rebuild 412ms -> 4,732ms, because it needs `scoreAll` once per
+  // *slot* rather than per cell: 272 slots, up to four passes, a pool of
+  // thousands. Eleven times the rest of the build for a 9% tidier allocation
+  // that moves the median rank by two places.
+  //
+  // The invariant it was for — nothing to suggest on a collection nobody
+  // uploaded — is bought instead by scoping the trim analysis to games the
+  // reader owns. With none owned there is nothing to say, which is the same
+  // promise for none of the price.
+
   // Everything shelved anywhere, so the queue below can leave out the games the
   // improve pass would immediately throw back. Offering one is a loop: raise
   // the shelf's depth, it gets placed, it gets swapped straight out, and the
