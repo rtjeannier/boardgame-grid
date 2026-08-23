@@ -16,7 +16,8 @@ import css from './FillUntil.module.css';
  * fact about the data a reader should have.
  */
 const KINDS = {
-  returns: { label: 'a game stops paying', fixed: 'reads each shelf’s own curve' },
+  returns: { label: 'a game stops paying', unit: '% of its first pick',
+             fixed: 'each shelf reads its own curve' },
   count: { label: 'a number of games', unit: 'games' },
   budget: { label: 'a budget', why: 'BGG publishes no price' },
   volume: { label: 'shelf space', why: 'BGG publishes no box size' },
@@ -27,8 +28,8 @@ function summarise(limits, leftover) {
   const on = limits.filter((l) => l.on);
   if (!on.length) return 'nothing stops it';
   return on.map((l) => (l.kind === 'returns'
-    ? `${Math.round((leftover ?? 0.45) * 100)}% returns`
-    : `${l.value} ${l.kind === 'count' ? 'games' : KINDS[l.kind].unit ?? ''} ${SCOPE[l.scope]}`.trim()))
+    ? `under ${l.value ?? Math.round((leftover ?? 0.45) * 100)}% returns`
+    : `${l.value} games ${SCOPE[l.scope]}`))
     .join(' · ');
 }
 

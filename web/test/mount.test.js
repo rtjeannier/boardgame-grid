@@ -483,3 +483,27 @@ test('held twice is empty until something really is', () => {
     'it named the wrong half of the pair');
   act(() => root.unmount());
 });
+
+test('the returns bar is a number you set, like every other limit', () => {
+  const { host, root } = mount();
+  const open = [...host.querySelectorAll('summary')]
+    .find((el) => el.textContent.includes('Fill until'));
+  act(() => { open.parentElement.open = true; });
+
+  const field = host.querySelector('input[aria-label="a game stops paying, a shelf"]');
+  assert.ok(field, 'the returns bar had no field to set it with');
+  assert.equal(field.value, '45');
+
+  const before = size(host);
+  act(() => {
+    const setter = Object.getOwnPropertyDescriptor(
+      dom.window.HTMLInputElement.prototype, 'value').set;
+    setter.call(field, '75');
+    field.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+  });
+  // A higher bar stops each shelf sooner, so the collection shrinks.
+  assert.ok(size(host) < before,
+    `raising the bar to 75% should shrink ${before}, got ${size(host)}`);
+  assert.match(host.textContent, /under 75% returns/);
+  act(() => root.unmount());
+});

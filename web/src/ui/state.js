@@ -35,7 +35,7 @@ const initial = {
   // and a row's already do. Money and shelf volume are the same list again with
   // a different cost per game, the day the data carries one.
   limits: [
-    { kind: 'returns', scope: 'shelf', on: true },
+    { kind: 'returns', scope: 'shelf', on: true, value: 45 },
     { kind: 'count', scope: 'shelf', on: false, value: 5 },
     { kind: 'count', scope: 'total', on: false, value: 60 },
     { kind: 'budget', scope: 'total', on: false, value: 400 },
@@ -155,10 +155,15 @@ export function limitsFor(limits) {
     limits.find((l) => l.on && l.kind === kind && l.scope === scope);
   const perShelf = live('count', 'shelf');
   const total = live('count', 'total');
+  const returns = live('returns', 'shelf');
   return {
     // Reading the curve is itself a per-shelf limit; with it off, a shelf takes
     // the number you set and nothing recomputes behind you.
-    capacity: live('returns', 'shelf') ? 'auto' : (perShelf?.value ?? 5),
+    capacity: returns ? 'auto' : (perShelf?.value ?? 5),
+    // How much a game must still add for a shelf to keep taking them, as a share
+    // of what its first one added. Held here rather than read off the contract
+    // because it is a thing to set, not a constant the model was fitted with.
+    autoDepthLeftover: returns ? (returns.value ?? 45) / 100 : null,
     perShelfCap: perShelf ? perShelf.value : null,
     budget: total ? total.value : null,
   };
