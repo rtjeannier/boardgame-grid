@@ -14,7 +14,9 @@ export { CoverageScorer } from './scorer.js';
 export { allocate, UNIT_COST } from './allocate.js';
 export { toGridData } from './present.js';
 export { explainCut, cutSentence, howAlike, similarityBetween } from './explain.js';
-export { analyseShelf, coverageOf, redundancies, spokeVector } from './shelf.js';
+export {
+  analyseShelf, coverageOf, overRepresented, redundancies, spokeVector,
+} from './shelf.js';
 
 import { indexContract } from './contract.js';
 import { ratingSpans, coverageWeights } from './quality.js';

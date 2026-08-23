@@ -144,3 +144,88 @@ export function redundancies(ix, weights, rows, { floor = 0.9, limit = 8 } = {})
   }
   return out.sort((a, b) => b.share - a.share).slice(0, limit);
 }
+
+/**
+ * Which kinds of play a collection holds more of than it needs.
+ *
+ * Per axis, take the games that touch it, strongest first, and ask how few of
+ * them get you `enough` of the coverage all of them together give. The rest are
+ * surplus *on that axis* — which is not the same as unwanted, since a game
+ * surplus here may be the only thing carrying somewhere else. A game surplus on
+ * every axis it touches is carrying nothing the rest does not.
+ *
+ * On the raw axes, not the twelve families: per-axis cohesion is 3.11x against
+ * 2.52x, and "four of your games do worker placement with dice workers" is a
+ * sentence worth reading where "four of your games are Abstract Strategy ·
+ * Pattern Building" is not.
+ */
+export function overRepresented(ix, rows, { enough = 0.95, minGames = 3 } = {}) {
+  const byAxis = new Map();
+  for (const row of rows) {
+    for (let k = ix.embedding.start[row]; k < ix.embedding.start[row + 1]; k++) {
+      const axis = ix.embedding.idx[k];
+      if (!byAxis.has(axis)) byAxis.set(axis, []);
+      byAxis.get(axis).push({ row, value: ix.embedding.val[k] });
+    }
+  }
+
+  const surplusOn = new Map();          // game row -> how many axes it is surplus on
+  const touches = new Map();            // game row -> how many axes it touches
+  const axes = [];
+
+  for (const [axis, games] of byAxis) {
+    for (const g of games) touches.set(g.row, (touches.get(g.row) ?? 0) + 1);
+    if (games.length < minGames) continue;
+
+    games.sort((a, b) => b.value - a.value);
+    const cover = (n) => 1 - games.slice(0, n)
+      .reduce((p, g) => p * (1 - Math.min(g.value, 1)), 1);
+    const total = cover(games.length);
+    if (!(total > 0)) continue;
+
+    let need = games.length;
+    for (let n = 1; n <= games.length; n++) {
+      if (cover(n) >= enough * total) { need = n; break; }
+    }
+    if (need >= games.length) continue;
+
+    for (const g of games.slice(need)) surplusOn.set(g.row, (surplusOn.get(g.row) ?? 0) + 1);
+    axes.push({
+      axis,
+      name: ix.axisNames[axis],
+      held: games.length,
+      need,
+      spare: games.slice(need).map((g) => g.row),
+    });
+  }
+
+  return { axes: axes.sort((a, b) => (b.held - b.need) - (a.held - a.need)) };
+}
+
+/*
+ * Four measures were tried for "which single game is carrying least", and none
+ * of them separates. Recorded so nobody spends the afternoon again:
+ *
+ *   spoke containment       degenerate — divides by quality-scaled spoke mass,
+ *                           so a thinly covered game is trivially "contained".
+ *                           Read Hitster/Captain Sonar at 98% on 0.00 similarity.
+ *   marginal coverage,      never penalises duplication: two near-twins each
+ *   twelve spokes           raise 1 - prod(1 - w), so removing either costs
+ *                           plenty. Gloomhaven scored second highest while 83%
+ *                           duplicated.
+ *   marginal coverage,      same failure, finer. Range 0.452-0.776 over twenty
+ *   seventy-seven axes      games, and the Gloomhaven pair sits at the *top*.
+ *   share of profile on     does not separate: 1-12% across the collection, and
+ *   over-represented axes   it ranks Ark Nova first and Brass: Lancashire
+ *                           eighth, which is backwards.
+ *
+ * The reason is structural rather than incidental: a coverage objective is
+ * submodular, and a duplicate is cheap to remove only once its twin is *also*
+ * gone. Asked about one game at a time, the twin's presence is exactly what
+ * makes the arithmetic say "expensive".
+ *
+ * What does work is asking about pairs (`redundancies`) and about axes
+ * (`overRepresented`). Both are shipped. A per-game ranking needs a measure
+ * that is not coverage — most likely one that looks at the pair structure
+ * first and attributes to a game second.
+ */

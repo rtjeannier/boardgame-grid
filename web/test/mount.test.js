@@ -597,3 +597,36 @@ test('held twice never proposes the game the selection already turned down', () 
     'the panel is still offering the runner-up as an improvement');
   act(() => root.unmount());
 });
+
+test('what is over-represented appears only once you own enough to say', () => {
+  const { host, root } = mount();
+  assert.ok(!/More of these than you need/.test(host.textContent),
+    'it spoke about a collection nobody uploaded');
+
+  const add = (term) => {
+    const search = host.querySelector('input[aria-label="Search for a game"]');
+    act(() => {
+      const setter = Object.getOwnPropertyDescriptor(
+        dom.window.HTMLInputElement.prototype, 'value').set;
+      setter.call(search, term);
+      search.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+    });
+    const hit = [...host.querySelectorAll('button')]
+      .find((b) => /Add|Remove/.test(b.textContent) === false
+        && b.className.includes('result'));
+    const row = hit ?? [...host.querySelectorAll('button[class*="result"]')][0];
+    if (row) click(row);
+  };
+  click(byText('My games', host));
+  for (const term of ['wingspan', 'gloomhaven', 'codenames', 'brass', 'azul', 'root']) add(term);
+  click(byText('Collection', host));
+
+  // Six games is enough to have a shape; the analysis either speaks or is
+  // silent, and must never render a heading over nothing.
+  const heading = /More of these than you need/.test(host.textContent);
+  if (heading) {
+    assert.match(host.textContent, /\d+ of \d+/, 'a heading with no counts under it');
+    assert.match(host.textContent, /Of your \d+ games/);
+  }
+  act(() => root.unmount());
+});

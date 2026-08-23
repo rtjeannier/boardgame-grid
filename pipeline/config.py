@@ -154,6 +154,20 @@ GENRE_SPOKES = 12
 # grouping changes. The spoke count is whatever survives.
 SPOKE_COHESION_FLOOR = 1.0
 
+
+# How much of an axis's coverage the strongest few games on it must account for
+# before the rest are surplus *on that axis*.
+#
+# Reporting only: it decides what is worth saying about a collection, never what
+# gets picked. Measured over a twenty-game shelf — at 0.90 it calls twenty axes
+# over-represented, at 0.99 only three, and at 0.95 fourteen, which reads as
+# "seventeen of your games do End Game Bonuses; ten cover it".
+#
+# Surplus on an axis is not the same as unwanted: a game spare here may be the
+# only thing carrying somewhere else. Ranking single games by how spare they are
+# does not work at all — see the note at the foot of web/src/engine/shelf.js.
+REPRESENTATION_ENOUGH = 0.95
+
 # A tag carried by more of the corpus than one genre's even share cannot itself
 # be a genre — it is a base rate. `Hand Management` marks 1634 of 5000 games and
 # `Card Game` 1483; left to found genres they anchor one covering most of

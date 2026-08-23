@@ -64,6 +64,7 @@ class Collection:
     # Reporting only: it decides what is worth saying about a collection,
     # never what gets picked.
     redundancy_floor: float = config.REDUNDANCY_FLOOR
+    representation_enough: float = config.REPRESENTATION_ENOUGH
     collection_size: int = config.COLLECTION_SIZE
     # Depth need not be uniform. The player columns are fixed ranges over a
     # lopsided distribution — `8+` holds 142 candidates against 5,577 for `4` —
