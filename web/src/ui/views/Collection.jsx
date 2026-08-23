@@ -100,34 +100,39 @@ function AddNext({ built, state, actions }) {
 /**
  * Games the collection is holding twice.
  *
- * The question is not "which of yours contributes least" — with two games it
- * contributes all of it, and the answer was nonsense. It is "whose role is
- * already filled by another game", which is containment of one profile in
- * another, and which correctly returns nothing at all when nothing is
- * duplicated.
+ * It used to end each row with "drop it and X comes in", where X was the shelf's
+ * top alternate. That was two unrelated facts stapled together: the alternates
+ * answer "who fills this slot if it is empty", not "what should replace this
+ * game". Measured on one shelf, the replacement made things worse on both
+ * counts — that shelf scored 0.372 -> 0.141, and the collection covered 11.982
+ * -> 11.980. The allocator had already preferred what it kept, which is why it
+ * kept it. So nothing is proposed here; the redundancy is reported and the
+ * decision is the reader's.
+ *
+ * Scoped to the shelf being looked at when there is one, because "these two do
+ * the same thing" is a claim about games sitting next to each other.
  */
 function AlreadyFilled({ built, state, actions, onOpen }) {
   const { ix, weights, grid } = built;
   const floor = ix.defaults?.redundancyFloor ?? 0.9;
 
   const found = useMemo(() => {
-    const rows = grid.flatMap((c) => c.picks.map((p) => ix.rowOf.get(p.id)))
+    const picked = state.selected ? grid.find((c) => c.key === state.selected) : null;
+    const from = picked ? [picked] : grid;
+    const rows = from.flatMap((c) => c.picks.map((p) => ix.rowOf.get(p.id)))
       .filter((r) => r !== undefined);
     if (rows.length < 2) return [];
-    // Where each one sits, so the row can say what takes its place.
-    const home = new Map();
-    for (const cell of grid) for (const p of cell.picks) home.set(p.id, cell);
     return redundancies(ix, weights, rows, { floor }).map((r) => ({
-      ...r,
-      mine: state.owned.includes(r.id),
-      instead: home.get(r.id)?.alternates?.[0]?.name ?? null,
+      ...r, mine: state.owned.includes(r.id),
     })).sort((a, b) => (b.mine ? 1 : 0) - (a.mine ? 1 : 0));
-  }, [ix, weights, grid, floor, state.owned]);
+  }, [ix, weights, grid, floor, state.owned, state.selected]);
 
   if (!found.length) return null;
   return (
     <div className={css.block}>
-      <h2 className={css.label}>Held twice</h2>
+      <h2 className={css.label}>
+        {state.selected ? 'Held twice on this shelf' : 'Held twice'}
+      </h2>
       <div className={css.list}>
         {found.map((r) => (
           <div key={r.id} className={css.entry}>
@@ -138,7 +143,7 @@ function AlreadyFilled({ built, state, actions, onOpen }) {
                 pinned: state.pinned.includes(r.id),
                 blocked: state.blocked.includes(r.id),
                 reason: `${r.filledBy.name} already covers ${Math.round(r.share * 100)}%`
-                  + ` of what it brings.${r.instead ? ` Drop it and ${r.instead} comes in.` : ''}`,
+                  + ' of what it brings.',
               })}
               onOpen={onOpen}
               onPin={(x) => actions.pin(x.id, shelvedNow(built), x.name)}
@@ -148,7 +153,8 @@ function AlreadyFilled({ built, state, actions, onOpen }) {
       </div>
       <p className={css.note}>
         How much of a game's own profile another single game already covers.
-        Yours first. Nothing here means nothing is duplicated.
+        Nothing is suggested to take its place: the runner-up is the game the
+        selection already turned down, and putting it in makes the shelf worse.
       </p>
     </div>
   );
@@ -235,26 +241,39 @@ export default function Collection({ built, state, actions, onOpen }) {
       .sort((a, b) => b.carries - a.carries);
   }, [shelf, ix, weights, rows]);
 
-  // Two shapes when there is something to compare: what the collection reaches,
-  // and what you already own. The distance between them is the whole point.
+  // A five-game shelf moves visibly when one game changes; a 204-game collection
+  // cannot, because one game in 204 is half a percent of it and no measure can
+  // make that four pixels. So the radar draws whatever is small enough to
+  // respond: the shelf you picked, then your games, then the collection.
   const radar = useMemo(() => {
     const n = ix.groups.length;
     const names = ix.groups.map((g) => g.name.split(' · ')[0]);
-    const shelved = grid.flatMap((c) => c.picks.map((p) => ix.rowOf.get(p.id)));
-    // Coverage, not share-of-mix. Share shrinks when you add a game to the
-    // fullest spoke, because everything else is measured against it — which is
-    // arithmetic, not news. Coverage only ever grows.
-    const reach = coverageOf(shelved.map((r) => spokeVector(ix, weights, r, n)), n);
+    const rowsFor = (picks) => picks.map((p) => ix.rowOf.get(p.id))
+      .filter((r) => r !== undefined);
+    const shape = (rs) => coverageOf(rs.map((r) => spokeVector(ix, weights, r, n)), n);
+    const whole = shape(rowsFor(grid.flatMap((c) => c.picks)));
+
+    const picked = state.selected ? grid.find((c) => c.key === state.selected) : null;
+    if (picked) {
+      return {
+        names, values: shape(rowsFor(picked.picks)), reference: whole,
+        label: `This shelf · ${picked.picks.length} games`, referenceLabel: 'The collection',
+        heading: 'What this shelf reaches',
+      };
+    }
     const mine = state.owned.map((id) => ix.rowOf.get(id)).filter((r) => r !== undefined);
-    if (!mine.length) {
-      return { names, values: reach, reference: null, full: Math.min(...reach) > 0.95 };
+    if (mine.length) {
+      return {
+        names, values: shape(mine), reference: whole,
+        label: 'Yours', referenceLabel: 'The collection',
+        heading: 'Yours against the collection',
+      };
     }
     return {
-      names,
-      values: coverageOf(mine.map((r) => spokeVector(ix, weights, r, n)), n),
-      reference: reach,
+      names, values: whole, reference: null, label: 'The collection',
+      heading: 'What it reaches', full: Math.min(...whole) > 0.95,
     };
-  }, [ix, grid, weights, state.owned]);
+  }, [ix, grid, weights, state.owned, state.selected]);
 
   const total = grid.reduce((n, c) => n + c.picks.length, 0);
 
@@ -263,18 +282,22 @@ export default function Collection({ built, state, actions, onOpen }) {
       <div className={css.split}>
         <aside className={css.side}>
           <div className={css.block}>
-            <h2 className={css.label}>
-              {radar.reference ? 'Yours against the collection' : 'What it reaches'}
-            </h2>
+            <h2 className={css.label}>{radar.heading}</h2>
             <Radar names={radar.names} values={radar.values} reference={radar.reference}
-                   label={radar.reference ? 'Yours' : 'The collection'}
+                   label={radar.label} referenceLabel={radar.referenceLabel}
                    showGaps={!!radar.reference} size={272} />
+            {state.selected && (
+              <p className={css.note}>
+                Click the shelf again to go back to the whole collection.
+              </p>
+            )}
             {!radar.reference && (
               <p className={css.note}>
                 {radar.full
-                  ? 'At this size the collection reaches every kind of play, so '
-                    + 'the shape is full. Add your own games and this draws '
-                    + 'yours against it, which is where the gaps show.'
+                  ? 'At this size the collection reaches every kind of play, so the '
+                    + 'shape is full and one game cannot move it. Click a shelf, or '
+                    + 'add your own games, and this draws something small enough to '
+                    + 'respond.'
                   : 'Twelve kinds of play, and how far the collection reaches '
                     + 'into each. Add your own games and this draws them '
                     + 'against it.'}

@@ -47,6 +47,11 @@ const initial = {
   // not something to set.
   perShelf: null,
   panel: null,         // which axis is being configured, if any
+  // The shelf being looked at. Analyses scope to it when it is set: a
+  // five-game shelf moves visibly when one game changes, where a 204-game
+  // collection cannot — one game in 204 is half a percent of it, and no
+  // measure can make that four pixels.
+  selected: null,
   open: null,          // the game whose drawer is showing
   // What the last block or pin did, so the interface can say so. Blocking a
   // game re-runs the whole selection rather than patching one slot, which is
@@ -72,7 +77,7 @@ function toggle(list, id) {
 function reduce(state, action) {
   switch (action.type) {
     case 'axis':
-      return { ...state, axes: toggle(state.axes, action.key) };
+      return { ...state, axes: toggle(state.axes, action.key), selected: null };
     case 'own':
       return { ...state, owned: toggle(state.owned, action.id) };
     case 'ownMany':
@@ -132,6 +137,10 @@ function reduce(state, action) {
         ...state,
         limits: state.limits.map((l, i) => (i === action.at ? { ...l, ...action.value } : l)),
       };
+    case 'select':
+      return { ...state, selected: state.selected === action.key ? null : action.key };
+    case 'axis2':
+      return state;
     case 'panel':
       return { ...state, panel: state.panel === action.key ? null : action.key };
     case 'open':
@@ -223,6 +232,7 @@ export function useCollection(contract) {
     dropRow: (at, edges) => dispatch({ type: 'dropRow', at, edges }),
     toggleMineOnly: () => dispatch({ type: 'mineOnly' }),
     togglePanel: (key) => dispatch({ type: 'panel', key }),
+    select: (key) => dispatch({ type: 'select', key }),
     setLimit: (at, value) => dispatch({ type: 'limit', at, value }),
     setPerShelf: (value) => dispatch({ type: 'perShelf', value }),
     open: (game) => dispatch({ type: 'open', game }),

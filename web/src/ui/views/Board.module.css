@@ -55,6 +55,12 @@
 .pm { margin-left: auto; display: inline-flex; align-items: center; gap: var(--s-2);
       opacity: 0; }
 .cell:hover .pm, .column:hover .pm, .deck[open] .pm { opacity: 1; }
+
+/* The shelf the side panel is describing. A five-game shelf moves visibly when
+   one game changes, which the whole collection cannot. */
+.picked { background: var(--mark-wash); box-shadow: inset 0 0 0 1px var(--mark); }
+.picked:hover { background: var(--mark-wash); }
+.cell, .column { cursor: pointer; }
 .pm button { border: 1px solid var(--line); background: var(--surface);
              color: var(--text-3); cursor: pointer; width: 16px; height: 16px;
              border-radius: var(--r-sm); font-size: 10px; line-height: 1; padding: 0; }

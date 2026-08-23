@@ -92,7 +92,12 @@ export default function Board({ built, state, actions, onOpen }) {
         {keys.map(({ key, label }) => {
           const cell = byKey.get(key);
           return (
-            <div key={key} className={css.column}>
+            <div key={key}
+                 className={`${css.column} ${state.selected === cell?.key ? css.picked : ''}`.trim()}
+                 onClick={(e) => {
+                   if (e.target.closest('button, [role="button"], summary, input')) return;
+                   if (cell) actions.select(cell.key);
+                 }}>
               <div className={css.head}>
                 <span className={css.headLine}>
                   <b>{label}</b>
@@ -210,7 +215,14 @@ function Row({ row, built, state, actions, onOpen, byKey }) {
       {columns.map((c) => {
         const cell = byKey.get(`${c.label}|${row.index}`);
         return (
-          <div key={c.label} className={css.cell}>
+          <div key={c.label}
+               className={`${css.cell} ${state.selected === cell?.key ? css.picked : ''}`.trim()}
+               onClick={(e) => {
+                 // A click on a game opens that game; a click on the shelf
+                 // itself selects the shelf.
+                 if (e.target.closest('button, [role="button"]')) return;
+                 if (cell) actions.select(cell.key);
+               }}>
             {(cell?.picks ?? []).map((p) => (
               <GameItem key={p.id} variant="compact"
                         game={line(built, ix.rowOf.get(p.id), state)} onOpen={onOpen}

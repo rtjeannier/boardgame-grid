@@ -548,3 +548,42 @@ test('the shelf default can be handed back to the curve', () => {
   assert.equal(size(host), 12, 'clearing it did not hand the shelf back to its curve');
   act(() => root.unmount());
 });
+
+test('picking a shelf scopes the analyses to something small enough to move', () => {
+  const { host, root } = mount();
+  click(byText('＋ player count', host));
+  click(byText('＋ weight', host));
+
+  const shape = () => {
+    const all = [...host.querySelectorAll('svg polygon')];
+    return all[all.length - 1]?.getAttribute('points');
+  };
+  const whole = shape();
+  assert.ok(whole, 'no radar');
+  assert.match(host.textContent, /What it reaches/);
+
+  // Click the shelf itself, not a game on it.
+  const cell = [...host.querySelectorAll('[class*="cell"]')]
+    .find((el) => el.querySelectorAll('[class*="compact"]').length >= 4);
+  assert.ok(cell, 'no shelf with enough games to pick');
+  click(cell);
+
+  assert.match(host.textContent, /What this shelf reaches/, 'the radar did not follow the shelf');
+  assert.notEqual(shape(), whole, 'the radar kept the whole collection shape');
+
+  // And clicking it again lets go.
+  click(cell);
+  assert.match(host.textContent, /What it reaches/);
+  assert.equal(shape(), whole);
+  act(() => root.unmount());
+});
+
+test('held twice never proposes the game the selection already turned down', () => {
+  const { host, root } = mount();
+  // Whatever it says, it must not offer a replacement: measured, the shelf's
+  // top alternate makes that shelf worse (0.372 -> 0.141) and the collection
+  // very slightly worse too.
+  assert.ok(!/comes in/.test(host.textContent),
+    'the panel is still offering the runner-up as an improvement');
+  act(() => root.unmount());
+});
