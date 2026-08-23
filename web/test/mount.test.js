@@ -507,3 +507,34 @@ test('the returns bar is a number you set, like every other limit', () => {
   assert.match(host.textContent, /under 75% returns/);
   act(() => root.unmount());
 });
+
+test('games a shelf is a default, on every split, that a shelf can overrule', () => {
+  const { host, root } = mount();
+  const field = () => host.querySelector('input[aria-label="Games on this shelf"]');
+  const type = (value) => act(() => {
+    const setter = Object.getOwnPropertyDescriptor(
+      dom.window.HTMLInputElement.prototype, 'value').set;
+    setter.call(field(), value);
+    field().dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+  });
+
+  assert.ok(field(), 'no games-a-shelf control unsplit');
+  type('4');
+  assert.equal(size(host), 4);
+
+  // Still there once the grid is live, and still the default.
+  click(byText('＋ player count', host));
+  click(byText('＋ weight', host));
+  assert.ok(field(), 'the control vanished when the grid came up');
+  const flat = size(host);
+
+  // A shelf that has been adjusted keeps its own number; the default does not
+  // reach back over it.
+  click(host.querySelector('button[aria-label="One more here"]'));
+  assert.equal(size(host), flat + 1, 'a shelf could not be adjusted past the default');
+  type('3');
+  assert.ok(size(host) < flat, 'lowering the default did not take');
+  click(host.querySelector('button[aria-label="One more here"]'));
+  assert.ok(size(host) > 0);
+  act(() => root.unmount());
+});

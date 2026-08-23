@@ -5,7 +5,7 @@ import { toGameView } from '../game/view.js';
 import Radar from '../chart/Radar.jsx';
 import Button from '../primitives/Button.jsx';
 import DepthField from '../primitives/DepthField.jsx';
-import { sharesOf } from '../state.js';
+import { PER_SHELF, sharesOf } from '../state.js';
 import Board, { shelvedNow } from './Board.jsx';
 import { cellLabeller } from './labels.js';
 import css from './Collection.module.css';
@@ -20,6 +20,26 @@ import css from './Collection.module.css';
  */
 
 /**
+ * How many games a shelf takes, by default.
+ *
+ * Not an override: it is the number a shelf uses when nobody has said otherwise
+ * about that shelf, so the ＋ and − in a cell still win. It is here rather than
+ * only in the limits list because it is the number a reader reaches for most,
+ * and it belongs beside the thing it counts.
+ */
+function PerShelf({ state, actions }) {
+  const at = PER_SHELF(state.limits);
+  const limit = state.limits[at];
+  if (!limit) return null;
+  return (
+    <span className={css.depth}>
+      <DepthField value={limit.value} auto={limit.on ? null : limit.value}
+                  onChange={(v) => actions.setLimit(at, { on: true, value: v })} />
+    </span>
+  );
+}
+
+/**
  * The one game it would take next, wherever that is.
  *
  * Unsplit there is one shelf and one answer. Split, every shelf has a next in
@@ -28,14 +48,14 @@ import css from './Collection.module.css';
  * way, which is the point: splitting rearranges the collection, it does not
  * change what you can ask of it.
  */
-function AddNext({ built, actions }) {
+function AddNext({ built, state, actions }) {
   const { grid, depths, axes } = built;
   const label = cellLabeller(built);
 
   const best = axes.length === 0
     ? (depths?.cell?.nextName
       ? { name: depths.cell.nextName, gain: depths.cell.next,
-          key: 'collection', depth: depths.cell.depth, cell: null }
+          key: null, depth: depths.cell.depth, cell: null }
       : null)
     : grid
       .flatMap((c) => (c.alternates[0]
@@ -51,7 +71,9 @@ function AddNext({ built, actions }) {
 
   return (
     <div className={css.addRow}>
-      <Button onClick={() => actions.setDepth(best.key, best.depth + 1)}>
+      <Button onClick={() => (best.key
+        ? actions.setDepth(best.key, best.depth + 1)
+        : actions.setLimit(PER_SHELF(state.limits), { on: true, value: best.depth + 1 }))}>
         ＋ Add {best.name}
       </Button>
       <span className={css.addNote}>
@@ -264,16 +286,12 @@ export default function Collection({ built, state, actions, onOpen }) {
             <>
               <div className={css.head}>
                 <h2 className={css.title}>Every game in it</h2>
-                <span className={css.depth}>
-                  <DepthField value={depths?.cell?.depth ?? shelf.picks.length}
-                              auto={depths?.cell?.auto ? depths.cell.depth : depths?.cell?.read}
-                              onChange={(v) => actions.setDepth('collection', v)} />
-                </span>
+                <PerShelf state={state} actions={actions} />
                 <span className={css.sub}>
                   ordered by how much of the collection each carries
                 </span>
               </div>
-              <AddNext built={built} actions={actions} />
+              <AddNext built={built} state={state} actions={actions} />
               {shelf.picks.length === 0 && (
                 <p className={css.blank}>
                   Empty. The bars on the left are what each game would add if you
@@ -337,9 +355,10 @@ export default function Collection({ built, state, actions, onOpen }) {
                 <h2 className={css.title}>
                   {axes.length === 1 ? 'One shelf per group' : 'Thirty-five shelves'}
                 </h2>
+                <PerShelf state={state} actions={actions} />
                 <span className={css.sub}>{total} games</span>
               </div>
-              <AddNext built={built} actions={actions} />
+              <AddNext built={built} state={state} actions={actions} />
               <Board built={built} state={state} actions={actions} onOpen={onOpen} />
             </>
           )}

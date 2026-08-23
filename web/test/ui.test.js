@@ -203,7 +203,9 @@ test('the views render at each split, and with a shelf of your own', async () =>
       const built = engine.buildGrid(contract, { axes, owned: mine });
       const state = { axes, owned: mine, pinned: [], blocked: [],
                       depthOverrides: {}, columns: built.columns, rowCount: 5,
-                      rowEdges: null, mineOnly: false, panel: null, open: null };
+                      rowEdges: null, mineOnly: false, panel: null, open: null,
+                      limits: [{ kind: 'returns', scope: 'shelf', on: true, value: 45 },
+                               { kind: 'count', scope: 'shelf', on: false, value: 5 }] };
       const where = `axes=[${axes}] owned=${mine.length}`;
 
       const collection = render(h(Collection, { built, state, actions, onOpen: noop }));

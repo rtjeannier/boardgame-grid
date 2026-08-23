@@ -149,7 +149,11 @@ export function sharesOf(ix, weights, rows) {
   });
 }
 
-/** The limit list, as the three things `buildGrid` understands. */
+/** Where the flat games-a-shelf default lives in the list. */
+export const PER_SHELF = (limits) =>
+  limits.findIndex((l) => l.kind === 'count' && l.scope === 'shelf');
+
+/** The limit list, as the things `buildGrid` understands. */
 export function limitsFor(limits) {
   const live = (kind, scope) =>
     limits.find((l) => l.on && l.kind === kind && l.scope === scope);

@@ -84,6 +84,7 @@ export function buildGrid(contract, {
 
   let depths = null;
   let room = capacity;
+  let probeCell = null;    // the unsplit curve, for naming what comes next
   if (capacity === 'auto') {
     const leftover = autoDepthLeftover ?? defaults.autoDepthLeftover ?? 0.45;
     const fallback = defaults.picksPerCell ?? 5;
@@ -100,6 +101,7 @@ export function buildGrid(contract, {
         capacity: COLLECTION_PROBE, alternatesLimit: 0, gainFloor,
         rejected: rejectedRows,
       });
+      probeCell = probe[0] ?? null;
       const read = readDepth(probe[0]?.gains ?? [],
         { leftover, fallback, places: ix.policy.gainPlaces ?? 3 });
       // The unsplit collection takes an override like any other shelf, under
@@ -126,31 +128,32 @@ export function buildGrid(contract, {
         rows: onWeight ? rows : null,
         leftover, fallback, overrides: depthOverrides, genreWeights, include,
         places: ix.policy.gainPlaces ?? 3,
-        rejected: rejectedRows,
+        rejected: rejectedRows, perShelfCap,
       });
       room = depths.capacity;
     }
   }
 
-  // A flat ceiling across every shelf, on top of whatever the reading said.
-  // Both are ceilings, so the smaller wins — the same rule a column's answer and
-  // a row's already meet under, and the reason the limits are a list rather than
-  // a choice between them.
-  if (perShelfCap != null) {
-    room = typeof room === 'number'
-      ? Math.min(room, perShelfCap)
-      : new Map([...room].map(([k, v]) => [k, Math.min(v, perShelfCap)]));
-    if (depths) {
-      const trim = (m) => new Map([...(m ?? [])]
-        .map(([k, v]) => [k, { ...v, depth: Math.min(v.depth, perShelfCap) }]));
-      depths = {
-        ...depths,
-        capacity: room,
-        columnDepth: trim(depths.columnDepth),
-        rowDepth: trim(depths.rowDepth),
-        ...(depths.cell ? { cell: { ...depths.cell, depth: room } } : {}),
-      };
-    }
+  // The flat default is resolved inside `gridDepths`, where a number typed on
+  // one shelf can still beat it. The unsplit collection has no column or row to
+  // resolve against, so it is applied here — and the number typed on that one
+  // shelf beats it the same way.
+  if (perShelfCap != null && axisList.length === 0 && depthOverrides.collection == null) {
+    room = Math.min(room, perShelfCap);
+  }
+  // What comes next depends on where it stopped, so it is named after every
+  // ceiling has had its say rather than off the reading alone.
+  if (depths?.cell && probeCell) {
+    depths = {
+      ...depths,
+      capacity: room,
+      cell: {
+        ...depths.cell,
+        depth: room,
+        next: probeCell.gains?.[room] ?? null,
+        nextName: probeCell.picks?.[room] == null ? null : ix.names[probeCell.picks[room]],
+      },
+    };
   }
 
   /**

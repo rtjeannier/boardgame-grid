@@ -106,7 +106,7 @@ export function seedInto(cells, keepers) {
  */
 export function gridDepths(ix, weights, { columns, rows, leftover, fallback, places,
   overrides = {}, probe = PROBE, genreWeights = null, include = null,
-  rejected = null } = {}) {
+  rejected = null, perShelfCap = null } = {}) {
   const opts = { leftover, fallback, places, probe, genreWeights, include, rejected };
   const byColumn = columns ? axisDepths(ix, weights, playerAxis(columns), opts) : null;
   const byRow = rows ? axisDepths(ix, weights, weightAxis(rows), opts) : null;
@@ -137,8 +137,12 @@ export function gridDepths(ix, weights, { columns, rows, leftover, fallback, pla
   const capacity = new Map();
   const cellDepth = new Map();
   const resolve = (key, from) => {
+    // The flat default is a ceiling on what the reading said — but only where
+    // the reader has not spoken. A number typed on one shelf is the most
+    // specific thing anybody said about that shelf and beats both.
+    const base = perShelfCap == null ? from : Math.min(from, perShelfCap);
     const set = overrides[`cell:${key}`];
-    const depth = set == null ? from : Math.max(0, set);
+    const depth = set == null ? base : Math.max(0, set);
     capacity.set(key, depth);
     cellDepth.set(key, { depth, auto: set == null, from });
   };
