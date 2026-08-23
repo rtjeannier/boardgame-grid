@@ -1,11 +1,11 @@
 import { useMemo } from 'react';
-import { coverageOf, spokeVector } from '../../engine/index.js';
+import { coverageOf, redundancies, spokeVector } from '../../engine/index.js';
 import GameItem from '../game/GameItem.jsx';
 import { toGameView } from '../game/view.js';
 import Radar from '../chart/Radar.jsx';
 import Button from '../primitives/Button.jsx';
 import DepthField from '../primitives/DepthField.jsx';
-import { carriesByGame, sharesOf } from '../state.js';
+import { sharesOf } from '../state.js';
 import Board, { shelvedNow } from './Board.jsx';
 import { cellLabeller } from './labels.js';
 import css from './Collection.module.css';
@@ -65,33 +65,47 @@ function AddNext({ built, actions }) {
 }
 
 /**
- * Which of yours the collection would barely miss.
+ * Games the collection is holding twice.
  *
- * The pruning question, and the only one `carries` was ever really for: a game
- * carrying 4% of its shelf is one the shelf covers almost entirely without it.
- * It is not advice to sell anything — two of these will be favourites — it is
- * the arithmetic, said plainly.
+ * The question is not "which of yours contributes least" — with two games it
+ * contributes all of it, and the answer was nonsense. It is "whose role is
+ * already filled by another game", which is containment of one profile in
+ * another, and which correctly returns nothing at all when nothing is
+ * duplicated.
  */
-function CouldGo({ built, state, actions, onOpen }) {
-  const { ix } = built;
-  const carried = useMemo(() => carriesByGame(built), [built]);
-  const mine = state.owned
-    .map((id) => ({ id, ...(carried.get(id) ?? {}) }))
-    .filter((g) => g.carries != null)
-    .sort((a, b) => a.carries - b.carries)
-    .slice(0, 4);
-  if (mine.length < 2) return null;
+function AlreadyFilled({ built, state, actions, onOpen }) {
+  const { ix, weights, grid } = built;
+  const floor = ix.defaults?.redundancyFloor ?? 0.9;
+
+  const found = useMemo(() => {
+    const rows = grid.flatMap((c) => c.picks.map((p) => ix.rowOf.get(p.id)))
+      .filter((r) => r !== undefined);
+    if (rows.length < 2) return [];
+    // Where each one sits, so the row can say what takes its place.
+    const home = new Map();
+    for (const cell of grid) for (const p of cell.picks) home.set(p.id, cell);
+    return redundancies(ix, weights, rows, { floor }).map((r) => ({
+      ...r,
+      mine: state.owned.includes(r.id),
+      instead: home.get(r.id)?.alternates?.[0]?.name ?? null,
+    })).sort((a, b) => (b.mine ? 1 : 0) - (a.mine ? 1 : 0));
+  }, [ix, weights, grid, floor, state.owned]);
+
+  if (!found.length) return null;
   return (
     <div className={css.block}>
-      <h2 className={css.label}>Yours the shelf would barely miss</h2>
+      <h2 className={css.label}>Held twice</h2>
       <div className={css.list}>
-        {mine.map((g) => (
-          <div key={g.id} className={css.entry}>
+        {found.map((r) => (
+          <div key={r.id} className={css.entry}>
             <GameItem
-              game={toGameView(ix, ix.rowOf.get(g.id), {
-                carries: g.carries, owned: true,
-                pinned: state.pinned.includes(g.id),
-                blocked: state.blocked.includes(g.id),
+              variant="reason"
+              game={toGameView(ix, r.row, {
+                owned: r.mine,
+                pinned: state.pinned.includes(r.id),
+                blocked: state.blocked.includes(r.id),
+                reason: `${r.filledBy.name} already covers ${Math.round(r.share * 100)}%`
+                  + ` of what it brings.${r.instead ? ` Drop it and ${r.instead} comes in.` : ''}`,
               })}
               onOpen={onOpen}
               onPin={(x) => actions.pin(x.id, shelvedNow(built), x.name)}
@@ -100,8 +114,8 @@ function CouldGo({ built, state, actions, onOpen }) {
         ))}
       </div>
       <p className={css.note}>
-        Share of what its own shelf covers. Lowest first — drop one and its shelf
-        loses that much.
+        How much of a game's own profile another single game already covers.
+        Yours first. Nothing here means nothing is duplicated.
       </p>
     </div>
   );
@@ -236,7 +250,7 @@ export default function Collection({ built, state, actions, onOpen }) {
           </div>
 
           {shelf && <Why cell={depths?.cell} />}
-          <CouldGo built={built} state={state} actions={actions} onOpen={onOpen} />
+          <AlreadyFilled built={built} state={state} actions={actions} onOpen={onOpen} />
 
           <div className={css.block}>
             <h2 className={css.label}>What it contains</h2>

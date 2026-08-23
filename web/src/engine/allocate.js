@@ -134,9 +134,10 @@ function rerecordings(ix, scorer, cells, pinned) {
  * duplicates is worth replacing at `replacementKeep` of its slot, one that
  * barely overlaps has to be replaced by something outright better.
  */
-function improveCollection(ix, scorer, cells, gains, taken, pinned) {
+function improveCollection(ix, scorer, cells, gains, taken, pinned,
+                           { budget = null, spent = 0, costOf = UNIT_COST } = {}) {
   const keep = ix.policy.replacementKeep;
-  const swaps = [];
+  let extra = 0;
 
   for (const [game, strength] of rerecordings(ix, scorer, cells, pinned)) {
     if (strength <= 0) continue;
@@ -162,28 +163,55 @@ function improveCollection(ix, scorer, cells, gains, taken, pinned) {
     }
 
     const bar = keep + (1 - keep) * (1 - strength);
-    if (best >= 0 && bestScore >= bar * here) {
+    // A swap must also fit: under a money budget the replacement can cost more
+    // than what it replaces, and a swap is never worth going over for.
+    const room = best < 0 || budget == null
+      || spent + extra - costOf(game) + costOf(cell.games[best]) <= budget;
+    if (best >= 0 && room && bestScore >= bar * here) {
       taken.delete(game);
       taken.add(cell.games[best]);
       gains.delete(`${cell.key}|${game}`);
       gains.set(`${cell.key}|${cell.games[best]}`, bestScore);
       scorer.take(cell, best);
-      swaps.push({ cell: cell.key, out: game, in: cell.games[best] });
+      extra += costOf(cell.games[best]) - costOf(game);
     } else {
       scorer.take(cell, slot);
     }
   }
-  return swaps;
+  return extra;
 }
+
+/**
+ * What the collection may spend in total, against the per-shelf ceilings.
+ *
+ * `capacity` says how deep one shelf may go; `budget` says how much the whole
+ * collection may cost, in whatever unit `costOf` returns. Both are ceilings and
+ * both apply — a budget trims the collection to what fits rather than removing
+ * per-shelf depth and piling everything into whichever corner pays best.
+ *
+ * With `costOf` returning 1, a budget of N is a collection of N games, which is
+ * the only unit the data supports today: BGG publishes no price and no box
+ * size. The abstraction is here so that the day one of those arrives is a
+ * different `costOf`, not a different allocator.
+ *
+ * Greedy, not optimal. Each round commits its awards in descending gain per
+ * unit cost and stops when the next one will not fit; a knapsack solved
+ * properly would do marginally better and would not survive being re-run on
+ * every keystroke.
+ */
+export const UNIT_COST = () => 1;
 
 export function allocate(ix, scorer, cells, {
   capacity, seeded = new Map(), rejected = new Set(),
   alternatesLimit = 0, gainFloor = null, improve = true,
+  budget = null, costOf = UNIT_COST,
 } = {}) {
   const floor = gainFloor ?? ix.policy.gainFloor;
   const taken = new Set(rejected);
   const gains = new Map();
   const pinned = new Set();
+  let spent = 0;
+  const affordable = (game) => budget == null || spent + costOf(game) <= budget;
 
   for (const [key, games] of seeded) {
     const cell = cells.find((c) => c.key === key);
@@ -195,6 +223,8 @@ export function allocate(ix, scorer, cells, {
       scorer.take(cell, i);
       taken.add(game);
       pinned.add(game);
+      // A pin is a game you are keeping, so it is spent whether or not it fits.
+      spent += costOf(game);
     }
   }
 
@@ -206,16 +236,25 @@ export function allocate(ix, scorer, cells, {
       awards = bidRound(scorer, cells, capacity, taken, floor);
       if (!awards.size) break;
     }
-    // A round commits together, best gain first.
-    for (const [game, { cell, score, i }] of [...awards].sort((a, b) => b[1].score - a[1].score)) {
+    // A round commits together, best value first — gain per unit of whatever is
+    // being spent, which is gain itself while everything costs the same.
+    const value = ([game, { score }]) => score / (costOf(game) || 1);
+    for (const award of [...awards].sort((a, b) => value(b) - value(a))) {
+      const [game, { cell, score, i }] = award;
       if (taken.has(game)) continue;
+      if (!affordable(game)) continue;
       taken.add(game);
+      spent += costOf(game);
       gains.set(`${cell.key}|${game}`, score);
       scorer.take(cell, i);
     }
+    if (budget != null && spent >= budget) break;
   }
 
-  if (improve) improveCollection(ix, scorer, cells, gains, taken, pinned);
+  if (improve) {
+    spent += improveCollection(ix, scorer, cells, gains, taken, pinned,
+                               { budget, spent, costOf });
+  }
 
   // Everything shelved anywhere, so the queue below can leave out the games the
   // improve pass would immediately throw back. Offering one is a loop: raise

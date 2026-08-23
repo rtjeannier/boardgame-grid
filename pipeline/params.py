@@ -61,6 +61,9 @@ class Collection:
     # applies with it off, and what a reader types over the top of either.
     auto_depth: bool = config.AUTO_DEPTH
     auto_depth_leftover: float = config.AUTO_DEPTH_LEFTOVER
+    # Reporting only: it decides what is worth saying about a collection,
+    # never what gets picked.
+    redundancy_floor: float = config.REDUNDANCY_FLOOR
     collection_size: int = config.COLLECTION_SIZE
     # Depth need not be uniform. The player columns are fixed ranges over a
     # lopsided distribution — `8+` holds 142 candidates against 5,577 for `4` —

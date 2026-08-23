@@ -27,10 +27,13 @@ const initial = {
   columns: DEFAULT_COLUMNS,
   rowCount: 5,
   rowEdges: null,      // null means "quantiles of the corpus", which is the point
-  // Build the collection out of your games alone. The pruning view: with
-  // nothing else in the running, what a game carries is what it carries *for
-  // you*, and a shelf you have nothing for shows up empty.
+  // Hold every game you own and fill the rest around them.
   mineOnly: false,
+  // What stops the fill. `returns` is the read-the-curve rule; `count` is a
+  // global ceiling on how many games there are, which is the same machinery
+  // with every game costing one game. Money and shelf volume are the same
+  // control again with a different cost, the day the data carries one.
+  fill: { rule: 'returns', count: 60 },
   panel: null,         // which axis is being configured, if any
   open: null,          // the game whose drawer is showing
   // What the last block or pin did, so the interface can say so. Blocking a
@@ -104,6 +107,8 @@ function reduce(state, action) {
       return { ...state, columns: action.value, depthOverrides: {} };
     case 'mineOnly':
       return { ...state, mineOnly: !state.mineOnly, depthOverrides: {} };
+    case 'fill':
+      return { ...state, fill: { ...state.fill, ...action.value } };
     case 'panel':
       return { ...state, panel: state.panel === action.key ? null : action.key };
     case 'open':
@@ -126,25 +131,6 @@ export function sharesOf(ix, weights, rows) {
     const without = sum(coverageOf(vectors.filter((_, j) => j !== i), n));
     return (total - without) / total;
   });
-}
-
-/**
- * Each shelved game's share of what its own shelf covers.
- *
- * Per shelf, not per collection: at 190 games the whole-collection version is
- * 190 coverage passes over 190 vectors, and it answers a less useful question
- * anyway. "Its shelf barely notices" is what somebody deciding what to sell
- * wants to hear.
- */
-export function carriesByGame(built) {
-  const out = new Map();
-  for (const cell of built.grid) {
-    if (!cell.picks.length) continue;
-    const rows = cell.picks.map((p) => built.ix.rowOf.get(p.id));
-    const shares = sharesOf(built.ix, built.weights, rows);
-    cell.picks.forEach((p, i) => out.set(p.id, { carries: shares[i], cell: cell.key }));
-  }
-  return out;
 }
 
 export function useCollection(contract) {
@@ -173,9 +159,10 @@ export function useCollection(contract) {
     keepers,
     banned: state.blocked,
     depthOverrides: state.depthOverrides,
+    budget: state.fill.rule === 'count' ? state.fill.count : null,
     alternatesLimit: 6,
   }), [ix, state.axes, state.columns, state.rowCount, state.rowEdges, state.owned,
-       keepers, state.blocked, state.depthOverrides]);
+       keepers, state.blocked, state.depthOverrides, state.fill]);
 
   const actions = useMemo(() => ({
     toggleAxis: (key) => dispatch({ type: 'axis', key }),
@@ -194,6 +181,7 @@ export function useCollection(contract) {
     dropRow: (at, edges) => dispatch({ type: 'dropRow', at, edges }),
     toggleMineOnly: () => dispatch({ type: 'mineOnly' }),
     togglePanel: (key) => dispatch({ type: 'panel', key }),
+    setFill: (value) => dispatch({ type: 'fill', value }),
     open: (game) => dispatch({ type: 'open', game }),
     reset: () => dispatch({ type: 'reset' }),
   }), []);

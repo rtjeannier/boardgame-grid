@@ -12,7 +12,9 @@ import { dirname, join } from 'node:path';
 import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
-import { buildGrid, indexContract } from '../src/engine/index.js';
+import {
+  buildGrid, coverageWeights, indexContract, redundancies,
+} from '../src/engine/index.js';
 import { parseCollectionCsv } from '../src/ui/importCsv.js';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -161,4 +163,55 @@ test('with no axes the collection is one cell that stops on its own', () => {
   assert.equal(depths.cell.depth, 12);
   assert.equal(depths.cell.auto, true);
   assert.equal(grid[0].picks[0].name, 'Brass: Birmingham');
+});
+
+test('a budget is a second ceiling, and the smaller one wins', () => {
+  const size = (b) => b.grid.reduce((n, c) => n + c.picks.length, 0);
+  const full = size(base);
+  for (const n of [1, 12, 60, full]) {
+    assert.equal(size(buildGrid(ix, { budget: n })), n,
+      `a budget of ${n} with everything costing one game should give ${n} games`);
+  }
+  // Above what the shelves can hold, depth is the binding ceiling and the
+  // budget does nothing — which is the point of both applying.
+  assert.equal(size(buildGrid(ix, { budget: full * 2 })), full);
+});
+
+test('a budget spends on the best value first', () => {
+  // Ten games under a budget are the ten the unbudgeted collection ranks
+  // highest, not an arbitrary ten: same rule, stopped earlier.
+  const ten = buildGrid(ix, { axes: [], budget: 10 }).grid[0].picks.map((p) => p.name);
+  const open = buildGrid(ix, { axes: [] }).grid[0].picks.map((p) => p.name);
+  assert.equal(ten.length, 10);
+  for (const name of ten) assert.ok(open.includes(name), `${name} is not in the open collection`);
+});
+
+test('redundancy names the more contained half, and stays quiet otherwise', () => {
+  const weights = coverageWeights(ix, null);
+  const rows = (names) => names.map((n) => ix.names.indexOf(n)).filter((r) => r >= 0);
+
+  // Two unrelated games duplicate nothing, which is the answer that made the
+  // measure this replaces read backwards: it listed four regardless.
+  assert.deepEqual(redundancies(ix, weights, rows(['Azul', 'Gloomhaven'])), []);
+  assert.deepEqual(redundancies(ix, weights, rows(['Azul'])), []);
+
+  const pair = rows(['Gloomhaven', 'Gloomhaven: Jaws of the Lion']);
+  const found = redundancies(ix, weights, pair, { floor: 0.9 });
+  assert.equal(found.length, 1, 'a real duplicate went unreported');
+  // Jaws of the Lion is 95% covered by Gloomhaven and Gloomhaven only 83%
+  // covered by it, so Jaws of the Lion is the redundant one.
+  assert.equal(found[0].name, 'Gloomhaven: Jaws of the Lion');
+  assert.equal(found[0].filledBy.name, 'Gloomhaven');
+  assert.ok(found[0].share > 0.9);
+});
+
+test('every pinned game holds a place, even when they displace each other', () => {
+  const idOf = (name) => ix.ids[ix.names.indexOf(name)];
+  const owned = ['Gloomhaven', 'Gloomhaven: Jaws of the Lion', 'Wingspan', 'Wyrmspan']
+    .map(idOf);
+  const { grid } = buildGrid(ix, { axes: [], owned, keepers: owned });
+  const held = new Set(grid.flatMap((c) => c.picks.map((p) => p.id)));
+  for (const id of owned) {
+    assert.ok(held.has(id), `${ix.names[ix.rowOf.get(id)]} was pinned and is not shelved`);
+  }
 });

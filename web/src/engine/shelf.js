@@ -86,3 +86,61 @@ export function analyseShelf(ix, weights, ownedRows, {
     gaps: gaps.sort((a, b) => a.coverage - b.coverage),
   };
 }
+
+/**
+ * Which games the collection is holding twice.
+ *
+ * For each shelved game, the share of *its own* profile that a single other
+ * shelved game already covers. Not "how much coverage vanishes without it":
+ * coverage is 1 − ∏(1 − wᵢ), so two copies of the same thing genuinely raise it
+ * and removing either still loses plenty. Measured over a sixteen-game shelf,
+ * Gloomhaven scored second-highest on that measure while being 83% duplicated.
+ *
+ * Containment answers the question actually asked — whose role is already being
+ * filled — and it is asymmetric, which is what decides who goes: Jaws of the
+ * Lion is 95% covered by Gloomhaven and Gloomhaven only 83% covered by Jaws of
+ * the Lion, so Jaws of the Lion is the redundant one.
+ *
+ * Returns nothing when nothing is redundant, which is the honest answer for a
+ * two-game shelf and the whole point of not simply listing the weakest few.
+ */
+export function redundancies(ix, weights, rows, { floor = 0.9, limit = 8 } = {}) {
+  const nGroups = ix.groups.length;
+  const vectors = rows.map((g) => spokeVector(ix, weights, g, nGroups));
+  const totals = vectors.map((v) => v.reduce((a, b) => a + b, 0));
+
+  const out = [];
+  for (let i = 0; i < rows.length; i++) {
+    if (!(totals[i] > 0)) continue;
+    let best = -1;
+    let bestShare = 0;
+    for (let j = 0; j < rows.length; j++) {
+      if (i === j) continue;
+      let shared = 0;
+      for (let s = 0; s < nGroups; s++) shared += Math.min(vectors[i][s], vectors[j][s]);
+      const share = shared / totals[i];
+      if (share > bestShare) { bestShare = share; best = j; }
+    }
+    if (best < 0 || bestShare < floor) continue;
+
+    // Both sides of a pair can clear the bar. The more contained one is the
+    // redundant one; where they tie, the less well known goes.
+    let backShare = 0;
+    for (let s = 0; s < nGroups; s++) {
+      backShare += Math.min(vectors[best][s], vectors[i][s]);
+    }
+    backShare /= totals[best] || 1;
+    if (backShare > bestShare
+      || (backShare === bestShare && ix.rank[rows[best]] > ix.rank[rows[i]])) continue;
+
+    out.push({
+      id: ix.ids[rows[i]], row: rows[i], name: ix.names[rows[i]], rank: ix.rank[rows[i]],
+      filledBy: {
+        id: ix.ids[rows[best]], row: rows[best],
+        name: ix.names[rows[best]], rank: ix.rank[rows[best]],
+      },
+      share: bestShare,
+    });
+  }
+  return out.sort((a, b) => b.share - a.share).slice(0, limit);
+}

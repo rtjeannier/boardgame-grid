@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { SplitBar } from './primitives/index.js';
 import { AXES, useCollection } from './state.js';
 import AxisPanel from './views/AxisPanel.jsx';
+import FillUntil from './views/FillUntil.jsx';
 import { Blocked, Notice } from './views/Notice.jsx';
 import Collection from './views/Collection.jsx';
 import Mine from './views/Mine.jsx';
@@ -95,6 +96,8 @@ export default function App({ contract }) {
                 onToggle={actions.toggleAxis} onOpen={actions.togglePanel}
                 openKey={state.panel} ownedCount={state.owned.length}
                 onlyMine={{ on: state.mineOnly, toggle: actions.toggleMineOnly }}>
+        <FillUntil fill={state.fill} onChange={actions.setFill}
+                   leftover={built.ix.defaults?.autoDepthLeftover} />
         <Blocked state={state} built={built} actions={actions} />
       </SplitBar>
       <AxisPanel which={state.axes.includes(state.panel) ? state.panel : null}

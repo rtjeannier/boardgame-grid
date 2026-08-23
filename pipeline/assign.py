@@ -40,6 +40,11 @@ from .params import DEFAULTS, Baseline, Selection
 from .model import Game
 
 
+def unit_cost(game) -> float:
+    """Every game costs one game. The only unit the data supports today."""
+    return 1.0
+
+
 @dataclass
 class Assignment:
     game: Game
@@ -548,7 +553,9 @@ def _rerecordings(chosen: dict, overlap=None) -> dict[int, float]:
 
 
 def improve_collection(keys, cells, scorer, chosen, gains, taken, keep,
-                       pinned: frozenset = frozenset()) -> list[tuple]:
+                       pinned: frozenset = frozenset(),
+                       budget: float | None = None, spent: float = 0.0,
+                       cost_of: Callable = unit_cost) -> list[tuple]:
     """Swap out re-recordings the collection gains nothing from holding twice.
 
     Only ever a swap, never a removal: a cell that has nothing to put in the
@@ -576,6 +583,7 @@ def improve_collection(keys, cells, scorer, chosen, gains, taken, keep,
     redone = getattr(scorer, "_redone", lambda gid, shelved: 0.0)
 
     swapped = []
+    extra = 0.0
     for gid, strength in _rerecordings(chosen, overlap).items():
         if strength <= 0.0:
             continue        # a redoing that went somewhere new is not redundant
@@ -612,13 +620,18 @@ def improve_collection(keys, cells, scorer, chosen, gains, taken, keep,
         # its slot; one that barely overlaps has to be replaced by something
         # outright better. No threshold to pick — the strength is the dial.
         bar = keep + (1.0 - keep) * (1.0 - strength)
-        if best is not None and best_score >= bar * here:
+        # A swap must also fit: under a money budget the replacement can cost
+        # more than what it replaces, and a swap is never worth going over for.
+        room = (best is None or budget is None
+                or spent + extra - cost_of(game) + cost_of(best) <= budget)
+        if best is not None and room and best_score >= bar * here:
             chosen[key] = rest + [best]
             gains.pop((key, gid), None)
             gains[(key, best.id)] = best_score
             taken.discard(gid)
             taken.add(best.id)
             scorer.take(key, best)
+            extra += cost_of(best) - cost_of(game)
             swapped.append((key, game, best))
         else:
             chosen[key] = rest + [game]
@@ -651,7 +664,9 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
              seeded: dict | None = None, alternates_limit: int = 0,
              sel: Selection = DEFAULTS.selection,
              gain_floor: float | None = None,
-             rejected: set[int] | None = None) -> dict:
+             rejected: set[int] | None = None,
+             budget: float | None = None,
+             cost_of: Callable = unit_cost) -> dict:
     """Fill every cell, placing each game at most once across all of them.
 
     `cells` maps key -> [Game] and `memberships` maps (key, game id) -> degree,
@@ -688,6 +703,19 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
     candidate until it reaches capacity or runs out. Whether the collection as a
     whole would rather it took something else is a separate, secondary question,
     settled afterwards by `improve_collection`.
+
+    `capacity` says how deep one shelf may go; `budget` says how much the whole
+    collection may cost, in whatever unit `cost_of` returns. Both are ceilings
+    and both apply — a budget trims the collection to what fits rather than
+    removing per-shelf depth and piling everything into whichever corner pays
+    best. With `cost_of` returning 1, a budget of N is a collection of N games,
+    which is the only unit the data supports: BGG publishes no price and no box
+    size. The abstraction exists so that the day one of those arrives is a
+    different `cost_of` rather than a different allocator.
+
+    Greedy, not optimal: each round commits in descending gain per unit cost and
+    stops when the next award will not fit. A knapsack solved properly would do
+    marginally better and would not survive being re-run on every keystroke.
     """
     gain_floor = sel.gain_floor if gain_floor is None else gain_floor
     keys = sorted(cells)                 # deterministic: contests must not
@@ -699,6 +727,7 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
     # Rejected games start out already claimed, so nothing can bid for them
     # and the leftovers pass will not offer them as alternates either.
     taken: set[int] = set(rejected or ())
+    spent = 0.0
 
     for key, games in (seeded or {}).items():
         for game in games:
@@ -707,6 +736,9 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
             scorer.take(key, game)
             chosen[key].append(game)
             taken.add(game.id)
+            # A pin is a game you are keeping, so it is spent whether or not it
+            # fits.
+            spent += cost_of(game)
 
     # Bid until nothing more clears the floor, repair, then bid again in case
     # repair emptied a slot. Bounded by the number of slots, since every pass
@@ -723,19 +755,31 @@ def allocate(cells: dict, memberships: dict, scorer: Scorer,
         # A round commits together, so apply best bid first and skip anything
         # already claimed — two cells can be awarded the same game only if the
         # round handed it out twice, which the guard below makes harmless.
-        for key, (game, gain) in sorted(awards.items(), key=lambda kv: -kv[1][1]):
+        # Best value first — gain per unit of whatever is being spent, which is
+        # gain itself while everything costs the same.
+        def value(kv):
+            game, gain = kv[1]
+            return -gain / (cost_of(game) or 1.0)
+
+        for key, (game, gain) in sorted(awards.items(), key=value):
             if game.id in taken:
                 continue
+            if budget is not None and spent + cost_of(game) > budget:
+                continue
             taken.add(game.id)
+            spent += cost_of(game)
             gains[(key, game.id)] = gain
             scorer.take(key, game)
             chosen[key].append(game)
+        if budget is not None and spent >= budget:
+            break
 
     # Cells are as full as they can be; now let the collection have its say.
     improve_collection(keys, cells, scorer, chosen, gains, taken,
                        sel.replacement_keep,
                        pinned=frozenset(g.id for games in (seeded or {}).values()
-                                        for g in games))
+                                        for g in games),
+                       budget=budget, spent=spent, cost_of=cost_of)
 
     results = {}
     # Everything shelved anywhere, so the leftovers below can leave out games

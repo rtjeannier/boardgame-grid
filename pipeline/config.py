@@ -417,6 +417,22 @@ GAIN_FLOOR = 0.0
 AUTO_DEPTH_LEFTOVER = 0.45
 AUTO_DEPTH = True
 
+# How much of a game's own profile another single game must already cover before
+# the collection is holding it twice.
+#
+# Not "how much coverage vanishes without it" — that measure never penalises a
+# duplicate, because coverage is 1 - prod(1 - w) and two copies of the same thing
+# genuinely raise it. Measured over a sixteen-game shelf, Gloomhaven scored the
+# second-highest on that and is 83% duplicated by Gloomhaven: Jaws of the Lion.
+#
+# Containment of one profile in another is the measure that answers the question
+# asked: whose role is already being filled. At 0.90 over that same shelf it
+# flags Brass: Lancashire (97% covered by Birmingham), Wyrmspan (95% by
+# Wingspan), Jaws of the Lion (95% by Gloomhaven) and Codenames: Duet (94% by
+# Just One), and nothing else. It is asymmetric, and that decides which of a
+# pair to drop: the more contained side is the redundant one.
+REDUNDANCY_FLOOR = 0.90
+
 # How much the rest of the shelf pulls on a cell's choice, as an exponent on
 # how new a game is against everything already placed anywhere. Zero ignores the
 # collection entirely and each cell is filled in isolation; one weighs the whole

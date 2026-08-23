@@ -61,13 +61,17 @@ CASES = [
     {"name": "one depth everywhere, set by hand",
      "params": {"collection": {"auto_depth": False}},
      "options": {"capacity": 5}},
+    # Unit cost, so a budget of 60 is a collection of 60 games. The point of
+    # pinning it is that the *same* 60 come out on both sides.
+    {"name": "a budget of sixty", "params": {}, "options": {"budget": 60},
+     "budget": 60},
     {"name": "one game per kind off",
      "params": {"selection": {"genre_repeat_penalty": 1.0}},
      "options": {"policy": {"repeatPenalty": 1.0}}},
 ]
 
 
-def run(games, space, params, banned=(), keepers=()):
+def run(games, space, params, banned=(), keepers=(), budget=None):
     sel, coll, pres = params.selection, params.collection, params.presentation
     rows = buckets.build_weight_rows([g.weight for g in games], coll.weight_rows)
     cells, memb = buckets.build_cells(
@@ -104,14 +108,20 @@ def run(games, space, params, banned=(), keepers=()):
     def go(seeded):
         return allocate(cells, memb, scorer, room, seeded=seeded,
                         alternates_limit=pres.alternates_per_cell,
-                        sel=sel, rejected=set(banned))
+                        sel=sel, rejected=set(banned), budget=budget)
 
     results = go({})
     if keepers:
-        shelved = {a.game.id for r in results.values() for a in r.assignments}
-        missing = [gid for gid in keepers if gid not in shelved]
-        if missing:
-            results = go(seed_for(missing))
+        # Seeding one pin can displace another, so accumulate until every pin is
+        # in or a pass stops adding to the set. See web/src/engine/index.js.
+        seed: set = set()
+        for _ in range(len(keepers) + 1):
+            shelved = {a.game.id for r in results.values() for a in r.assignments}
+            missing = [gid for gid in keepers if gid not in shelved and gid not in seed]
+            if not missing:
+                break
+            seed.update(missing)
+            results = go(seed_for(seed))
     return {f"{k[0]}|{k[1]}": [a.game.id for a in r.assignments]
             for k, r in results.items()}
 
@@ -159,7 +169,8 @@ def main() -> None:
             }
             options["capacity"] = {f"{k[0]}|{k[1]}": v for k, v in options["capacity"].items()}
         picks = run(games, space, params,
-                    banned=case.get("banned", ()), keepers=case.get("keepers", ()))
+                    banned=case.get("banned", ()), keepers=case.get("keepers", ()),
+                    budget=case.get("budget"))
         out.append({"name": case["name"], "options": options, "picks": picks})
         print(f"  {case['name']:<32} {sum(len(v) for v in picks.values()):>3} picks")
 

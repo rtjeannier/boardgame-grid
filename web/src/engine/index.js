@@ -11,10 +11,10 @@ export { ratingSpans, coverageWeights } from './quality.js';
 export { buildWeightRows, buildCells, playerAxis, weightAxis } from './membership.js';
 export { readDepth, axisDepths, gridDepths, PROBE } from './depth.js';
 export { CoverageScorer } from './scorer.js';
-export { allocate } from './allocate.js';
+export { allocate, UNIT_COST } from './allocate.js';
 export { toGridData } from './present.js';
 export { explainCut, cutSentence, howAlike, similarityBetween } from './explain.js';
-export { analyseShelf, coverageOf, spokeVector } from './shelf.js';
+export { analyseShelf, coverageOf, redundancies, spokeVector } from './shelf.js';
 
 import { indexContract } from './contract.js';
 import { ratingSpans, coverageWeights } from './quality.js';
@@ -49,7 +49,7 @@ export function buildGrid(contract, {
   axes = ['players', 'weight'],
   columns = DEFAULT_COLUMNS, rowCount = 5, rowNames = DEFAULT_ROW_NAMES, rowEdges = null,
   capacity = 'auto', alternatesLimit = 6, depthOverrides = {}, autoDepthLeftover = null,
-  owned = [], keepers = [], banned = [],
+  owned = [], keepers = [], banned = [], budget = null, costOf = null,
   genreWeights = null, include = null, gainFloor = null, policy = null,
 } = {}) {
   const base = contract.games ? indexContract(contract) : contract;
@@ -151,15 +151,25 @@ export function buildGrid(contract, {
       results: allocate(ix, with_, pools, {
         capacity: room, seeded: seeded ?? new Map(),
         rejected: rejectedRows, alternatesLimit, gainFloor,
+        budget, ...(costOf ? { costOf } : {}),
       }),
     };
   };
 
   let { pools, results } = run(null);
   if (keeperRows.length) {
-    const shelved = new Set(results.flatMap((c) => c.picks));
-    const missing = keeperRows.filter((g) => !shelved.has(g));
-    if (missing.length) ({ pools, results } = run(seedInto(pools, missing)));
+    // Seeding one pin can displace another — seeding Jaws of the Lion pushed
+    // Gloomhaven out, and both were meant to be held. So accumulate: whoever is
+    // still missing joins the seed set and the whole thing runs again, until
+    // every pin is in or a pass stops adding to the set.
+    const seed = new Set();
+    for (let pass = 0; pass <= keeperRows.length; pass++) {
+      const shelved = new Set(results.flatMap((c) => c.picks));
+      const missing = keeperRows.filter((g) => !shelved.has(g) && !seed.has(g));
+      if (!missing.length) break;
+      for (const g of missing) seed.add(g);
+      ({ pools, results } = run(seedInto(pools, [...seed])));
+    }
   }
 
   const ownedRows = new Set(rowsOf(owned));

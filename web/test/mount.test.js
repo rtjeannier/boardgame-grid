@@ -399,3 +399,61 @@ test('the next best game is offered at every split, and lands where it says', ()
   void unsplit;
   act(() => root.unmount());
 });
+
+test('fill until a number of games, and the collection follows', () => {
+  const { host, root } = mount();
+  const open = [...host.querySelectorAll('summary')]
+    .find((el) => el.textContent.includes('Fill until'));
+  assert.ok(open, 'no fill rule in the bar');
+  act(() => { open.parentElement.open = true; });
+
+  // The two that cannot work yet say why rather than being hidden.
+  const blocked = [...host.querySelectorAll('button[disabled]')]
+    .filter((b) => /budget|shelf space/.test(b.textContent));
+  assert.equal(blocked.length, 2, 'budget and shelf space should be offered and disabled');
+  assert.match(blocked.map((b) => b.textContent).join(' '), /no price|no box size/);
+
+  click([...host.querySelectorAll('button')].find((b) => b.textContent.includes('a number of games')));
+  const field = host.querySelector('input[aria-label="How many games"]');
+  assert.ok(field, 'no number to set');
+  act(() => {
+    const setter = Object.getOwnPropertyDescriptor(
+      dom.window.HTMLInputElement.prototype, 'value').set;
+    setter.call(field, '7');
+    field.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+  });
+  assert.equal(size(host), 7, 'the collection did not follow the number');
+  act(() => root.unmount());
+});
+
+test('held twice is empty until something really is', () => {
+  const { host, root } = mount();
+  // The twelve-game collection has no duplicate in it by construction.
+  assert.ok(!host.textContent.includes('Held twice'),
+    'a collection built to avoid duplication reported one');
+
+  const add = (term, name) => {
+    click(byText('My games', host));
+    const search = host.querySelector('input[aria-label="Search for a game"]');
+    act(() => {
+      const setter = Object.getOwnPropertyDescriptor(
+        dom.window.HTMLInputElement.prototype, 'value').set;
+      setter.call(search, term);
+      search.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+    });
+    const hit = [...host.querySelectorAll('button')]
+      .find((b) => b.textContent.startsWith(name));
+    if (hit) click(hit);
+  };
+  add('gloomhaven', 'Gloomhaven');
+  add('jaws of the lion', 'Gloomhaven: Jaws of the Lion');
+
+  click(byText('Collection', host));
+  click(byText('Build on mine', host));
+  assert.match(host.textContent, /Held twice/, 'a real duplicate went unreported');
+  // The more contained side is the one named, not whichever came first.
+  assert.match(host.textContent,
+    /Jaws of the Lion[^]*?Gloomhaven already covers \d+%/,
+    'it named the wrong half of the pair');
+  act(() => root.unmount());
+});

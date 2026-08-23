@@ -266,6 +266,7 @@ def build_contract(games, space, results, source: str, generated_at: str,
             "picksPerCell": coll.picks_per_cell,
             "autoDepth": coll.auto_depth,
             "autoDepthLeftover": coll.auto_depth_leftover,
+            "redundancyFloor": coll.redundancy_floor,
             "weightRows": coll.weight_rows,
             "rowNames": list(params.presentation.row_names),
             "playerColumns": [
