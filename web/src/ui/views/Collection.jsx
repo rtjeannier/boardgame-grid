@@ -1,8 +1,7 @@
 import { useMemo } from 'react';
-import { coverageOf, redundancies, spokeVector } from '../../engine/index.js';
+import { analyse } from '../analysis/index.js';
 import GameItem from '../game/GameItem.jsx';
 import { toGameView } from '../game/view.js';
-import Radar from '../chart/Radar.jsx';
 import Button from '../primitives/Button.jsx';
 import DepthField from '../primitives/DepthField.jsx';
 import { sharesOf } from '../state.js';
@@ -97,100 +96,6 @@ function AddNext({ built, state, actions }) {
   );
 }
 
-/**
- * Games the collection is holding twice.
- *
- * It used to end each row with "drop it and X comes in", where X was the shelf's
- * top alternate. That was two unrelated facts stapled together: the alternates
- * answer "who fills this slot if it is empty", not "what should replace this
- * game". Measured on one shelf, the replacement made things worse on both
- * counts — that shelf scored 0.372 -> 0.141, and the collection covered 11.982
- * -> 11.980. The allocator had already preferred what it kept, which is why it
- * kept it. So nothing is proposed here; the redundancy is reported and the
- * decision is the reader's.
- *
- * Scoped to the shelf being looked at when there is one, because "these two do
- * the same thing" is a claim about games sitting next to each other.
- */
-function AlreadyFilled({ built, state, actions, onOpen }) {
-  const { ix, weights, grid } = built;
-  const floor = ix.defaults?.redundancyFloor ?? 0.9;
-
-  const found = useMemo(() => {
-    const picked = state.selected ? grid.find((c) => c.key === state.selected) : null;
-    const from = picked ? [picked] : grid;
-    const rows = from.flatMap((c) => c.picks.map((p) => ix.rowOf.get(p.id)))
-      .filter((r) => r !== undefined);
-    if (rows.length < 2) return [];
-    return redundancies(ix, weights, rows, { floor }).map((r) => ({
-      ...r, mine: state.owned.includes(r.id),
-    })).sort((a, b) => (b.mine ? 1 : 0) - (a.mine ? 1 : 0));
-  }, [ix, weights, grid, floor, state.owned, state.selected]);
-
-  if (!found.length) return null;
-  return (
-    <div className={css.block}>
-      <h2 className={css.label}>
-        {state.selected ? 'Held twice on this shelf' : 'Held twice'}
-      </h2>
-      <div className={css.list}>
-        {found.map((r) => (
-          <div key={r.id} className={css.entry}>
-            <GameItem
-              variant="reason"
-              game={toGameView(ix, r.row, {
-                owned: r.mine,
-                pinned: state.pinned.includes(r.id),
-                blocked: state.blocked.includes(r.id),
-                reason: `${r.filledBy.name} already covers ${Math.round(r.share * 100)}%`
-                  + ' of what it brings.',
-              })}
-              onOpen={onOpen}
-              onPin={(x) => actions.pin(x.id, shelvedNow(built), x.name)}
-              onBlock={(x) => actions.block(x.id, shelvedNow(built), x.name)} />
-          </div>
-        ))}
-      </div>
-      <p className={css.note}>
-        How much of a game's own profile another single game already covers.
-        Nothing is suggested to take its place: the runner-up is the game the
-        selection already turned down, and putting it in makes the shelf worse.
-      </p>
-    </div>
-  );
-}
-
-function Facts({ ix, rows }) {
-  const players = (lo, hi) => rows.filter((r) => {
-    for (let k = ix.playerFit.start[r]; k < ix.playerFit.start[r + 1]; k++) {
-      const c = ix.playerFit.idx[k];
-      if (ix.playerFit.val[k] >= 0.999 && c >= lo && (hi == null || c <= hi)) return true;
-    }
-    return false;
-  }).length;
-  const times = rows.map((r) => ix.playtime[r]).sort((a, b) => a - b);
-  const weights = rows.map((r) => ix.weight[r]).sort((a, b) => a - b);
-  const ranks = rows.map((r) => ix.rank[r]).sort((a, b) => a - b);
-  const hours = (m) => (m >= 120 ? `${Math.round(m / 60)}h` : `${m}m`);
-  const facts = [
-    ['Plays alone', players(1, 1)],
-    ['Plays at two', players(2, 2)],
-    ['Takes eight or more', players(8, null)],
-    ['Shortest', hours(times[0] ?? 0)],
-    ['Longest', hours(times[times.length - 1] ?? 0)],
-    ['Weight', `${(weights[0] ?? 0).toFixed(1)} – ${(weights[weights.length - 1] ?? 0).toFixed(1)}`],
-    ['Best known', `#${ranks[0] ?? 0}`],
-    ['Least known', `#${(ranks[ranks.length - 1] ?? 0).toLocaleString()}`],
-  ];
-  return (
-    <div className={css.facts}>
-      {facts.map(([label, value]) => (
-        <span key={label} className={css.fact}><span>{label}</span><b>{value}</b></span>
-      ))}
-    </div>
-  );
-}
-
 function Why({ cell }) {
   if (!cell?.curve?.length) return null;
   const top = Math.max(...cell.curve);
@@ -224,6 +129,9 @@ function Why({ cell }) {
 
 export default function Collection({ built, state, actions, onOpen }) {
   const { ix, grid, weights, depths, axes } = built;
+  // Whatever has something to say about this collection, in registration order.
+  // An analysis that returns null does not render a heading over nothing.
+  const found = useMemo(() => analyse({ built, state }), [built, state]);
 
   const shelf = axes.length === 0 ? grid[0] : null;
   const rows = useMemo(
@@ -241,78 +149,17 @@ export default function Collection({ built, state, actions, onOpen }) {
       .sort((a, b) => b.carries - a.carries);
   }, [shelf, ix, weights, rows]);
 
-  // A five-game shelf moves visibly when one game changes; a 204-game collection
-  // cannot, because one game in 204 is half a percent of it and no measure can
-  // make that four pixels. So the radar draws whatever is small enough to
-  // respond: the shelf you picked, then your games, then the collection.
-  const radar = useMemo(() => {
-    const n = ix.groups.length;
-    const names = ix.groups.map((g) => g.name.split(' · ')[0]);
-    const rowsFor = (picks) => picks.map((p) => ix.rowOf.get(p.id))
-      .filter((r) => r !== undefined);
-    const shape = (rs) => coverageOf(rs.map((r) => spokeVector(ix, weights, r, n)), n);
-    const whole = shape(rowsFor(grid.flatMap((c) => c.picks)));
-
-    const picked = state.selected ? grid.find((c) => c.key === state.selected) : null;
-    if (picked) {
-      return {
-        names, values: shape(rowsFor(picked.picks)), reference: whole,
-        label: `This shelf · ${picked.picks.length} games`, referenceLabel: 'The collection',
-        heading: 'What this shelf reaches',
-      };
-    }
-    const mine = state.owned.map((id) => ix.rowOf.get(id)).filter((r) => r !== undefined);
-    if (mine.length) {
-      return {
-        names, values: shape(mine), reference: whole,
-        label: 'Yours', referenceLabel: 'The collection',
-        heading: 'Yours against the collection',
-      };
-    }
-    return {
-      names, values: whole, reference: null, label: 'The collection',
-      heading: 'What it reaches', full: Math.min(...whole) > 0.95,
-    };
-  }, [ix, grid, weights, state.owned, state.selected]);
-
   const total = grid.reduce((n, c) => n + c.picks.length, 0);
 
   return (
     <div className={css.view}>
       <div className={css.split}>
         <aside className={css.side}>
-          <div className={css.block}>
-            <h2 className={css.label}>{radar.heading}</h2>
-            <Radar names={radar.names} values={radar.values} reference={radar.reference}
-                   label={radar.label} referenceLabel={radar.referenceLabel}
-                   showGaps={!!radar.reference} size={272} />
-            {state.selected && (
-              <p className={css.note}>
-                Click the shelf again to go back to the whole collection.
-              </p>
-            )}
-            {!radar.reference && (
-              <p className={css.note}>
-                {radar.full
-                  ? 'At this size the collection reaches every kind of play, so the '
-                    + 'shape is full and one game cannot move it. Click a shelf, or '
-                    + 'add your own games, and this draws something small enough to '
-                    + 'respond.'
-                  : 'Twelve kinds of play, and how far the collection reaches '
-                    + 'into each. Add your own games and this draws them '
-                    + 'against it.'}
-              </p>
-            )}
-          </div>
-
+          {found.map(({ analysis, data }) => (
+            <analysis.View key={analysis.id} data={data} built={built} state={state}
+                           actions={actions} onOpen={onOpen} />
+          ))}
           {shelf && <Why cell={depths?.cell} />}
-          <AlreadyFilled built={built} state={state} actions={actions} onOpen={onOpen} />
-
-          <div className={css.block}>
-            <h2 className={css.label}>What it contains</h2>
-            <Facts ix={ix}
-                   rows={grid.flatMap((c) => c.picks.map((p) => ix.rowOf.get(p.id)))} />
-          </div>
         </aside>
 
         <div className={css.main}>

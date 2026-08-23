@@ -18,12 +18,6 @@
 .cliff b { font-family: var(--font-mono); font-weight: 500; color: var(--text);
            font-variant-numeric: tabular-nums; }
 
-.facts { display: flex; flex-direction: column; gap: var(--s-1); }
-.fact { display: flex; justify-content: space-between; font-size: 12px;
-        line-height: 1.45; color: var(--text-2); }
-.fact b { font-family: var(--font-mono); font-weight: 500; color: var(--text);
-          font-variant-numeric: tabular-nums; }
-
 .main { min-width: 0; display: flex; flex-direction: column; gap: var(--s-6); }
 .head { display: flex; align-items: baseline; gap: var(--s-6);
         padding-bottom: var(--s-4); border-bottom: 1px solid var(--text); }

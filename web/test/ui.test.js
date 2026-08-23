@@ -244,3 +244,41 @@ test('the views render at each split, and with a shelf of your own', async () =>
     }
   }
 });
+
+test('an analysis with nothing to say renders nothing at all', async () => {
+  const { analyse, all } = await vite.ssrLoadModule('/src/ui/analysis/index.js');
+  const contract = JSON.parse(
+    readFileSync(join(WEB, 'public', 'grid.contract.json'), 'utf8'));
+  const built = engine.buildGrid(contract, { axes: ['players', 'weight'] });
+  const state = { axes: ['players', 'weight'], owned: [], pinned: [], blocked: [],
+                  depthOverrides: {}, columns: built.columns, rowCount: 5, rowEdges: null,
+                  mineOnly: false, panel: null, selected: null, open: null,
+                  limits: [{ kind: 'returns', scope: 'shelf', on: true, value: 45 }],
+                  perShelf: null };
+
+  assert.ok(all().length >= 3, 'nothing registered');
+  const found = analyse({ built, state });
+  assert.ok(found.length > 0, 'nothing had anything to say about a whole collection');
+  for (const { analysis, data } of found) {
+    assert.ok(data != null, `${analysis.id} was listed with no data`);
+    assert.ok(render(h(analysis.View, { data, built, state, actions: {}, onOpen() {} })).length > 0,
+      `${analysis.id} rendered nothing`);
+  }
+
+  // Scoped to the reader's own games, with none owned: silent, not empty-headed.
+  const mine = all().filter((a) => a.scope === 'mine');
+  for (const analysis of mine) {
+    assert.ok(!found.some((f) => f.analysis.id === analysis.id),
+      `${analysis.id} is about your games and appeared without any`);
+  }
+});
+
+test('an analysis does not know where it is being rendered', async () => {
+  const { all } = await vite.ssrLoadModule('/src/ui/analysis/index.js');
+  for (const analysis of all()) {
+    assert.equal(typeof analysis.run, 'function', `${analysis.id} cannot compute`);
+    assert.equal(typeof analysis.View, 'function', `${analysis.id} cannot render`);
+    assert.ok(['collection', 'mine'].includes(analysis.scope),
+      `${analysis.id} has no scope`);
+  }
+});
