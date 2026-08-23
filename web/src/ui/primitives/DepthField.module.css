@@ -8,3 +8,5 @@
 .tag { font-family: var(--font-mono); font-size: 8.5px; font-weight: 500;
        letter-spacing: .05em; text-transform: uppercase; color: var(--text-3); }
 .set .tag { color: var(--mark); }
+.clear { border: 0; background: none; padding: 0; cursor: pointer; }
+.clear:hover { text-decoration: underline; text-underline-offset: 2px; }

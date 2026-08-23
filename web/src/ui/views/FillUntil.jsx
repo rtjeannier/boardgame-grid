@@ -18,7 +18,6 @@ import css from './FillUntil.module.css';
 const KINDS = {
   returns: { label: 'a game stops paying', unit: '% of its first pick',
              fixed: 'each shelf reads its own curve' },
-  count: { label: 'a number of games', unit: 'games' },
   budget: { label: 'a budget', why: 'BGG publishes no price' },
   volume: { label: 'shelf space', why: 'BGG publishes no box size' },
 };
@@ -29,7 +28,7 @@ function summarise(limits, leftover) {
   if (!on.length) return 'nothing stops it';
   return on.map((l) => (l.kind === 'returns'
     ? `under ${l.value ?? Math.round((leftover ?? 0.45) * 100)}% returns`
-    : `${l.value} games ${SCOPE[l.scope]}`))
+    : `${l.value} ${KINDS[l.kind].unit ?? ''} ${SCOPE[l.scope]}`.trim()))
     .join(' · ');
 }
 
@@ -72,9 +71,11 @@ export default function FillUntil({ limits, onChange, leftover }) {
           );
         })}
         <p className={css.foot}>
-          Everything ticked applies at once and the smallest wins. Turn the first
-          one off and a shelf stops reading its own curve — it takes the number
-          you set and nothing recomputes behind you.
+          Everything ticked applies at once and the smallest wins. Turn this off
+          and a shelf stops reading its own curve — it takes the number in the
+          register head, and nothing recomputes behind you. How many games there
+          are is a result, not a limit, so it is a count in the bar rather than a
+          row here.
         </p>
       </div>
     </details>

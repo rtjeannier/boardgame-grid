@@ -5,7 +5,7 @@ import { toGameView } from '../game/view.js';
 import Radar from '../chart/Radar.jsx';
 import Button from '../primitives/Button.jsx';
 import DepthField from '../primitives/DepthField.jsx';
-import { PER_SHELF, sharesOf } from '../state.js';
+import { sharesOf } from '../state.js';
 import Board, { shelvedNow } from './Board.jsx';
 import { cellLabeller } from './labels.js';
 import css from './Collection.module.css';
@@ -27,16 +27,27 @@ import css from './Collection.module.css';
  * only in the limits list because it is the number a reader reaches for most,
  * and it belongs beside the thing it counts.
  */
-function PerShelf({ state, actions }) {
-  const at = PER_SHELF(state.limits);
-  const limit = state.limits[at];
-  if (!limit) return null;
+function PerShelf({ built, state, actions }) {
+  // Untouched it shows what the shelves are actually doing rather than a
+  // placeholder: the one shelf's depth unsplit, and the commonest answer once
+  // there are many.
+  const shown = state.perShelf ?? typical(built);
   return (
     <span className={css.depth}>
-      <DepthField value={limit.value} auto={limit.on ? null : limit.value}
-                  onChange={(v) => actions.setLimit(at, { on: true, value: v })} />
+      <DepthField value={shown} set={state.perShelf != null}
+                  onChange={(v) => actions.setPerShelf(v)}
+                  onClear={() => actions.setPerShelf(null)} />
     </span>
   );
+}
+
+/** The depth most shelves came out at, for the field to show while it is auto. */
+function typical(built) {
+  const depths = built.grid.map((c) => c.picks.length).filter((n) => n > 0);
+  if (!depths.length) return 0;
+  const counts = new Map();
+  for (const d of depths) counts.set(d, (counts.get(d) ?? 0) + 1);
+  return [...counts].sort((a, b) => b[1] - a[1] || b[0] - a[0])[0][0];
 }
 
 /**
@@ -73,7 +84,7 @@ function AddNext({ built, state, actions }) {
     <div className={css.addRow}>
       <Button onClick={() => (best.key
         ? actions.setDepth(best.key, best.depth + 1)
-        : actions.setLimit(PER_SHELF(state.limits), { on: true, value: best.depth + 1 }))}>
+        : actions.setPerShelf(best.depth + 1))}>
         ＋ Add {best.name}
       </Button>
       <span className={css.addNote}>
@@ -286,7 +297,7 @@ export default function Collection({ built, state, actions, onOpen }) {
             <>
               <div className={css.head}>
                 <h2 className={css.title}>Every game in it</h2>
-                <PerShelf state={state} actions={actions} />
+                <PerShelf built={built} state={state} actions={actions} />
                 <span className={css.sub}>
                   ordered by how much of the collection each carries
                 </span>
@@ -355,7 +366,7 @@ export default function Collection({ built, state, actions, onOpen }) {
                 <h2 className={css.title}>
                   {axes.length === 1 ? 'One shelf per group' : 'Thirty-five shelves'}
                 </h2>
-                <PerShelf state={state} actions={actions} />
+                <PerShelf built={built} state={state} actions={actions} />
                 <span className={css.sub}>{total} games</span>
               </div>
               <AddNext built={built} state={state} actions={actions} />

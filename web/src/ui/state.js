@@ -36,11 +36,16 @@ const initial = {
   // a different cost per game, the day the data carries one.
   limits: [
     { kind: 'returns', scope: 'shelf', on: true, value: 45 },
-    { kind: 'count', scope: 'shelf', on: false, value: 5 },
-    { kind: 'count', scope: 'total', on: false, value: 60 },
     { kind: 'budget', scope: 'total', on: false, value: 400 },
     { kind: 'volume', scope: 'total', on: false, value: 60 },
   ],
+  // How many games a shelf takes when nothing else has been said about that
+  // shelf. `null` is "each one reads its own curve". It is not in the limits
+  // list because it already has a place on the thing it counts — the number in
+  // the register head — and a control in two places is two things to keep in
+  // step. Neither is a total: how many games there are is a readout in the bar,
+  // not something to set.
+  perShelf: null,
   panel: null,         // which axis is being configured, if any
   open: null,          // the game whose drawer is showing
   // What the last block or pin did, so the interface can say so. Blocking a
@@ -120,6 +125,8 @@ function reduce(state, action) {
       return { ...state, columns: action.value };
     case 'mineOnly':
       return { ...state, mineOnly: !state.mineOnly };
+    case 'perShelf':
+      return { ...state, perShelf: action.value };
     case 'limit':
       return {
         ...state,
@@ -149,27 +156,22 @@ export function sharesOf(ix, weights, rows) {
   });
 }
 
-/** Where the flat games-a-shelf default lives in the list. */
-export const PER_SHELF = (limits) =>
-  limits.findIndex((l) => l.kind === 'count' && l.scope === 'shelf');
-
-/** The limit list, as the things `buildGrid` understands. */
-export function limitsFor(limits) {
-  const live = (kind, scope) =>
-    limits.find((l) => l.on && l.kind === kind && l.scope === scope);
-  const perShelf = live('count', 'shelf');
-  const total = live('count', 'total');
-  const returns = live('returns', 'shelf');
+/** The limits and the shelf default, as the things `buildGrid` understands. */
+export function limitsFor(limits, perShelf) {
+  const live = (kind) => limits.find((l) => l.on && l.kind === kind);
+  const returns = live('returns');
   return {
     // Reading the curve is itself a per-shelf limit; with it off, a shelf takes
     // the number you set and nothing recomputes behind you.
-    capacity: returns ? 'auto' : (perShelf?.value ?? 5),
+    capacity: returns ? 'auto' : (perShelf ?? 5),
     // How much a game must still add for a shelf to keep taking them, as a share
     // of what its first one added. Held here rather than read off the contract
     // because it is a thing to set, not a constant the model was fitted with.
     autoDepthLeftover: returns ? (returns.value ?? 45) / 100 : null,
-    perShelfCap: perShelf ? perShelf.value : null,
-    budget: total ? total.value : null,
+    perShelfCap: perShelf,
+    // Money and shelf volume are the only totals worth setting, and neither has
+    // data behind it yet.
+    budget: live('budget')?.value ?? live('volume')?.value ?? null,
   };
 }
 
@@ -199,10 +201,10 @@ export function useCollection(contract) {
     keepers,
     banned: state.blocked,
     depthOverrides: state.depthOverrides,
-    ...limitsFor(state.limits),
+    ...limitsFor(state.limits, state.perShelf),
     alternatesLimit: 6,
   }), [ix, state.axes, state.columns, state.rowCount, state.rowEdges, state.owned,
-       keepers, state.blocked, state.depthOverrides, state.limits]);
+       keepers, state.blocked, state.depthOverrides, state.limits, state.perShelf]);
 
   const actions = useMemo(() => ({
     toggleAxis: (key) => dispatch({ type: 'axis', key }),
@@ -222,6 +224,7 @@ export function useCollection(contract) {
     toggleMineOnly: () => dispatch({ type: 'mineOnly' }),
     togglePanel: (key) => dispatch({ type: 'panel', key }),
     setLimit: (at, value) => dispatch({ type: 'limit', at, value }),
+    setPerShelf: (value) => dispatch({ type: 'perShelf', value }),
     open: (game) => dispatch({ type: 'open', game }),
     reset: () => dispatch({ type: 'reset' }),
   }), []);

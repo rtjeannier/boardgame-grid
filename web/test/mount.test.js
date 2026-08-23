@@ -400,36 +400,21 @@ test('the next best game is offered at every split, and lands where it says', ()
   act(() => root.unmount());
 });
 
-test('the limits are a list, they combine, and two of them say why not yet', () => {
+test('the limits are a list, and the two that cannot work say why', () => {
   const { host, root } = mount();
   const open = [...host.querySelectorAll('summary')]
     .find((el) => el.textContent.includes('Fill until'));
   assert.ok(open, 'no fill rule in the bar');
   act(() => { open.parentElement.open = true; });
 
-  // The two that cannot work yet are offered and say why, rather than hidden.
-  const blocked = [...host.querySelectorAll('input[type="checkbox"][disabled]')];
-  assert.equal(blocked.length, 2, 'budget and shelf space should be there and disabled');
-  assert.match(host.textContent, /no price[^]*no box size/);
-
+  // Three rows: how a shelf stops, and the two totals with no data behind them.
   const boxes = [...host.querySelectorAll('input[type="checkbox"]')];
-  const field = (label) => host.querySelector(`input[aria-label="${label}"]`);
-  const type = (el, value) => act(() => {
-    const setter = Object.getOwnPropertyDescriptor(
-      dom.window.HTMLInputElement.prototype, 'value').set;
-    setter.call(el, value);
-    el.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
-  });
-
-  // A total of seven, on top of the reading.
-  click(boxes[2]);
-  type(field('a number of games, in total'), '7');
-  assert.equal(size(host), 7, 'a total limit did not bind');
-
-  // And both at once: the smaller wins, so seven still holds.
-  click([...host.querySelectorAll('input[type="checkbox"]')][1]);
-  type(field('a number of games, a shelf'), '9');
-  assert.equal(size(host), 7, 'two limits should both apply, smallest winning');
+  assert.equal(boxes.length, 3, 'the list should be the returns bar and two totals');
+  assert.equal(boxes.filter((b) => b.disabled).length, 2);
+  assert.match(host.textContent, /no price[^]*no box size/);
+  // How many games there are is a result, not a limit.
+  assert.ok(!/a number of games/.test(host.textContent),
+    'the count is a readout in the bar, not a row here');
   act(() => root.unmount());
 });
 
@@ -536,5 +521,30 @@ test('games a shelf is a default, on every split, that a shelf can overrule', ()
   assert.ok(size(host) < flat, 'lowering the default did not take');
   click(host.querySelector('button[aria-label="One more here"]'));
   assert.ok(size(host) > 0);
+  act(() => root.unmount());
+});
+
+test('the shelf default can be handed back to the curve', () => {
+  const { host, root } = mount();
+  const field = () => host.querySelector('input[aria-label="Games on this shelf"]');
+  const tag = () => [...host.querySelectorAll('button')]
+    .find((b) => b.textContent.trim() === 'set ✕');
+
+  // Untouched it shows what the shelves are doing, and says so.
+  assert.equal(field().value, '12');
+  assert.match(host.textContent, /auto/);
+  assert.equal(tag(), undefined, 'nothing to clear before anything is set');
+
+  act(() => {
+    const setter = Object.getOwnPropertyDescriptor(
+      dom.window.HTMLInputElement.prototype, 'value').set;
+    setter.call(field(), '4');
+    field().dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+  });
+  assert.equal(size(host), 4);
+  assert.ok(tag(), 'no way back once a number is set');
+
+  click(tag());
+  assert.equal(size(host), 12, 'clearing it did not hand the shelf back to its curve');
   act(() => root.unmount());
 });

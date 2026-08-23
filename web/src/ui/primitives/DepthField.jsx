@@ -7,8 +7,10 @@ import css from './DepthField.module.css';
  * the field says which — `auto`, or `set` once you have typed over it. It does
  * not keep reciting the number you replaced.
  */
-export default function DepthField({ value, auto, onChange, id }) {
-  const overridden = auto != null && value !== auto;
+export default function DepthField({ value, auto, set, onChange, onClear, id }) {
+  // `set` when the caller knows outright; otherwise inferred from the
+  // reading it is standing in front of.
+  const overridden = set ?? (auto != null && value !== auto);
   return (
     <span className={`${css.wrap} ${overridden ? css.set : ''}`.trim()}>
       <input className={css.n} id={id} type="text" inputMode="numeric"
@@ -18,7 +20,13 @@ export default function DepthField({ value, auto, onChange, id }) {
                if (!Number.isNaN(next)) onChange?.(Math.max(0, next));
                else if (e.target.value === '') onChange?.(0);
              }} />
-      <span className={css.tag}>{overridden ? 'set' : 'auto'}</span>
+      {overridden && onClear ? (
+        <button type="button" className={`${css.tag} ${css.clear}`}
+                title="Back to what the shelf reads"
+                onClick={onClear}>set ✕</button>
+      ) : (
+        <span className={css.tag}>{overridden ? 'set' : 'auto'}</span>
+      )}
     </span>
   );
 }
