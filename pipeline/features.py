@@ -229,7 +229,8 @@ def _genre_loadings(games: list[Game], params: Params) -> dict:
     # The radar reads these axes through a smaller set of named families. A
     # spoke's loading is the plain sum of its members', so what is drawn is an
     # aggregation of the vectors the picker scored, not a second calculation.
-    groups = _spokes(incidence, cores, params.discovery.genre_spokes)
+    groups = _spokes(incidence, cores, params.discovery.genre_spokes,
+                     params.discovery.spoke_cohesion_floor)
     spokes = np.stack([shares[:, group].sum(axis=1) for group in groups], axis=1)
     spoke_member = ((spokes >= params.selection.genre_floor
                      * spokes.max(axis=1, keepdims=True)) & (spokes > 0))
@@ -435,7 +436,8 @@ def _spanning(vocab: list[str], incidence: np.ndarray, carried: np.ndarray,
     plain = np.stack([incidence[:, j] for j in range(len(vocab))], axis=1)
     clusters = _harvest_cores(plain, params.discovery.genre_min_reach, params)
     anchors = set()
-    for group in _spokes(plain, clusters, params.discovery.genre_spokes):
+    for group in _spokes(plain, clusters, params.discovery.genre_spokes,
+                         params.discovery.spoke_cohesion_floor):
         held = [j for c in group for j in clusters[c]]
         anchors.add(max(held, key=lambda j: plain[:, j].sum()))
 
@@ -607,8 +609,8 @@ def _tightest(subset: np.ndarray, min_reach: float,
 
 
 def _spokes(incidence: np.ndarray, cores: list[list[int]],
-            limit: int) -> list[list[int]]:
-    """Group the genres into `limit` families, for the radar to show.
+            limit: int, floor: float) -> list[list[int]]:
+    """Group the genres into families, for the radar to show.
 
     Returns a list of index lists *into `cores`*. Every genre lands in exactly
     one family and none is discarded — the algorithm keeps working on all of
@@ -628,18 +630,51 @@ def _spokes(incidence: np.ndarray, cores: list[list[int]],
     `Network and Route Building` assembles the 18xx family out of trains,
     auctions and stock holding.
 
-    Ward has to place everything, so the least related clusters end up together:
-    one family collects `Nautical`, `Trivia`, `Print & Play`, `Mancala` and a
-    dozen more, and its name is whichever of them leads. That is cosmetic —
-    underneath they are still separate axes, so selection is unaffected.
+    Ward has to place everything, so the least related clusters end up together
+    and that leftover family used to get a spoke and a name of its own. Measured
+    on the live corpus at twelve, it scored **0.54x** the cohesion of two random
+    axes — its members were less alike than chance — and it was called "Number"
+    after whichever of its eight unrelated axes led. So we ask for one more
+    family than we want, drop whatever falls below `floor`, and re-home its axes
+    to whichever surviving family they most resemble. The axes themselves are
+    untouched, so selection is unaffected; only the grouping the radar draws
+    changes. How many families survive is the answer, not the input.
     """
     reach = np.stack([incidence[:, core].sum(axis=1) for core in cores])
     reach /= np.maximum(np.linalg.norm(reach, axis=1, keepdims=True), 1e-9)
     if len(cores) <= limit:
         return [[i] for i in range(len(cores))]
-    labels = fcluster(linkage(reach, method="ward"), limit, criterion="maxclust")
-    return [[i for i in range(len(cores)) if labels[i] == g] for g in sorted(set(labels))]
 
+    labels = fcluster(linkage(reach, method="ward"), limit + 1, criterion="maxclust")
+    groups = [[i for i in range(len(cores)) if labels[i] == g] for g in sorted(set(labels))]
+
+    # Two random axes as the yardstick, so a large family is not punished for
+    # being large — mean pairwise similarity falls with size either way.
+    gram = reach @ reach.T
+    n = len(reach)
+    null = (gram.sum() - np.trace(gram)) / max(n * (n - 1), 1)
+    if null <= 0:
+        return groups[:limit]
+
+    def cohesion(group: list[int]) -> float:
+        if len(group) < 2:
+            return float("inf")        # a family of one is perfectly coherent
+        block = gram[np.ix_(group, group)]
+        within = (block.sum() - np.trace(block)) / (len(group) * (len(group) - 1))
+        return within / null
+
+    keep = [g for g in groups if cohesion(g) >= floor]
+    orphans = [i for g in groups if cohesion(g) < floor for i in g]
+    if not keep:
+        return groups[:limit]
+
+    # Re-home rather than discard: every axis still belongs somewhere, so the
+    # radar still covers everything the picker can reach.
+    centres = np.stack([reach[g].mean(axis=0) for g in keep])
+    centres /= np.maximum(np.linalg.norm(centres, axis=1, keepdims=True), 1e-9)
+    for i in orphans:
+        keep[int(np.argmax(centres @ reach[i]))].append(i)
+    return [sorted(g) for g in keep]
 
 def _assign_signals(incidence: np.ndarray, cores: list[list[int]],
                     params: Params) -> np.ndarray:

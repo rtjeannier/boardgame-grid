@@ -165,6 +165,7 @@ class Discovery:
     names drift out of step with the quality they are scored against.
     """
     genre_spokes: int = config.GENRE_SPOKES
+    spoke_cohesion_floor: float = config.SPOKE_COHESION_FLOOR
     genre_min_reach: int = config.GENRE_MIN_REACH
     genre_reach_divisor: int = config.GENRE_REACH_DIVISOR
     genre_base_rate: float = config.GENRE_BASE_RATE

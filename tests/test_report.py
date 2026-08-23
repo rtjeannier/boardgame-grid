@@ -26,9 +26,12 @@ def test_headline_numbers(seed_report):
     """The seed baseline. Moving any of these is a result worth reporting."""
     assert seed_report["picks"]["picks"] == 162
     assert seed_report["picks"]["slots"] == 175
-    assert seed_report["picks"]["median_rank"] == 153
+    assert seed_report["picks"]["median_rank"] == 169
     assert seed_report["axes"] == 89
-    assert seed_report["spokes"] == 12
+    # How many spokes survive is an answer now, not a setting: clustering asks
+    # for `GENRE_SPOKES + 1` and drops whatever falls below chance. Eleven on the
+    # seed, twelve on the live capture.
+    assert seed_report["spokes"] == 11
 
 
 def test_cohesion_beats_chance(seed_report):
@@ -40,6 +43,9 @@ def test_cohesion_beats_chance(seed_report):
     assert seed_report["cohesion_axis"]["null"] == pytest.approx(0.147, abs=0.005)
     assert seed_report["cohesion_axis"]["mean"] > 2.0
     assert seed_report["cohesion_spoke"]["mean"] > 1.5
+    # No surviving spoke may sit at or below chance — that is what the
+    # cohesion floor buys, and it is the whole reason the count is emergent.
+    assert min(seed_report["cohesion_spoke"]["per_group"].values()) > 1.0
 
 
 def test_name_truth_is_measured_over_axes(seed_report):

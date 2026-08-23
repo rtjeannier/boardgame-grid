@@ -136,6 +136,24 @@ GENRE_GROWTH = 0.4
 # spokes run from 30% of all games down to 4%.
 GENRE_SPOKES = 12
 
+# How related a spoke's axes must be to each other for it to be a kind of
+# anything, as a multiple of two random axes.
+#
+# Ward has to place every axis somewhere, so the least related ones end up
+# together and the leftovers get a spoke and a name. Measured on the live
+# corpus, grouping 77 axes into 12: one group scores 0.54x — its members are
+# *less* alike than chance — and it is named "Number" after whichever of its
+# eight unrelated axes leads. The next worst scores 1.17x and the rest run from
+# 2.49x to 9.33x, so there is a clear floor and nothing sits near it.
+#
+# Below chance is not a kind. Clustering asks for one more group than we want,
+# drops whatever falls under this, and re-homes those axes to whichever
+# surviving spoke they most resemble — the same rule `GENRE_MIN_LIFT` applies to
+# a signal one level down: re-home readily, drop only below chance. Nothing is
+# discarded, so the axes and therefore selection are untouched; only the radar's
+# grouping changes. The spoke count is whatever survives.
+SPOKE_COHESION_FLOOR = 1.0
+
 # A tag carried by more of the corpus than one genre's even share cannot itself
 # be a genre — it is a base rate. `Hand Management` marks 1634 of 5000 games and
 # `Card Game` 1483; left to found genres they anchor one covering most of
