@@ -205,7 +205,11 @@ order, across fourteen configurations. Both sides read the *quantised* numbers t
 contract carries: asking the browser to reproduce precision it was never given is
 asking for something neither engine can deliver.
 
-Live capture: 2.0 MB raw, ~600 KB gzipped, and a full recompute in ~120 ms.
+The site is built from the live capture — 5,000 games, ranks #1-#5001. The
+contract is 2.0 MB raw and ~600 KB gzipped, and a two-split recompute takes
+~410 ms. `data/games.seed.json` is a thousand-game proxy, and it stays the
+fixture the tests and the parity harness run on: hermetic, and fast enough to
+run on every change.
 
 ## Publish on GitHub Pages
 

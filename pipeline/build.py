@@ -24,7 +24,7 @@ import numpy as np
 
 from . import buckets, coverage, dataset
 from .assign import ArchetypeScorer, CoverageScorer, MmrScorer, allocate
-from .config import OUTPUT_JSON, SEED_DATASET
+from .config import LIVE_DATASET, OUTPUT_JSON
 from .contract import PLACES, QuantisedSpace, build_contract, quantise_games
 from .contract import write as write_contract
 from . import depth
@@ -193,8 +193,9 @@ def build(dataset_path, assigner_name, want_report=False, output=None,
 
 def main():
     parser = argparse.ArgumentParser(description="Build the board-game grid JSON from a dataset.")
-    parser.add_argument("--dataset", default=str(SEED_DATASET),
-                        help="dataset file to build from (default: the seed proxy)")
+    parser.add_argument("--dataset", default=str(LIVE_DATASET),
+                        help="dataset file to build from (default: the live capture; "
+                             "pass data/games.seed.json for the small committed proxy)")
     parser.add_argument("--assigner", choices=["coverage", "mmr", "greedy"], default="coverage",
                         help="per-cell selection strategy (default: probabilistic coverage)")
     parser.add_argument("--config", default=None,

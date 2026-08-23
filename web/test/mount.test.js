@@ -71,9 +71,10 @@ const click = (el) => act(() => el.dispatchEvent(
 test('it opens on the collection, with no grid at all', () => {
   const { host, root } = mount();
   assert.match(host.textContent, /The collection/);
-  // Twelve, read off the curve rather than set by anyone.
-  assert.match(host.textContent, /12 games/);
-  assert.match(host.textContent, /Brass: Birmingham/);
+  // Twelve, read off the curve rather than set by anyone. The names in it
+  // belong to whatever corpus is shipped, so the test does not spell them.
+  assert.equal(size(host), 12);
+  assert.match(host.textContent, /Every game in it/);
   assert.ok(host.querySelector('svg polygon'), 'the radar did not draw');
   act(() => root.unmount());
 });
@@ -84,12 +85,14 @@ test('splitting reshapes the same collection', () => {
   assert.ok(players, 'no control to split by player count');
   click(players);
   assert.match(host.textContent, /One shelf per group/);
-  // 7+8+9+9+11+3+1, each column stopping where its own returns fall away.
-  assert.match(host.textContent, /48 games/);
+  // Each column stops where its own returns fall away, so the total is whatever
+  // those add up to — more than the unsplit twelve and fewer than the grid.
+  const byPlayers = size(host);
+  assert.ok(byPlayers > 12, `splitting by players gave ${byPlayers} games`);
 
   click(byText('＋ weight', host));
   assert.match(host.textContent, /Thirty-five shelves/);
-  assert.match(host.textContent, /204 games/);
+  assert.ok(size(host) > byPlayers, 'splitting again did not deepen the collection');
 
   // And back to one shelf, which is the same object at a different setting.
   click([...host.querySelectorAll('button')]
@@ -154,14 +157,15 @@ test('blocking says what it did, lists what is blocked, and can be undone', () =
   const { host, root } = mount();
   const register = () => host.querySelector('table, [class*="list"]')?.textContent
     ?? host.textContent;
-  assert.ok(register().includes('Brass: Birmingham'), 'nothing to block');
+  const top = host.querySelector('[class*="entry"] [class*="name"]')?.textContent.trim();
+  assert.ok(top && register().includes(top), 'nothing to block');
 
   const block = [...host.querySelectorAll('button[aria-label^="Block"]')][0];
   assert.ok(block, 'no block control on the register');
   click(block);
 
   // Three things have to be true, and only the first used to be.
-  assert.ok(!register().includes('Brass: Birmingham'), 'it is still shelved');
+  assert.ok(!register().includes(top), 'it is still shelved');
   assert.match(host.textContent, /Blocked/, 'nothing said what happened');
   assert.match(host.textContent, /In: |Nothing took its place/,
     'it never said what came in instead');
@@ -175,7 +179,7 @@ test('blocking says what it did, lists what is blocked, and can be undone', () =
   const unblock = host.querySelector('button[aria-label^="Unblock"]');
   assert.ok(unblock, 'no way to take a game off the blocked list');
   click(unblock);
-  assert.ok(register().includes('Brass: Birmingham'), 'unblocking did not restore it');
+  assert.ok(register().includes(top), 'unblocking did not restore it');
   act(() => root.unmount());
 });
 
@@ -197,13 +201,14 @@ test('an axis opens its own settings, in front of the shelves it describes', () 
 
   // The chip has two jobs now: the body opens the panel, the ✕ turns the axis
   // off. Clicking the body must not remove the split.
+  const before = size(host);
   const body = [...host.querySelectorAll('button')]
     .find((b) => b.textContent.startsWith('player count'));
   click(body);
   assert.match(host.textContent, /Player groups/);
   assert.match(host.textContent, /How deep each one goes/);
   assert.match(host.textContent, /deep/, 'the panel did not report what it read');
-  assert.match(host.textContent, /48 games/, 'opening the panel changed the collection');
+  assert.equal(size(host), before, 'opening the panel changed the collection');
 
   // Player groups get the same stepper the weight bands have.
   const groups = () => host.querySelectorAll('input[aria-label="Group name"]').length;
@@ -286,15 +291,17 @@ test('an empty collection is a state, not a crash', () => {
     depth.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
   });
 
+  const offered = () => (host.textContent.match(/＋ Add ([^\n]+?)(?:Goes on|Adds)/) ?? [])[1];
   type('');                                     // this used to throw
   assert.match(host.textContent, /Empty\./, 'no empty state');
-  assert.match(host.textContent, /Add Brass: Birmingham/,
-    'an empty collection should offer the best game there is');
+  const first = offered();
+  assert.ok(first, 'an empty collection should offer the best game there is');
   assert.ok(!host.textContent.includes('NaN'));
 
   // And back up again, one game at a time, naming each.
-  click(byText('＋ Add Brass: Birmingham', host));
-  assert.match(host.textContent, /Add Gloomhaven/, 'the button did not move on');
+  click(byText(`＋ Add ${first}`, host));
+  assert.equal(size(host), 1);
+  assert.notEqual(offered(), first, 'the button did not move on');
   act(() => root.unmount());
 });
 
@@ -483,13 +490,16 @@ test('the returns bar is a number you set, like every other limit', () => {
   act(() => {
     const setter = Object.getOwnPropertyDescriptor(
       dom.window.HTMLInputElement.prototype, 'value').set;
-    setter.call(field, '75');
+    setter.call(field, '90');
     field.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
   });
-  // A higher bar stops each shelf sooner, so the collection shrinks.
+  // A higher bar stops each shelf sooner, so the collection shrinks. Ninety
+  // rather than seventy-five because the unsplit collection is twelve across the
+  // whole 35-75% band on the live corpus — the number is robust to the
+  // threshold, which is worth knowing and makes it a poor thing to test with.
   assert.ok(size(host) < before,
-    `raising the bar to 75% should shrink ${before}, got ${size(host)}`);
-  assert.match(host.textContent, /under 75% returns/);
+    `raising the bar to 90% should shrink ${before}, got ${size(host)}`);
+  assert.match(host.textContent, /under 90% returns/);
   act(() => root.unmount());
 });
 

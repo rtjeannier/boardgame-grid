@@ -17,6 +17,9 @@ CACHE_DIR = ROOT / "data" / "cache"  # raw BGG responses, keyed by id
 # Datasets are the hand-off between fetching and building. Both files share one
 # schema (see pipeline/dataset.py); the build consumes whichever it's pointed
 # at. `games.seed.json` is a committed proxy; `games.json` is the live capture.
+# The seed is the committed fixture the tests and the parity harness run on:
+# a thousand games, hermetic, and fast enough to run on every change. The live
+# capture is five thousand and is what the site is built from.
 SEED_DATASET = ROOT / "data" / "games.seed.json"
 LIVE_DATASET = ROOT / "data" / "games.json"
 
