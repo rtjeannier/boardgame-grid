@@ -1572,92 +1572,425 @@
             ]
           },
           "gain": 0.221
+        },
+        {
+          "game": {
+            "id": 352418,
+            "name": "Fliptown",
+            "year": 2023,
+            "rank": 827,
+            "rating": 6.75923,
+            "weight": 2.375,
+            "playtime": 45,
+            "best_counts": [
+              1,
+              2,
+              3
+            ],
+            "best_count": 1,
+            "signals": [
+              "American West",
+              "Card Game",
+              "Print & Play",
+              "End Game Bonuses",
+              "Paper-and-Pencil",
+              "Solo / Solitaire Game",
+              "Tech Trees / Tech Tracks",
+              "Track Movement",
+              "Variable Player Powers"
+            ],
+            "families": [],
+            "reimplements": [
+              437313
+            ],
+            "player_poll": {
+              "1": [
+                46,
+                16,
+                1
+              ],
+              "2": [
+                21,
+                31,
+                2
+              ],
+              "3": [
+                9,
+                33,
+                4
+              ],
+              "4": [
+                1,
+                36,
+                9
+              ]
+            },
+            "users_rated": 3110,
+            "url": "https://boardgamegeek.com/boardgame/352418",
+            "x": -0.193,
+            "y": 0.049,
+            "genre": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+            "genres": [
+              {
+                "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+                "value": 0.27
+              },
+              {
+                "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+                "value": 0.23
+              },
+              {
+                "name": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
+                "value": 0.17
+              }
+            ],
+            "coverage": [
+              0.056,
+              0.0,
+              0.017,
+              0.0,
+              0.028,
+              0.0,
+              0.02,
+              0.0,
+              0.0,
+              0.0,
+              0.034,
+              0.048
+            ]
+          },
+          "gain": 0.184
+        },
+        {
+          "game": {
+            "id": 381297,
+            "name": "Unmatched Adventures: Tales to Amaze",
+            "year": 2023,
+            "rank": 496,
+            "rating": 7.01143,
+            "weight": 2.3205,
+            "playtime": 60,
+            "best_counts": [
+              1,
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Card Game",
+              "Fantasy",
+              "Fighting",
+              "Mythology",
+              "Novel-based",
+              "Action Points",
+              "Campaign / Battle Card Driven",
+              "Card Play Conflict Resolution",
+              "Cooperative Game",
+              "Hand Management",
+              "Line of Sight",
+              "Multi-Use Cards",
+              "Point to Point Movement",
+              "Solo / Solitaire Game",
+              "Variable Player Powers"
+            ],
+            "families": [
+              "Game: Unmatched"
+            ],
+            "reimplements": [
+              3284
+            ],
+            "player_poll": {
+              "1": [
+                14,
+                40,
+                10
+              ],
+              "2": [
+                44,
+                24,
+                0
+              ],
+              "3": [
+                21,
+                34,
+                5
+              ],
+              "4": [
+                18,
+                24,
+                20
+              ]
+            },
+            "users_rated": 4485,
+            "url": "https://boardgamegeek.com/boardgame/381297",
+            "x": -0.134,
+            "y": -0.048,
+            "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+            "genres": [
+              {
+                "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+                "value": 0.75
+              },
+              {
+                "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+                "value": 0.1
+              },
+              {
+                "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+                "value": 0.09
+              }
+            ],
+            "coverage": [
+              0.003,
+              0.0,
+              0.016,
+              0.133,
+              0.015,
+              0.002,
+              0.002,
+              0.003,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "gain": 0.138
         }
       ],
       "alternates": [
         {
-          "id": 352418,
-          "name": "Fliptown",
-          "year": 2023,
-          "rank": 827,
-          "rating": 6.75923,
-          "weight": 2.375,
-          "playtime": 45,
+          "id": 180593,
+          "name": "The Bloody Inn",
+          "year": 2015,
+          "rank": 784,
+          "rating": 6.78331,
+          "weight": 2.3455,
+          "playtime": 60,
           "best_counts": [
-            1,
             2,
-            3
+            3,
+            4
           ],
-          "best_count": 1,
+          "best_count": 4,
           "signals": [
-            "American West",
             "Card Game",
-            "Print & Play",
+            "Economic",
+            "Horror",
+            "Post-Napoleonic",
             "End Game Bonuses",
-            "Paper-and-Pencil",
-            "Solo / Solitaire Game",
-            "Tech Trees / Tech Tracks",
-            "Track Movement",
-            "Variable Player Powers"
+            "Hand Management",
+            "Income",
+            "Move Through Deck",
+            "Multi-Use Cards",
+            "Open Drafting",
+            "Ownership",
+            "Simulation",
+            "Solo / Solitaire Game"
           ],
           "families": [],
-          "reimplements": [
-            437313
-          ],
+          "reimplements": [],
           "player_poll": {
             "1": [
-              46,
-              16,
-              1
+              18,
+              79,
+              34
             ],
             "2": [
-              21,
-              31,
-              2
+              19,
+              113,
+              12
             ],
             "3": [
-              9,
-              33,
-              4
+              49,
+              85,
+              1
             ],
             "4": [
-              1,
-              36,
-              9
+              90,
+              42,
+              3
             ]
           },
-          "users_rated": 3110,
-          "url": "https://boardgamegeek.com/boardgame/352418",
-          "x": -0.193,
-          "y": 0.049,
-          "genre": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+          "users_rated": 11483,
+          "url": "https://boardgamegeek.com/boardgame/180593",
+          "x": -0.117,
+          "y": 0.047,
+          "genre": "Economic \u00b7 Income \u00b7 Network and Route Building",
           "genres": [
             {
+              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+              "value": 0.38
+            },
+            {
               "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.27
+              "value": 0.33
             },
             {
               "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-              "value": 0.23
-            },
-            {
-              "name": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
-              "value": 0.17
+              "value": 0.14
             }
           ],
           "coverage": [
-            0.056,
+            0.036,
+            0.042,
+            0.005,
             0.0,
-            0.017,
-            0.0,
-            0.028,
-            0.0,
-            0.02,
+            0.009,
             0.0,
             0.0,
+            0.003,
             0.0,
-            0.034,
-            0.048
+            0.0,
+            0.0,
+            0.017
+          ]
+        },
+        {
+          "id": 307305,
+          "name": "Bullet\u2665\ufe0e",
+          "year": 2021,
+          "rank": 652,
+          "rating": 6.87425,
+          "weight": 2.1538,
+          "playtime": 20,
+          "best_counts": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "best_count": 1,
+          "signals": [
+            "Fighting",
+            "Puzzle",
+            "Real-time",
+            "Science Fiction",
+            "Cooperative Game",
+            "Pattern Building",
+            "Push Your Luck",
+            "Real-Time",
+            "Solo / Solitaire Game",
+            "Variable Player Powers"
+          ],
+          "families": [],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              57,
+              53,
+              9
+            ],
+            "2": [
+              50,
+              52,
+              5
+            ],
+            "3": [
+              43,
+              44,
+              12
+            ],
+            "4": [
+              33,
+              44,
+              19
+            ]
+          },
+          "users_rated": 4797,
+          "url": "https://boardgamegeek.com/boardgame/307305",
+          "x": -0.415,
+          "y": 0.079,
+          "genre": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+          "genres": [
+            {
+              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+              "value": 0.44
+            },
+            {
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.22
+            },
+            {
+              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+              "value": 0.22
+            }
+          ],
+          "coverage": [
+            0.0,
+            0.0,
+            0.047,
+            0.0,
+            0.047,
+            0.0,
+            0.0,
+            0.0,
+            0.015,
+            0.0,
+            0.012,
+            0.124
+          ]
+        },
+        {
+          "id": 231218,
+          "name": "Black Sonata",
+          "year": 2017,
+          "rank": 958,
+          "rating": 6.67751,
+          "weight": 2.1197,
+          "playtime": 30,
+          "best_counts": [
+            1
+          ],
+          "best_count": 1,
+          "signals": [
+            "Deduction",
+            "Print & Play",
+            "Renaissance",
+            "Action Queue",
+            "Deduction",
+            "Hidden Movement",
+            "Point to Point Movement",
+            "Push Your Luck",
+            "Solo / Solitaire Game"
+          ],
+          "families": [],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              71,
+              5,
+              1
+            ]
+          },
+          "users_rated": 3814,
+          "url": "https://boardgamegeek.com/boardgame/231218",
+          "x": -0.334,
+          "y": 0.049,
+          "genre": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+          "genres": [
+            {
+              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+              "value": 0.83
+            },
+            {
+              "name": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
+              "value": 0.07
+            }
+          ],
+          "coverage": [
+            0.0,
+            0.0,
+            0.003,
+            0.009,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.008,
+            0.013,
+            0.167
           ]
         },
         {
@@ -1721,6 +2054,62 @@
             0.032,
             0.0,
             0.043
+          ]
+        },
+        {
+          "id": 296237,
+          "name": "Warp's Edge",
+          "year": 2020,
+          "rank": 661,
+          "rating": 6.87002,
+          "weight": 2.3836,
+          "playtime": 45,
+          "best_counts": [
+            1
+          ],
+          "best_count": 1,
+          "signals": [
+            "Science Fiction",
+            "Deck, Bag, and Pool Building",
+            "Solo / Solitaire Game"
+          ],
+          "families": [],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              74,
+              0,
+              3
+            ]
+          },
+          "users_rated": 4599,
+          "url": "https://boardgamegeek.com/boardgame/296237",
+          "x": -0.162,
+          "y": 0.039,
+          "genre": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+          "genres": [
+            {
+              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+              "value": 0.9
+            },
+            {
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.1
+            }
+          ],
+          "coverage": [
+            0.0,
+            0.0,
+            0.02,
+            0.0,
+            0.192,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
           ]
         },
         {
@@ -1806,266 +2195,6 @@
             0.0,
             0.0,
             0.032
-          ]
-        },
-        {
-          "id": 384213,
-          "name": "Fromage",
-          "year": 2024,
-          "rank": 379,
-          "rating": 7.11504,
-          "weight": 2.3657,
-          "playtime": 45,
-          "best_counts": [
-            2,
-            3,
-            4
-          ],
-          "best_count": 4,
-          "signals": [
-            "Economic",
-            "Farming",
-            "Area Majority / Influence",
-            "Bias",
-            "Chaining",
-            "Contracts",
-            "End Game Bonuses",
-            "Rondel",
-            "Simultaneous Action Selection",
-            "Worker Placement"
-          ],
-          "families": [],
-          "reimplements": [
-            451034
-          ],
-          "player_poll": {
-            "1": [
-              9,
-              45,
-              14
-            ],
-            "2": [
-              18,
-              78,
-              7
-            ],
-            "3": [
-              24,
-              64,
-              7
-            ],
-            "4": [
-              91,
-              13,
-              5
-            ]
-          },
-          "users_rated": 7150,
-          "url": "https://boardgamegeek.com/boardgame/384213",
-          "x": -0.166,
-          "y": 0.132,
-          "genre": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-          "genres": [
-            {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.3
-            },
-            {
-              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-              "value": 0.25
-            },
-            {
-              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
-              "value": 0.22
-            }
-          ],
-          "coverage": [
-            0.041,
-            0.014,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.031,
-            0.0,
-            0.021,
-            0.0,
-            0.0,
-            0.045
-          ]
-        },
-        {
-          "id": 169426,
-          "name": "Roll Player",
-          "year": 2016,
-          "rank": 304,
-          "rating": 7.20387,
-          "weight": 2.4206,
-          "playtime": 90,
-          "best_counts": [
-            1,
-            2,
-            3,
-            4
-          ],
-          "best_count": 3,
-          "signals": [
-            "Dice",
-            "Fantasy",
-            "Medieval",
-            "Dice Rolling",
-            "Open Drafting",
-            "Role Playing",
-            "Set Collection",
-            "Variable Player Powers"
-          ],
-          "families": [],
-          "reimplements": [],
-          "player_poll": {
-            "1": [
-              47,
-              149,
-              43
-            ],
-            "2": [
-              70,
-              168,
-              8
-            ],
-            "3": [
-              132,
-              94,
-              7
-            ],
-            "4": [
-              56,
-              127,
-              32
-            ]
-          },
-          "users_rated": 22722,
-          "url": "https://boardgamegeek.com/boardgame/169426",
-          "x": -0.008,
-          "y": -0.121,
-          "genre": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-          "genres": [
-            {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.46
-            },
-            {
-              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-              "value": 0.32
-            },
-            {
-              "name": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
-              "value": 0.2
-            }
-          ],
-          "coverage": [
-            0.076,
-            0.0,
-            0.049,
-            0.0,
-            0.004,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.034,
-            0.0
-          ]
-        },
-        {
-          "id": 436126,
-          "name": "Finspan",
-          "year": 2025,
-          "rank": 415,
-          "rating": 7.07872,
-          "weight": 2.3093,
-          "playtime": 60,
-          "best_counts": [
-            1,
-            2,
-            3
-          ],
-          "best_count": 2,
-          "signals": [
-            "Animals",
-            "Card Game",
-            "Educational",
-            "End Game Bonuses",
-            "Hand Management",
-            "Once-Per-Game Abilities",
-            "Solo / Solitaire Game",
-            "Tags"
-          ],
-          "families": [
-            "Game: Wingspan"
-          ],
-          "reimplements": [
-            266192
-          ],
-          "player_poll": {
-            "1": [
-              11,
-              42,
-              8
-            ],
-            "2": [
-              46,
-              32,
-              1
-            ],
-            "3": [
-              40,
-              29,
-              4
-            ],
-            "4": [
-              7,
-              42,
-              15
-            ],
-            "5": [
-              1,
-              21,
-              35
-            ]
-          },
-          "users_rated": 7595,
-          "url": "https://boardgamegeek.com/boardgame/436126",
-          "x": -0.145,
-          "y": 0.01,
-          "genre": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-          "genres": [
-            {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.37
-            },
-            {
-              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-              "value": 0.32
-            },
-            {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.17
-            }
-          ],
-          "coverage": [
-            0.061,
-            0.0,
-            0.004,
-            0.0,
-            0.031,
-            0.021,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.051
           ]
         }
       ]
@@ -2528,97 +2657,100 @@
             ]
           },
           "gain": 0.201
+        },
+        {
+          "game": {
+            "id": 318009,
+            "name": "Dinosaur Island: Rawr 'n Write",
+            "year": 2021,
+            "rank": 633,
+            "rating": 6.89399,
+            "weight": 2.8487,
+            "playtime": 45,
+            "best_counts": [
+              1,
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Animals",
+              "Dice",
+              "Science Fiction",
+              "Connections",
+              "Dice Rolling",
+              "Grid Coverage",
+              "Network and Route Building",
+              "Open Drafting",
+              "Paper-and-Pencil",
+              "Worker Placement with Dice Workers"
+            ],
+            "families": [
+              "Game: Dinosaur Island/Dinosaur World"
+            ],
+            "reimplements": [
+              221194
+            ],
+            "player_poll": {
+              "1": [
+                22,
+                42,
+                1
+              ],
+              "2": [
+                48,
+                21,
+                0
+              ],
+              "3": [
+                22,
+                33,
+                6
+              ],
+              "4": [
+                8,
+                32,
+                12
+              ]
+            },
+            "users_rated": 4712,
+            "url": "https://boardgamegeek.com/boardgame/318009",
+            "x": -0.089,
+            "y": 0.149,
+            "genre": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
+            "genres": [
+              {
+                "name": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
+                "value": 0.24
+              },
+              {
+                "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+                "value": 0.22
+              },
+              {
+                "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+                "value": 0.17
+              }
+            ],
+            "coverage": [
+              0.016,
+              0.03,
+              0.006,
+              0.0,
+              0.039,
+              0.0,
+              0.0,
+              0.0,
+              0.013,
+              0.0,
+              0.042,
+              0.034
+            ]
+          },
+          "gain": 0.169
         }
       ],
       "alternates": [
-        {
-          "id": 318009,
-          "name": "Dinosaur Island: Rawr 'n Write",
-          "year": 2021,
-          "rank": 633,
-          "rating": 6.89399,
-          "weight": 2.8487,
-          "playtime": 45,
-          "best_counts": [
-            1,
-            2,
-            3
-          ],
-          "best_count": 2,
-          "signals": [
-            "Animals",
-            "Dice",
-            "Science Fiction",
-            "Connections",
-            "Dice Rolling",
-            "Grid Coverage",
-            "Network and Route Building",
-            "Open Drafting",
-            "Paper-and-Pencil",
-            "Worker Placement with Dice Workers"
-          ],
-          "families": [
-            "Game: Dinosaur Island/Dinosaur World"
-          ],
-          "reimplements": [
-            221194
-          ],
-          "player_poll": {
-            "1": [
-              22,
-              42,
-              1
-            ],
-            "2": [
-              48,
-              21,
-              0
-            ],
-            "3": [
-              22,
-              33,
-              6
-            ],
-            "4": [
-              8,
-              32,
-              12
-            ]
-          },
-          "users_rated": 4712,
-          "url": "https://boardgamegeek.com/boardgame/318009",
-          "x": -0.089,
-          "y": 0.149,
-          "genre": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
-          "genres": [
-            {
-              "name": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
-              "value": 0.24
-            },
-            {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.22
-            },
-            {
-              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-              "value": 0.17
-            }
-          ],
-          "coverage": [
-            0.016,
-            0.03,
-            0.006,
-            0.0,
-            0.039,
-            0.0,
-            0.0,
-            0.0,
-            0.013,
-            0.0,
-            0.042,
-            0.034
-          ]
-        },
         {
           "id": 368305,
           "name": "Life of the Amazonia",
@@ -2800,95 +2932,6 @@
           ]
         },
         {
-          "id": 180263,
-          "name": "The 7th Continent",
-          "year": 2017,
-          "rank": 171,
-          "rating": 7.41171,
-          "weight": 2.8969,
-          "playtime": 1000,
-          "best_counts": [
-            1,
-            2
-          ],
-          "best_count": 1,
-          "signals": [
-            "Adventure",
-            "Card Game",
-            "Exploration",
-            "Science Fiction",
-            "Area Movement",
-            "Cooperative Game",
-            "Hand Management",
-            "Map Addition",
-            "Modular Board",
-            "Narrative Choice / Paragraph",
-            "Scenario / Mission / Campaign Game",
-            "Solo / Solitaire Game",
-            "Storytelling",
-            "Variable Player Powers"
-          ],
-          "families": [],
-          "reimplements": [
-            283317
-          ],
-          "player_poll": {
-            "1": [
-              443,
-              164,
-              13
-            ],
-            "2": [
-              317,
-              255,
-              37
-            ],
-            "3": [
-              53,
-              204,
-              259
-            ],
-            "4": [
-              10,
-              98,
-              400
-            ]
-          },
-          "users_rated": 23247,
-          "url": "https://boardgamegeek.com/boardgame/180263",
-          "x": 0.673,
-          "y": -0.629,
-          "genre": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-          "genres": [
-            {
-              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-              "value": 0.54
-            },
-            {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.31
-            },
-            {
-              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
-              "value": 0.1
-            }
-          ],
-          "coverage": [
-            0.0,
-            0.0,
-            0.199,
-            0.0,
-            0.141,
-            0.0,
-            0.025,
-            0.0,
-            0.046,
-            0.0,
-            0.0,
-            0.0
-          ]
-        },
-        {
           "id": 2511,
           "name": "Sherlock Holmes Consulting Detective: The Thames Murders & Other Cases",
           "year": 1981,
@@ -2994,6 +3037,95 @@
           ]
         },
         {
+          "id": 180263,
+          "name": "The 7th Continent",
+          "year": 2017,
+          "rank": 171,
+          "rating": 7.41171,
+          "weight": 2.8969,
+          "playtime": 1000,
+          "best_counts": [
+            1,
+            2
+          ],
+          "best_count": 1,
+          "signals": [
+            "Adventure",
+            "Card Game",
+            "Exploration",
+            "Science Fiction",
+            "Area Movement",
+            "Cooperative Game",
+            "Hand Management",
+            "Map Addition",
+            "Modular Board",
+            "Narrative Choice / Paragraph",
+            "Scenario / Mission / Campaign Game",
+            "Solo / Solitaire Game",
+            "Storytelling",
+            "Variable Player Powers"
+          ],
+          "families": [],
+          "reimplements": [
+            283317
+          ],
+          "player_poll": {
+            "1": [
+              443,
+              164,
+              13
+            ],
+            "2": [
+              317,
+              255,
+              37
+            ],
+            "3": [
+              53,
+              204,
+              259
+            ],
+            "4": [
+              10,
+              98,
+              400
+            ]
+          },
+          "users_rated": 23247,
+          "url": "https://boardgamegeek.com/boardgame/180263",
+          "x": 0.673,
+          "y": -0.629,
+          "genre": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+          "genres": [
+            {
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.54
+            },
+            {
+              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+              "value": 0.31
+            },
+            {
+              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+              "value": 0.1
+            }
+          ],
+          "coverage": [
+            0.0,
+            0.0,
+            0.199,
+            0.0,
+            0.141,
+            0.0,
+            0.025,
+            0.0,
+            0.046,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
           "id": 269385,
           "name": "The Lord of the Rings: Journeys in Middle-Earth",
           "year": 2019,
@@ -3087,6 +3219,93 @@
             0.0,
             0.0,
             0.0
+          ]
+        },
+        {
+          "id": 277700,
+          "name": "Merchants Cove",
+          "year": 2021,
+          "rank": 987,
+          "rating": 6.66359,
+          "weight": 2.7444,
+          "playtime": 90,
+          "best_counts": [
+            2,
+            3,
+            4
+          ],
+          "best_count": 3,
+          "signals": [
+            "Economic",
+            "Fantasy",
+            "Nautical",
+            "Commodity Speculation",
+            "Dice Rolling",
+            "Rondel",
+            "Solo / Solitaire Game",
+            "Tile Placement",
+            "Turn Order: Time Track",
+            "Variable Player Powers",
+            "Worker Placement"
+          ],
+          "families": [
+            "Game: Merchants Cove"
+          ],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              11,
+              33,
+              14
+            ],
+            "2": [
+              24,
+              41,
+              8
+            ],
+            "3": [
+              43,
+              24,
+              4
+            ],
+            "4": [
+              23,
+              30,
+              15
+            ]
+          },
+          "users_rated": 4227,
+          "url": "https://boardgamegeek.com/boardgame/277700",
+          "x": 0.066,
+          "y": 0.001,
+          "genre": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+          "genres": [
+            {
+              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+              "value": 0.31
+            },
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.24
+            },
+            {
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.16
+            }
+          ],
+          "coverage": [
+            0.029,
+            0.019,
+            0.02,
+            0.0,
+            0.001,
+            0.0,
+            0.0,
+            0.0,
+            0.038,
+            0.0,
+            0.004,
+            0.01
           ]
         }
       ]
@@ -3563,102 +3782,204 @@
             ]
           },
           "gain": 0.244
+        },
+        {
+          "game": {
+            "id": 187617,
+            "name": "Nemo's War (Second Edition)",
+            "year": 2017,
+            "rank": 412,
+            "rating": 7.08086,
+            "weight": 3.295,
+            "playtime": 120,
+            "best_counts": [
+              1
+            ],
+            "best_count": 1,
+            "signals": [
+              "Adventure",
+              "Exploration",
+              "Nautical",
+              "Novel-based",
+              "Science Fiction",
+              "Travel",
+              "Wargame",
+              "Action Points",
+              "Area Majority / Influence",
+              "Cooperative Game",
+              "Dice Rolling",
+              "Point to Point Movement",
+              "Push Your Luck",
+              "Simulation",
+              "Solo / Solitaire Game",
+              "Stat Check Resolution"
+            ],
+            "families": [
+              "Game: Nemo's War"
+            ],
+            "reimplements": [
+              39232,
+              57804
+            ],
+            "player_poll": {
+              "1": [
+                168,
+                11,
+                0
+              ],
+              "2": [
+                3,
+                37,
+                73
+              ],
+              "3": [
+                0,
+                12,
+                95
+              ],
+              "4": [
+                0,
+                9,
+                98
+              ]
+            },
+            "users_rated": 5848,
+            "url": "https://boardgamegeek.com/boardgame/187617",
+            "x": 0.257,
+            "y": -0.094,
+            "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+            "genres": [
+              {
+                "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+                "value": 0.33
+              },
+              {
+                "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+                "value": 0.29
+              },
+              {
+                "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+                "value": 0.1
+              }
+            ],
+            "coverage": [
+              0.0,
+              0.0,
+              0.074,
+              0.092,
+              0.025,
+              0.0,
+              0.022,
+              0.021,
+              0.0,
+              0.0,
+              0.021,
+              0.019
+            ]
+          },
+          "gain": 0.212
+        },
+        {
+          "game": {
+            "id": 328871,
+            "name": "Terraforming Mars: Ares Expedition",
+            "year": 2021,
+            "rank": 194,
+            "rating": 7.36986,
+            "weight": 2.9271,
+            "playtime": 60,
+            "best_counts": [
+              2,
+              3,
+              4
+            ],
+            "best_count": 3,
+            "signals": [
+              "Card Game",
+              "Science Fiction",
+              "Space Exploration",
+              "End Game Bonuses",
+              "Follow",
+              "Hand Management",
+              "Income",
+              "Market",
+              "Multi-Use Cards",
+              "Set Collection",
+              "Simultaneous Action Selection",
+              "Solo / Solitaire Game",
+              "Tags",
+              "Tech Trees / Tech Tracks",
+              "Track Movement",
+              "Variable Phase Order",
+              "Variable Player Powers",
+              "Variable Set-up"
+            ],
+            "families": [
+              "Game: Terraforming Mars Ares Expedition"
+            ],
+            "reimplements": [
+              167791
+            ],
+            "player_poll": {
+              "1": [
+                57,
+                171,
+                61
+              ],
+              "2": [
+                143,
+                132,
+                46
+              ],
+              "3": [
+                178,
+                104,
+                11
+              ],
+              "4": [
+                60,
+                144,
+                43
+              ]
+            },
+            "users_rated": 21437,
+            "url": "https://boardgamegeek.com/boardgame/328871",
+            "x": 0.004,
+            "y": 0.127,
+            "genre": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+            "genres": [
+              {
+                "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+                "value": 0.41
+              },
+              {
+                "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+                "value": 0.33
+              },
+              {
+                "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+                "value": 0.12
+              }
+            ],
+            "coverage": [
+              0.071,
+              0.024,
+              0.003,
+              0.0,
+              0.102,
+              0.0,
+              0.006,
+              0.0,
+              0.0,
+              0.0,
+              0.01,
+              0.023
+            ]
+          },
+          "gain": 0.199
         }
       ],
       "alternates": [
-        {
-          "id": 187617,
-          "name": "Nemo's War (Second Edition)",
-          "year": 2017,
-          "rank": 412,
-          "rating": 7.08086,
-          "weight": 3.295,
-          "playtime": 120,
-          "best_counts": [
-            1
-          ],
-          "best_count": 1,
-          "signals": [
-            "Adventure",
-            "Exploration",
-            "Nautical",
-            "Novel-based",
-            "Science Fiction",
-            "Travel",
-            "Wargame",
-            "Action Points",
-            "Area Majority / Influence",
-            "Cooperative Game",
-            "Dice Rolling",
-            "Point to Point Movement",
-            "Push Your Luck",
-            "Simulation",
-            "Solo / Solitaire Game",
-            "Stat Check Resolution"
-          ],
-          "families": [
-            "Game: Nemo's War"
-          ],
-          "reimplements": [
-            39232,
-            57804
-          ],
-          "player_poll": {
-            "1": [
-              168,
-              11,
-              0
-            ],
-            "2": [
-              3,
-              37,
-              73
-            ],
-            "3": [
-              0,
-              12,
-              95
-            ],
-            "4": [
-              0,
-              9,
-              98
-            ]
-          },
-          "users_rated": 5848,
-          "url": "https://boardgamegeek.com/boardgame/187617",
-          "x": 0.257,
-          "y": -0.094,
-          "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-          "genres": [
-            {
-              "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-              "value": 0.33
-            },
-            {
-              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-              "value": 0.29
-            },
-            {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.1
-            }
-          ],
-          "coverage": [
-            0.0,
-            0.0,
-            0.074,
-            0.092,
-            0.025,
-            0.0,
-            0.022,
-            0.021,
-            0.0,
-            0.0,
-            0.021,
-            0.019
-          ]
-        },
         {
           "id": 29603,
           "name": "D-Day at Omaha Beach",
@@ -3821,270 +4142,342 @@
           ]
         },
         {
-          "id": 379078,
-          "name": "Expeditions",
-          "year": 2023,
-          "rank": 382,
-          "rating": 7.11455,
-          "weight": 3.0615,
+          "id": 229220,
+          "name": "Santa Maria",
+          "year": 2017,
+          "rank": 542,
+          "rating": 6.96563,
+          "weight": 3.0344,
           "playtime": 90,
           "best_counts": [
-            1,
             2,
             3
           ],
           "best_count": 3,
           "signals": [
-            "Exploration",
-            "Science Fiction",
-            "Action Retrieval",
-            "Deck, Bag, and Pool Building",
-            "Grid Movement",
-            "Hand Management",
-            "Melding and Splaying",
-            "Modular Board",
-            "Multi-Use Cards",
-            "Solo / Solitaire Game",
-            "Tags",
-            "Variable Player Powers",
-            "Variable Set-up",
-            "Victory Points as a Resource",
-            "Worker Placement, Different Worker Types"
-          ],
-          "families": [
-            "Game: Scythe"
-          ],
-          "reimplements": [],
-          "player_poll": {
-            "1": [
-              59,
-              122,
-              22
-            ],
-            "2": [
-              79,
-              142,
-              13
-            ],
-            "3": [
-              144,
-              75,
-              17
-            ],
-            "4": [
-              21,
-              83,
-              117
-            ],
-            "5": [
-              3,
-              29,
-              183
-            ]
-          },
-          "users_rated": 8791,
-          "url": "https://boardgamegeek.com/boardgame/379078",
-          "x": 0.134,
-          "y": 0.008,
-          "genre": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-          "genres": [
-            {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.32
-            },
-            {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.28
-            },
-            {
-              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-              "value": 0.17
-            }
-          ],
-          "coverage": [
-            0.056,
-            0.009,
-            0.034,
-            0.0,
-            0.069,
-            0.0,
-            0.008,
-            0.012,
-            0.0,
-            0.0,
-            0.0,
-            0.02
-          ]
-        },
-        {
-          "id": 270633,
-          "name": "Aeon's End: The New Age",
-          "year": 2019,
-          "rank": 302,
-          "rating": 7.20429,
-          "weight": 2.9136,
-          "playtime": 60,
-          "best_counts": [
-            1,
-            2,
-            3
-          ],
-          "best_count": 2,
-          "signals": [
-            "Card Game",
-            "Fantasy",
-            "Science Fiction",
-            "Cooperative Game",
-            "Deck, Bag, and Pool Building",
-            "Hand Management",
+            "Civilization",
+            "Farming",
+            "Dice Rolling",
+            "Network and Route Building",
             "Open Drafting",
-            "Scenario / Mission / Campaign Game",
-            "Variable Phase Order",
+            "Set Collection",
+            "Tile Placement",
             "Variable Player Powers"
           ],
           "families": [
-            "Game: Aeon's End"
+            "Game: Santa Maria"
           ],
-          "reimplements": [],
+          "reimplements": [
+            422674
+          ],
           "player_poll": {
             "1": [
-              26,
-              43,
-              6
+              15,
+              60,
+              26
             ],
             "2": [
-              63,
-              12,
-              0
+              43,
+              87,
+              8
             ],
             "3": [
-              8,
-              46,
+              80,
+              50,
               5
             ],
             "4": [
-              9,
-              40,
-              13
+              24,
+              78,
+              29
             ]
           },
-          "users_rated": 3501,
-          "url": "https://boardgamegeek.com/boardgame/270633",
-          "x": -0.011,
-          "y": 0.038,
-          "genre": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+          "users_rated": 7575,
+          "url": "https://boardgamegeek.com/boardgame/229220",
+          "x": 0.114,
+          "y": 0.085,
+          "genre": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
           "genres": [
             {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.71
-            },
-            {
-              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-              "value": 0.17
+              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+              "value": 0.29
             },
             {
               "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.24
+            },
+            {
+              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
               "value": 0.12
             }
           ],
           "coverage": [
-            0.025,
+            0.03,
+            0.016,
+            0.01,
             0.0,
-            0.034,
+            0.003,
             0.0,
-            0.183,
+            0.013,
             0.0,
+            0.038,
             0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
+            0.009,
+            0.016
           ]
         },
         {
-          "id": 264052,
-          "name": "Circadians: First Light",
-          "year": 2019,
-          "rank": 926,
-          "rating": 6.69805,
-          "weight": 3.3684,
-          "playtime": 90,
+          "id": 84419,
+          "name": "Space Empires 4X",
+          "year": 2011,
+          "rank": 637,
+          "rating": 6.88876,
+          "weight": 3.3669,
+          "playtime": 240,
           "best_counts": [
-            1,
             2,
-            3
+            3,
+            4
           ],
           "best_count": 2,
           "signals": [
-            "Dice",
+            "Bluffing",
+            "Civilization",
+            "Exploration",
             "Science Fiction",
             "Space Exploration",
-            "Contracts",
+            "Wargame",
+            "Auction / Bidding",
             "Dice Rolling",
-            "Events",
+            "Grid Movement",
+            "Hexagon Grid",
+            "Income",
+            "Movement Points",
+            "Paper-and-Pencil",
             "Secret Unit Deployment",
-            "Set Collection",
-            "Variable Player Powers",
-            "Worker Placement",
-            "Worker Placement with Dice Workers"
+            "Simulation",
+            "Solo / Solitaire Game",
+            "Tech Trees / Tech Tracks",
+            "Variable Set-up"
+          ],
+          "families": [
+            "Game: Space Empires 4X"
+          ],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              18,
+              68,
+              19
+            ],
+            "2": [
+              83,
+              39,
+              2
+            ],
+            "3": [
+              19,
+              61,
+              19
+            ],
+            "4": [
+              47,
+              52,
+              8
+            ]
+          },
+          "users_rated": 4372,
+          "url": "https://boardgamegeek.com/boardgame/84419",
+          "x": 0.432,
+          "y": -0.116,
+          "genre": "Wargame \u00b7 Political \u00b7 Negotiation",
+          "genres": [
+            {
+              "name": "Wargame \u00b7 Political \u00b7 Negotiation",
+              "value": 0.31
+            },
+            {
+              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+              "value": 0.2
+            },
+            {
+              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+              "value": 0.12
+            }
+          ],
+          "coverage": [
+            0.01,
+            0.01,
+            0.011,
+            0.0,
+            0.025,
+            0.0,
+            0.014,
+            0.044,
+            0.0,
+            0.004,
+            0.0,
+            0.021
+          ]
+        },
+        {
+          "id": 397385,
+          "name": "Pirates of Maracaibo",
+          "year": 2023,
+          "rank": 394,
+          "rating": 7.09943,
+          "weight": 2.8792,
+          "playtime": 100,
+          "best_counts": [
+            2,
+            3,
+            4
+          ],
+          "best_count": 3,
+          "signals": [
+            "Adventure",
+            "Exploration",
+            "Nautical",
+            "Pirates",
+            "Dice Rolling",
+            "Increase Value of Unchosen Resources",
+            "Multi-Use Cards",
+            "Pieces as Map",
+            "Race",
+            "Stock Holding",
+            "Variable Set-up"
+          ],
+          "families": [
+            "Game: Maracaibo"
+          ],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              9,
+              50,
+              15
+            ],
+            "2": [
+              29,
+              47,
+              3
+            ],
+            "3": [
+              60,
+              17,
+              0
+            ],
+            "4": [
+              10,
+              51,
+              6
+            ]
+          },
+          "users_rated": 4748,
+          "url": "https://boardgamegeek.com/boardgame/397385",
+          "x": 0.117,
+          "y": -0.055,
+          "genre": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+          "genres": [
+            {
+              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+              "value": 0.34
+            },
+            {
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.2
+            },
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.19
+            }
+          ],
+          "coverage": [
+            0.021,
+            0.006,
+            0.023,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.017,
+            0.0,
+            0.009,
+            0.051
+          ]
+        },
+        {
+          "id": 383607,
+          "name": "Barcelona",
+          "year": 2023,
+          "rank": 560,
+          "rating": 6.95405,
+          "weight": 3.364,
+          "playtime": 90,
+          "best_counts": [
+            2,
+            3
+          ],
+          "best_count": 3,
+          "signals": [
+            "City Building",
+            "End Game Bonuses",
+            "Tile Placement",
+            "Worker Placement"
           ],
           "families": [],
           "reimplements": [],
           "player_poll": {
             "1": [
-              28,
-              43,
-              13
+              4,
+              57,
+              23
             ],
             "2": [
-              51,
-              44,
-              4
+              53,
+              64,
+              11
             ],
             "3": [
-              30,
-              51,
-              4
+              67,
+              44,
+              10
             ],
             "4": [
-              19,
-              27,
-              30
+              17,
+              46,
+              60
             ]
           },
-          "users_rated": 3659,
-          "url": "https://boardgamegeek.com/boardgame/264052",
-          "x": 0.202,
-          "y": 0.137,
-          "genre": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+          "users_rated": 4734,
+          "url": "https://boardgamegeek.com/boardgame/383607",
+          "x": 0.196,
+          "y": 0.187,
+          "genre": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
           "genres": [
             {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.33
+              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+              "value": 0.5
             },
             {
               "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.31
-            },
-            {
-              "name": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
-              "value": 0.24
+              "value": 0.5
             }
           ],
           "coverage": [
-            0.049,
-            0.0,
-            0.01,
-            0.0,
-            0.053,
+            0.061,
             0.0,
             0.0,
             0.0,
             0.0,
             0.0,
-            0.038,
-            0.01
+            0.0,
+            0.0,
+            0.059,
+            0.0,
+            0.0,
+            0.0
           ]
         }
       ]
@@ -4572,284 +4965,199 @@
               0.054
             ]
           },
-          "gain": 0.293
+          "gain": 0.29
+        },
+        {
+          "game": {
+            "id": 310873,
+            "name": "Carnegie",
+            "year": 2022,
+            "rank": 127,
+            "rating": 7.51902,
+            "weight": 3.8196,
+            "playtime": 120,
+            "best_counts": [
+              2,
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Economic",
+              "Industry / Manufacturing",
+              "Post-Napoleonic",
+              "Action Retrieval",
+              "Area Movement",
+              "Connections",
+              "End Game Bonuses",
+              "Follow",
+              "Grid Movement",
+              "Income",
+              "Movement Points",
+              "Network and Route Building",
+              "Resource to Move",
+              "Solo / Solitaire Game",
+              "Square Grid",
+              "Tech Trees / Tech Tracks",
+              "Turn Order: Progressive",
+              "Variable Phase Order",
+              "Worker Placement, Different Worker Types"
+            ],
+            "families": [],
+            "reimplements": [],
+            "player_poll": {
+              "1": [
+                22,
+                142,
+                65
+              ],
+              "2": [
+                110,
+                164,
+                35
+              ],
+              "3": [
+                117,
+                161,
+                13
+              ],
+              "4": [
+                158,
+                95,
+                45
+              ]
+            },
+            "users_rated": 12144,
+            "url": "https://boardgamegeek.com/boardgame/310873",
+            "x": 0.363,
+            "y": 0.155,
+            "genre": "Economic \u00b7 Income \u00b7 Network and Route Building",
+            "genres": [
+              {
+                "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+                "value": 0.41
+              },
+              {
+                "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+                "value": 0.15
+              },
+              {
+                "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+                "value": 0.14
+              }
+            ],
+            "coverage": [
+              0.038,
+              0.118,
+              0.004,
+              0.011,
+              0.04,
+              0.0,
+              0.023,
+              0.015,
+              0.015,
+              0.0,
+              0.0,
+              0.018
+            ]
+          },
+          "gain": 0.239
+        },
+        {
+          "game": {
+            "id": 400602,
+            "name": "Civolution",
+            "year": 2024,
+            "rank": 161,
+            "rating": 7.42887,
+            "weight": 4.26,
+            "playtime": 180,
+            "best_counts": [
+              1,
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Civilization",
+              "Dice",
+              "Economic",
+              "Exploration",
+              "Science Fiction",
+              "Area Movement",
+              "Dice Rolling",
+              "Events",
+              "Income",
+              "Modular Board",
+              "Open Drafting",
+              "Pattern Building",
+              "Solo / Solitaire Game",
+              "Tech Trees / Tech Tracks",
+              "Track Movement",
+              "Variable Set-up"
+            ],
+            "families": [],
+            "reimplements": [],
+            "player_poll": {
+              "1": [
+                39,
+                129,
+                32
+              ],
+              "2": [
+                146,
+                94,
+                4
+              ],
+              "3": [
+                122,
+                87,
+                14
+              ],
+              "4": [
+                21,
+                71,
+                108
+              ]
+            },
+            "users_rated": 6456,
+            "url": "https://boardgamegeek.com/boardgame/400602",
+            "x": 0.549,
+            "y": 0.109,
+            "genre": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+            "genres": [
+              {
+                "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+                "value": 0.25
+              },
+              {
+                "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+                "value": 0.17
+              },
+              {
+                "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+                "value": 0.15
+              }
+            ],
+            "coverage": [
+              0.044,
+              0.037,
+              0.028,
+              0.0,
+              0.042,
+              0.0,
+              0.073,
+              0.0,
+              0.012,
+              0.0,
+              0.038,
+              0.0
+            ]
+          },
+          "gain": 0.208
         }
       ],
       "alternates": [
-        {
-          "id": 310873,
-          "name": "Carnegie",
-          "year": 2022,
-          "rank": 127,
-          "rating": 7.51902,
-          "weight": 3.8196,
-          "playtime": 120,
-          "best_counts": [
-            2,
-            3,
-            4
-          ],
-          "best_count": 4,
-          "signals": [
-            "Economic",
-            "Industry / Manufacturing",
-            "Post-Napoleonic",
-            "Action Retrieval",
-            "Area Movement",
-            "Connections",
-            "End Game Bonuses",
-            "Follow",
-            "Grid Movement",
-            "Income",
-            "Movement Points",
-            "Network and Route Building",
-            "Resource to Move",
-            "Solo / Solitaire Game",
-            "Square Grid",
-            "Tech Trees / Tech Tracks",
-            "Turn Order: Progressive",
-            "Variable Phase Order",
-            "Worker Placement, Different Worker Types"
-          ],
-          "families": [],
-          "reimplements": [],
-          "player_poll": {
-            "1": [
-              22,
-              142,
-              65
-            ],
-            "2": [
-              110,
-              164,
-              35
-            ],
-            "3": [
-              117,
-              161,
-              13
-            ],
-            "4": [
-              158,
-              95,
-              45
-            ]
-          },
-          "users_rated": 12144,
-          "url": "https://boardgamegeek.com/boardgame/310873",
-          "x": 0.363,
-          "y": 0.155,
-          "genre": "Economic \u00b7 Income \u00b7 Network and Route Building",
-          "genres": [
-            {
-              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
-              "value": 0.41
-            },
-            {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.15
-            },
-            {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.14
-            }
-          ],
-          "coverage": [
-            0.038,
-            0.118,
-            0.004,
-            0.011,
-            0.04,
-            0.0,
-            0.023,
-            0.015,
-            0.015,
-            0.0,
-            0.0,
-            0.018
-          ]
-        },
-        {
-          "id": 35677,
-          "name": "Le Havre",
-          "year": 2008,
-          "rank": 83,
-          "rating": 7.65507,
-          "weight": 3.7064,
-          "playtime": 150,
-          "best_counts": [
-            2,
-            3
-          ],
-          "best_count": 3,
-          "signals": [
-            "City Building",
-            "Economic",
-            "Industry / Manufacturing",
-            "Nautical",
-            "Automatic Resource Growth",
-            "End Game Bonuses",
-            "Increase Value of Unchosen Resources",
-            "Loans",
-            "Ownership",
-            "Solo / Solitaire Game",
-            "Worker Placement"
-          ],
-          "families": [
-            "Game: Le Havre"
-          ],
-          "reimplements": [],
-          "player_poll": {
-            "1": [
-              24,
-              314,
-              197
-            ],
-            "2": [
-              270,
-              442,
-              50
-            ],
-            "3": [
-              578,
-              190,
-              13
-            ],
-            "4": [
-              122,
-              354,
-              205
-            ],
-            "5": [
-              16,
-              117,
-              469
-            ]
-          },
-          "users_rated": 34102,
-          "url": "https://boardgamegeek.com/boardgame/35677",
-          "x": 0.397,
-          "y": 0.122,
-          "genre": "Economic \u00b7 Income \u00b7 Network and Route Building",
-          "genres": [
-            {
-              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
-              "value": 0.44
-            },
-            {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.3
-            },
-            {
-              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-              "value": 0.25
-            }
-          ],
-          "coverage": [
-            0.065,
-            0.11,
-            0.003,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.071
-          ]
-        },
-        {
-          "id": 400602,
-          "name": "Civolution",
-          "year": 2024,
-          "rank": 161,
-          "rating": 7.42887,
-          "weight": 4.26,
-          "playtime": 180,
-          "best_counts": [
-            1,
-            2,
-            3
-          ],
-          "best_count": 2,
-          "signals": [
-            "Civilization",
-            "Dice",
-            "Economic",
-            "Exploration",
-            "Science Fiction",
-            "Area Movement",
-            "Dice Rolling",
-            "Events",
-            "Income",
-            "Modular Board",
-            "Open Drafting",
-            "Pattern Building",
-            "Solo / Solitaire Game",
-            "Tech Trees / Tech Tracks",
-            "Track Movement",
-            "Variable Set-up"
-          ],
-          "families": [],
-          "reimplements": [],
-          "player_poll": {
-            "1": [
-              39,
-              129,
-              32
-            ],
-            "2": [
-              146,
-              94,
-              4
-            ],
-            "3": [
-              122,
-              87,
-              14
-            ],
-            "4": [
-              21,
-              71,
-              108
-            ]
-          },
-          "users_rated": 6456,
-          "url": "https://boardgamegeek.com/boardgame/400602",
-          "x": 0.549,
-          "y": 0.109,
-          "genre": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
-          "genres": [
-            {
-              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
-              "value": 0.25
-            },
-            {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.17
-            },
-            {
-              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
-              "value": 0.15
-            }
-          ],
-          "coverage": [
-            0.044,
-            0.037,
-            0.028,
-            0.0,
-            0.042,
-            0.0,
-            0.073,
-            0.0,
-            0.012,
-            0.0,
-            0.038,
-            0.0
-          ]
-        },
         {
           "id": 29603,
           "name": "D-Day at Omaha Beach",
@@ -4920,80 +5228,341 @@
           ]
         },
         {
-          "id": 375459,
-          "name": "Speakeasy",
-          "year": 2025,
-          "rank": 226,
-          "rating": 7.32732,
-          "weight": 4.4307,
+          "id": 96848,
+          "name": "Mage Knight Board Game",
+          "year": 2011,
+          "rank": 39,
+          "rating": 7.83631,
+          "weight": 4.3786,
+          "playtime": 240,
+          "best_counts": [
+            1,
+            2
+          ],
+          "best_count": 1,
+          "signals": [
+            "Adventure",
+            "Exploration",
+            "Fantasy",
+            "Fighting",
+            "Card Play Conflict Resolution",
+            "Cooperative Game",
+            "Deck, Bag, and Pool Building",
+            "Dice Rolling",
+            "Grid Movement",
+            "Hand Management",
+            "Hexagon Grid",
+            "Map Addition",
+            "Modular Board",
+            "Multi-Use Cards",
+            "Open Drafting",
+            "Role Playing",
+            "Scenario / Mission / Campaign Game",
+            "Solo / Solitaire Game",
+            "Tags",
+            "Turn Order: Claim Action",
+            "Variable Player Powers"
+          ],
+          "families": [],
+          "reimplements": [
+            182340
+          ],
+          "player_poll": {
+            "1": [
+              861,
+              334,
+              31
+            ],
+            "2": [
+              630,
+              508,
+              36
+            ],
+            "3": [
+              168,
+              564,
+              300
+            ],
+            "4": [
+              34,
+              178,
+              770
+            ]
+          },
+          "users_rated": 35338,
+          "url": "https://boardgamegeek.com/boardgame/96848",
+          "x": 0.644,
+          "y": -0.115,
+          "genre": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+          "genres": [
+            {
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.55
+            },
+            {
+              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+              "value": 0.12
+            },
+            {
+              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+              "value": 0.1
+            }
+          ],
+          "coverage": [
+            0.06,
+            0.0,
+            0.343,
+            0.027,
+            0.093,
+            0.0,
+            0.007,
+            0.052,
+            0.087,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "id": 62227,
+          "name": "Labyrinth: The War on Terror, 2001 \u2013 ?",
+          "year": 2010,
+          "rank": 654,
+          "rating": 6.87257,
+          "weight": 3.6932,
           "playtime": 180,
           "best_counts": [
-            2,
-            3,
-            4
+            1,
+            2
           ],
-          "best_count": 3,
+          "best_count": 2,
           "signals": [
-            "Economic",
-            "Industry / Manufacturing",
-            "Mafia",
-            "Territory Building",
+            "Modern Warfare",
+            "Political",
+            "Wargame",
+            "Action / Event",
+            "Action Points",
             "Area Majority / Influence",
+            "Campaign / Battle Card Driven",
+            "Command Cards",
+            "Dice Rolling",
+            "Events",
             "Hand Management",
-            "Pick-up and Deliver",
-            "Worker Placement"
+            "Point to Point Movement",
+            "Scenario / Mission / Campaign Game",
+            "Simulation",
+            "Solo / Solitaire Game",
+            "Stat Check Resolution",
+            "Sudden Death Ending",
+            "Tug of War",
+            "Variable Player Powers"
           ],
           "families": [],
           "reimplements": [],
           "player_poll": {
             "1": [
-              14,
-              71,
-              28
+              39,
+              62,
+              15
             ],
             "2": [
-              39,
-              89,
-              13
-            ],
-            "3": [
-              96,
-              49,
-              5
-            ],
-            "4": [
-              44,
-              49,
-              42
+              107,
+              15,
+              0
             ]
           },
-          "users_rated": 4337,
-          "url": "https://boardgamegeek.com/boardgame/375459",
-          "x": 0.594,
-          "y": 0.213,
-          "genre": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+          "users_rated": 5233,
+          "url": "https://boardgamegeek.com/boardgame/62227",
+          "x": 0.43,
+          "y": -0.036,
+          "genre": "Wargame \u00b7 Political \u00b7 Negotiation",
           "genres": [
             {
-              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
-              "value": 0.51
+              "name": "Wargame \u00b7 Political \u00b7 Negotiation",
+              "value": 0.35
             },
             {
-              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
-              "value": 0.23
+              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+              "value": 0.17
             },
             {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.19
+              "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+              "value": 0.15
             }
           ],
           "coverage": [
-            0.034,
-            0.042,
+            0.003,
             0.0,
-            0.013,
-            0.004,
+            0.02,
+            0.021,
+            0.005,
             0.0,
-            0.102,
+            0.012,
+            0.048,
+            0.006,
+            0.0,
+            0.0,
+            0.022
+          ]
+        },
+        {
+          "id": 318184,
+          "name": "Imperium: Classics",
+          "year": 2021,
+          "rank": 340,
+          "rating": 7.16422,
+          "weight": 3.6239,
+          "playtime": 160,
+          "best_counts": [
+            1,
+            2
+          ],
+          "best_count": 1,
+          "signals": [
+            "Ancient",
+            "Card Game",
+            "Civilization",
+            "Deck, Bag, and Pool Building",
+            "End Game Bonuses",
+            "Hand Management",
+            "Move Through Deck",
+            "Open Drafting",
+            "Scenario / Mission / Campaign Game",
+            "Solo / Solitaire Game",
+            "Take That",
+            "Variable Player Powers",
+            "Variable Set-up"
+          ],
+          "families": [
+            "Game: Imperium (Osprey Games)"
+          ],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              272,
+              96,
+              15
+            ],
+            "2": [
+              209,
+              141,
+              8
+            ],
+            "3": [
+              29,
+              96,
+              170
+            ],
+            "4": [
+              4,
+              38,
+              259
+            ]
+          },
+          "users_rated": 8956,
+          "url": "https://boardgamegeek.com/boardgame/318184",
+          "x": 0.369,
+          "y": 0.029,
+          "genre": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+          "genres": [
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.44
+            },
+            {
+              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+              "value": 0.23
+            },
+            {
+              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+              "value": 0.15
+            }
+          ],
+          "coverage": [
+            0.12,
+            0.0,
+            0.02,
+            0.0,
+            0.066,
+            0.0,
+            0.033,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.117
+          ]
+        },
+        {
+          "id": 266810,
+          "name": "Paladins of the West Kingdom",
+          "year": 2019,
+          "rank": 82,
+          "rating": 7.65714,
+          "weight": 3.7058,
+          "playtime": 120,
+          "best_counts": [
+            1,
+            2,
+            3
+          ],
+          "best_count": 2,
+          "signals": [
+            "Medieval",
+            "End Game Bonuses",
+            "Market",
+            "Open Drafting",
+            "Solo / Solitaire Game",
+            "Worker Placement",
+            "Worker Placement, Different Worker Types"
+          ],
+          "families": [],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              78,
+              221,
+              74
+            ],
+            "2": [
+              364,
+              121,
+              9
+            ],
+            "3": [
+              115,
+              233,
+              55
+            ],
+            "4": [
+              24,
+              125,
+              246
+            ]
+          },
+          "users_rated": 20788,
+          "url": "https://boardgamegeek.com/boardgame/266810",
+          "x": 0.346,
+          "y": 0.199,
+          "genre": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+          "genres": [
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.89
+            },
+            {
+              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+              "value": 0.08
+            }
+          ],
+          "coverage": [
+            0.268,
+            0.022,
+            0.008,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
             0.0,
             0.0,
             0.0,
@@ -5002,91 +5571,82 @@
           ]
         },
         {
-          "id": 350316,
-          "name": "Wayfarers of the South Tigris",
+          "id": 237179,
+          "name": "Weather Machine",
           "year": 2022,
-          "rank": 349,
-          "rating": 7.15335,
-          "weight": 3.8031,
-          "playtime": 90,
+          "rank": 723,
+          "rating": 6.83152,
+          "weight": 4.5655,
+          "playtime": 150,
           "best_counts": [
-            2,
-            3
+            3,
+            4
           ],
-          "best_count": 2,
+          "best_count": 3,
           "signals": [
-            "Ancient",
-            "Arabian",
-            "Exploration",
-            "Area Majority / Influence",
-            "End Game Bonuses",
-            "Modular Board",
-            "Open Drafting",
-            "Race",
+            "Environmental",
+            "Science Fiction",
+            "Action Points",
             "Set Collection",
-            "Solo / Solitaire Game",
-            "Tags",
             "Tile Placement",
-            "Track Movement",
-            "Worker Placement with Dice Workers",
-            "Worker Placement, Different Worker Types"
+            "Worker Placement"
           ],
           "families": [],
           "reimplements": [],
           "player_poll": {
             "1": [
-              19,
-              97,
-              21
+              15,
+              64,
+              45
             ],
             "2": [
-              113,
-              69,
-              10
+              16,
+              92,
+              46
             ],
             "3": [
-              67,
-              92,
-              8
+              99,
+              54,
+              6
             ],
             "4": [
-              18,
-              57,
-              77
+              58,
+              62,
+              19
             ]
           },
-          "users_rated": 6903,
-          "url": "https://boardgamegeek.com/boardgame/350316",
-          "x": 0.279,
-          "y": 0.182,
-          "genre": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+          "users_rated": 4223,
+          "url": "https://boardgamegeek.com/boardgame/237179",
+          "x": 0.563,
+          "y": 0.221,
+          "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
           "genres": [
             {
-              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
-              "value": 0.31
+              "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+              "value": 0.37
             },
             {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.28
+              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+              "value": 0.3
             },
             {
               "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
-              "value": 0.18
+              "value": 0.15
             }
           ],
           "coverage": [
-            0.048,
+            0.009,
             0.0,
-            0.011,
-            0.0,
-            0.0,
-            0.0,
-            0.061,
             0.0,
             0.036,
-            0.0,
             0.029,
-            0.0
+            0.0,
+            0.0,
+            0.0,
+            0.015,
+            0.0,
+            0.0,
+            0.01
           ]
         }
       ]
@@ -5719,72 +6279,6 @@
           ]
         },
         {
-          "id": 160477,
-          "name": "Onitama",
-          "year": 2014,
-          "rank": 363,
-          "rating": 7.13587,
-          "weight": 1.656,
-          "playtime": 20,
-          "best_counts": [
-            2
-          ],
-          "best_count": 2,
-          "signals": [
-            "Abstract Strategy",
-            "Grid Movement",
-            "Hand Management",
-            "Pattern Movement",
-            "Square Grid",
-            "Static Capture"
-          ],
-          "families": [
-            "Game: Onitama"
-          ],
-          "reimplements": [],
-          "player_poll": {
-            "1": [
-              1,
-              2,
-              134
-            ],
-            "2": [
-              164,
-              4,
-              1
-            ]
-          },
-          "users_rated": 25197,
-          "url": "https://boardgamegeek.com/boardgame/160477",
-          "x": -0.53,
-          "y": 0.117,
-          "genre": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
-          "genres": [
-            {
-              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
-              "value": 0.93
-            },
-            {
-              "name": "Wargame \u00b7 Political \u00b7 Negotiation",
-              "value": 0.06
-            }
-          ],
-          "coverage": [
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.005,
-            0.0,
-            0.0,
-            0.015,
-            0.723,
-            0.0,
-            0.0,
-            0.0
-          ]
-        },
-        {
           "id": 760,
           "name": "Battle Line",
           "year": 2000,
@@ -5939,6 +6433,89 @@
             0.0,
             0.0,
             0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "id": 285192,
+          "name": "Destinies",
+          "year": 2021,
+          "rank": 416,
+          "rating": 7.07726,
+          "weight": 1.9158,
+          "playtime": 150,
+          "best_counts": [
+            1,
+            2,
+            3
+          ],
+          "best_count": 2,
+          "signals": [
+            "Adventure",
+            "Exploration",
+            "Fantasy",
+            "Fighting",
+            "Medieval",
+            "Dice Rolling",
+            "Map Addition",
+            "Role Playing",
+            "Scenario / Mission / Campaign Game",
+            "Solo / Solitaire Game",
+            "Storytelling",
+            "Tile Placement"
+          ],
+          "families": [
+            "Game: Destinies"
+          ],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              47,
+              100,
+              44
+            ],
+            "2": [
+              133,
+              62,
+              14
+            ],
+            "3": [
+              58,
+              92,
+              39
+            ]
+          },
+          "users_rated": 10213,
+          "url": "https://boardgamegeek.com/boardgame/285192",
+          "x": 0.031,
+          "y": -0.484,
+          "genre": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+          "genres": [
+            {
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.69
+            },
+            {
+              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+              "value": 0.25
+            },
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.06
+            }
+          ],
+          "coverage": [
+            0.017,
+            0.0,
+            0.175,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.063,
             0.0,
             0.0,
             0.0
@@ -6433,442 +7010,192 @@
             ]
           },
           "gain": 0.335
+        },
+        {
+          "game": {
+            "id": 274637,
+            "name": "Unmatched: Battle of Legends, Volume One",
+            "year": 2019,
+            "rank": 292,
+            "rating": 7.213,
+            "weight": 1.9565,
+            "playtime": 40,
+            "best_counts": [
+              2,
+              4
+            ],
+            "best_count": 2,
+            "signals": [
+              "Card Game",
+              "Fantasy",
+              "Fighting",
+              "Mythology",
+              "Novel-based",
+              "Action Points",
+              "Card Play Conflict Resolution",
+              "Hand Management",
+              "Line of Sight",
+              "Player Elimination",
+              "Point to Point Movement",
+              "Team-Based Game",
+              "Variable Player Powers"
+            ],
+            "families": [
+              "Game: Unmatched"
+            ],
+            "reimplements": [
+              3284
+            ],
+            "player_poll": {
+              "1": [
+                0,
+                4,
+                101
+              ],
+              "2": [
+                129,
+                15,
+                2
+              ],
+              "3": [
+                1,
+                21,
+                91
+              ],
+              "4": [
+                42,
+                58,
+                24
+              ]
+            },
+            "users_rated": 11156,
+            "url": "https://boardgamegeek.com/boardgame/274637",
+            "x": -0.307,
+            "y": -0.016,
+            "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+            "genres": [
+              {
+                "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+                "value": 0.78
+              },
+              {
+                "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+                "value": 0.07
+              },
+              {
+                "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
+                "value": 0.05
+              }
+            ],
+            "coverage": [
+              0.0,
+              0.0,
+              0.01,
+              0.238,
+              0.019,
+              0.012,
+              0.003,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.028
+            ]
+          },
+          "gain": 0.23
+        },
+        {
+          "game": {
+            "id": 40628,
+            "name": "Finca",
+            "year": 2009,
+            "rank": 911,
+            "rating": 6.70791,
+            "weight": 2.0681,
+            "playtime": 45,
+            "best_counts": [
+              2,
+              3
+            ],
+            "best_count": 2,
+            "signals": [
+              "Economic",
+              "Farming",
+              "Contracts",
+              "Mancala",
+              "Once-Per-Game Abilities",
+              "Rondel",
+              "Set Collection"
+            ],
+            "families": [
+              "Game: Finca"
+            ],
+            "reimplements": [],
+            "player_poll": {
+              "1": [
+                0,
+                0,
+                109
+              ],
+              "2": [
+                134,
+                72,
+                4
+              ],
+              "3": [
+                79,
+                103,
+                8
+              ],
+              "4": [
+                28,
+                103,
+                42
+              ],
+              "5": [
+                0,
+                3,
+                101
+              ]
+            },
+            "users_rated": 8550,
+            "url": "https://boardgamegeek.com/boardgame/40628",
+            "x": -0.236,
+            "y": 0.074,
+            "genre": "Economic \u00b7 Income \u00b7 Network and Route Building",
+            "genres": [
+              {
+                "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+                "value": 0.26
+              },
+              {
+                "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+                "value": 0.24
+              },
+              {
+                "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+                "value": 0.2
+              }
+            ],
+            "coverage": [
+              0.04,
+              0.052,
+              0.0,
+              0.0,
+              0.0,
+              0.02,
+              0.0,
+              0.0,
+              0.047,
+              0.0,
+              0.0,
+              0.04
+            ]
+          },
+          "gain": 0.194
         }
       ],
       "alternates": [
-        {
-          "id": 274637,
-          "name": "Unmatched: Battle of Legends, Volume One",
-          "year": 2019,
-          "rank": 292,
-          "rating": 7.213,
-          "weight": 1.9565,
-          "playtime": 40,
-          "best_counts": [
-            2,
-            4
-          ],
-          "best_count": 2,
-          "signals": [
-            "Card Game",
-            "Fantasy",
-            "Fighting",
-            "Mythology",
-            "Novel-based",
-            "Action Points",
-            "Card Play Conflict Resolution",
-            "Hand Management",
-            "Line of Sight",
-            "Player Elimination",
-            "Point to Point Movement",
-            "Team-Based Game",
-            "Variable Player Powers"
-          ],
-          "families": [
-            "Game: Unmatched"
-          ],
-          "reimplements": [
-            3284
-          ],
-          "player_poll": {
-            "1": [
-              0,
-              4,
-              101
-            ],
-            "2": [
-              129,
-              15,
-              2
-            ],
-            "3": [
-              1,
-              21,
-              91
-            ],
-            "4": [
-              42,
-              58,
-              24
-            ]
-          },
-          "users_rated": 11156,
-          "url": "https://boardgamegeek.com/boardgame/274637",
-          "x": -0.307,
-          "y": -0.016,
-          "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-          "genres": [
-            {
-              "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-              "value": 0.78
-            },
-            {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.07
-            },
-            {
-              "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
-              "value": 0.05
-            }
-          ],
-          "coverage": [
-            0.0,
-            0.0,
-            0.01,
-            0.238,
-            0.019,
-            0.012,
-            0.003,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.028
-          ]
-        },
-        {
-          "id": 381297,
-          "name": "Unmatched Adventures: Tales to Amaze",
-          "year": 2023,
-          "rank": 496,
-          "rating": 7.01143,
-          "weight": 2.3205,
-          "playtime": 60,
-          "best_counts": [
-            1,
-            2,
-            3
-          ],
-          "best_count": 2,
-          "signals": [
-            "Card Game",
-            "Fantasy",
-            "Fighting",
-            "Mythology",
-            "Novel-based",
-            "Action Points",
-            "Campaign / Battle Card Driven",
-            "Card Play Conflict Resolution",
-            "Cooperative Game",
-            "Hand Management",
-            "Line of Sight",
-            "Multi-Use Cards",
-            "Point to Point Movement",
-            "Solo / Solitaire Game",
-            "Variable Player Powers"
-          ],
-          "families": [
-            "Game: Unmatched"
-          ],
-          "reimplements": [
-            3284
-          ],
-          "player_poll": {
-            "1": [
-              14,
-              40,
-              10
-            ],
-            "2": [
-              44,
-              24,
-              0
-            ],
-            "3": [
-              21,
-              34,
-              5
-            ],
-            "4": [
-              18,
-              24,
-              20
-            ]
-          },
-          "users_rated": 4485,
-          "url": "https://boardgamegeek.com/boardgame/381297",
-          "x": -0.134,
-          "y": -0.048,
-          "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-          "genres": [
-            {
-              "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-              "value": 0.75
-            },
-            {
-              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-              "value": 0.1
-            },
-            {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.09
-            }
-          ],
-          "coverage": [
-            0.004,
-            0.0,
-            0.024,
-            0.206,
-            0.023,
-            0.003,
-            0.003,
-            0.005,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ]
-        },
-        {
-          "id": 335764,
-          "name": "Unmatched: Battle of Legends, Volume Two",
-          "year": 2021,
-          "rank": 475,
-          "rating": 7.02837,
-          "weight": 2.0784,
-          "playtime": 40,
-          "best_counts": [
-            2,
-            4
-          ],
-          "best_count": 2,
-          "signals": [
-            "Card Game",
-            "Fantasy",
-            "Fighting",
-            "Horror",
-            "Mythology",
-            "Novel-based",
-            "Action Points",
-            "Card Play Conflict Resolution",
-            "Hand Management",
-            "Line of Sight",
-            "Point to Point Movement",
-            "Team-Based Game",
-            "Variable Player Powers"
-          ],
-          "families": [
-            "Game: Unmatched"
-          ],
-          "reimplements": [
-            3284
-          ],
-          "player_poll": {
-            "1": [
-              0,
-              1,
-              17
-            ],
-            "2": [
-              31,
-              3,
-              0
-            ],
-            "3": [
-              0,
-              7,
-              16
-            ],
-            "4": [
-              16,
-              7,
-              3
-            ]
-          },
-          "users_rated": 3584,
-          "url": "https://boardgamegeek.com/boardgame/335764",
-          "x": -0.281,
-          "y": 0.001,
-          "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-          "genres": [
-            {
-              "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-              "value": 0.77
-            },
-            {
-              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-              "value": 0.09
-            },
-            {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.07
-            }
-          ],
-          "coverage": [
-            0.0,
-            0.0,
-            0.022,
-            0.219,
-            0.019,
-            0.003,
-            0.003,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.021
-          ]
-        },
-        {
-          "id": 325635,
-          "name": "Unmatched: Little Red Riding Hood vs. Beowulf",
-          "year": 2020,
-          "rank": 533,
-          "rating": 6.97634,
-          "weight": 2.0,
-          "playtime": 20,
-          "best_counts": [
-            2
-          ],
-          "best_count": 2,
-          "signals": [
-            "Card Game",
-            "Fantasy",
-            "Fighting",
-            "Mythology",
-            "Novel-based",
-            "Action Points",
-            "Card Play Conflict Resolution",
-            "Hand Management",
-            "Line of Sight",
-            "Point to Point Movement",
-            "Variable Player Powers"
-          ],
-          "families": [
-            "Game: Unmatched"
-          ],
-          "reimplements": [
-            3284
-          ],
-          "player_poll": {
-            "1": [
-              0,
-              1,
-              19
-            ],
-            "2": [
-              22,
-              0,
-              0
-            ]
-          },
-          "users_rated": 3747,
-          "url": "https://boardgamegeek.com/boardgame/325635",
-          "x": -0.457,
-          "y": 0.114,
-          "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-          "genres": [
-            {
-              "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-              "value": 0.85
-            },
-            {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.08
-            }
-          ],
-          "coverage": [
-            0.0,
-            0.0,
-            0.011,
-            0.222,
-            0.019,
-            0.003,
-            0.003,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ]
-        },
-        {
-          "id": 40628,
-          "name": "Finca",
-          "year": 2009,
-          "rank": 911,
-          "rating": 6.70791,
-          "weight": 2.0681,
-          "playtime": 45,
-          "best_counts": [
-            2,
-            3
-          ],
-          "best_count": 2,
-          "signals": [
-            "Economic",
-            "Farming",
-            "Contracts",
-            "Mancala",
-            "Once-Per-Game Abilities",
-            "Rondel",
-            "Set Collection"
-          ],
-          "families": [
-            "Game: Finca"
-          ],
-          "reimplements": [],
-          "player_poll": {
-            "1": [
-              0,
-              0,
-              109
-            ],
-            "2": [
-              134,
-              72,
-              4
-            ],
-            "3": [
-              79,
-              103,
-              8
-            ],
-            "4": [
-              28,
-              103,
-              42
-            ],
-            "5": [
-              0,
-              3,
-              101
-            ]
-          },
-          "users_rated": 8550,
-          "url": "https://boardgamegeek.com/boardgame/40628",
-          "x": -0.236,
-          "y": 0.074,
-          "genre": "Economic \u00b7 Income \u00b7 Network and Route Building",
-          "genres": [
-            {
-              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
-              "value": 0.26
-            },
-            {
-              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
-              "value": 0.24
-            },
-            {
-              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-              "value": 0.2
-            }
-          ],
-          "coverage": [
-            0.04,
-            0.052,
-            0.0,
-            0.0,
-            0.0,
-            0.02,
-            0.0,
-            0.0,
-            0.047,
-            0.0,
-            0.0,
-            0.04
-          ]
-        },
         {
           "id": 7717,
           "name": "Carcassonne: The Castle",
@@ -6935,6 +7262,423 @@
             0.077,
             0.0,
             0.055,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "id": 387866,
+          "name": "Star Wars: Unlimited",
+          "year": 2024,
+          "rank": 632,
+          "rating": 6.89436,
+          "weight": 2.3333,
+          "playtime": 20,
+          "best_counts": [
+            2,
+            4
+          ],
+          "best_count": 2,
+          "signals": [
+            "Card Game",
+            "Collectible Components",
+            "Movies / TV / Radio theme",
+            "Science Fiction",
+            "Deck Construction",
+            "Hand Management",
+            "Income",
+            "Take That"
+          ],
+          "families": [
+            "Game: Star Wars: Unlimited (Fantasy Flight)"
+          ],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              0,
+              2,
+              22
+            ],
+            "2": [
+              27,
+              4,
+              1
+            ],
+            "3": [
+              2,
+              9,
+              9
+            ],
+            "4": [
+              6,
+              8,
+              3
+            ]
+          },
+          "users_rated": 3296,
+          "url": "https://boardgamegeek.com/boardgame/387866",
+          "x": -0.383,
+          "y": 0.201,
+          "genre": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
+          "genres": [
+            {
+              "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
+              "value": 0.51
+            },
+            {
+              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+              "value": 0.43
+            },
+            {
+              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+              "value": 0.05
+            }
+          ],
+          "coverage": [
+            0.0,
+            0.011,
+            0.0,
+            0.0,
+            0.1,
+            0.115,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "id": 424219,
+          "name": "Zenith",
+          "year": 2025,
+          "rank": 524,
+          "rating": 6.98306,
+          "weight": 2.3115,
+          "playtime": 35,
+          "best_counts": [
+            2,
+            4
+          ],
+          "best_count": 2,
+          "signals": [
+            "Card Game",
+            "Science Fiction",
+            "Area Majority / Influence",
+            "Hand Management",
+            "Modular Board",
+            "Multi-Use Cards",
+            "Team-Based Game",
+            "Tech Trees / Tech Tracks",
+            "Track Movement",
+            "Tug of War",
+            "Variable Set-up"
+          ],
+          "families": [],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              0,
+              0,
+              49
+            ],
+            "2": [
+              71,
+              14,
+              1
+            ],
+            "3": [
+              0,
+              1,
+              49
+            ],
+            "4": [
+              26,
+              24,
+              11
+            ]
+          },
+          "users_rated": 4009,
+          "url": "https://boardgamegeek.com/boardgame/424219",
+          "x": -0.247,
+          "y": 0.091,
+          "genre": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+          "genres": [
+            {
+              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+              "value": 0.29
+            },
+            {
+              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+              "value": 0.22
+            },
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.15
+            }
+          ],
+          "coverage": [
+            0.035,
+            0.0,
+            0.011,
+            0.021,
+            0.056,
+            0.0,
+            0.069,
+            0.018,
+            0.0,
+            0.0,
+            0.013,
+            0.024
+          ]
+        },
+        {
+          "id": 141572,
+          "name": "Paperback",
+          "year": 2014,
+          "rank": 756,
+          "rating": 6.80208,
+          "weight": 2.0033,
+          "playtime": 45,
+          "best_counts": [
+            2,
+            3
+          ],
+          "best_count": 2,
+          "signals": [
+            "Card Game",
+            "Print & Play",
+            "Word Game",
+            "Cooperative Game",
+            "Deck, Bag, and Pool Building",
+            "Delayed Purchase",
+            "Market",
+            "Open Drafting",
+            "Spelling"
+          ],
+          "families": [],
+          "reimplements": [
+            223750,
+            338468,
+            385643
+          ],
+          "player_poll": {
+            "1": [
+              3,
+              27,
+              62
+            ],
+            "2": [
+              85,
+              41,
+              0
+            ],
+            "3": [
+              46,
+              64,
+              1
+            ],
+            "4": [
+              16,
+              65,
+              25
+            ],
+            "5": [
+              2,
+              38,
+              54
+            ]
+          },
+          "users_rated": 11494,
+          "url": "https://boardgamegeek.com/boardgame/141572",
+          "x": -0.276,
+          "y": -0.003,
+          "genre": "Party Game \u00b7 Deduction \u00b7 Bluffing",
+          "genres": [
+            {
+              "name": "Party Game \u00b7 Deduction \u00b7 Bluffing",
+              "value": 0.38
+            },
+            {
+              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+              "value": 0.32
+            },
+            {
+              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+              "value": 0.15
+            }
+          ],
+          "coverage": [
+            0.016,
+            0.009,
+            0.003,
+            0.0,
+            0.068,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.085,
+            0.0,
+            0.033
+          ]
+        },
+        {
+          "id": 118048,
+          "name": "Targi",
+          "year": 2012,
+          "rank": 176,
+          "rating": 7.39982,
+          "weight": 2.3427,
+          "playtime": 60,
+          "best_counts": [
+            2
+          ],
+          "best_count": 2,
+          "signals": [
+            "Arabian",
+            "Card Game",
+            "End Game Bonuses",
+            "Modular Board",
+            "Open Drafting",
+            "Pattern Building",
+            "Set Collection",
+            "Square Grid",
+            "Turn Order: Progressive",
+            "Worker Placement"
+          ],
+          "families": [],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              1,
+              27,
+              178
+            ],
+            "2": [
+              241,
+              10,
+              0
+            ]
+          },
+          "users_rated": 26980,
+          "url": "https://boardgamegeek.com/boardgame/118048",
+          "x": -0.124,
+          "y": 0.051,
+          "genre": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+          "genres": [
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.54
+            },
+            {
+              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+              "value": 0.24
+            },
+            {
+              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+              "value": 0.19
+            }
+          ],
+          "coverage": [
+            0.203,
+            0.0,
+            0.008,
+            0.0,
+            0.004,
+            0.0,
+            0.087,
+            0.0,
+            0.138,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "id": 249259,
+          "name": "War Chest",
+          "year": 2018,
+          "rank": 182,
+          "rating": 7.38863,
+          "weight": 2.314,
+          "playtime": 30,
+          "best_counts": [
+            2,
+            4
+          ],
+          "best_count": 2,
+          "signals": [
+            "Abstract Strategy",
+            "Medieval",
+            "Wargame",
+            "Area Majority / Influence",
+            "Deck, Bag, and Pool Building",
+            "Delayed Purchase",
+            "Grid Movement",
+            "Hand Management",
+            "Hexagon Grid",
+            "Team-Based Game",
+            "Turn Order: Claim Action",
+            "Variable Player Powers"
+          ],
+          "families": [
+            "Game: War Chest"
+          ],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              1,
+              5,
+              140
+            ],
+            "2": [
+              169,
+              36,
+              1
+            ],
+            "3": [
+              3,
+              3,
+              137
+            ],
+            "4": [
+              69,
+              81,
+              23
+            ]
+          },
+          "users_rated": 12716,
+          "url": "https://boardgamegeek.com/boardgame/249259",
+          "x": -0.289,
+          "y": 0.114,
+          "genre": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+          "genres": [
+            {
+              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+              "value": 0.24
+            },
+            {
+              "name": "Wargame \u00b7 Political \u00b7 Negotiation",
+              "value": 0.24
+            },
+            {
+              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+              "value": 0.21
+            }
+          ],
+          "coverage": [
+            0.028,
+            0.0,
+            0.0,
+            0.048,
+            0.092,
+            0.0,
+            0.078,
+            0.088,
+            0.073,
             0.0,
             0.0,
             0.0
@@ -8509,100 +9253,205 @@
             ]
           },
           "gain": 0.513
+        },
+        {
+          "game": {
+            "id": 314040,
+            "name": "Pandemic Legacy: Season 0",
+            "year": 2020,
+            "rank": 59,
+            "rating": 7.73367,
+            "weight": 3.1872,
+            "playtime": 60,
+            "best_counts": [
+              2,
+              3,
+              4
+            ],
+            "best_count": 4,
+            "signals": [
+              "Medical",
+              "Spies / Secret Agents",
+              "Action Points",
+              "Cooperative Game",
+              "Hand Management",
+              "Legacy Game",
+              "Point to Point Movement",
+              "Scenario / Mission / Campaign Game",
+              "Set Collection",
+              "Tags",
+              "Trading",
+              "Variable Player Powers"
+            ],
+            "families": [
+              "Game: Pandemic"
+            ],
+            "reimplements": [
+              30549,
+              221107
+            ],
+            "player_poll": {
+              "1": [
+                6,
+                23,
+                77
+              ],
+              "2": [
+                37,
+                70,
+                20
+              ],
+              "3": [
+                42,
+                62,
+                8
+              ],
+              "4": [
+                64,
+                47,
+                9
+              ]
+            },
+            "users_rated": 9698,
+            "url": "https://boardgamegeek.com/boardgame/314040",
+            "x": 0.054,
+            "y": 0.098,
+            "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+            "genres": [
+              {
+                "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+                "value": 0.59
+              },
+              {
+                "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
+                "value": 0.14
+              },
+              {
+                "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+                "value": 0.09
+              }
+            ],
+            "coverage": [
+              0.035,
+              0.0,
+              0.032,
+              0.267,
+              0.03,
+              0.066,
+              0.0,
+              0.0,
+              0.0,
+              0.036,
+              0.0,
+              0.0
+            ]
+          },
+          "gain": 0.329
+        },
+        {
+          "game": {
+            "id": 463,
+            "name": "Magic: The Gathering",
+            "year": 1993,
+            "rank": 172,
+            "rating": 7.41122,
+            "weight": 3.2874,
+            "playtime": 20,
+            "best_counts": [
+              2,
+              3,
+              4
+            ],
+            "best_count": 2,
+            "signals": [
+              "Card Game",
+              "Collectible Components",
+              "Fantasy",
+              "Fighting",
+              "Betting and Bluffing",
+              "Closed Drafting",
+              "Deck Construction",
+              "Hand Management",
+              "Income",
+              "Interrupts",
+              "Player Elimination",
+              "Tags",
+              "Take That"
+            ],
+            "families": [
+              "Game: Magic The Gathering"
+            ],
+            "reimplements": [],
+            "player_poll": {
+              "1": [
+                2,
+                14,
+                507
+              ],
+              "2": [
+                542,
+                117,
+                7
+              ],
+              "3": [
+                156,
+                303,
+                142
+              ],
+              "4": [
+                22,
+                32,
+                8
+              ],
+              "5": [
+                2,
+                17,
+                29
+              ],
+              "6": [
+                0,
+                13,
+                36
+              ]
+            },
+            "users_rated": 43400,
+            "url": "https://boardgamegeek.com/boardgame/463",
+            "x": -0.191,
+            "y": 0.332,
+            "genre": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
+            "genres": [
+              {
+                "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
+                "value": 0.4
+              },
+              {
+                "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+                "value": 0.26
+              },
+              {
+                "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+                "value": 0.16
+              }
+            ],
+            "coverage": [
+              0.013,
+              0.011,
+              0.023,
+              0.0,
+              0.11,
+              0.193,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.028,
+              0.091
+            ]
+          },
+          "gain": 0.319
         }
       ],
       "alternates": [
-        {
-          "id": 314040,
-          "name": "Pandemic Legacy: Season 0",
-          "year": 2020,
-          "rank": 59,
-          "rating": 7.73367,
-          "weight": 3.1872,
-          "playtime": 60,
-          "best_counts": [
-            2,
-            3,
-            4
-          ],
-          "best_count": 4,
-          "signals": [
-            "Medical",
-            "Spies / Secret Agents",
-            "Action Points",
-            "Cooperative Game",
-            "Hand Management",
-            "Legacy Game",
-            "Point to Point Movement",
-            "Scenario / Mission / Campaign Game",
-            "Set Collection",
-            "Tags",
-            "Trading",
-            "Variable Player Powers"
-          ],
-          "families": [
-            "Game: Pandemic"
-          ],
-          "reimplements": [
-            30549,
-            221107
-          ],
-          "player_poll": {
-            "1": [
-              6,
-              23,
-              77
-            ],
-            "2": [
-              37,
-              70,
-              20
-            ],
-            "3": [
-              42,
-              62,
-              8
-            ],
-            "4": [
-              64,
-              47,
-              9
-            ]
-          },
-          "users_rated": 9698,
-          "url": "https://boardgamegeek.com/boardgame/314040",
-          "x": 0.054,
-          "y": 0.098,
-          "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-          "genres": [
-            {
-              "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-              "value": 0.59
-            },
-            {
-              "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
-              "value": 0.14
-            },
-            {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.09
-            }
-          ],
-          "coverage": [
-            0.035,
-            0.0,
-            0.032,
-            0.267,
-            0.03,
-            0.066,
-            0.0,
-            0.0,
-            0.0,
-            0.036,
-            0.0,
-            0.0
-          ]
-        },
         {
           "id": 295895,
           "name": "Distilled",
@@ -8692,86 +9541,6 @@
             0.0,
             0.0,
             0.096
-          ]
-        },
-        {
-          "id": 77423,
-          "name": "The Lord of the Rings: The Card Game",
-          "year": 2011,
-          "rank": 186,
-          "rating": 7.38429,
-          "weight": 3.2197,
-          "playtime": 60,
-          "best_counts": [
-            1,
-            2
-          ],
-          "best_count": 2,
-          "signals": [
-            "Adventure",
-            "Card Game",
-            "Collectible Components",
-            "Fantasy",
-            "Novel-based",
-            "Cooperative Game",
-            "Deck Construction",
-            "Events",
-            "Hand Management",
-            "Player Elimination",
-            "Scenario / Mission / Campaign Game",
-            "Solo / Solitaire Game",
-            "Variable Set-up"
-          ],
-          "families": [
-            "Game: The Lord of the Rings \u2013 The Card Game (LCG)"
-          ],
-          "reimplements": [
-            349067
-          ],
-          "player_poll": {
-            "1": [
-              246,
-              388,
-              48
-            ],
-            "2": [
-              512,
-              174,
-              8
-            ]
-          },
-          "users_rated": 25197,
-          "url": "https://boardgamegeek.com/boardgame/77423",
-          "x": 0.062,
-          "y": 0.058,
-          "genre": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
-          "genres": [
-            {
-              "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
-              "value": 0.36
-            },
-            {
-              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-              "value": 0.24
-            },
-            {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.18
-            }
-          ],
-          "coverage": [
-            0.071,
-            0.0,
-            0.086,
-            0.024,
-            0.063,
-            0.167,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0
           ]
         },
         {
@@ -8954,79 +9723,262 @@
           ]
         },
         {
-          "id": 163745,
-          "name": "Star Wars: Armada",
-          "year": 2015,
-          "rank": 487,
-          "rating": 7.02129,
-          "weight": 3.1574,
-          "playtime": 120,
+          "id": 296151,
+          "name": "Viscounts of the West Kingdom",
+          "year": 2020,
+          "rank": 199,
+          "rating": 7.36408,
+          "weight": 3.4557,
+          "playtime": 90,
           "best_counts": [
-            2
+            2,
+            3
           ],
-          "best_count": 2,
+          "best_count": 3,
           "signals": [
-            "Collectible Components",
-            "Miniatures",
-            "Movies / TV / Radio theme",
-            "Science Fiction",
-            "Wargame",
-            "Action Queue",
-            "Critical Hits and Failures",
-            "Dice Rolling",
-            "Line of Sight",
-            "Movement Template",
-            "Simulation",
+            "Medieval",
+            "Area Majority / Influence",
+            "Deck, Bag, and Pool Building",
+            "End Game Bonuses",
+            "Hand Management",
+            "King of the Hill",
+            "Modular Board",
+            "Rondel",
+            "Set Collection",
+            "Solo / Solitaire Game",
             "Variable Player Powers"
           ],
-          "families": [
-            "Game: Star Wars Armada"
-          ],
+          "families": [],
           "reimplements": [],
           "player_poll": {
             "1": [
-              1,
-              4,
-              41
+              24,
+              126,
+              33
             ],
             "2": [
-              51,
-              6,
-              0
+              47,
+              139,
+              25
+            ],
+            "3": [
+              149,
+              52,
+              4
+            ],
+            "4": [
+              40,
+              98,
+              47
             ]
           },
-          "users_rated": 5739,
-          "url": "https://boardgamegeek.com/boardgame/163745",
-          "x": 0.218,
-          "y": -0.03,
-          "genre": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
+          "users_rated": 11687,
+          "url": "https://boardgamegeek.com/boardgame/296151",
+          "x": 0.2,
+          "y": 0.093,
+          "genre": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
           "genres": [
             {
-              "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
-              "value": 0.62
+              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+              "value": 0.29
             },
             {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.15
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.28
             },
             {
-              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-              "value": 0.12
+              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+              "value": 0.18
+            }
+          ],
+          "coverage": [
+            0.066,
+            0.0,
+            0.023,
+            0.0,
+            0.035,
+            0.0,
+            0.076,
+            0.0,
+            0.051,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        {
+          "id": 9216,
+          "name": "Goa",
+          "year": 2004,
+          "rank": 319,
+          "rating": 7.1817,
+          "weight": 3.3616,
+          "playtime": 90,
+          "best_counts": [
+            3,
+            4
+          ],
+          "best_count": 4,
+          "signals": [
+            "Economic",
+            "Farming",
+            "Nautical",
+            "Renaissance",
+            "Auction / Bidding",
+            "Auction: Once Around",
+            "Hand Management",
+            "Push Your Luck",
+            "Tech Trees / Tech Tracks"
+          ],
+          "families": [],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              0,
+              3,
+              150
+            ],
+            "2": [
+              62,
+              124,
+              72
+            ],
+            "3": [
+              72,
+              176,
+              11
+            ],
+            "4": [
+              208,
+              59,
+              6
+            ]
+          },
+          "users_rated": 12004,
+          "url": "https://boardgamegeek.com/boardgame/9216",
+          "x": 0.189,
+          "y": 0.121,
+          "genre": "Economic \u00b7 Income \u00b7 Network and Route Building",
+          "genres": [
+            {
+              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+              "value": 0.44
+            },
+            {
+              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+              "value": 0.38
+            },
+            {
+              "name": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
+              "value": 0.09
             }
           ],
           "coverage": [
             0.0,
+            0.074,
             0.0,
+            0.0,
+            0.005,
+            0.0,
+            0.011,
+            0.0,
+            0.0,
+            0.0,
+            0.02,
+            0.098
+          ]
+        },
+        {
+          "id": 224783,
+          "name": "Vindication",
+          "year": 2018,
+          "rank": 306,
+          "rating": 7.20239,
+          "weight": 3.1078,
+          "playtime": 150,
+          "best_counts": [
+            2,
+            3,
+            4
+          ],
+          "best_count": 4,
+          "signals": [
+            "Exploration",
+            "Fantasy",
+            "Area Majority / Influence",
+            "Dice Rolling",
+            "End Game Bonuses",
+            "Hexagon Grid",
+            "Map Addition",
+            "Modular Board",
+            "Open Drafting",
+            "Ownership",
+            "Variable Phase Order",
+            "Worker Placement"
+          ],
+          "families": [],
+          "reimplements": [
+            429895
+          ],
+          "player_poll": {
+            "1": [
+              0,
+              16,
+              58
+            ],
+            "2": [
+              18,
+              74,
+              15
+            ],
+            "3": [
+              50,
+              65,
+              0
+            ],
+            "4": [
+              58,
+              53,
+              5
+            ],
+            "5": [
+              8,
+              52,
+              33
+            ]
+          },
+          "users_rated": 8396,
+          "url": "https://boardgamegeek.com/boardgame/224783",
+          "x": 0.266,
+          "y": -0.063,
+          "genre": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+          "genres": [
+            {
+              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+              "value": 0.25
+            },
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.25
+            },
+            {
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.14
+            }
+          ],
+          "coverage": [
+            0.055,
+            0.011,
             0.028,
-            0.0,
-            0.037,
-            0.149,
             0.0,
             0.018,
             0.0,
+            0.058,
+            0.013,
+            0.028,
             0.0,
-            0.0,
-            0.014
+            0.006,
+            0.0
           ]
         }
       ]
@@ -9591,148 +10543,426 @@
             ]
           },
           "gain": 0.557
+        },
+        {
+          "game": {
+            "id": 171,
+            "name": "Chess",
+            "year": 1475,
+            "rank": 463,
+            "rating": 7.04037,
+            "weight": 3.6415,
+            "playtime": 0,
+            "best_counts": [
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Abstract Strategy",
+              "Grid Movement",
+              "Once-Per-Game Abilities",
+              "Pattern Movement",
+              "Square Grid",
+              "Static Capture",
+              "Sudden Death Ending"
+            ],
+            "families": [],
+            "reimplements": [],
+            "player_poll": {
+              "1": [
+                10,
+                55,
+                395
+              ],
+              "2": [
+                507,
+                18,
+                8
+              ]
+            },
+            "users_rated": 40904,
+            "url": "https://boardgamegeek.com/boardgame/171",
+            "x": -0.837,
+            "y": 0.994,
+            "genre": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+            "genres": [
+              {
+                "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+                "value": 0.89
+              },
+              {
+                "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
+                "value": 0.06
+              }
+            ],
+            "coverage": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.015,
+              0.0,
+              0.011,
+              0.481,
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "gain": 0.496
+        },
+        {
+          "game": {
+            "id": 159675,
+            "name": "Fields of Arle",
+            "year": 2014,
+            "rank": 102,
+            "rating": 7.5928,
+            "weight": 3.8478,
+            "playtime": 120,
+            "best_counts": [
+              1,
+              2
+            ],
+            "best_count": 2,
+            "signals": [
+              "Economic",
+              "Farming",
+              "Industry / Manufacturing",
+              "Automatic Resource Growth",
+              "Highest-Lowest Scoring",
+              "Income",
+              "Set Collection",
+              "Solo / Solitaire Game",
+              "Turn Order: Claim Action",
+              "Turn Order: Progressive",
+              "Worker Placement"
+            ],
+            "families": [
+              "Game: Fields of Arle"
+            ],
+            "reimplements": [],
+            "player_poll": {
+              "1": [
+                71,
+                124,
+                25
+              ],
+              "2": [
+                199,
+                35,
+                3
+              ]
+            },
+            "users_rated": 12568,
+            "url": "https://boardgamegeek.com/boardgame/159675",
+            "x": 0.371,
+            "y": 0.187,
+            "genre": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+            "genres": [
+              {
+                "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+                "value": 0.45
+              },
+              {
+                "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+                "value": 0.27
+              },
+              {
+                "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+                "value": 0.23
+              }
+            ],
+            "coverage": [
+              0.116,
+              0.123,
+              0.006,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.031,
+              0.0,
+              0.0,
+              0.308
+            ]
+          },
+          "gain": 0.465
         }
       ],
       "alternates": [
         {
-          "id": 171,
-          "name": "Chess",
-          "year": 1475,
-          "rank": 463,
-          "rating": 7.04037,
-          "weight": 3.6415,
-          "playtime": 0,
+          "id": 299659,
+          "name": "Clash of Cultures: Monumental Edition",
+          "year": 2021,
+          "rank": 231,
+          "rating": 7.31483,
+          "weight": 3.7446,
+          "playtime": 240,
           "best_counts": [
-            2
+            2,
+            3,
+            4
           ],
-          "best_count": 2,
+          "best_count": 3,
           "signals": [
-            "Abstract Strategy",
+            "Ancient",
+            "City Building",
+            "Civilization",
+            "Economic",
+            "Territory Building",
+            "Action Points",
+            "Dice Rolling",
             "Grid Movement",
-            "Once-Per-Game Abilities",
-            "Pattern Movement",
-            "Square Grid",
-            "Static Capture",
-            "Sudden Death Ending"
+            "Hand Management",
+            "Modular Board",
+            "Tech Trees / Tech Tracks",
+            "Trading",
+            "Variable Player Powers"
           ],
-          "families": [],
-          "reimplements": [],
+          "families": [
+            "Game: Clash of Cultures"
+          ],
+          "reimplements": [
+            40765,
+            146244,
+            167825
+          ],
           "player_poll": {
             "1": [
+              0,
               10,
-              55,
-              395
+              89
             ],
             "2": [
-              507,
-              18,
-              8
+              19,
+              100,
+              12
+            ],
+            "3": [
+              90,
+              46,
+              4
+            ],
+            "4": [
+              84,
+              37,
+              12
             ]
           },
-          "users_rated": 40904,
-          "url": "https://boardgamegeek.com/boardgame/171",
-          "x": -0.837,
-          "y": 0.994,
-          "genre": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+          "users_rated": 5168,
+          "url": "https://boardgamegeek.com/boardgame/299659",
+          "x": 0.509,
+          "y": -0.053,
+          "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
           "genres": [
             {
-              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
-              "value": 0.89
+              "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+              "value": 0.34
             },
             {
-              "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
-              "value": 0.06
+              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+              "value": 0.3
+            },
+            {
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.14
             }
           ],
           "coverage": [
+            0.011,
+            0.013,
+            0.03,
+            0.08,
+            0.01,
             0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
+            0.07,
             0.015,
             0.0,
-            0.011,
-            0.481,
             0.0,
-            0.0,
+            0.006,
             0.0
           ]
         },
         {
-          "id": 159675,
-          "name": "Fields of Arle",
-          "year": 2014,
-          "rank": 102,
-          "rating": 7.5928,
-          "weight": 3.8478,
+          "id": 127060,
+          "name": "Bora Bora",
+          "year": 2013,
+          "rank": 333,
+          "rating": 7.16738,
+          "weight": 3.7241,
           "playtime": 120,
           "best_counts": [
-            1,
-            2
+            2,
+            3,
+            4
           ],
-          "best_count": 2,
+          "best_count": 4,
           "signals": [
-            "Economic",
-            "Farming",
-            "Industry / Manufacturing",
-            "Automatic Resource Growth",
-            "Highest-Lowest Scoring",
-            "Income",
+            "Dice",
+            "Dice Rolling",
             "Set Collection",
+            "Worker Placement",
+            "Worker Placement with Dice Workers"
+          ],
+          "families": [],
+          "reimplements": [
+            368975
+          ],
+          "player_poll": {
+            "1": [
+              1,
+              4,
+              103
+            ],
+            "2": [
+              38,
+              143,
+              23
+            ],
+            "3": [
+              74,
+              108,
+              4
+            ],
+            "4": [
+              121,
+              69,
+              8
+            ]
+          },
+          "users_rated": 10762,
+          "url": "https://boardgamegeek.com/boardgame/127060",
+          "x": 0.337,
+          "y": 0.165,
+          "genre": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
+          "genres": [
+            {
+              "name": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
+              "value": 0.59
+            },
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.35
+            },
+            {
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.06
+            }
+          ],
+          "coverage": [
+            0.067,
+            0.0,
+            0.011,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.125,
+            0.0
+          ]
+        },
+        {
+          "id": 55690,
+          "name": "Kingdom Death: Monster",
+          "year": 2015,
+          "rank": 95,
+          "rating": 7.61333,
+          "weight": 4.2768,
+          "playtime": 180,
+          "best_counts": [
+            1,
+            2,
+            3,
+            4
+          ],
+          "best_count": 4,
+          "signals": [
+            "Adventure",
+            "Fantasy",
+            "Fighting",
+            "Horror",
+            "Mature / Adult",
+            "Miniatures",
+            "Mythology",
+            "Cooperative Game",
+            "Critical Hits and Failures",
+            "Dice Rolling",
+            "Events",
+            "Grid Movement",
+            "Narrative Choice / Paragraph",
+            "Paper-and-Pencil",
+            "Pattern Building",
+            "Role Playing",
+            "Scenario / Mission / Campaign Game",
             "Solo / Solitaire Game",
-            "Turn Order: Claim Action",
-            "Turn Order: Progressive",
-            "Worker Placement"
+            "Square Grid",
+            "Storytelling",
+            "Tech Trees / Tech Tracks"
           ],
           "families": [
-            "Game: Fields of Arle"
+            "Game: Kingdom Death Monster"
           ],
           "reimplements": [],
           "player_poll": {
             "1": [
-              71,
-              124,
-              25
+              113,
+              170,
+              28
             ],
             "2": [
-              199,
-              35,
-              3
+              114,
+              179,
+              12
+            ],
+            "3": [
+              52,
+              190,
+              48
+            ],
+            "4": [
+              178,
+              123,
+              46
             ]
           },
-          "users_rated": 12568,
-          "url": "https://boardgamegeek.com/boardgame/159675",
-          "x": 0.371,
-          "y": 0.187,
-          "genre": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+          "users_rated": 10494,
+          "url": "https://boardgamegeek.com/boardgame/55690",
+          "x": 0.559,
+          "y": -0.107,
+          "genre": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
           "genres": [
             {
-              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-              "value": 0.45
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.66
             },
             {
-              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
-              "value": 0.27
+              "name": "Party Game \u00b7 Deduction \u00b7 Bluffing",
+              "value": 0.09
             },
             {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.23
+              "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
+              "value": 0.07
             }
           ],
           "coverage": [
-            0.116,
-            0.123,
-            0.006,
+            0.019,
             0.0,
-            0.0,
-            0.0,
+            0.315,
             0.0,
             0.0,
             0.031,
+            0.032,
+            0.01,
+            0.034,
+            0.083,
             0.0,
-            0.0,
-            0.308
+            0.03
           ]
         },
         {
@@ -9819,224 +11049,146 @@
           ]
         },
         {
-          "id": 188,
-          "name": "Go",
-          "year": -2200,
-          "rank": 238,
-          "rating": 7.30222,
-          "weight": 3.9148,
+          "id": 235802,
+          "name": "Too Many Bones: Undertow",
+          "year": 2018,
+          "rank": 167,
+          "rating": 7.41573,
+          "weight": 4.0282,
           "playtime": 180,
           "best_counts": [
+            1,
             2
           ],
           "best_count": 2,
           "signals": [
-            "Abstract Strategy",
-            "Chaining",
-            "Enclosure",
-            "Pattern Building",
-            "Pattern Recognition",
-            "Square Grid"
+            "Adventure",
+            "Dice",
+            "Fantasy",
+            "Fighting",
+            "Cooperative Game",
+            "Deck, Bag, and Pool Building",
+            "Dice Rolling",
+            "Die Icon Resolution",
+            "Minimap Resolution",
+            "Role Playing",
+            "Solo / Solitaire Game",
+            "Stat Check Resolution",
+            "Tech Trees / Tech Tracks",
+            "Turn Order: Role Order",
+            "Variable Player Powers"
           ],
-          "families": [],
+          "families": [
+            "Game: Too Many Bones"
+          ],
           "reimplements": [],
           "player_poll": {
             "1": [
-              3,
-              30,
-              176
+              21,
+              43,
+              1
             ],
             "2": [
-              260,
-              12,
-              0
+              48,
+              17,
+              1
             ]
           },
-          "users_rated": 18478,
-          "url": "https://boardgamegeek.com/boardgame/188",
-          "x": 0.451,
-          "y": 0.072,
-          "genre": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+          "users_rated": 4130,
+          "url": "https://boardgamegeek.com/boardgame/235802",
+          "x": 0.505,
+          "y": -0.12,
+          "genre": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
           "genres": [
             {
-              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
-              "value": 0.74
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.61
             },
             {
               "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-              "value": 0.26
+              "value": 0.27
             }
           ],
           "coverage": [
             0.0,
             0.0,
+            0.228,
+            0.0,
+            0.019,
+            0.0,
+            0.012,
             0.0,
             0.0,
             0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.328,
-            0.0,
-            0.0,
-            0.1
+            0.019,
+            0.269
           ]
         },
         {
-          "id": 206480,
-          "name": "Imperial Struggle",
-          "year": 2020,
-          "rank": 479,
-          "rating": 7.02627,
-          "weight": 4.076,
-          "playtime": 240,
+          "id": 91,
+          "name": "Paths of Glory",
+          "year": 1999,
+          "rank": 265,
+          "rating": 7.24984,
+          "weight": 3.8649,
+          "playtime": 480,
           "best_counts": [
             2
           ],
           "best_count": 2,
           "signals": [
-            "Age of Reason",
-            "American Revolutionary War",
             "Wargame",
-            "Area Majority / Influence",
+            "World War I",
             "Campaign / Battle Card Driven",
-            "Events",
-            "Open Drafting",
-            "Point to Point Movement",
-            "Secret Unit Deployment",
-            "Simulation"
+            "Dice Rolling",
+            "Point to Point Movement"
           ],
           "families": [],
           "reimplements": [],
           "player_poll": {
             "1": [
               1,
-              9,
-              51
-            ],
-            "2": [
-              70,
-              1,
-              0
-            ]
-          },
-          "users_rated": 3440,
-          "url": "https://boardgamegeek.com/boardgame/206480",
-          "x": 0.573,
-          "y": 0.02,
-          "genre": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-          "genres": [
-            {
-              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-              "value": 0.55
-            },
-            {
-              "name": "Wargame \u00b7 Political \u00b7 Negotiation",
-              "value": 0.21
-            },
-            {
-              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
-              "value": 0.12
-            }
-          ],
-          "coverage": [
-            0.016,
-            0.0,
-            0.0,
-            0.017,
-            0.0,
-            0.0,
-            0.029,
-            0.05,
-            0.0,
-            0.0,
-            0.0,
-            0.324
-          ]
-        },
-        {
-          "id": 13122,
-          "name": "Antiquity",
-          "year": 2004,
-          "rank": 448,
-          "rating": 7.05238,
-          "weight": 4.3224,
-          "playtime": 180,
-          "best_counts": [
-            2,
-            3,
-            4
-          ],
-          "best_count": 2,
-          "signals": [
-            "City Building",
-            "Civilization",
-            "Economic",
-            "Environmental",
-            "Medieval",
-            "Grid Coverage",
-            "Hexagon Grid",
-            "Modular Board",
-            "Square Grid",
-            "Tile Placement",
-            "Trading"
-          ],
-          "families": [],
-          "reimplements": [],
-          "player_poll": {
-            "1": [
-              0,
-              10,
+              34,
               48
             ],
             "2": [
-              66,
-              36,
-              3
-            ],
-            "3": [
-              63,
-              36,
-              1
-            ],
-            "4": [
-              24,
-              45,
-              19
+              93,
+              9,
+              0
             ]
           },
-          "users_rated": 4751,
-          "url": "https://boardgamegeek.com/boardgame/13122",
-          "x": 0.553,
-          "y": 0.138,
-          "genre": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+          "users_rated": 5738,
+          "url": "https://boardgamegeek.com/boardgame/91",
+          "x": 0.698,
+          "y": -0.171,
+          "genre": "Wargame \u00b7 Political \u00b7 Negotiation",
           "genres": [
             {
-              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
-              "value": 0.32
+              "name": "Wargame \u00b7 Political \u00b7 Negotiation",
+              "value": 0.42
             },
             {
-              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
-              "value": 0.26
+              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+              "value": 0.24
             },
             {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.12
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.17
             }
           ],
           "coverage": [
-            0.032,
-            0.009,
-            0.005,
-            0.023,
             0.0,
             0.0,
-            0.069,
-            0.019,
-            0.084,
+            0.055,
+            0.06,
             0.0,
             0.0,
-            0.015
+            0.0,
+            0.132,
+            0.0,
+            0.0,
+            0.0,
+            0.241
           ]
         }
       ]
@@ -14238,108 +15390,6 @@
         },
         {
           "game": {
-            "id": 463,
-            "name": "Magic: The Gathering",
-            "year": 1993,
-            "rank": 172,
-            "rating": 7.41122,
-            "weight": 3.2874,
-            "playtime": 20,
-            "best_counts": [
-              2,
-              3,
-              4
-            ],
-            "best_count": 2,
-            "signals": [
-              "Card Game",
-              "Collectible Components",
-              "Fantasy",
-              "Fighting",
-              "Betting and Bluffing",
-              "Closed Drafting",
-              "Deck Construction",
-              "Hand Management",
-              "Income",
-              "Interrupts",
-              "Player Elimination",
-              "Tags",
-              "Take That"
-            ],
-            "families": [
-              "Game: Magic The Gathering"
-            ],
-            "reimplements": [],
-            "player_poll": {
-              "1": [
-                2,
-                14,
-                507
-              ],
-              "2": [
-                542,
-                117,
-                7
-              ],
-              "3": [
-                156,
-                303,
-                142
-              ],
-              "4": [
-                22,
-                32,
-                8
-              ],
-              "5": [
-                2,
-                17,
-                29
-              ],
-              "6": [
-                0,
-                13,
-                36
-              ]
-            },
-            "users_rated": 43400,
-            "url": "https://boardgamegeek.com/boardgame/463",
-            "x": -0.191,
-            "y": 0.332,
-            "genre": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
-            "genres": [
-              {
-                "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
-                "value": 0.4
-              },
-              {
-                "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-                "value": 0.26
-              },
-              {
-                "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-                "value": 0.16
-              }
-            ],
-            "coverage": [
-              0.007,
-              0.006,
-              0.013,
-              0.0,
-              0.062,
-              0.11,
-              0.0,
-              0.0,
-              0.0,
-              0.0,
-              0.016,
-              0.052
-            ]
-          },
-          "gain": 0.237
-        },
-        {
-          "game": {
             "id": 164928,
             "name": "Orl\u00e9ans",
             "year": 2014,
@@ -14440,6 +15490,92 @@
         },
         {
           "game": {
+            "id": 130960,
+            "name": "Triumph & Tragedy: European Balance of Power 1936-1945",
+            "year": 2015,
+            "rank": 736,
+            "rating": 6.82193,
+            "weight": 3.4188,
+            "playtime": 360,
+            "best_counts": [
+              3
+            ],
+            "best_count": 3,
+            "signals": [
+              "Economic",
+              "Negotiation",
+              "Political",
+              "Territory Building",
+              "Wargame",
+              "World War II",
+              "Area Majority / Influence",
+              "Area Movement",
+              "Campaign / Battle Card Driven",
+              "Dice Rolling",
+              "Hand Management",
+              "Movement Points",
+              "Secret Unit Deployment"
+            ],
+            "families": [],
+            "reimplements": [
+              256872,
+              300323
+            ],
+            "player_poll": {
+              "1": [
+                0,
+                9,
+                53
+              ],
+              "2": [
+                5,
+                16,
+                45
+              ],
+              "3": [
+                91,
+                4,
+                2
+              ]
+            },
+            "users_rated": 2607,
+            "url": "https://boardgamegeek.com/boardgame/130960",
+            "x": 0.538,
+            "y": -0.159,
+            "genre": "Wargame \u00b7 Political \u00b7 Negotiation",
+            "genres": [
+              {
+                "name": "Wargame \u00b7 Political \u00b7 Negotiation",
+                "value": 0.49
+              },
+              {
+                "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+                "value": 0.29
+              },
+              {
+                "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+                "value": 0.07
+              }
+            ],
+            "coverage": [
+              0.0,
+              0.009,
+              0.011,
+              0.0,
+              0.002,
+              0.0,
+              0.061,
+              0.105,
+              0.0,
+              0.0,
+              0.008,
+              0.017
+            ]
+          },
+          "gain": 0.197
+        },
+        {
+          "game": {
             "id": 144344,
             "name": "Rococo",
             "year": 2013,
@@ -14533,7 +15669,7 @@
               0.213
             ]
           },
-          "gain": 0.374
+          "gain": 0.372
         }
       ],
       "alternates": [
@@ -14623,166 +15759,6 @@
           ]
         },
         {
-          "id": 130960,
-          "name": "Triumph & Tragedy: European Balance of Power 1936-1945",
-          "year": 2015,
-          "rank": 736,
-          "rating": 6.82193,
-          "weight": 3.4188,
-          "playtime": 360,
-          "best_counts": [
-            3
-          ],
-          "best_count": 3,
-          "signals": [
-            "Economic",
-            "Negotiation",
-            "Political",
-            "Territory Building",
-            "Wargame",
-            "World War II",
-            "Area Majority / Influence",
-            "Area Movement",
-            "Campaign / Battle Card Driven",
-            "Dice Rolling",
-            "Hand Management",
-            "Movement Points",
-            "Secret Unit Deployment"
-          ],
-          "families": [],
-          "reimplements": [
-            256872,
-            300323
-          ],
-          "player_poll": {
-            "1": [
-              0,
-              9,
-              53
-            ],
-            "2": [
-              5,
-              16,
-              45
-            ],
-            "3": [
-              91,
-              4,
-              2
-            ]
-          },
-          "users_rated": 2607,
-          "url": "https://boardgamegeek.com/boardgame/130960",
-          "x": 0.538,
-          "y": -0.159,
-          "genre": "Wargame \u00b7 Political \u00b7 Negotiation",
-          "genres": [
-            {
-              "name": "Wargame \u00b7 Political \u00b7 Negotiation",
-              "value": 0.49
-            },
-            {
-              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
-              "value": 0.29
-            },
-            {
-              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-              "value": 0.07
-            }
-          ],
-          "coverage": [
-            0.0,
-            0.009,
-            0.011,
-            0.0,
-            0.002,
-            0.0,
-            0.061,
-            0.105,
-            0.0,
-            0.0,
-            0.008,
-            0.017
-          ]
-        },
-        {
-          "id": 132018,
-          "name": "Churchill",
-          "year": 2015,
-          "rank": 832,
-          "rating": 6.75696,
-          "weight": 3.3865,
-          "playtime": 300,
-          "best_counts": [
-            3
-          ],
-          "best_count": 3,
-          "signals": [
-            "Political",
-            "Wargame",
-            "World War II",
-            "Auction / Bidding",
-            "Campaign / Battle Card Driven",
-            "Dice Rolling",
-            "Negotiation",
-            "Tug of War"
-          ],
-          "families": [],
-          "reimplements": [
-            296578
-          ],
-          "player_poll": {
-            "1": [
-              6,
-              36,
-              53
-            ],
-            "2": [
-              0,
-              26,
-              63
-            ],
-            "3": [
-              114,
-              7,
-              1
-            ]
-          },
-          "users_rated": 3499,
-          "url": "https://boardgamegeek.com/boardgame/132018",
-          "x": 0.488,
-          "y": -0.144,
-          "genre": "Wargame \u00b7 Political \u00b7 Negotiation",
-          "genres": [
-            {
-              "name": "Wargame \u00b7 Political \u00b7 Negotiation",
-              "value": 0.86
-            },
-            {
-              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
-              "value": 0.07
-            },
-            {
-              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-              "value": 0.06
-            }
-          ],
-          "coverage": [
-            0.0,
-            0.015,
-            0.013,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.176,
-            0.0,
-            0.0,
-            0.0,
-            0.0
-          ]
-        },
-        {
           "id": 383607,
           "name": "Barcelona",
           "year": 2023,
@@ -14856,93 +15832,95 @@
           ]
         },
         {
-          "id": 359871,
-          "name": "Arcs",
-          "year": 2024,
-          "rank": 100,
-          "rating": 7.5947,
-          "weight": 3.4452,
+          "id": 63628,
+          "name": "The Manhattan Project",
+          "year": 2012,
+          "rank": 582,
+          "rating": 6.93771,
+          "weight": 2.9559,
           "playtime": 120,
           "best_counts": [
             3,
             4
           ],
-          "best_count": 3,
+          "best_count": 4,
           "signals": [
-            "Science Fiction",
-            "Space Exploration",
-            "Wargame",
-            "Area Majority / Influence",
-            "Area Movement",
-            "Campaign / Battle Card Driven",
-            "Dice Rolling",
-            "Die Icon Resolution",
-            "Hand Management",
-            "Negotiation",
-            "Resource to Move",
+            "Aviation / Flight",
+            "Economic",
+            "Industry / Manufacturing",
+            "World War II",
+            "Action Retrieval",
+            "Auction: Dutch Priority",
+            "Closed Drafting",
+            "Open Drafting",
+            "Race",
             "Take That",
-            "Trick-taking",
-            "Turn Order: Claim Action",
-            "Variable Player Powers"
+            "Worker Placement",
+            "Worker Placement, Different Worker Types"
           ],
           "families": [
-            "Game: Arcs"
+            "Game: The Manhattan Project"
           ],
           "reimplements": [],
           "player_poll": {
             "1": [
-              5,
-              10,
-              345
+              0,
+              3,
+              74
             ],
             "2": [
+              11,
               54,
-              268,
-              120
+              37
             ],
             "3": [
-              333,
-              162,
-              24
+              38,
+              71,
+              6
             ],
             "4": [
-              288,
-              199,
-              31
+              78,
+              46,
+              2
+            ],
+            "5": [
+              12,
+              63,
+              39
             ]
           },
-          "users_rated": 18320,
-          "url": "https://boardgamegeek.com/boardgame/359871",
-          "x": 0.278,
-          "y": 0.043,
-          "genre": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
+          "users_rated": 10162,
+          "url": "https://boardgamegeek.com/boardgame/63628",
+          "x": 0.179,
+          "y": 0.023,
+          "genre": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
           "genres": [
             {
-              "name": "Science Fiction \u00b7 Card Game \u00b7 Hand Management",
-              "value": 0.32
+              "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
+              "value": 0.38
             },
             {
-              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
-              "value": 0.23
-            },
-            {
-              "name": "Wargame \u00b7 Political \u00b7 Negotiation",
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
               "value": 0.21
+            },
+            {
+              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+              "value": 0.14
             }
           ],
           "coverage": [
+            0.037,
+            0.025,
             0.0,
             0.0,
-            0.061,
-            0.023,
-            0.175,
+            0.006,
+            0.072,
             0.0,
-            0.13,
-            0.115,
-            0.021,
+            0.017,
             0.0,
             0.0,
-            0.044
+            0.008,
+            0.022
           ]
         },
         {
@@ -15019,6 +15997,181 @@
             0.107,
             0.0,
             0.0,
+            0.0
+          ]
+        },
+        {
+          "id": 346965,
+          "name": "Azul: Queen's Garden",
+          "year": 2021,
+          "rank": 679,
+          "rating": 6.85784,
+          "weight": 2.9227,
+          "playtime": 60,
+          "best_counts": [
+            2,
+            3
+          ],
+          "best_count": 2,
+          "signals": [
+            "Abstract Strategy",
+            "Puzzle",
+            "Renaissance",
+            "End Game Bonuses",
+            "Pattern Building",
+            "Set Collection",
+            "Tile Placement",
+            "Turn Order: Claim Action"
+          ],
+          "families": [
+            "Game: Azul"
+          ],
+          "reimplements": [
+            230802
+          ],
+          "player_poll": {
+            "1": [
+              0,
+              2,
+              51
+            ],
+            "2": [
+              64,
+              28,
+              0
+            ],
+            "3": [
+              29,
+              50,
+              2
+            ],
+            "4": [
+              13,
+              35,
+              25
+            ]
+          },
+          "users_rated": 6570,
+          "url": "https://boardgamegeek.com/boardgame/346965",
+          "x": -0.019,
+          "y": 0.148,
+          "genre": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+          "genres": [
+            {
+              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+              "value": 0.77
+            },
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.12
+            },
+            {
+              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+              "value": 0.11
+            }
+          ],
+          "coverage": [
+            0.02,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.135,
+            0.0,
+            0.0,
+            0.023
+          ]
+        },
+        {
+          "id": 371942,
+          "name": "The White Castle",
+          "year": 2023,
+          "rank": 72,
+          "rating": 7.69485,
+          "weight": 3.0643,
+          "playtime": 80,
+          "best_counts": [
+            2,
+            3
+          ],
+          "best_count": 3,
+          "signals": [
+            "Dice",
+            "Economic",
+            "Medieval",
+            "Action Drafting",
+            "Area Movement",
+            "Dice Rolling",
+            "End Game Bonuses",
+            "Income",
+            "Melding and Splaying",
+            "Multi-Use Cards",
+            "Open Drafting",
+            "Race",
+            "Resource Queue",
+            "Solo / Solitaire Game",
+            "Variable Set-up",
+            "Worker Placement",
+            "Worker Placement with Dice Workers"
+          ],
+          "families": [],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              41,
+              209,
+              90
+            ],
+            "2": [
+              153,
+              289,
+              22
+            ],
+            "3": [
+              303,
+              113,
+              12
+            ],
+            "4": [
+              68,
+              213,
+              103
+            ]
+          },
+          "users_rated": 23932,
+          "url": "https://boardgamegeek.com/boardgame/371942",
+          "x": 0.109,
+          "y": 0.128,
+          "genre": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+          "genres": [
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.52
+            },
+            {
+              "name": "Dice \u00b7 Worker Placement with Dice Workers \u00b7 Track Movement",
+              "value": 0.22
+            },
+            {
+              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+              "value": 0.2
+            }
+          ],
+          "coverage": [
+            0.292,
+            0.104,
+            0.014,
+            0.0,
+            0.0,
+            0.0,
+            0.025,
+            0.0,
+            0.0,
+            0.0,
+            0.14,
             0.0
           ]
         }
@@ -21120,97 +22273,6 @@
           ]
         },
         {
-          "id": 314040,
-          "name": "Pandemic Legacy: Season 0",
-          "year": 2020,
-          "rank": 59,
-          "rating": 7.73367,
-          "weight": 3.1872,
-          "playtime": 60,
-          "best_counts": [
-            2,
-            3,
-            4
-          ],
-          "best_count": 4,
-          "signals": [
-            "Medical",
-            "Spies / Secret Agents",
-            "Action Points",
-            "Cooperative Game",
-            "Hand Management",
-            "Legacy Game",
-            "Point to Point Movement",
-            "Scenario / Mission / Campaign Game",
-            "Set Collection",
-            "Tags",
-            "Trading",
-            "Variable Player Powers"
-          ],
-          "families": [
-            "Game: Pandemic"
-          ],
-          "reimplements": [
-            30549,
-            221107
-          ],
-          "player_poll": {
-            "1": [
-              6,
-              23,
-              77
-            ],
-            "2": [
-              37,
-              70,
-              20
-            ],
-            "3": [
-              42,
-              62,
-              8
-            ],
-            "4": [
-              64,
-              47,
-              9
-            ]
-          },
-          "users_rated": 9698,
-          "url": "https://boardgamegeek.com/boardgame/314040",
-          "x": 0.054,
-          "y": 0.098,
-          "genre": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-          "genres": [
-            {
-              "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-              "value": 0.59
-            },
-            {
-              "name": "Movies / TV / Radio theme \u00b7 Deck Construction \u00b7 Player Elimination",
-              "value": 0.14
-            },
-            {
-              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
-              "value": 0.09
-            }
-          ],
-          "coverage": [
-            0.045,
-            0.0,
-            0.042,
-            0.344,
-            0.038,
-            0.085,
-            0.0,
-            0.0,
-            0.0,
-            0.046,
-            0.0,
-            0.0
-          ]
-        },
-        {
           "id": 171623,
           "name": "The Voyages of Marco Polo",
           "year": 2015,
@@ -21470,6 +22532,88 @@
             0.024,
             0.0,
             0.075,
+            0.0
+          ]
+        },
+        {
+          "id": 144733,
+          "name": "Russian Railroads",
+          "year": 2013,
+          "rank": 152,
+          "rating": 7.4548,
+          "weight": 3.3957,
+          "playtime": 120,
+          "best_counts": [
+            2,
+            3,
+            4
+          ],
+          "best_count": 4,
+          "signals": [
+            "Industry / Manufacturing",
+            "Trains",
+            "End Game Bonuses",
+            "Tech Trees / Tech Tracks",
+            "Turn Order: Claim Action",
+            "Worker Placement"
+          ],
+          "families": [
+            "Game: Russian Railroads"
+          ],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              2,
+              23,
+              117
+            ],
+            "2": [
+              57,
+              153,
+              25
+            ],
+            "3": [
+              97,
+              125,
+              9
+            ],
+            "4": [
+              166,
+              66,
+              4
+            ]
+          },
+          "users_rated": 18984,
+          "url": "https://boardgamegeek.com/boardgame/144733",
+          "x": 0.277,
+          "y": 0.142,
+          "genre": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+          "genres": [
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.46
+            },
+            {
+              "name": "Economic \u00b7 Income \u00b7 Network and Route Building",
+              "value": 0.26
+            },
+            {
+              "name": "Tile Placement \u00b7 Open Drafting \u00b7 Abstract Strategy",
+              "value": 0.17
+            }
+          ],
+          "coverage": [
+            0.18,
+            0.115,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.043,
+            0.0,
+            0.107,
+            0.0,
+            0.0,
             0.0
           ]
         }
@@ -27590,6 +28734,106 @@
         },
         {
           "game": {
+            "id": 181279,
+            "name": "Fury of Dracula (Third/Fourth Edition)",
+            "year": 2015,
+            "rank": 409,
+            "rating": 7.08586,
+            "weight": 3.2827,
+            "playtime": 180,
+            "best_counts": [
+              3,
+              5
+            ],
+            "best_count": 5,
+            "signals": [
+              "Adventure",
+              "Deduction",
+              "Fighting",
+              "Horror",
+              "Novel-based",
+              "Card Play Conflict Resolution",
+              "Hand Management",
+              "Hidden Movement",
+              "Point to Point Movement",
+              "Resource to Move",
+              "Rock-Paper-Scissors",
+              "Secret Unit Deployment",
+              "Team-Based Game",
+              "Variable Player Powers"
+            ],
+            "families": [
+              "Game: Fury of Dracula"
+            ],
+            "reimplements": [
+              20963,
+              469328
+            ],
+            "player_poll": {
+              "1": [
+                1,
+                0,
+                184
+              ],
+              "2": [
+                27,
+                111,
+                87
+              ],
+              "3": [
+                121,
+                89,
+                14
+              ],
+              "4": [
+                18,
+                138,
+                55
+              ],
+              "5": [
+                187,
+                47,
+                21
+              ]
+            },
+            "users_rated": 15628,
+            "url": "https://boardgamegeek.com/boardgame/181279",
+            "x": 0.33,
+            "y": -0.102,
+            "genre": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+            "genres": [
+              {
+                "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
+                "value": 0.62
+              },
+              {
+                "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
+                "value": 0.16
+              },
+              {
+                "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+                "value": 0.14
+              }
+            ],
+            "coverage": [
+              0.0,
+              0.0,
+              0.039,
+              0.041,
+              0.017,
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.005,
+              0.0,
+              0.348
+            ]
+          },
+          "gain": 0.145
+        },
+        {
+          "game": {
             "id": 176734,
             "name": "The Manhattan Project: Energy Empire",
             "year": 2016,
@@ -27695,103 +28939,6 @@
         }
       ],
       "alternates": [
-        {
-          "id": 181279,
-          "name": "Fury of Dracula (Third/Fourth Edition)",
-          "year": 2015,
-          "rank": 409,
-          "rating": 7.08586,
-          "weight": 3.2827,
-          "playtime": 180,
-          "best_counts": [
-            3,
-            5
-          ],
-          "best_count": 5,
-          "signals": [
-            "Adventure",
-            "Deduction",
-            "Fighting",
-            "Horror",
-            "Novel-based",
-            "Card Play Conflict Resolution",
-            "Hand Management",
-            "Hidden Movement",
-            "Point to Point Movement",
-            "Resource to Move",
-            "Rock-Paper-Scissors",
-            "Secret Unit Deployment",
-            "Team-Based Game",
-            "Variable Player Powers"
-          ],
-          "families": [
-            "Game: Fury of Dracula"
-          ],
-          "reimplements": [
-            20963,
-            469328
-          ],
-          "player_poll": {
-            "1": [
-              1,
-              0,
-              184
-            ],
-            "2": [
-              27,
-              111,
-              87
-            ],
-            "3": [
-              121,
-              89,
-              14
-            ],
-            "4": [
-              18,
-              138,
-              55
-            ],
-            "5": [
-              187,
-              47,
-              21
-            ]
-          },
-          "users_rated": 15628,
-          "url": "https://boardgamegeek.com/boardgame/181279",
-          "x": 0.33,
-          "y": -0.102,
-          "genre": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-          "genres": [
-            {
-              "name": "Simultaneous Action Selection \u00b7 Animals \u00b7 Closed Drafting",
-              "value": 0.62
-            },
-            {
-              "name": "Action Points \u00b7 Variable Player Powers \u00b7 Hand Management",
-              "value": 0.16
-            },
-            {
-              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
-              "value": 0.14
-            }
-          ],
-          "coverage": [
-            0.0,
-            0.0,
-            0.039,
-            0.041,
-            0.017,
-            0.0,
-            0.0,
-            0.0,
-            0.0,
-            0.005,
-            0.0,
-            0.348
-          ]
-        },
         {
           "id": 17133,
           "name": "Railways of the World",
@@ -28259,6 +29406,93 @@
             0.0,
             0.0,
             0.017
+          ]
+        },
+        {
+          "id": 227935,
+          "name": "Wonderland's War",
+          "year": 2022,
+          "rank": 134,
+          "rating": 7.50415,
+          "weight": 3.0427,
+          "playtime": 125,
+          "best_counts": [
+            3,
+            4
+          ],
+          "best_count": 4,
+          "signals": [
+            "Fantasy",
+            "Novel-based",
+            "Area Majority / Influence",
+            "Deck, Bag, and Pool Building",
+            "Dice Rolling",
+            "Open Drafting",
+            "Push Your Luck",
+            "Rondel",
+            "Variable Player Powers"
+          ],
+          "families": [],
+          "reimplements": [],
+          "player_poll": {
+            "1": [
+              0,
+              2,
+              147
+            ],
+            "2": [
+              5,
+              94,
+              102
+            ],
+            "3": [
+              66,
+              135,
+              16
+            ],
+            "4": [
+              181,
+              53,
+              3
+            ],
+            "5": [
+              43,
+              93,
+              56
+            ]
+          },
+          "users_rated": 10867,
+          "url": "https://boardgamegeek.com/boardgame/227935",
+          "x": 0.197,
+          "y": -0.054,
+          "genre": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+          "genres": [
+            {
+              "name": "Area Majority / Influence \u00b7 Hand Management \u00b7 Dice Rolling",
+              "value": 0.26
+            },
+            {
+              "name": "Cooperative Game \u00b7 Adventure \u00b7 Fighting",
+              "value": 0.2
+            },
+            {
+              "name": "Open Drafting \u00b7 Set Collection \u00b7 End Game Bonuses",
+              "value": 0.17
+            }
+          ],
+          "coverage": [
+            0.042,
+            0.0,
+            0.045,
+            0.022,
+            0.03,
+            0.0,
+            0.063,
+            0.0,
+            0.013,
+            0.0,
+            0.04,
+            0.0
           ]
         }
       ]

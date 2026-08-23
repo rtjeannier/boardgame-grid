@@ -19,7 +19,7 @@ export { analyseShelf, coverageOf, redundancies, spokeVector } from './shelf.js'
 import { indexContract } from './contract.js';
 import { ratingSpans, coverageWeights } from './quality.js';
 import { buildWeightRows, buildCells, playerAxis, weightAxis } from './membership.js';
-import { gridDepths, readDepth, seedInto } from './depth.js';
+import { collectionCurve, gridDepths, readDepth, seedInto } from './depth.js';
 
 /** Deep enough for the whole-corpus curve to fall; never a cap on the answer. */
 export const COLLECTION_PROBE = 120;
@@ -95,14 +95,11 @@ export function buildGrid(contract, {
       // fills toward, so truncating a deeper run is not the same thing.
       // On its own pools: `allocate` fills `cell.chosen`, so probing the cells
       // the real run is about to use hands it a shelf that is already full.
-      const probeCells = buildCells(ix, { axes: [], include });
-      const probeScorer = new CoverageScorer(ix, weights, probeCells, { genreWeights });
-      const probe = allocate(ix, probeScorer, probeCells, {
-        capacity: COLLECTION_PROBE, alternatesLimit: 0, gainFloor,
-        rejected: rejectedRows,
+      const probe = collectionCurve(ix, weights, {
+        gainFloor, genreWeights, include, probe: COLLECTION_PROBE,
       });
-      probeCell = probe[0] ?? null;
-      const read = readDepth(probe[0]?.gains ?? [],
+      probeCell = probe;
+      const read = readDepth(probe?.gains ?? [],
         { leftover, fallback, places: ix.policy.gainPlaces ?? 3 });
       // The unsplit collection takes an override like any other shelf, under
       // the key `collection` — there is no column or row to name it by.
@@ -116,10 +113,10 @@ export function buildGrid(contract, {
           ...read, depth: room, auto: set == null, read: read.depth,
           // How much the next game would add, so a button can say whether it is
           // worth pressing rather than only that it exists.
-          next: probe[0]?.gains?.[room] ?? null,
-          nextName: probe[0]?.picks?.[room] == null
-            ? null : ix.names[probe[0].picks[room]],
-          curve: (probe[0]?.gains ?? []).slice(0, 24),
+          next: probe?.gains?.[room] ?? null,
+          nextName: probe?.picks?.[room] == null
+            ? null : ix.names[probe.picks[room]],
+          curve: (probe?.gains ?? []).slice(0, 24),
         },
       };
     } else {
@@ -128,7 +125,7 @@ export function buildGrid(contract, {
         rows: onWeight ? rows : null,
         leftover, fallback, overrides: depthOverrides, genreWeights, include,
         places: ix.policy.gainPlaces ?? 3,
-        rejected: rejectedRows, perShelfCap,
+        perShelfCap,
       });
       room = depths.capacity;
     }
@@ -198,14 +195,22 @@ export function buildGrid(contract, {
   }
 
   const ownedRows = new Set(rowsOf(owned));
+  let lazyData = null;
   return {
     ix, rows, axes, depths, columns,
     // `cells` are the candidate pools with their weights; `results` is what the
     // allocation made of them. Both are wanted — explaining why a game was cut
     // needs the pools, which say what it could ever have reached.
     cells: pools, results, weights,
-    // The grid shape only means anything when both axes are on.
-    data: onPlayers && onWeight ? toGridData(ix, results, pools, rows, columns) : null,
+    // The `grid.json` shape, for anyone who wants it — computed when it is asked
+    // for and not before. Nothing in the interface reads it, and building it
+    // eagerly was 285ms of every rebuild on the live corpus: more than the
+    // allocation it describes. It only means anything when both axes are on.
+    get data() {
+      if (!onPlayers || !onWeight) return null;
+      if (!lazyData) lazyData = toGridData(ix, results, pools, rows, columns);
+      return lazyData;
+    },
     grid: results.map((cell) => ({
       ...cell,
       picks: cell.picks.map((g, i) => ({

@@ -19,7 +19,18 @@ from . import buckets, coverage
 from .assign import GAIN_PLACES, CoverageScorer, allocate
 
 #: Deep enough that the curve has somewhere to fall. Never a cap on the answer.
-PROBE = 40
+#:
+#: Measured on the live corpus, one column axis: 133ms at 12, 265ms at 20, 586ms
+#: at 30, 1133ms at 40 — superlinear, because every unit of capacity is another
+#: bid round scoring every candidate in every bucket. Twenty and forty return
+#: identical depths on all seven columns; twelve does not.
+#:
+#: Deliberately fixed rather than grown until a crossing appears. The probe is not
+#: a passive observation: it is an allocation, and an axis's buckets contend for
+#: the same games, so a deeper probe observes a *bigger collection* and the curves
+#: themselves move. An adaptive probe would measure different buckets against
+#: different collections, which is not a comparison.
+PROBE = 20
 
 
 def read_depth(gains, leftover: float, fallback: int) -> dict:
@@ -52,26 +63,25 @@ def read_depth(gains, leftover: float, fallback: int) -> dict:
             "next": g[depth] if depth < len(g) else None, "fallback": fallback}
 
 def axis_depths(games, space, ratings, sel, axis, leftover, fallback,
-                probe: int = PROBE, axis_room=None, rejected=()) -> dict:
+                probe: int = PROBE, axis_room=None) -> dict:
     """Read every bucket of one axis at once.
 
     Runs the allocation with that axis alone and a generous ceiling, which is the
     only way to see the curve: a shelf capped at five never shows what its sixth
     pick would have been worth.
 
-    Bans move the curve; pins do not. A banned game is genuinely not available,
-    so the shelf below it really does fill differently. A pinned game is still
-    one of the candidates — pinning only says it must be among them. Seeding it
-    into the probe makes it contribute its coverage first, which flattens every
-    gain after it and drags the knee an entry earlier: pin any game at all and
-    the collection quietly shrank from twelve to eleven. That was an artefact of
-    the measurement, not a finding about the collection.
+    Neither bans nor pins reach it. A shelf's depth is set by the axis and
+    nothing else, so blocking a game changes *which* games fill the shelves and
+    never *how many* — the grid keeps its shape while its contents move.
+    Exactness would argue the other way, since a banned game really is
+    unavailable; but blocking one game moved the 1-player column 5 -> 6 and the
+    3-player column 9 -> 8, and every shelf below them reflowed for a reason
+    nobody could see.
     """
     cells, memberships = buckets.build_cells(games, [axis], sel)
     scorer = CoverageScorer(space.loadings, space.similarity, ratings,
                             space.spoke_of, sel, axis_room)
-    results = allocate(cells, memberships, scorer, probe, alternates_limit=0, sel=sel,
-                       rejected=set(rejected))
+    results = allocate(cells, memberships, scorer, probe, alternates_limit=0, sel=sel)
     return {key[0]: {**read_depth([a.gain for a in r.assignments], leftover, fallback),
                      "key": key[0]}
             for key, r in results.items()}
@@ -79,8 +89,7 @@ def axis_depths(games, space, ratings, sel, axis, leftover, fallback,
 
 def grid_depths(games, space, ratings, sel, coll, weight_rows,
                 overrides: dict | None = None, probe: int = PROBE,
-                axis_room=None, column_axis=None, row_axis=None,
-                rejected=()) -> dict:
+                axis_room=None, column_axis=None, row_axis=None) -> dict:
     """Depth for every cell, as `allocate` wants it.
 
     A cell takes the smaller of its column's answer and its row's, because both
@@ -96,10 +105,8 @@ def grid_depths(games, space, ratings, sel, coll, weight_rows,
     common = (games, space, ratings, sel)
     column_axis = column_axis or buckets.PlayerCountAxis(coll.columns(), sel)
     row_axis = row_axis or buckets.WeightAxis(weight_rows, sel)
-    by_column = axis_depths(*common, column_axis, leftover, fallback, probe,
-                            axis_room, rejected)
-    by_row = axis_depths(*common, row_axis, leftover, fallback, probe,
-                         axis_room, rejected)
+    by_column = axis_depths(*common, column_axis, leftover, fallback, probe, axis_room)
+    by_row = axis_depths(*common, row_axis, leftover, fallback, probe, axis_room)
 
     def resolve(read, key, kind):
         seen = read.get(key)

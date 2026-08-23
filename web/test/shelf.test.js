@@ -215,3 +215,44 @@ test('every pinned game holds a place, even when they displace each other', () =
     assert.ok(held.has(id), `${ix.names[ix.rowOf.get(id)]} was pinned and is not shelved`);
   }
 });
+
+test('blocking a game never changes how deep a shelf goes', () => {
+  // A promise, not a side effect: the reading is set by the axis alone, so a
+  // block changes *which* games fill the shelves and never *how many*. Before
+  // this, blocking one game moved two columns by a place and everything below
+  // them reflowed for a reason nobody could see.
+  const victim = [...shelved(base.grid)][2];
+  const after = buildGrid(ix, { banned: [victim] });
+  for (const [key, before] of base.depths.columnDepth) {
+    assert.equal(after.depths.columnDepth.get(key).depth, before.depth,
+      `column ${key} moved when a game was blocked`);
+  }
+  for (const [key, before] of base.depths.rowDepth) {
+    assert.equal(after.depths.rowDepth.get(key).depth, before.depth,
+      `row ${key} moved when a game was blocked`);
+  }
+});
+
+test('a rebuild is a pure function of the settings', () => {
+  const sign = (b) => b.grid.map((c) => `${c.key}:${c.picks.map((p) => p.id)}`).sort().join('|');
+  const [a, b] = [...shelved(base.grid)].slice(0, 2);
+  assert.equal(sign(buildGrid(ix, { banned: [a, b] })), sign(buildGrid(ix, { banned: [b, a] })),
+    'the order things were banned in changed the answer');
+  assert.equal(sign(buildGrid(ix, { banned: [] })), sign(base),
+    'unbanning did not restore the collection exactly');
+});
+
+test('the shipped contract rebuilds fast enough to be a control surface', () => {
+  // Every click rebuilds — a split, a depth, a pin, a block. This is the only
+  // thing standing between a bigger corpus and an app that stutters, so it fails
+  // loudly rather than being noticed in a demo.
+  const budget = 250;
+  buildGrid(ix, { axes: ['players', 'weight'] });
+  let best = Infinity;
+  for (let i = 0; i < 3; i++) {
+    const t = performance.now();
+    buildGrid(ix, { axes: ['players', 'weight'] });
+    best = Math.min(best, performance.now() - t);
+  }
+  assert.ok(best < budget, `a two-split rebuild took ${best.toFixed(0)}ms, budget ${budget}ms`);
+});

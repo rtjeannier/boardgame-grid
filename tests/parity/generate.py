@@ -97,8 +97,7 @@ def run(games, space, params, banned=(), keepers=(), budget=None):
             games, space, {g.id: g.rating for g in games}, sel, coll, rows,
             axis_room=coll.axis_room(space.dimension_names, space.spoke_of),
             column_axis=buckets.PlayerCountAxis(coll.columns(), sel, places=PLACES),
-            row_axis=buckets.WeightAxis(rows, sel),
-            rejected=set(banned))["capacity"]
+            row_axis=buckets.WeightAxis(rows, sel))["capacity"]
     else:
         room = coll.capacity(cells)
     # Seed only the pins that lost. Seeding one up front takes it out of

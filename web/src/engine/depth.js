@@ -17,8 +17,41 @@ import { allocate } from './allocate.js';
 import { buildCells, playerAxis, weightAxis } from './membership.js';
 import { CoverageScorer } from './scorer.js';
 
-/** Deep enough that the curve has somewhere to fall; never a cap on the answer. */
-export const PROBE = 40;
+/**
+ * Deep enough that the curve has somewhere to fall. Never a cap on the answer.
+ *
+ * Measured on the live corpus, one column axis: 133ms at 12, 265ms at 20, 586ms
+ * at 30, 1,133ms at 40 — superlinear, because every unit of capacity is another
+ * bid round scoring every candidate in every bucket. Twenty and forty return
+ * identical depths on all seven columns; twelve does not.
+ *
+ * Deliberately fixed rather than grown until a crossing appears. The probe is
+ * not a passive observation: it is an allocation, and an axis's buckets contend
+ * for the same games, so a deeper probe observes a *bigger collection* and the
+ * curves themselves move. That is why twelve disagrees with twenty on the
+ * nine-plus column even though the answer there is one — its first pick differs.
+ * An adaptive probe would measure different buckets against different
+ * collections, which is not a comparison.
+ */
+export const PROBE = 20;
+
+/**
+ * One cached reading per axis, per index.
+ *
+ * `axisDepths` was 90% of every rebuild — 1,433ms of 1,592ms on the live corpus
+ * — and almost nothing a reader touches changes its answer. Pins, ownership,
+ * depth overrides and fill limits leave it identical by construction; bans are
+ * excluded from it on purpose (see `axisDepths`), so what is left is the axis
+ * itself.
+ */
+const CACHE = new WeakMap();
+
+function cached(ix, key, make) {
+  let byKey = CACHE.get(ix);
+  if (!byKey) { byKey = new Map(); CACHE.set(ix, byKey); }
+  if (!byKey.has(key)) byKey.set(key, make());
+  return byKey.get(key);
+}
 
 /**
  * Where one shelf stops.
@@ -58,23 +91,16 @@ export function readDepth(gains, { leftover, fallback, places = 3 }) {
  */
 export function axisDepths(ix, weights, axis, {
   leftover, fallback, places, probe = PROBE, genreWeights = null, include = null,
-  rejected = null,
 } = {}) {
   const cells = buildCells(ix, { axes: [axis], include });
   const scorer = new CoverageScorer(ix, weights, cells, { genreWeights });
-  // Bans move the curve; pins do not.
-  //
-  // A banned game is genuinely not available, so the shelf below it really does
-  // fill differently and the point where returns fall away really does move. A
-  // pinned game is still one of the candidates — pinning only says it must be
-  // among them. Seeding it into the probe makes it contribute its coverage
-  // first, which flattens every gain after it and drags the knee an entry
-  // earlier: pin any game at all and the collection quietly shrank from twelve
-  // to eleven. That was an artefact of the measurement, not a finding about the
-  // collection.
-  const results = allocate(ix, scorer, cells, {
-    capacity: probe, alternatesLimit: 0, rejected: rejected ?? undefined,
-  });
+  // No bans, no pins. A shelf's depth is set by the axis and nothing else, so
+  // blocking a game changes *which* games fill the shelves and never *how many*
+  // — the grid keeps its shape while its contents move. Exactness would argue
+  // the other way, since a banned game really is unavailable; but blocking one
+  // game moved the 1-player column 5 -> 6 and the 3-player column 9 -> 8, and
+  // every shelf below them reflowed for a reason nobody could see.
+  const results = allocate(ix, scorer, cells, { capacity: probe, alternatesLimit: 0 });
   const out = new Map();
   for (const cell of results) {
     out.set(cell.key,
@@ -106,10 +132,20 @@ export function seedInto(cells, keepers) {
  */
 export function gridDepths(ix, weights, { columns, rows, leftover, fallback, places,
   overrides = {}, probe = PROBE, genreWeights = null, include = null,
-  rejected = null, perShelfCap = null } = {}) {
-  const opts = { leftover, fallback, places, probe, genreWeights, include, rejected };
-  const byColumn = columns ? axisDepths(ix, weights, playerAxis(columns), opts) : null;
-  const byRow = rows ? axisDepths(ix, weights, weightAxis(rows), opts) : null;
+  perShelfCap = null } = {}) {
+  const opts = { leftover, fallback, places, probe, genreWeights, include };
+  // Keyed on what the reading actually depends on. `include` filters the corpus
+  // and is rare, so a filtered build simply does not cache.
+  const read = (kind, axis, shape) => (include
+    ? axisDepths(ix, weights, axis, opts)
+    : cached(ix, `${kind}|${shape}|${leftover}|${fallback}|${places}|${probe}`
+      + `|${genreWeights ? JSON.stringify(genreWeights) : ''}`,
+    () => axisDepths(ix, weights, axis, opts)));
+
+  const byColumn = columns
+    ? read('col', playerAxis(columns), JSON.stringify(columns)) : null;
+  const byRow = rows
+    ? read('row', weightAxis(rows), JSON.stringify(rows.map((r) => [r.lo, r.hi]))) : null;
 
   const depthOf = (map, key, kind) => {
     const read = map?.get(key);
@@ -156,4 +192,27 @@ export function gridDepths(ix, weights, { columns, rows, leftover, fallback, pla
   if (!columns && rows) for (const [index, r] of rowDepth) resolve(index, r.depth);
 
   return { capacity, columnDepth, rowDepth, cellDepth };
+}
+
+/**
+ * The unsplit collection's own curve, cached like the axis readings.
+ *
+ * One cell, so there is no axis to read down — the cell is read instead, and the
+ * same argument applies: nothing a reader touches moment to moment changes it,
+ * so it should not be recomputed on every keystroke.
+ */
+export function collectionCurve(ix, weights, {
+  gainFloor = null, genreWeights = null, include = null, probe = 120,
+} = {}) {
+  const make = () => {
+    // On its own pools: `allocate` fills `cell.chosen`, so probing the cells the
+    // real run is about to use hands it a shelf that is already full.
+    const cells = buildCells(ix, { axes: [], include });
+    const scorer = new CoverageScorer(ix, weights, cells, { genreWeights });
+    const [cell] = allocate(ix, scorer, cells, { capacity: probe, alternatesLimit: 0, gainFloor });
+    return cell ? { gains: cell.gains, picks: cell.picks } : null;
+  };
+  if (include) return make();
+  return cached(ix, `collection|${probe}|${gainFloor}`
+    + `|${genreWeights ? JSON.stringify(genreWeights) : ''}`, make);
 }
