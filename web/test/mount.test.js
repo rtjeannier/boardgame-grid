@@ -630,3 +630,27 @@ test('what is over-represented appears only once you own enough to say', () => {
   }
   act(() => root.unmount());
 });
+
+test('add the next game actually adds it, above the curve as well as below', () => {
+  const { host, root } = mount();
+  const offered = () => (host.textContent.match(/＋ Add ([^\n]+?)(?:Goes on|Adds)/) ?? [])[1];
+
+  // Pressing it at the depth the curve chose used to do nothing: the number was
+  // a ceiling on the reading, so asking for one more came back as the same.
+  const before = size(host);
+  const first = offered();
+  assert.ok(first, 'nothing offered');
+  click(byText(`＋ Add ${first}`, host));
+  assert.equal(size(host), before + 1, 'the button did not add a game');
+  assert.notEqual(offered(), first, 'it is still offering the game it just added');
+
+  click(byText(`＋ Add ${offered()}`, host));
+  assert.equal(size(host), before + 2, 'the second press did not add either');
+
+  // And the fill list stops claiming the shelf reads its own curve.
+  const open = [...host.querySelectorAll('summary')]
+    .find((el) => el.textContent.includes('Fill until'));
+  act(() => { open.parentElement.open = true; });
+  assert.match(host.textContent, /overruled — you set \d+ a shelf/);
+  act(() => root.unmount());
+});

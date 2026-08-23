@@ -138,7 +138,7 @@ export function buildGrid(contract, {
   // resolve against, so it is applied here — and the number typed on that one
   // shelf beats it the same way.
   if (perShelfCap != null && axisList.length === 0 && depthOverrides.collection == null) {
-    room = Math.min(room, perShelfCap);
+    room = perShelfCap;
   }
   // What comes next depends on where it stopped, so it is named after every
   // ceiling has had its say rather than off the reading alone.

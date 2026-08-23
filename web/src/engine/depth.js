@@ -173,10 +173,12 @@ export function gridDepths(ix, weights, { columns, rows, leftover, fallback, pla
   const capacity = new Map();
   const cellDepth = new Map();
   const resolve = (key, from) => {
-    // The flat default is a ceiling on what the reading said — but only where
-    // the reader has not spoken. A number typed on one shelf is the most
-    // specific thing anybody said about that shelf and beats both.
-    const base = perShelfCap == null ? from : Math.min(from, perShelfCap);
+    // A number the reader typed *replaces* the reading; it does not cap it.
+    // Capping meant asking for one more game than the curve found did nothing —
+    // 13, 15 and 20 all came back as 12 — so the "add the next game" button
+    // pressed and nothing moved. Unset, each shelf reads its own curve; set, it
+    // is the depth; typed on one shelf, that shelf's number beats both.
+    const base = perShelfCap == null ? from : perShelfCap;
     const set = overrides[`cell:${key}`];
     const depth = set == null ? base : Math.max(0, set);
     capacity.set(key, depth);

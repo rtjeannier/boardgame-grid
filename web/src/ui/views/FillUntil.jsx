@@ -32,7 +32,7 @@ function summarise(limits, leftover) {
     .join(' · ');
 }
 
-export default function FillUntil({ limits, onChange, leftover }) {
+export default function FillUntil({ limits, onChange, leftover, perShelf = null }) {
   return (
     <details className={css.wrap}>
       <summary className={css.summary}>
@@ -52,7 +52,9 @@ export default function FillUntil({ limits, onChange, leftover }) {
                        onChange={() => onChange(at, { on: !limit.on })} />
                 <span className={css.name}>{kind.label}</span>
                 <span className={css.scope}>
-                  {kind.fixed ?? (blocked ? kind.why : SCOPE[limit.scope])}
+                  {limit.kind === 'returns' && perShelf != null
+                    ? `overruled — you set ${perShelf} a shelf`
+                    : kind.fixed ?? (blocked ? kind.why : SCOPE[limit.scope])}
                 </span>
               </label>
               {limit.on && !blocked && limit.value != null && (
@@ -71,11 +73,11 @@ export default function FillUntil({ limits, onChange, leftover }) {
           );
         })}
         <p className={css.foot}>
-          Everything ticked applies at once and the smallest wins. Turn this off
-          and a shelf stops reading its own curve — it takes the number in the
-          register head, and nothing recomputes behind you. How many games there
-          are is a result, not a limit, so it is a count in the bar rather than a
-          row here.
+          Everything ticked applies at once and the smallest wins. Typing a
+          number in the register head overrules the first row outright — a shelf
+          takes that number rather than reading its own curve. How many games
+          there are is a result, not a limit, so it is a count in the bar rather
+          than a row here.
         </p>
       </div>
     </details>

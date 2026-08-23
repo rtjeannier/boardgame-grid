@@ -97,7 +97,8 @@ export default function App({ contract }) {
                 openKey={state.panel} ownedCount={state.owned.length}
                 onlyMine={{ on: state.mineOnly, toggle: actions.toggleMineOnly }}>
         <FillUntil limits={state.limits} onChange={actions.setLimit}
-                   leftover={built.ix.defaults?.autoDepthLeftover} />
+                   leftover={built.ix.defaults?.autoDepthLeftover}
+                   perShelf={state.perShelf} />
         <Blocked state={state} built={built} actions={actions} />
       </SplitBar>
       <AxisPanel which={state.axes.includes(state.panel) ? state.panel : null}
