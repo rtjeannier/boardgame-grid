@@ -35,8 +35,6 @@
 .head b { font-family: var(--font-mono); font-size: 13px; font-weight: 500;
           font-variant-numeric: tabular-nums; }
 .head:hover .drop { color: var(--text-3); }
-.headDepth { margin-top: var(--s-3); display: flex; align-items: center;
-             justify-content: space-between; gap: var(--s-4); }
 
 /* The shelf the side panel is describing. A five-game shelf moves visibly when
    one game changes, which the whole collection cannot. */

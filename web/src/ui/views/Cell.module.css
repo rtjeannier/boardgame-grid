@@ -7,11 +7,14 @@
 .name { min-width: 0; text-align: left; border: 0; background: none; padding: 0;
         font-family: var(--font-mono); font-weight: 500; color: var(--text);
         overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.tally { display: inline-flex; align-items: center; gap: var(--s-3);
+         flex: none; margin-left: auto; }
 .count { font-family: var(--font-mono); font-weight: 500; color: var(--text-3);
-         font-variant-numeric: tabular-nums; flex: none;
-         border: 0; background: none; padding: 0; cursor: pointer;
-         margin-left: auto; }
-.count:hover { color: var(--text); }
+         font-variant-numeric: tabular-nums; }
+.open { border: 0; background: none; padding: 0; cursor: pointer; display: grid;
+        place-items: center; color: var(--line-2); }
+.cell:hover .open, .open:focus-visible { color: var(--text-2); }
+.open:hover { color: var(--mark); }
 .picks { display: flex; flex-direction: column; min-width: 0; }
 .empty { color: var(--text-3); }
 .depth { display: inline-flex; align-items: center; gap: var(--s-4); flex: none; }
@@ -49,3 +52,13 @@
 .deckHead:hover { color: var(--text); }
 .deck > .picks { margin-top: var(--s-5); opacity: .72; }
 .deck > .picks:hover { opacity: 1; }
+
+/* The games beside what describes them. The radar had a whole row to itself and
+   filled it — 700px of overlay for a shape that reads at 260. */
+.body { display: grid; grid-template-columns: 260px minmax(0, 1fr);
+        gap: var(--s-9); align-items: start; }
+.aside { display: flex; flex-direction: column; gap: var(--s-7); min-width: 0; }
+@media (max-width: 899px) {
+  .body { grid-template-columns: minmax(0, 1fr); gap: var(--s-7); }
+  .aside { order: 2; }
+}

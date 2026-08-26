@@ -1,5 +1,4 @@
 import { useMemo } from 'react';
-import DepthField from '../primitives/DepthField.jsx';
 import { cellLabeller } from './labels.js';
 import { splitWidest, splitWidestBand } from '../axes.js';
 import { useChanges } from '../useChanges.js';
@@ -35,16 +34,6 @@ export const collectionOf = (built) => ({
   ids: shelvedNow(built),
   at: new Map(built.grid.flatMap((c) => c.picks.map((p) => [p.id, c.key]))),
 });
-
-function Depth({ kind, label, read, actions }) {
-  if (!read) return null;
-  return (
-    <DepthField value={read.depth} set={read.set}
-                label={`Games on the ${label} shelf`}
-                onChange={(v) => actions.setDepth(`${kind}:${label}`, v)}
-                onClear={() => actions.setDepth(`${kind}:${label}`, null)} />
-  );
-}
 
 /**
  * Every shelf, one per row, when a matrix will not fit.
@@ -102,7 +91,6 @@ export default function Board({ built, state, actions, onOpen }) {
     const keys = onlyPlayers
       ? columns.map((c) => ({ key: c.label, label: c.label }))
       : rows.map((r) => ({ key: String(r.index), label: r.name }));
-    const depthMap = onlyPlayers ? depths?.columnDepth : depths?.rowDepth;
     return (
       <div className={css.columns}
            style={{ gridTemplateColumns: `repeat(${keys.length}, minmax(0, 1fr)) 38px` }}>
@@ -123,11 +111,6 @@ export default function Board({ built, state, actions, onOpen }) {
                             : actions.dropRow(Number(key),
                               rows.slice(0, -1).map((r) => r.hi)))}>✕</button>
                 </span>
-                {/* One depth per axis bucket, not one per shelf. */}
-                <div className={css.headDepth}>
-                  <Depth kind={onlyPlayers ? 'column' : 'row'} label={key}
-                         read={depthMap?.get(key)} actions={actions} />
-                </div>
               </div>
               <Cell cell={cell} built={built} state={state} actions={actions}
                     size="mini" marks={marks} onOpen={onOpen} showName={false} dense dense
@@ -152,10 +135,9 @@ export default function Board({ built, state, actions, onOpen }) {
     <div className={css.board}
          style={{ gridTemplateColumns:
            `146px repeat(${columns.length}, minmax(0, 1fr)) 38px` }}>
-      <div className={css.corner}>
-        <b>Games per shelf</b>
-        <span>Read down each column and across each row. A shelf takes the smaller.</span>
-      </div>
+      {/* Empty on purpose. It used to explain how a shelf's depth resolves,
+          which is a rule about controls that are no longer here. */}
+      <div className={css.corner} />
       {columns.map((c) => (
         <div key={c.label} className={css.colhead}>
           <span className={css.headLine}>
@@ -165,10 +147,6 @@ export default function Board({ built, state, actions, onOpen }) {
                     onClick={() => actions.setColumns(
                       columns.filter((x) => x.label !== c.label))}>✕</button>
           </span>
-          <div style={{ marginTop: 'var(--s-3)' }}>
-            <Depth kind="column" label={c.label}
-                   read={depths?.columnDepth?.get(c.label)} actions={actions} />
-          </div>
         </div>
       ))}
       <div className={`${css.colhead} ${css.addStrip}`}>
@@ -208,10 +186,6 @@ function Row({ row, built, state, actions, onOpen, byKey, marks, focused }) {
                     row.index, built.rows.slice(0, -1).map((r) => r.hi))}>✕</button>
         </span>
         <span className={css.range}>{row.lo.toFixed(2)}–{row.hi.toFixed(2)}</span>
-        <div style={{ marginTop: 'var(--s-3)' }}>
-          <Depth kind="row" label={String(row.index)}
-                 read={depths?.rowDepth?.get(String(row.index))} actions={actions} />
-        </div>
       </div>
       {columns.map((c) => {
         const cell = byKey.get(`${c.label}|${row.index}`);

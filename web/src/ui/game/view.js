@@ -58,7 +58,8 @@ const minutes = (m) => (m >= 120 ? `${Math.round(m / 60)}h` : `${m}m`);
  * share in; callers that do not leave it null and the column does not draw.
  */
 export function toGameView(ix, row, {
-  carries = null, shelf = null, place = null, pinned = false, blocked = false,
+  carries = null, carriesTop = null, shelf = null, place = null,
+  pinned = false, blocked = false,
   owned = false, reason = null, axes = null,
 } = {}) {
   return {
@@ -76,6 +77,11 @@ export function toGameView(ix, row, {
     axes: axes ?? axesOf(ix, row),
     tags: (axes ?? axesOf(ix, row)).map((a) => a.label.toLowerCase()).join(' · '),
     carries,
+    // The bar is drawn against the biggest share on the same shelf, because
+    // that is what makes the shelf's own spread visible. A fixed scale of
+    // `carries * 1000` put every bar at 100%: at shelf scale a share is 5-25%,
+    // so every single one clamped, and the chart said nothing at all.
+    carriesOf: carries == null || !carriesTop ? null : carries / carriesTop,
     carriesLabel: carries == null ? null : `${(carries * 100).toFixed(1)}%`,
     shelf, place, reason,
     pinned, blocked, owned,

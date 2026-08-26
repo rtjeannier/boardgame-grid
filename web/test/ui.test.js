@@ -142,7 +142,11 @@ test('the radar draws a set, with and without something to compare against', () 
   assert.ok(compared.split('<polygon').length > alone.split('<polygon').length,
     'the second series did not draw');
   // The gap list is the point of an overlay: it names where you are thinnest.
-  assert.ok(compared.includes('−'), 'no gap reported against the reference');
+  // In words — it used to print the raw coverage difference, so a shelf holding
+  // none of a kind the collection covers fully read "Deduction −1.00".
+  const said = /Reaches no ([^<]*)/.exec(compared);
+  assert.ok(said, 'no gap reported against the reference');
+  assert.ok(!/\d/.test(said[1]), `the gap list is printing numbers again: ${said[1]}`);
   assert.equal(render(h(ui.Radar, { names: [], values: [] })), '');
 });
 

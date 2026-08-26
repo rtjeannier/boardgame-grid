@@ -180,6 +180,16 @@ reader may change.
   every render. Measured: 699 of the 734 scoring passes behind one click came
   from `get filled`, and blocking a game cost 586 ms against 133 ms once it was
   gone. Never re-add a lazy getter as an enumerable property.
+- **A quantity drawn as a bar needs a scale from its own data.** `carries` was
+  drawn at `min(100, share * 1000)%`; at shelf scale a share is 5–25%, so every
+  bar on every shelf clamped to full and the chart said nothing. It scales to
+  the largest share on the same shelf now (`carriesTop`).
+- **`size` on the radar is its coordinate space, not its rendered size.** The
+  svg is `width: 100%`, so it grows to whatever holds it — 300px in the rail and
+  700px in an overlay. Cap the container, do not change `size`.
+- **Never show a reader a raw coverage difference.** A shelf holding none of a
+  kind the collection covers fully rendered as "Deduction −1.00", a number on a
+  scale nobody was shown. The radar names the kinds in words instead.
 - **A game's axis loadings sum to exactly 1.0**, so they are already shares of
   what the game is. `chart/Bars.jsx` must be given `max={1}` for them: scaling
   to the row maximum made every game's top axis full width and drew a game that

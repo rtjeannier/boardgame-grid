@@ -150,12 +150,6 @@ export default register({
             </div>
           </>
         )}
-        <p className={css.note}>
-          A shelf that is already the best it can be has nothing doubled up on
-          it: the closest pair in the recommended collection sits at 0.44
-          similarity, where a real duplicate sits at 0.95. Add your own games or
-          pin something and this has more to say.
-        </p>
       </div>
     );
   },

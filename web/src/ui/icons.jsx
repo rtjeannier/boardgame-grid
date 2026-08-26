@@ -56,3 +56,13 @@ export function Search({ size = 12 }) {
     </svg>
   );
 }
+
+/** Open this shelf: the corner-arrow every "expand" control is. */
+export function Expand({ size = 12 }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 12 12" aria-hidden="true" {...stroke}
+         strokeWidth={1.4}>
+      <path d="M7 2h3v3M10 2L6.5 5.5M5 10H2V7M2 10l3.5-3.5" />
+    </svg>
+  );
+}

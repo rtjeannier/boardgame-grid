@@ -4,6 +4,7 @@ import GameItem from '../game/GameItem.jsx';
 import { toGameView } from '../game/view.js';
 import { sharesOf } from '../state.js';
 import { cellLabeller } from './labels.js';
+import { Expand } from '../icons.jsx';
 import css from './Cell.module.css';
 
 /**
@@ -141,25 +142,39 @@ export default function Cell({
             <PlusMinus depthKey={depthKeyOf(cell)} held={held} next={next}
                        actions={actions} />
           </span>
-        ) : onFocus ? (
-          <button type="button" className={css.count} onClick={onFocus}
-                  aria-label={showName ? `${held} games` : `Open ${name}`}>{held}</button>
-        ) : <b className={css.count}>{held}</b>}
+        ) : (
+          <span className={css.tally}>
+            <b className={css.count}>{held}</b>
+            {/* A count that opens something is a count that looks like a count.
+                The icon says there is somewhere to go. */}
+            {onFocus && (
+              <button type="button" className={css.open} onClick={onFocus}
+                      aria-label={`Open ${name}`} title={`Open ${name}`}>
+                <Expand />
+              </button>
+            )}
+          </span>
+        )}
       </div>
 
-      <div className={css.picks}>
+      {/* At full size the analyses sit beside the games rather than under them:
+          a radar given a whole row of its own is mostly empty air, and the
+          games are what a reader came for. One column again when there is not
+          the width for two. */}
+      <div className={full && analyses ? css.body : undefined}>
+        {full && analyses && <div className={css.aside}>{analyses}</div>}
+        <div className={css.picks}>
         {(cell?.picks ?? []).map((p, i) => item(
           ix.rowOf.get(p.id), p.id,
           marks.arrived?.has(p.id) ? 'came' : null,
-          carries ? { carries: carries[i] } : undefined))}
+          carries ? { carries: carries[i], carriesTop: Math.max(...carries) } : undefined))}
         {gone.map((row) => item(row, ix.ids[row], 'went'))}
         {/* Said even while the last games are still fading out: a shelf that
             holds nothing is empty now, and waiting for the animation to finish
             before admitting it reads as a hang. */}
         {!held && <span className={css.empty}>{empty(state, full)}</span>}
+        </div>
       </div>
-
-      {full && analyses}
 
       {full && next > 0 && (
         <details className={css.deck}>

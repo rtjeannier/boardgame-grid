@@ -117,14 +117,13 @@ export default function Radar({
         )}
       </div>
 
+      {/* Said in words. It used to print the raw coverage difference, so a
+          shelf holding none of a kind the collection covers fully read
+          "Deduction −1.00" — a number on a scale nobody was shown. */}
       {showGaps && gaps.length > 0 && (
-        <div className={css.gaps}>
-          {gaps.map((g) => (
-            <span key={g.name} className={css.gap}>
-              <span>{g.name}</span><b>−{g.short.toFixed(2)}</b>
-            </span>
-          ))}
-        </div>
+        <p className={css.gaps}>
+          Reaches no {gaps.map((g) => g.name).join(', ').replace(/, ([^,]*)$/, ' or $1')}.
+        </p>
       )}
     </div>
   );

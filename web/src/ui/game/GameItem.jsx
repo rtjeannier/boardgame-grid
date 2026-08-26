@@ -102,8 +102,7 @@ export default function GameItem({
         <span className={css.carries}>
           <span className={css.bar}>
             <span className={css.fill}
-                  style={{ width: `${Math.min(100, Math.round(game.carries * 1000))}%`,
-                           opacity: (0.35 + Math.min(1, game.carries * 10) * 0.65).toFixed(2) }} />
+                  style={{ width: `${Math.max(3, Math.round((game.carriesOf ?? 0) * 100))}%` }} />
           </span>
           <span className={css.n}>{game.carriesLabel}</span>
         </span>
