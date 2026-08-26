@@ -1,0 +1,179 @@
+import { useMemo } from 'react';
+import DepthField from '../primitives/DepthField.jsx';
+import GameItem from '../game/GameItem.jsx';
+import { toGameView } from '../game/view.js';
+import { sharesOf } from '../state.js';
+import { cellLabeller } from './labels.js';
+import css from './Cell.module.css';
+
+/**
+ * A shelf, at whichever size you are looking at it.
+ *
+ * The only thing in the interface that draws a shelf. There used to be four:
+ * `Collection` branched on `axes.length === 0` and drew the unsplit collection
+ * as a register, `Board` branched again into a column layout and a cell layout,
+ * and each of them wrote out "the games on a shelf" its own way. The unsplit
+ * screen was not *treated* as a one-cell grid, so it did not behave like one.
+ *
+ *   mini — the name, the count, the games. Nothing else.
+ *   full — all of that, plus the depth control, what each game carries, what is
+ *          on deck, and the analyses for this shelf.
+ *
+ * `full` is the whole of the old unsplit screen, so a grid cell opened up is the
+ * collection screen scoped to that cell — which is the point. The difference
+ * between the two sizes is *what is worth showing*, never how a shelf works.
+ */
+
+/**
+ * An empty shelf means two different things, so it says which — and at full
+ * size it has room to say what to do about it, which is the whole difference
+ * between the two sizes.
+ */
+const empty = (state, full) => {
+  if (state.mineOnly) return 'nothing of yours';
+  if (!full) return 'nothing reaches here';
+  return 'Empty. Add games one at a time and each will be the one that reaches '
+    + 'furthest into what the others leave uncovered.';
+};
+
+/**
+ * The depth override key for a shelf.
+ *
+ * The unsplit collection has no column or row to be named by, so `buildGrid`
+ * reads it under `collection` rather than `cell:`. Everything else about the two
+ * is identical, and this is the only place that has to know.
+ */
+export const depthKeyOf = (cell) => (cell?.key ? `cell:${cell.key}` : 'collection');
+
+/**
+ * What this shelf is aiming for, which is not always what it holds.
+ *
+ * A shelf can be short of its depth because the corpus has nothing left to put
+ * there. The field shows the number being aimed at; the count beside the games
+ * shows what arrived.
+ */
+const depthOf = (built, cell) => (cell?.key
+  ? built.depths?.cellDepth?.get(cell.key)?.depth
+  : built.depths?.cell?.depth) ?? cell?.picks?.length ?? 0;
+
+const view = (built, state, row, extra) => toGameView(built.ix, row, {
+  ...extra,
+  owned: state.owned.includes(built.ix.ids[row]),
+  pinned: state.pinned.includes(built.ix.ids[row]),
+  blocked: state.blocked.includes(built.ix.ids[row]),
+});
+
+/** One more, one fewer. The only control a shelf needs beyond typing a number. */
+function PlusMinus({ depthKey, held, next, actions }) {
+  const set = (n) => actions.setDepth(depthKey, Math.max(0, n));
+  return (
+    <span className={css.pm}>
+      <button type="button" aria-label="One fewer here" disabled={held === 0}
+              onClick={(e) => { e.stopPropagation(); set(held - 1); }}>−</button>
+      <button type="button" aria-label="One more here" disabled={!next}
+              onClick={(e) => { e.stopPropagation(); set(held + 1); }}>＋</button>
+    </span>
+  );
+}
+
+export default function Cell({
+  cell, built, state, actions, size = 'mini', marks = {}, onFocus, onOpen,
+  analyses = null, showName = true, dense = false,
+}) {
+  const { ix } = built;
+  const name = useMemo(() => cellLabeller(built)(cell?.key ?? ''), [built, cell]);
+  const held = cell?.picks?.length ?? 0;
+  const next = cell?.alternates?.length ?? 0;
+  const full = size === 'full';
+
+  const rows = useMemo(
+    () => (cell?.picks ?? []).map((p) => ix.rowOf.get(p.id)).filter((r) => r !== undefined),
+    [cell, ix]);
+  // What each game holds that nothing else here does. Only worth the work at
+  // full size, and only meaningful at shelf scale — across 272 games every
+  // share reads 0.0000, which is saturation rather than an answer.
+  const carries = useMemo(
+    () => (full && rows.length ? sharesOf(ix, built.weights, rows) : null),
+    [full, ix, built.weights, rows]);
+
+  const shelved = () => built.grid.flatMap((c) => c.picks.map((p) => p.id));
+  const item = (row, id, change, extra) => (
+    <GameItem key={`${id}${change === 'went' ? ':went' : ''}`}
+              variant={full ? 'row' : 'compact'} change={change} showRank={!dense}
+              game={view(built, state, row, extra)} onOpen={onOpen}
+              onPin={(g) => actions.pin(g.id, shelved(), g.name)}
+              onBlock={(g) => actions.block(g.id, shelved(), g.name)} />
+  );
+
+  // Departed games hold their place until their animation is done, so the rows
+  // below do not jump up under the pointer while a reader is still looking.
+  const gone = [...(marks.left ?? new Map())]
+    .filter(([, key]) => key === cell?.key)
+    .map(([id]) => ix.rowOf.get(id))
+    .filter((row) => row !== undefined);
+
+  return (
+    <div className={`${css.cell} ${full ? css.full : css.mini}`}
+         onClick={onFocus && ((e) => {
+           if (e.target.closest('button, [role="button"], summary, input, a')) return;
+           onFocus();
+         })}>
+      <div className={css.head}>
+        {/* In a grid the row and the column already say which shelf this is, so
+            repeating it thirty-five times is noise rather than a label. The
+            count carries the shelf's name for anyone who cannot see where it
+            sits. */}
+        {showName && (onFocus
+          ? (
+            <button type="button" className={css.name} onClick={onFocus}
+                    aria-label={`Open ${name}`}>{name}</button>
+          ) : <span className={css.name}>{name}</span>)}
+        {full ? (
+          <span className={css.depth}>
+            {/* What it holds and what it is aiming for are two numbers, and
+                they differ whenever the corpus cannot fill the shelf. */}
+            <span className={css.count}>{held} games</span>
+            <DepthField value={depthOf(built, cell)}
+                        set={state.depthOverrides[depthKeyOf(cell)] != null}
+                        label="Games on this shelf"
+                        onChange={(v) => actions.setDepth(depthKeyOf(cell), v)}
+                        onClear={() => actions.setDepth(depthKeyOf(cell), null)} />
+            <PlusMinus depthKey={depthKeyOf(cell)} held={held} next={next}
+                       actions={actions} />
+          </span>
+        ) : onFocus ? (
+          <button type="button" className={css.count} onClick={onFocus}
+                  aria-label={showName ? `${held} games` : `Open ${name}`}>{held}</button>
+        ) : <b className={css.count}>{held}</b>}
+      </div>
+
+      <div className={css.picks}>
+        {(cell?.picks ?? []).map((p, i) => item(
+          ix.rowOf.get(p.id), p.id,
+          marks.arrived?.has(p.id) ? 'came' : null,
+          carries ? { carries: carries[i] } : undefined))}
+        {gone.map((row) => item(row, ix.ids[row], 'went'))}
+        {/* Said even while the last games are still fading out: a shelf that
+            holds nothing is empty now, and waiting for the animation to finish
+            before admitting it reads as a hang. */}
+        {!held && <span className={css.empty}>{empty(state, full)}</span>}
+      </div>
+
+      {full && analyses}
+
+      {full && next > 0 && (
+        <details className={css.deck}>
+          <summary className={css.deckHead}>
+            {next} on deck — the next in line, if you make room
+          </summary>
+          <div className={css.picks}>
+            {cell.alternates.map((a) => {
+              const row = ix.rowOf.get(a.id);
+              return row === undefined ? null : item(row, a.id, null);
+            })}
+          </div>
+        </details>
+      )}
+    </div>
+  );
+}

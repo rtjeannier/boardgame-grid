@@ -9,7 +9,7 @@
  * well-stocked neighbour helping itself repeatedly.
  */
 
-const roomFor = (capacity, key) =>
+export const roomFor = (capacity, key) =>
   typeof capacity === 'number' ? capacity
     : capacity instanceof Map ? (capacity.get(key) ?? 0)
       : (capacity[key] ?? 0);

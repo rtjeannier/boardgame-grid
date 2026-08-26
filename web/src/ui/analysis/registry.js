@@ -7,7 +7,13 @@
  * the side panel used to be four hard-coded blocks, so "put this on its own
  * page" meant rewriting it rather than moving it.
  *
- *   { id, scope, run({ built, state }), View({ data, built, state, actions, onOpen }) }
+ *   { id, scope, run({ built, state, subject }), View({ data, built, state, ... }) }
+ *
+ * `subject` is what the analysis is about: `{ kind: 'collection' }` or
+ * `{ kind: 'cell', cell }`. It is passed in rather than read off the state
+ * because the same analysis renders in two places at once — the rail, which
+ * describes the page, and an opened shelf, which describes that shelf. Reading
+ * a "selected shelf" out of the state made both of them say the same thing.
  *
  * `run` returning `null` is how an analysis says it has nothing to say, and the
  * host renders nothing at all — not a heading over an empty list. That is the
@@ -29,12 +35,12 @@ export function register(analysis) {
   return analysis;
 }
 
-/** Every analysis with something to say about this collection, in order. */
-export function analyse({ built, state }) {
+/** Every analysis with something to say about this subject, in order. */
+export function analyse({ built, state, subject = { kind: 'collection' } }) {
   const out = [];
   for (const analysis of REGISTRY) {
     if (analysis.scope === 'mine' && !state.owned.length) continue;
-    const data = analysis.run({ built, state });
+    const data = analysis.run({ built, state, subject });
     if (data == null) continue;
     out.push({ analysis, data });
   }

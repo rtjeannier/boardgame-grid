@@ -5,9 +5,9 @@ import AxisPanel from './views/AxisPanel.jsx';
 import FillUntil from './views/FillUntil.jsx';
 import { Blocked, Notice } from './views/Notice.jsx';
 import Collection from './views/Collection.jsx';
+import { collectionOf } from './views/Board.jsx';
 import Mine from './views/Mine.jsx';
-import GameDrawer from './views/GameDrawer.jsx';
-import { toGameView } from './game/view.js';
+import Focus from './views/Focus.jsx';
 import css from './App.module.css';
 import './tokens.css';
 
@@ -25,14 +25,22 @@ const PAGES = [
   { key: 'mine', label: 'My games' },
 ];
 
-function standfirst(page, built, owned) {
+/**
+ * Take what it needs, never a spread of `built`.
+ *
+ * `built` carries two lazy getters — `data` and `filled` — and spreading an
+ * object *invokes* its getters. `{ ...built, mineOnly }` therefore ran a whole
+ * second `buildGrid` on every single render: measured, 699 of the 734
+ * `scoreAll` calls behind one click came from `get filled`, called by `App`.
+ */
+function standfirst(page, built, owned, mineOnly) {
   if (page === 'mine') {
     return owned
       ? 'Your games compete like any other. Pin one and it holds its place regardless.'
       : 'Nothing yet. Add what you own and the collection fills around it instead.';
   }
   const total = built.grid.reduce((n, c) => n + c.picks.length, 0);
-  if (built.mineOnly) {
+  if (mineOnly) {
     return `Every one of your ${owned} games holds a place, and the rest is what `
       + 'would best complete them. The ones marked as yours are yours; the rest '
       + 'are what to add.';
@@ -42,10 +50,9 @@ function standfirst(page, built, owned) {
       return 'Empty. Add games one at a time and each will be the one that '
         + 'reaches furthest into what the others leave uncovered.';
     }
-    const worked = built.depths?.cell?.auto;
     return `${total} games that between them reach as much of the board-game space `
-      + `as anything can.${worked ? ' It stopped there because the next one would '
-      + 'not have added enough to be worth the space.' : ''}`;
+      + 'as anything can. It stops where the next game would not add enough to be '
+      + 'worth the space.';
   }
   if (built.axes.length === 1) {
     return 'The same question asked once per group. Each fills until its own '
@@ -61,14 +68,6 @@ export default function App({ contract }) {
   const { state, built, actions } = useCollection(contract);
   const total = built.grid.reduce((n, c) => n + c.picks.length, 0);
 
-  const open = state.open
-    ? { ...state.open, ...toGameView(built.ix, built.ix.rowOf.get(state.open.id), {
-        owned: state.owned.includes(state.open.id),
-        pinned: state.pinned.includes(state.open.id),
-        blocked: state.blocked.includes(state.open.id),
-        reason: state.open.reason ?? null,
-      }) }
-    : null;
 
   return (
     <div className={css.app}>
@@ -78,7 +77,7 @@ export default function App({ contract }) {
             {page === 'mine' ? 'My games' : 'The collection'}
           </h1>
           <p className={css.standfirst}>
-            {standfirst(page, { ...built, mineOnly: state.mineOnly }, state.owned.length)}
+            {standfirst(page, built, state.owned.length, state.mineOnly)}
           </p>
         </div>
         <nav className={css.nav}>
@@ -93,7 +92,8 @@ export default function App({ contract }) {
       </header>
 
       <SplitBar axes={AXES} active={state.axes} count={total}
-                onToggle={actions.toggleAxis} onOpen={actions.togglePanel}
+                onToggle={(key) => actions.toggleAxis(key, collectionOf(built))}
+                onOpen={actions.togglePanel}
                 openKey={state.panel} ownedCount={state.owned.length}
                 onlyMine={{ on: state.mineOnly, toggle: actions.toggleMineOnly }}>
         <FillUntil limits={state.limits} onChange={actions.setLimit}
@@ -106,14 +106,15 @@ export default function App({ contract }) {
       <Notice state={state} built={built} actions={actions} />
 
       {page === 'collection' && (
-        <Collection built={built} state={state} actions={actions} onOpen={actions.open} />
+        <Collection built={built} state={state} actions={actions} />
       )}
       {page === 'mine' && (
-        <Mine built={built} state={state} actions={actions} onOpen={actions.open} />
+        <Mine built={built} state={state} actions={actions} onOpen={actions.focusGame} />
       )}
 
-      <GameDrawer game={open} built={built} state={state} actions={actions}
-                  onClose={() => actions.open(null)} />
+      {/* One surface for whatever you have opened — a shelf or a game, never
+          both stacked, and never anything sliding over the grid from a side. */}
+      <Focus built={built} state={state} actions={actions} />
     </div>
   );
 }

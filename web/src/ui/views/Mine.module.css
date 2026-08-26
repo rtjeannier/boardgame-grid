@@ -50,3 +50,15 @@
 .entry:first-child { border-top: 0; }
 .blank { padding: var(--s-9) 0; font-size: 12.5px; line-height: 1.6; color: var(--text-2);
          max-width: 60ch; }
+
+/* Same reflow as the collection view: the rail stops competing for width and
+   goes underneath rather than squeezing the list it sits beside. */
+@media (max-width: 1199px) {
+  .view { grid-template-columns: minmax(0, 1fr); gap: var(--s-9); }
+}
+@media (max-width: 899px) {
+  .view { padding: var(--s-7) var(--s-5) var(--s-9); }
+}
+@media (max-width: 767px) {
+  .result { grid-template-columns: minmax(0, 1fr); gap: var(--s-3); }
+}

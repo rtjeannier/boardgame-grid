@@ -1,6 +1,11 @@
 .wrap { display: flex; flex-direction: column; gap: var(--s-4); }
 
-.plot { display: block; width: 100%; height: auto; overflow: visible; }
+/* `size` sets the coordinate space, not the rendered size — the svg is width
+   100%, so it grows to whatever holds it. In the 300px rail that is right; in a
+   760px overlay it made the radar seven hundred pixels tall and the only thing
+   on the screen. Capped, and centred once it stops filling its container. */
+.plot { display: block; width: 100%; max-width: 300px; margin: 0 auto;
+        height: auto; overflow: visible; }
 .web { fill: none; stroke: var(--line); stroke-width: 1; }
 .spoke { stroke: var(--line); stroke-width: 1; }
 .axis { font-family: var(--font-sans); font-size: 9.5px; fill: var(--text-3); }

@@ -4,7 +4,7 @@
  */
 import './reach.jsx';
 import './contains.jsx';
-import './heldTwice.jsx';
+import './gaps.jsx';
 import './overRepresented.jsx';
 
 export { analyse, all, register } from './registry.js';

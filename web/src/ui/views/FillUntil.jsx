@@ -52,9 +52,7 @@ export default function FillUntil({ limits, onChange, leftover, perShelf = null 
                        onChange={() => onChange(at, { on: !limit.on })} />
                 <span className={css.name}>{kind.label}</span>
                 <span className={css.scope}>
-                  {limit.kind === 'returns' && perShelf != null
-                    ? `overruled — you set ${perShelf} a shelf`
-                    : kind.fixed ?? (blocked ? kind.why : SCOPE[limit.scope])}
+                  {kind.fixed ?? (blocked ? kind.why : SCOPE[limit.scope])}
                 </span>
               </label>
               {limit.on && !blocked && limit.value != null && (

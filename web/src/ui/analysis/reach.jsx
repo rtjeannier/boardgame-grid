@@ -12,7 +12,7 @@ import css from './analysis.module.css';
  * measure can make that four pixels. So: the shelf you picked, else your games,
  * else the collection as a portrait that says it is one.
  */
-function shapes({ built, state }) {
+function shapes({ built, state, subject }) {
   const { ix, grid, weights } = built;
   const n = ix.groups.length;
   const names = ix.groups.map((g) => g.name.split(' · ')[0]);
@@ -20,7 +20,7 @@ function shapes({ built, state }) {
   const shape = (rs) => coverageOf(rs.map((r) => spokeVector(ix, weights, r, n)), n);
   const whole = shape(rowsOf(grid.flatMap((c) => c.picks)));
 
-  const picked = state.selected ? grid.find((c) => c.key === state.selected) : null;
+  const picked = subject?.kind === 'cell' ? subject.cell : null;
   if (picked) {
     return {
       names, values: shape(rowsOf(picked.picks)), reference: whole,
@@ -53,9 +53,6 @@ export default register({
         <Radar names={data.names} values={data.values} reference={data.reference}
                label={data.label} referenceLabel={data.referenceLabel}
                showGaps={!!data.reference} size={272} />
-        {data.picked && (
-          <p className={css.note}>Click the shelf again to go back to the whole collection.</p>
-        )}
         {!data.reference && (
           <p className={css.note}>
             {data.full

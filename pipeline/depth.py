@@ -89,12 +89,23 @@ def axis_depths(games, space, ratings, sel, axis, leftover, fallback,
 
 def grid_depths(games, space, ratings, sel, coll, weight_rows,
                 overrides: dict | None = None, probe: int = PROBE,
-                axis_room=None, column_axis=None, row_axis=None) -> dict:
+                axis_room=None, column_axis=None, row_axis=None,
+                per_shelf_cap: int | None = None) -> dict:
     """Depth for every cell, as `allocate` wants it.
 
-    A cell takes the smaller of its column's answer and its row's, because both
-    are ceilings — the same rule `Collection.capacity()` applies to a reader's
-    per-column and per-row caps.
+    A cell takes the smaller of its column's answer and its row's — the same
+    rule `Collection.capacity()` applies to a reader's per-column and per-row
+    caps — and anything said about that one cell beats both. Four layers, most
+    specific answer wins, every one of them optional:
+
+        cell override      what the reader typed or clicked on this shelf
+        column / row       what the reader typed on that header
+        per_shelf_cap      what the reader typed in the register
+        the reading        what the shelf's own curve says
+
+    `per_shelf_cap` displaces readings only. Letting it replace the whole
+    column-and-row layer meant that with the register set to five, typing nine
+    on a column changed nothing and never said why.
     """
     overrides = overrides or {}
     leftover, fallback = coll.auto_depth_leftover, coll.picks_per_cell
@@ -109,15 +120,18 @@ def grid_depths(games, space, ratings, sel, coll, weight_rows,
     by_row = axis_depths(*common, row_axis, leftover, fallback, probe, axis_room)
 
     def resolve(read, key, kind):
+        # `depth` is what the axis is actually doing, so a header reports the
+        # truth rather than a number it is not using; `read` keeps the curve's
+        # own answer, which is what clearing an override restores.
         seen = read.get(key)
+        reading = seen["depth"] if seen else fallback
+        bar = seen["bar"] if seen else None
         if f"{kind}:{key}" in overrides:
-            return {"depth": overrides[f"{kind}:{key}"], "auto": False, "set": True,
-                    "read": seen["depth"] if seen else None,
-                    "bar": seen["bar"] if seen else None}
-        return {"depth": seen["depth"] if seen else fallback,
+            return {"depth": overrides[f"{kind}:{key}"], "auto": False,
+                    "set": True, "read": reading, "bar": bar}
+        return {"depth": reading if per_shelf_cap is None else per_shelf_cap,
                 "auto": bool(seen and seen["auto"]), "set": False,
-                "read": seen["depth"] if seen else None,
-                "bar": seen["bar"] if seen else None}
+                "read": reading, "bar": bar}
 
     columns = {c["label"]: resolve(by_column, c["label"], "column")
                for c in coll.columns()}
@@ -125,12 +139,17 @@ def grid_depths(games, space, ratings, sel, coll, weight_rows,
             for r in weight_rows}
     # A shelf takes the smaller of its column's answer and its row's, unless the
     # reader has said otherwise about that one shelf. Per-cell beats both,
-    # because it is the most specific thing anybody said.
+    # because it is the most specific thing anybody said. A typed axis takes the
+    # cell out of the register's reach; an untyped one then falls back to its own
+    # curve rather than to the register, which would otherwise reimpose the
+    # number the reader just typed over.
     capacity = {}
     for label, c in columns.items():
         for index, r in rows.items():
             key = (label, index)
+            typed = c["set"] or r["set"]
+            frm = min(a["depth"] if a["set"] or not typed else a["read"]
+                      for a in (c, r))
             set_here = overrides.get(f"cell:{label}|{index}")
-            capacity[key] = (min(c["depth"], r["depth"]) if set_here is None
-                             else max(0, set_here))
+            capacity[key] = frm if set_here is None else max(0, set_here)
     return {"capacity": capacity, "columns": columns, "rows": rows}

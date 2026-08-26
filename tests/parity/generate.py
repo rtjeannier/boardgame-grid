@@ -65,13 +65,20 @@ CASES = [
     # pinning it is that the *same* 60 come out on both sides.
     {"name": "a budget of sixty", "params": {}, "options": {"budget": 60},
      "budget": 60},
+    # The register is a guide, not a ceiling: a column the reader typed keeps its
+    # own number while every other column takes the register's. This used to be
+    # unreachable on the Python side and silently ignored on the JS side.
+    {"name": "register set, one column typed over", "params": {},
+     "options": {"perShelfCap": 4, "depthOverrides": {"column:3": 9}},
+     "perShelfCap": 4, "overrides": {"column:3": 9}},
     {"name": "one game per kind off",
      "params": {"selection": {"genre_repeat_penalty": 1.0}},
      "options": {"policy": {"repeatPenalty": 1.0}}},
 ]
 
 
-def run(games, space, params, banned=(), keepers=(), budget=None):
+def run(games, space, params, banned=(), keepers=(), budget=None,
+        per_shelf_cap=None, overrides=None):
     sel, coll, pres = params.selection, params.collection, params.presentation
     rows = buckets.build_weight_rows([g.weight for g in games], coll.weight_rows)
     cells, memb = buckets.build_cells(
@@ -97,7 +104,8 @@ def run(games, space, params, banned=(), keepers=(), budget=None):
             games, space, {g.id: g.rating for g in games}, sel, coll, rows,
             axis_room=coll.axis_room(space.dimension_names, space.spoke_of),
             column_axis=buckets.PlayerCountAxis(coll.columns(), sel, places=PLACES),
-            row_axis=buckets.WeightAxis(rows, sel))["capacity"]
+            row_axis=buckets.WeightAxis(rows, sel),
+            overrides=overrides, per_shelf_cap=per_shelf_cap)["capacity"]
     else:
         room = coll.capacity(cells)
     # Seed only the pins that lost. Seeding one up front takes it out of
@@ -169,7 +177,9 @@ def main() -> None:
             options["capacity"] = {f"{k[0]}|{k[1]}": v for k, v in options["capacity"].items()}
         picks = run(games, space, params,
                     banned=case.get("banned", ()), keepers=case.get("keepers", ()),
-                    budget=case.get("budget"))
+                    budget=case.get("budget"),
+                    per_shelf_cap=case.get("perShelfCap"),
+                    overrides=case.get("overrides"))
         out.append({"name": case["name"], "options": options, "picks": picks})
         print(f"  {case['name']:<32} {sum(len(v) for v in picks.values()):>3} picks")
 

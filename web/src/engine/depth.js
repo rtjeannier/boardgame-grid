@@ -109,6 +109,40 @@ export function axisDepths(ix, weights, axis, {
   return out;
 }
 
+/**
+ * Each held game back into the cell it was already in, where that still exists.
+ *
+ * `seedInto` answers "where does this game belong", which is the right question
+ * for a pin and for the first split, and the wrong one for a game that is
+ * already on a shelf: the auction puts a game where it *won*, which is not
+ * always the bucket it loads onto most. Dealing purely by belonging moved 101
+ * of 272 games to a different cell the moment the collection was re-dealt, so
+ * pressing "fill the shelves" settled and then jumped.
+ *
+ * A key that no longer names a cell simply falls through to belonging, which is
+ * what happens on every axis change — the old placement cannot mean anything
+ * once the cells are different.
+ */
+export function dealInto(cells, keepers, at = null) {
+  if (!at) return seedInto(cells, keepers);
+  const known = new Map(cells.map((c) => [c.key, c]));
+  const out = new Map();
+  const strays = [];
+  for (const game of keepers) {
+    const key = at.get(game);
+    const cell = key == null ? null : known.get(key);
+    if (cell && cell.games.includes(game)) {
+      out.set(key, [...(out.get(key) ?? []), game]);
+    } else {
+      strays.push(game);
+    }
+  }
+  for (const [key, games] of seedInto(cells, strays)) {
+    out.set(key, [...(out.get(key) ?? []), ...games]);
+  }
+  return out;
+}
+
 /** Each pinned game into the bucket of this axis it belongs to most. */
 export function seedInto(cells, keepers) {
   const seeded = new Map();
@@ -126,9 +160,10 @@ export function seedInto(cells, keepers) {
 /**
  * Depth for every cell of a grid, as the allocator wants it.
  *
- * A cell takes the smaller of its column's answer and its row's, because both
- * are ceilings — the same rule `Collection.capacity()` applies on the Python
- * side. `overrides` is what the reader typed, and it beats both.
+ * A cell takes the smaller of its column's answer and its row's — the same rule
+ * `Collection.capacity()` applies on the Python side — and anything the reader
+ * typed about that one cell beats both. See `resolve` for the four layers and
+ * which of them displaces which.
  */
 export function gridDepths(ix, weights, { columns, rows, leftover, fallback, places,
   overrides = {}, probe = PROBE, genreWeights = null, include = null,
@@ -147,18 +182,23 @@ export function gridDepths(ix, weights, { columns, rows, leftover, fallback, pla
   const byRow = rows
     ? read('row', weightAxis(rows), JSON.stringify(rows.map((r) => [r.lo, r.hi]))) : null;
 
+  // `depth` is what the axis is actually doing, so a header shows the truth
+  // rather than a number it is not using: with the register set to 5, a column
+  // whose curve reads 9 holds five games and used to say nine. `read` keeps the
+  // curve's own answer, which is what "back to what the shelf reads" restores.
   const depthOf = (map, key, kind) => {
-    const read = map?.get(key);
+    const curve = map?.get(key);
+    const reading = curve?.depth ?? fallback;
     const set = overrides[`${kind}:${key}`];
     if (set != null) {
-      return { depth: set, auto: false, set: true, read: read?.depth ?? null, bar: read?.bar };
+      return { depth: set, auto: false, set: true, read: reading, bar: curve?.bar };
     }
     return {
-      depth: read?.depth ?? fallback,
-      auto: read?.auto ?? false,
+      depth: perShelfCap ?? reading,
+      auto: curve?.auto ?? false,
       set: false,
-      read: read?.depth ?? null,
-      bar: read?.bar,
+      read: reading,
+      bar: curve?.bar,
     };
   };
 
@@ -167,31 +207,45 @@ export function gridDepths(ix, weights, { columns, rows, leftover, fallback, pla
   const rowDepth = new Map(
     (rows ?? []).map((r) => [String(r.index), depthOf(byRow, String(r.index), 'row')]));
 
-  // A shelf takes the smaller of its column's answer and its row's, unless the
-  // reader has said otherwise about that one shelf. Per-cell beats both, because
-  // it is the most specific thing anybody said.
+  // Depth is a guide at every level and a ceiling at none. Four layers, most
+  // specific answer wins, every one of them optional:
+  //
+  //     cell override      what you typed or clicked on this shelf
+  //     column / row       what you typed on that header
+  //     perShelfCap        what you typed in the register
+  //     the reading        what the shelf's own curve says
+  //
+  // `perShelfCap` used to *replace* `from` outright, which threw away the layer
+  // holding the column and row overrides: with the register set to 5, typing 9
+  // on a column changed nothing and never said why. So it now displaces
+  // readings only — typing on either axis takes a cell out of its reach, and
+  // the two axes go on resolving by the smaller of the pair as they always did.
   const capacity = new Map();
   const cellDepth = new Map();
-  const resolve = (key, from) => {
-    // A number the reader typed *replaces* the reading; it does not cap it.
-    // Capping meant asking for one more game than the curve found did nothing —
-    // 13, 15 and 20 all came back as 12 — so the "add the next game" button
-    // pressed and nothing moved. Unset, each shelf reads its own curve; set, it
-    // is the depth; typed on one shelf, that shelf's number beats both.
-    const base = perShelfCap == null ? from : perShelfCap;
+  const resolve = (key, ...axes) => {
+    // A typed axis takes the cell out of the register's reach; an untyped one
+    // falls back to its own curve rather than to the register, which would
+    // otherwise reimpose the number the reader just typed over.
+    const typed = axes.some((a) => a.set);
+    const from = Math.min(...axes.map((a) => (typed && !a.set ? a.read : a.depth)));
     const set = overrides[`cell:${key}`];
-    const depth = set == null ? base : Math.max(0, set);
+    const depth = set == null ? from : Math.max(0, set);
     capacity.set(key, depth);
-    cellDepth.set(key, { depth, auto: set == null, from });
+    // `spoken` is whether a reader has said anything at all about how deep this
+    // shelf goes, at any of the three levels. A deal fills a shelf nobody has
+    // spoken about with what it was dealt and leaves the rest to the number
+    // that was asked for — see `buildGrid`.
+    cellDepth.set(key, {
+      depth, auto: set == null, set: set != null, from,
+      spoken: set != null || typed || perShelfCap != null,
+    });
   };
 
   for (const [label, c] of columnDepth) {
-    if (!rows) { resolve(label, c.depth); continue; }
-    for (const [index, r] of rowDepth) {
-      resolve(`${label}|${index}`, Math.min(c.depth, r.depth));
-    }
+    if (!rows) { resolve(label, c); continue; }
+    for (const [index, r] of rowDepth) resolve(`${label}|${index}`, c, r);
   }
-  if (!columns && rows) for (const [index, r] of rowDepth) resolve(index, r.depth);
+  if (!columns && rows) for (const [index, r] of rowDepth) resolve(index, r);
 
   return { capacity, columnDepth, rowDepth, cellDepth };
 }

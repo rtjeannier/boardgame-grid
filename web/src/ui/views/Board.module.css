@@ -24,11 +24,9 @@
 .range { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3);
          font-variant-numeric: tabular-nums; }
 
-.cell { padding: var(--s-5) var(--s-5) var(--s-6); display: flex;
-        flex-direction: column; gap: var(--s-2); }
-.empty { font-family: var(--font-mono); font-size: 10px; color: var(--text-3); }
-
-/* One split: seven tall columns rather than a grid. */
+/* No padding here: `Cell` owns its own, and having both meant 40px of a 143px
+   column went to padding twice over — only 48% of a cell reached the name. */
+.cell { display: flex; flex-direction: column; min-width: 0; }
 .columns { display: grid; gap: 1px; background: var(--line);
            border: 1px solid var(--line); border-radius: var(--r); overflow: hidden;
            align-items: stretch; }
@@ -37,43 +35,14 @@
 .head b { font-family: var(--font-mono); font-size: 13px; font-weight: 500;
           font-variant-numeric: tabular-nums; }
 .head:hover .drop { color: var(--text-3); }
-.next { margin-top: var(--s-3); font-family: var(--font-mono); font-size: 9.5px;
-        line-height: 1.35; color: var(--text-3); }
-.picks { padding: var(--s-4) var(--s-6) var(--s-6); display: flex;
-         flex-direction: column; gap: var(--s-2); }
-
-/* Runners-up, folded away. A shelf of five with six under it is a list of
-   eleven, and the shelf is the thing being read. */
-.deck { margin-top: var(--s-4); border-top: 1px dashed var(--line); padding-top: var(--s-3); }
-.deckHead { font-family: var(--font-mono); font-size: 9.5px; color: var(--text-3);
-            cursor: pointer; list-style: none; padding: var(--s-1) 0; }
-.deckHead::-webkit-details-marker { display: none; }
-.deckHead::before { content: '▸ '; }
-.deck[open] .deckHead::before { content: '▾ '; }
-.deckHead { display: flex; align-items: center; gap: var(--s-4); }
-.deckHead:hover { color: var(--text); }
-.pm { margin-left: auto; display: inline-flex; align-items: center; gap: var(--s-2);
-      opacity: 0; }
-.cell:hover .pm, .column:hover .pm, .deck[open] .pm { opacity: 1; }
+.headDepth { margin-top: var(--s-3); display: flex; align-items: center;
+             justify-content: space-between; gap: var(--s-4); }
 
 /* The shelf the side panel is describing. A five-game shelf moves visibly when
    one game changes, which the whole collection cannot. */
 .picked { background: var(--mark-wash); box-shadow: inset 0 0 0 1px var(--mark); }
 .picked:hover { background: var(--mark-wash); }
 .cell, .column { cursor: pointer; }
-.pm button { border: 1px solid var(--line); background: var(--surface);
-             color: var(--text-3); cursor: pointer; width: 16px; height: 16px;
-             border-radius: var(--r-sm); font-size: 10px; line-height: 1; padding: 0; }
-.pm button:hover { border-color: var(--text-3); color: var(--text); }
-.pm button:disabled { opacity: .3; cursor: default; }
-.pm b { font-family: var(--font-mono); font-size: 9.5px; font-weight: 500;
-        color: var(--text-2); min-width: 12px; text-align: center;
-        font-variant-numeric: tabular-nums; }
-.deck > *:not(.deckHead) { opacity: .72; }
-.deck > *:not(.deckHead):hover { opacity: 1; }
-
-/* Where a new column or row would go, so the button sits in its own place
-   rather than in a settings panel one screen away. */
 .addStrip { background: var(--bg); display: grid; place-items: center; padding: 0; }
 .add { width: 22px; height: 22px; padding: 0; border: 1px dashed var(--line-2);
        border-radius: var(--r-sm); background: var(--surface); color: var(--text-3);
@@ -83,3 +52,16 @@
 .add:disabled:hover { border-style: dashed; border-color: var(--line-2);
                       color: var(--text-3); }
 .spacer { background: var(--bg); }
+
+/* Reflow, not shrink. A matrix of shelves becomes a list of them below the
+   width where a column can hold a name — measured, 768px, where the board is
+   already narrower than its own row heads and add strip. Each shelf keeps its
+   own name, so a reader can still find one, which is the condition under which
+   the style guide prefers reflowing to scrolling sideways. */
+.stack { display: flex; flex-direction: column; gap: 1px;
+         background: var(--line); border: 1px solid var(--line);
+         border-radius: var(--r); overflow: hidden; }
+.stacked { background: var(--surface); min-width: 0; }
+.none { padding: var(--s-8); color: var(--text-3); }
+.note { padding: var(--s-6) var(--s-5); background: var(--surface);
+        color: var(--text-3); font-size: 11px; line-height: 1.5; }

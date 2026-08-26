@@ -151,6 +151,63 @@ test('a depth a reader types beats both', () => {
   assert.equal(depths.columnDepth.get('8+').read, 1);
 });
 
+test('the register is a guide: a column typed over it keeps its own number', () => {
+  // Regression. `perShelfCap` used to *replace* the layer holding the column and
+  // row overrides, so with the register set to five, typing nine on a column
+  // changed nothing and never said why. Measured on the live corpus at the time:
+  // global 5 gave 35 games across seven columns, and typing 12 on one of them
+  // still gave 35.
+  const flat = buildGrid(ix, { perShelfCap: 5 });
+  const typed = buildGrid(ix, { perShelfCap: 5, depthOverrides: { 'column:3': 9 } });
+
+  assert.equal(typed.depths.columnDepth.get('3').depth, 9, 'the typed column');
+  assert.ok(inColumn(typed.grid, '3') > inColumn(flat.grid, '3'),
+    `column 3: ${inColumn(flat.grid, '3')} -> ${inColumn(typed.grid, '3')}`);
+
+  // ...and no other column moved, so the register still governs everything the
+  // reader has not spoken about.
+  for (const [key, before] of flat.depths.columnDepth) {
+    if (key === '3') continue;
+    assert.equal(typed.depths.columnDepth.get(key).depth, before.depth,
+      `column ${key} should still be taking the register's five`);
+  }
+});
+
+test('a header reports the depth it is using, not one it is not', () => {
+  // The field used to show the column's own reading while the column held the
+  // register's number — nine on screen, five on the shelf. `read` keeps the
+  // curve's answer for "back to what the shelf reads" to restore.
+  const { depths } = buildGrid(ix, { perShelfCap: 5 });
+  const nine = depths.columnDepth.get('8+');
+  assert.equal(nine.depth, 5, 'what the column is doing');
+  assert.equal(nine.read, 1, 'what its curve says');
+});
+
+test('no layer is a ceiling: a cell can always take one more', () => {
+  // "The per cell value should just be a guide not a restriction. Nothing should
+  // ever block a cell from adding or losing a value." Asserted at every layer,
+  // and at both of them at once.
+  const layers = {
+    'nothing set': {},
+    'the register set': { perShelfCap: 4 },
+    'a column typed': { depthOverrides: { 'column:3': 4 } },
+    'both': { perShelfCap: 4, depthOverrides: { 'column:3': 6 } },
+  };
+  for (const [what, options] of Object.entries(layers)) {
+    const before = buildGrid(ix, options);
+    const cell = before.grid.find((c) => c.key.startsWith('3|') && c.alternates.length);
+    assert.ok(cell, `${what}: no cell in column 3 with anything left to take`);
+
+    const held = cell.picks.length;
+    const after = buildGrid(ix, {
+      ...options,
+      depthOverrides: { ...options.depthOverrides, [`cell:${cell.key}`]: held + 1 },
+    });
+    assert.equal(after.grid.find((c) => c.key === cell.key).picks.length, held + 1,
+      `${what}: cell ${cell.key} should have gone ${held} -> ${held + 1}`);
+  }
+});
+
 test('with no axes the collection is one cell that stops on its own', () => {
   // `buildCells(ix, { axes: [] })` is the collection: one cell, whole corpus.
   // Python says the same thing, which is what makes the grid a form of it.
@@ -235,6 +292,53 @@ test('blocking a game never changes how deep a shelf goes', () => {
   }
 });
 
+test('dropping a band re-homes its games, and the fit is not order-dependent', () => {
+  // Reported: "if I get rid of the row that has Gloomhaven I might expect it to
+  // reappear on a different row — instead the cell is not changing even when I
+  // refit." Re-homing worked; the *fit* deleted it. A re-homed game was appended
+  // to the end of its new shelf's list and the trim cut from the end, so the
+  // games that had just moved were always the first to go, whatever they were
+  // worth. Order-independence is the exact shape of that bug: a trim by position
+  // gives a different answer when the same games arrive in a different order,
+  // and a trim by score cannot.
+  const P = (b) => new Map(b.grid.flatMap((c) => c.picks.map((p) => [p.id, c.key])));
+  const axes = ['players', 'weight'];
+  const one = buildGrid(ix, { axes: ['players'] });
+  const grid = buildGrid(ix, { axes, held: [...P(one).keys()], heldAt: P(one) });
+  const settled = buildGrid(ix, { axes, held: grid.filled.ids, heldAt: grid.filled.at });
+  const before = P(settled);
+
+  // Drop the last band: it merges into its neighbour, so that shelf holds more
+  // than it reads and the fit has to give something up.
+  const last = settled.rows.length - 1;
+  const shape = { axes, rowCount: last,
+                  rowEdges: settled.rows.slice(0, -1).map((r) => r.hi).slice(0, -1) };
+  const homeless = [...before].filter(([, key]) => key.endsWith(`|${last}`)).map(([id]) => id);
+  assert.ok(homeless.length, 'nothing was in the band being dropped');
+
+  const after = buildGrid(ix, { ...shape, held: [...before.keys()], heldAt: before });
+  const dealt = P(after);
+  assert.equal(dealt.size, before.size, 'dropping a band lost games outright');
+  for (const id of homeless) {
+    assert.ok(dealt.has(id), `${ix.names[ix.rowOf.get(id)]} vanished when its band went`);
+    assert.notEqual(dealt.get(id), before.get(id), 'a re-homed game kept a shelf that is gone');
+  }
+
+  // The fit trims, and what it keeps does not depend on what order it was told.
+  const fitFrom = (order) => buildGrid(ix, {
+    ...shape, held: order, heldAt: new Map(order.map((id) => [id, before.get(id)])),
+  }).filled;
+  const forwards = fitFrom([...before.keys()]);
+  const backwards = fitFrom([...before.keys()].reverse());
+  assert.ok(forwards.ids.length < before.size, 'the fit trimmed nothing at all');
+  assert.deepEqual(new Set(forwards.ids), new Set(backwards.ids),
+    'the fit keeps different games depending on the order it was handed them');
+
+  // And it settles rather than drifting on every press.
+  const again = buildGrid(ix, { ...shape, held: forwards.ids, heldAt: forwards.at });
+  assert.equal(P(again).size, forwards.ids.length, 'the grid did not settle after a fit');
+});
+
 test('a rebuild is a pure function of the settings', () => {
   const sign = (b) => b.grid.map((c) => `${c.key}:${c.picks.map((p) => p.id)}`).sort().join('|');
   const [a, b] = [...shelved(base.grid)].slice(0, 2);
@@ -242,6 +346,32 @@ test('a rebuild is a pure function of the settings', () => {
     'the order things were banned in changed the answer');
   assert.equal(sign(buildGrid(ix, { banned: [] })), sign(base),
     'unbanning did not restore the collection exactly');
+});
+
+test('the expensive getters cannot be reached by spreading the result', () => {
+  // `{ ...built }` invokes every enumerable getter, and two of them are whole
+  // extra builds. A standfirst spread `built` to add one field, so `get filled`
+  // ran on every render: 699 of the 734 scoring passes behind a single click
+  // came from there, and blocking a game cost 586ms instead of 133ms. Making
+  // them non-enumerable is a property of the object rather than a rule someone
+  // has to remember.
+  const built = buildGrid(ix, { axes: ['players', 'weight'] });
+  const keys = Object.keys(built);
+  for (const hidden of ['data', 'filled']) {
+    assert.ok(!keys.includes(hidden), `${hidden} is enumerable, so a spread runs it`);
+    assert.ok(hidden in built, `${hidden} should still be reachable directly`);
+  }
+
+  // The real assertion: spreading it does no work at all.
+  const before = Date.now();
+  const copy = { ...built, extra: 1 };
+  assert.ok(Date.now() - before < 50, 'spreading the result ran a build');
+  assert.equal(copy.data, undefined);
+  assert.equal(copy.filled, undefined);
+
+  // ...and asking for them directly still works.
+  assert.ok(Array.isArray(built.filled.ids), 'filled stopped working');
+  assert.ok(built.data, 'data stopped working at two axes');
 });
 
 test('the shipped contract rebuilds fast enough to be a control surface', () => {

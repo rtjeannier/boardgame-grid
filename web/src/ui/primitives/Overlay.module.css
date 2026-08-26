@@ -1,0 +1,27 @@
+.scrim { position: fixed; inset: 0; background: var(--scrim); border: 0; padding: 0;
+         cursor: default; }
+/* Centred rather than anchored to an edge: it is the thing you are looking at,
+   not an aside about the thing behind it. */
+.panel { position: fixed; inset: 0; margin: auto; width: min(760px, calc(100vw - var(--s-9) * 2));
+         max-height: min(88vh, 900px); background: var(--surface);
+         border: 1px solid var(--line-2); border-radius: var(--r);
+         display: flex; flex-direction: column; box-shadow: var(--shadow-drawer); }
+.head { padding: var(--s-5) var(--s-6); display: flex; align-items: center;
+        gap: var(--s-5); min-height: 34px; }
+.back { border: 0; background: none; padding: 0; cursor: pointer;
+        font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3); }
+.back:hover { color: var(--text); }
+.close { margin-left: auto; width: 26px; height: 26px; flex: none;
+         display: grid; place-items: center; border: 1px solid var(--line-2);
+         border-radius: var(--r); background: none; color: var(--text-2); cursor: pointer; }
+.close:hover { border-color: var(--text-3); color: var(--text); }
+.body { flex: 1; overflow: auto; padding: 0 var(--s-9) var(--s-9);
+        display: flex; flex-direction: column; gap: var(--s-9); }
+
+/* On a phone the overlay is the screen. A 760px card inside a 390px viewport is
+   a card with no margin left to be a card in. */
+@media (max-width: 767px) {
+  .panel { width: 100vw; max-height: 100vh; height: 100vh;
+           border: 0; border-radius: 0; }
+  .body { padding: 0 var(--s-6) var(--s-8); }
+}

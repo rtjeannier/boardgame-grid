@@ -15,11 +15,22 @@ const VARIANT = {
  * They differ in what they show and never in what they mean: the same two verbs
  * in the same order, the same rank format, the same shelf naming.
  */
+/** The two things that can just have happened to a row. */
+const CHANGE = { came: css.came, went: css.went };
+
 export default function GameItem({
-  game, variant = 'row', onPin, onBlock, onOpen, actions = true,
+  game, variant = 'row', onPin, onBlock, onOpen, actions = true, change = null,
+  showRank = true,
 }) {
   if (!game) return null;
   const classes = [css.item, VARIANT[variant] ?? VARIANT.row];
+  // Arriving and leaving are *states* of a row, not new kinds of row, so they
+  // add a class and never a variant. Colour is allowed to carry them for the
+  // same reason — a state is one of the two things colour is for here — and
+  // deliberately not the accent, which already means how much a game carries.
+  // Named rather than looked up by key, so the two states are a closed set and
+  // the stylesheet check can see that both are used.
+  if (change) classes.push(CHANGE[change]);
   if (game.owned) classes.push(css.mine);
   if (game.pinned || game.blocked) classes.push(css.marked);
   if (game.blocked) classes.push(css.blocked);
@@ -40,7 +51,10 @@ export default function GameItem({
         <span className={css.main} {...open}>
           <span className={css.name}>{game.name}</span>
         </span>
-        <span className={css.rankSlot}>{game.rankLabel}</span>
+        {/* In a grid column the rank costs 26px of a 143px cell — a fifth of it
+            — for a number that is on the shelf you open and in the game itself.
+            The name gets it back. */}
+        {showRank && <span className={css.rankSlot}>{game.rankLabel}</span>}
         {verbs && <span className={css.hoverSlot}>{verbs}</span>}
       </div>
     );

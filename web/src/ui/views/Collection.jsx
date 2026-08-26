@@ -1,21 +1,19 @@
 import { useMemo } from 'react';
 import { analyse } from '../analysis/index.js';
-import GameItem from '../game/GameItem.jsx';
-import { toGameView } from '../game/view.js';
 import Button from '../primitives/Button.jsx';
 import DepthField from '../primitives/DepthField.jsx';
-import { sharesOf } from '../state.js';
-import Board, { shelvedNow } from './Board.jsx';
+import Board from './Board.jsx';
+import Cell from './Cell.jsx';
 import { cellLabeller } from './labels.js';
 import css from './Collection.module.css';
 
 /**
  * The collection, however it happens to be cut.
  *
- * With no axes there is one shelf and it is worth reading in full, so this is a
- * register: every game, what it does, and how much of the whole it carries.
- * Split it and the register gives way to `Board`, because thirty-five shelves
- * of five are a shape rather than a list.
+ * The page is the grid, whatever size the grid is: one shelf with no axes on,
+ * thirty-five with both. It does not choose a rendering based on that — `Cell`
+ * draws a shelf and `Board` arranges shelves, and the unsplit screen is one
+ * `Cell` at `full`. This file used to branch, and `Board` branched twice more.
  */
 
 /**
@@ -40,13 +38,53 @@ function PerShelf({ built, state, actions }) {
   );
 }
 
-/** The depth most shelves came out at, for the field to show while it is auto. */
+/** The depth most shelves came out at, for the field to show untouched. */
 function typical(built) {
   const depths = built.grid.map((c) => c.picks.length).filter((n) => n > 0);
   if (!depths.length) return 0;
   const counts = new Map();
   for (const d of depths) counts.set(d, (counts.get(d) ?? 0) + 1);
   return [...counts].sort((a, b) => b[1] - a[1] || b[0] - a[0])[0][0];
+}
+
+/**
+ * Bring every shelf to the depth it reads, in whichever direction it is out.
+ *
+ * Splitting deals the collection out rather than choosing a new one, so a
+ * freshly split grid holds what it held before and every shelf has room. But
+ * the grid changes shape in the other direction too: dropping a band packs 272
+ * games into 28 shelves instead of 35, and six of them end up holding 52 games
+ * more than they read. Counting only the shortfall meant the prompt went silent
+ * exactly when the grid was most out of shape — you could drop a row and be
+ * offered nothing at all.
+ *
+ * So it fits rather than fills, and says which way. A shelf that is short can
+ * only be filled if something is actually waiting for it; a shelf that is over
+ * can always be trimmed, so that half needs no such guard.
+ */
+function Fit({ built, actions }) {
+  let short = 0;
+  let over = 0;
+  for (const c of built.grid) {
+    const want = built.depths?.cellDepth?.get(c.key)?.depth ?? 0;
+    if (c.picks.length < want && c.alternates.length) short += 1;
+    if (c.picks.length > want) over += 1;
+  }
+  if (!short && !over) return null;
+  const shelves = (n) => `${n} ${n === 1 ? 'shelf' : 'shelves'}`;
+  return (
+    <div className={css.addRow}>
+      <Button onClick={() => actions.fill(built.filled)}>Fit the shelves</Button>
+      <span className={css.addNote}>
+        {short > 0 && `${shelves(short)} ${short === 1 ? 'has' : 'have'} room`}
+        {short > 0 && over > 0 && ', and '}
+        {over > 0 && `${shelves(over)} ${over === 1 ? 'holds' : 'hold'} more than `
+          + `${over === 1 ? 'it reads' : 'they read'}`}
+        {' — this brings each one to the depth it reads.'}
+        {over > 0 && ' Games past that depth come off the shelf.'}
+      </span>
+    </div>
+  );
 }
 
 /**
@@ -64,8 +102,11 @@ function AddNext({ built, state, actions }) {
 
   const best = axes.length === 0
     ? (depths?.cell?.nextName
+      // The same key the one shelf's own control writes to. It used to set the
+      // register default instead, which the shelf's own number outranks — so on
+      // a collection you had emptied by hand, "add the next game" did nothing.
       ? { name: depths.cell.nextName, gain: depths.cell.next,
-          key: null, depth: depths.cell.depth, cell: null }
+          key: 'collection', depth: depths.cell.depth, cell: null }
       : null)
     : grid
       .flatMap((c) => (c.alternates[0]
@@ -81,9 +122,7 @@ function AddNext({ built, state, actions }) {
 
   return (
     <div className={css.addRow}>
-      <Button onClick={() => (best.key
-        ? actions.setDepth(best.key, best.depth + 1)
-        : actions.setPerShelf(best.depth + 1))}>
+      <Button onClick={() => actions.setDepth(best.key, best.depth + 1)}>
         ＋ Add {best.name}
       </Button>
       <span className={css.addNote}>
@@ -127,29 +166,18 @@ function Why({ cell }) {
   );
 }
 
-export default function Collection({ built, state, actions, onOpen }) {
-  const { ix, grid, weights, depths, axes } = built;
+export default function Collection({ built, state, actions }) {
+  const { grid, axes } = built;
   // Whatever has something to say about this collection, in registration order.
   // An analysis that returns null does not render a heading over nothing.
   const found = useMemo(() => analyse({ built, state }), [built, state]);
-
-  const shelf = axes.length === 0 ? grid[0] : null;
-  const rows = useMemo(
-    () => (shelf ? shelf.picks.map((p) => ix.rowOf.get(p.id)) : []),
-    [shelf, ix]);
-  // Sorted by what each carries, because that is what the heading claims. In
-  // allocation order it was not: pinning a game already on the shelf seeds it
-  // first and re-orders everything after it, which read as a reshuffle when
-  // nothing about the collection had changed.
-  const register = useMemo(() => {
-    if (!shelf) return [];
-    const carried = sharesOf(ix, weights, rows);
-    return shelf.picks
-      .map((p, i) => ({ pick: p, carries: carried[i] }))
-      .sort((a, b) => b.carries - a.carries);
-  }, [shelf, ix, weights, rows]);
-
   const total = grid.reduce((n, c) => n + c.picks.length, 0);
+
+  // With no axes there is one shelf, and it is drawn by exactly the component a
+  // grid is made of, at the size a thing you are looking at deserves. There is
+  // no separate unsplit rendering any more: that branch, and the two inside
+  // `Board`, were four ways of drawing one idea.
+  const one = axes.length === 0 ? grid[0] : null;
 
   return (
     <div className={css.view}>
@@ -157,91 +185,33 @@ export default function Collection({ built, state, actions, onOpen }) {
         <aside className={css.side}>
           {found.map(({ analysis, data }) => (
             <analysis.View key={analysis.id} data={data} built={built} state={state}
-                           actions={actions} onOpen={onOpen} />
+                           actions={actions} onOpen={actions.focusGame} />
           ))}
-          {shelf && <Why cell={depths?.cell} />}
+          {one && <Why cell={built.depths?.cell} />}
         </aside>
 
         <div className={css.main}>
-          {shelf ? (
-            <>
-              <div className={css.head}>
-                <h2 className={css.title}>Every game in it</h2>
-                <PerShelf built={built} state={state} actions={actions} />
-                <span className={css.sub}>
-                  ordered by how much of the collection each carries
-                </span>
-              </div>
-              <AddNext built={built} state={state} actions={actions} />
-              {shelf.picks.length === 0 && (
-                <p className={css.blank}>
-                  Empty. The bars on the left are what each game would add if you
-                  took them in order — the first one adds the most because
-                  nothing is covered yet.
-                </p>
-              )}
-              <div className={css.list}>
-                {register.map(({ pick: p, carries }) => (
-                  <div key={p.id} className={css.entry}>
-                    <GameItem
-                      game={toGameView(ix, ix.rowOf.get(p.id), {
-                        carries,
-                        owned: state.owned.includes(p.id),
-                        pinned: state.pinned.includes(p.id),
-                        blocked: state.blocked.includes(p.id),
-                      })}
-                      onOpen={onOpen}
-                      onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
-                      onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
-                  </div>
-                ))}
-              </div>
-              {shelf.alternates?.length > 0 && (
-                <details className={css.deck}>
-                  <summary className={css.deckHead}>
-                    {shelf.alternates.length} on deck — the next in line, if you
-                    make room
-                  </summary>
-                  <div className={css.list}>
-                    {shelf.alternates.map((a) => {
-                      const row = ix.rowOf.get(a.id);
-                      if (row === undefined) return null;
-                      return (
-                        <div key={a.id} className={css.entry}>
-                          <GameItem
-                            game={toGameView(ix, row, {
-                              owned: state.owned.includes(a.id),
-                              pinned: state.pinned.includes(a.id),
-                              blocked: state.blocked.includes(a.id),
-                            })}
-                            onOpen={onOpen}
-                            onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
-                            onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
-                        </div>
-                      );
-                    })}
-                  </div>
-                </details>
-              )}
-              <p className={css.foot}>
-                Carries is the share of everything the collection reaches that
-                would be lost without that game. The shares do not add to 100 —
-                games overlap, and covering the same ground twice is what the
-                selection is built to avoid.
-              </p>
-            </>
+          {/* One shelf needs no heading of its own above it: the shelf has one,
+              and it carries the same depth control the register head did. Two
+              headings saying "the collection" over one list was the duplication
+              this whole change is about. */}
+          {!one && (
+            <div className={css.head}>
+              <h2 className={css.title}>
+                {axes.length === 1 ? 'One shelf per group' : `${grid.length} shelves`}
+              </h2>
+              <PerShelf built={built} state={state} actions={actions} />
+              <span className={css.sub}>{total} games</span>
+            </div>
+          )}
+          <Fit built={built} actions={actions} />
+          <AddNext built={built} state={state} actions={actions} />
+          {one ? (
+            <Cell cell={one} built={built} state={state} actions={actions}
+                  size="full" onOpen={actions.focusGame} />
           ) : (
-            <>
-              <div className={css.head}>
-                <h2 className={css.title}>
-                  {axes.length === 1 ? 'One shelf per group' : 'Thirty-five shelves'}
-                </h2>
-                <PerShelf built={built} state={state} actions={actions} />
-                <span className={css.sub}>{total} games</span>
-              </div>
-              <AddNext built={built} state={state} actions={actions} />
-              <Board built={built} state={state} actions={actions} onOpen={onOpen} />
-            </>
+            <Board built={built} state={state} actions={actions}
+                   onOpen={actions.focusGame} />
           )}
         </div>
       </div>

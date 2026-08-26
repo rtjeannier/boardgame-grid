@@ -14,11 +14,14 @@ import css from './AxisPanel.module.css';
 
 function Reading({ read }) {
   if (!read) return null;
-  const { depth, auto, read: worked } = read;
+  const { depth, set, read: worked } = read;
+  // No "read" / "set" label: a depth is one kind of number whoever arrived at
+  // it. What is worth saying is what the curve would have said, and only when
+  // that differs from what the group is doing.
   return (
-    <span className={`${css.reading} ${auto ? '' : css.fellBack}`.trim()}>
+    <span className={`${css.reading} ${set ? css.typed : ''}`.trim()}>
       <b>{depth} deep</b>
-      <span>{auto ? 'read' : `set${worked == null ? '' : ` · reads ${worked}`}`}</span>
+      {worked != null && worked !== depth && <span>reads {worked}</span>}
     </span>
   );
 }

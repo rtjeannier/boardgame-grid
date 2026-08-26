@@ -22,6 +22,15 @@ const initial = {
   // Nothing on: the collection is one shelf holding the whole space. Splitting
   // is something a reader chooses, not the state the app starts in.
   axes: [],
+  // What the collection holds right now, so splitting can *deal* it rather than
+  // choose a new one. `null` is "nothing dealt yet — every shelf fills to its
+  // depth", which is where an unsplit collection lives and where filling puts
+  // it back. Splitting captures it; every control that adds or drops a game
+  // edits it, so it is the collection rather than a snapshot of one.
+  held: null,
+  // Where each held game sat when it was captured, so a re-deal puts it back
+  // rather than recomputing where it "belongs".
+  heldAt: null,
   owned: EMPTY, pinned: EMPTY, blocked: EMPTY,
   depthOverrides: {},
   columns: DEFAULT_COLUMNS,
@@ -47,12 +56,18 @@ const initial = {
   // not something to set.
   perShelf: null,
   panel: null,         // which axis is being configured, if any
-  // The shelf being looked at. Analyses scope to it when it is set: a
-  // five-game shelf moves visibly when one game changes, where a 204-game
-  // collection cannot — one game in 204 is half a percent of it, and no
-  // measure can make that four pixels.
-  selected: null,
-  open: null,          // the game whose drawer is showing
+  // What you are looking at, if you have opened something. One field for what
+  // used to be two — a selected shelf and an open game — because they are the
+  // same act: a thing you clicked, shown at full size on one surface. `from`
+  // remembers the shelf a game was opened from, so there is somewhere to go
+  // back to and never two panels stacked.
+  //
+  //   { kind: 'cell' | 'game' | 'collection', key?, game?, from? }
+  //
+  // Analyses scope to it when it is a shelf: a five-game shelf moves visibly
+  // when one game changes, where a 272-game collection cannot — every game's
+  // unique share reads 0.0000 there, and no measure can make that four pixels.
+  focus: null,
   // What the last block or pin did, so the interface can say so. Blocking a
   // game re-runs the whole selection rather than patching one slot, which is
   // more correct — a game is shelved at most once, so removing one frees others
@@ -76,8 +91,22 @@ function toggle(list, id) {
  */
 function reduce(state, action) {
   switch (action.type) {
+    // Splitting rearranges the collection; it never rechooses it. `held` is
+    // taken at the moment the axis goes on, from what is on the shelves right
+    // then, so the games survive the split and only their arrangement changes.
     case 'axis':
-      return { ...state, axes: toggle(state.axes, action.key), selected: null };
+      return { ...state,
+               axes: toggle(state.axes, action.key),
+               held: action.held?.ids ?? null,
+               heldAt: action.held?.at ?? null,
+               // The shelves are different shelves now, so whatever was open
+               // names one that may not exist.
+               focus: null };
+    // Fill every shelf to the depth it reads, keeping everything already held.
+    case 'fill':
+      return { ...state,
+               held: action.held?.ids ?? state.held,
+               heldAt: action.held?.at ?? state.heldAt };
     case 'own':
       return { ...state, owned: toggle(state.owned, action.id) };
     case 'ownMany':
@@ -85,8 +114,13 @@ function reduce(state, action) {
     // Pinning something you do not own is still meaningful: it says "whatever
     // else changes, keep this in". Blocking beats pinning, because "I want rid
     // of this" is the stronger statement.
+    // A pin adds a game to the collection, so the collection grows by one.
+    // Without this the pinned game landed in a shelf already full to its deal
+    // and pushed three others out — a pin is an addition, not a swap.
     case 'pin':
       return { ...state,
+               held: state.held == null || state.pinned.includes(action.id)
+                 ? state.held : [...new Set([...state.held, action.id])],
                pinned: toggle(state.pinned, action.id),
                blocked: state.blocked.filter((x) => x !== action.id),
                notice: action.was
@@ -95,6 +129,9 @@ function reduce(state, action) {
                  : null };
     case 'block':
       return { ...state,
+               held: state.held == null
+                 ? null : state.held.filter((x) => x !== action.id),
+               heldAt: state.heldAt,
                blocked: toggle(state.blocked, action.id),
                pinned: state.pinned.filter((x) => x !== action.id),
                notice: action.was
@@ -137,14 +174,25 @@ function reduce(state, action) {
         ...state,
         limits: state.limits.map((l, i) => (i === action.at ? { ...l, ...action.value } : l)),
       };
-    case 'select':
-      return { ...state, selected: state.selected === action.key ? null : action.key };
+    // Clicking the shelf you already have open closes it, the way a toggle
+    // reads. Clicking a game always opens the game, because you got there from
+    // somewhere and going back is the way out.
+    case 'focus': {
+      const { kind, key, game, from } = action;
+      const now = state.focus;
+      if (kind === 'cell' && now?.kind === 'cell' && now.key === key) {
+        return { ...state, focus: null };
+      }
+      return { ...state, focus: { kind, key, game, from } };
+    }
+    case 'unfocus':
+      return { ...state, focus: null };
+    case 'back':
+      return { ...state, focus: state.focus?.from ?? null };
     case 'axis2':
       return state;
     case 'panel':
       return { ...state, panel: state.panel === action.key ? null : action.key };
-    case 'open':
-      return { ...state, open: action.game };
     case 'reset':
       return { ...initial };
     default:
@@ -209,14 +257,22 @@ export function useCollection(contract) {
     owned: state.owned,
     keepers,
     banned: state.blocked,
+    held: state.held,
+    heldAt: state.heldAt,
     depthOverrides: state.depthOverrides,
     ...limitsFor(state.limits, state.perShelf),
     alternatesLimit: 6,
   }), [ix, state.axes, state.columns, state.rowCount, state.rowEdges, state.owned,
-       keepers, state.blocked, state.depthOverrides, state.limits, state.perShelf]);
+       keepers, state.blocked, state.held, state.heldAt, state.depthOverrides,
+       state.limits, state.perShelf]);
 
   const actions = useMemo(() => ({
-    toggleAxis: (key) => dispatch({ type: 'axis', key }),
+    // `held` is what is on the shelves at the moment the axis is toggled, so
+    // the split deals the collection instead of choosing a new one. Turning the
+    // last axis off passes nothing: one shelf holding everything has no deal to
+    // honour, and that is where the collection reads its own depth again.
+    toggleAxis: (key, held) => dispatch({ type: 'axis', key, held }),
+    fill: (held) => dispatch({ type: 'fill', held }),
     own: (id) => dispatch({ type: 'own', id }),
     ownMany: (ids) => dispatch({ type: 'ownMany', ids }),
     // `was` is the set of ids shelved at the moment you pressed the button.
@@ -232,10 +288,14 @@ export function useCollection(contract) {
     dropRow: (at, edges) => dispatch({ type: 'dropRow', at, edges }),
     toggleMineOnly: () => dispatch({ type: 'mineOnly' }),
     togglePanel: (key) => dispatch({ type: 'panel', key }),
-    select: (key) => dispatch({ type: 'select', key }),
+    // One surface, and the thing you clicked is its subject.
+    focusCell: (key) => dispatch({ type: 'focus', kind: 'cell', key }),
+    focusGame: (game, from) => dispatch({ type: 'focus', kind: 'game', game, from }),
+    focusCollection: () => dispatch({ type: 'focus', kind: 'collection' }),
+    unfocus: () => dispatch({ type: 'unfocus' }),
+    back: () => dispatch({ type: 'back' }),
     setLimit: (at, value) => dispatch({ type: 'limit', at, value }),
     setPerShelf: (value) => dispatch({ type: 'perShelf', value }),
-    open: (game) => dispatch({ type: 'open', game }),
     reset: () => dispatch({ type: 'reset' }),
   }), []);
 

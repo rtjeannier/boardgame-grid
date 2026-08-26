@@ -74,7 +74,7 @@ test('it opens on the collection, with no grid at all', () => {
   // Twelve, read off the curve rather than set by anyone. The names in it
   // belong to whatever corpus is shipped, so the test does not spell them.
   assert.equal(size(host), 12);
-  assert.match(host.textContent, /Every game in it/);
+  assert.match(host.textContent, /the collection/);
   assert.ok(host.querySelector('svg polygon'), 'the radar did not draw');
   act(() => root.unmount());
 });
@@ -83,21 +83,109 @@ test('splitting reshapes the same collection', () => {
   const { host, root } = mount();
   const players = byText('＋ player count', host);
   assert.ok(players, 'no control to split by player count');
+  const before = size(host);
   click(players);
   assert.match(host.textContent, /One shelf per group/);
-  // Each column stops where its own returns fall away, so the total is whatever
-  // those add up to — more than the unsplit twelve and fewer than the grid.
-  const byPlayers = size(host);
-  assert.ok(byPlayers > 12, `splitting by players gave ${byPlayers} games`);
+  // Splitting deals the collection out; it does not choose a new one. This used
+  // to allocate again from the whole corpus, so twelve games became fifty-eight
+  // of which forty-seven had never been in the collection.
+  assert.equal(size(host), before,
+    `splitting by players went ${before} -> ${size(host)} games`);
 
   click(byText('＋ weight', host));
-  assert.match(host.textContent, /Thirty-five shelves/);
-  assert.ok(size(host) > byPlayers, 'splitting again did not deepen the collection');
+  assert.match(host.textContent, /35 shelves/);
+  assert.equal(size(host), before, 'splitting again changed what the collection holds');
+
+  // Growing it is a thing you ask for, and it is additive.
+  const fit = byText('Fit the shelves', host);
+  assert.ok(fit, 'a dealt grid offers nothing to fill it with');
+  click(fit);
+  assert.ok(size(host) > before, `filling gave ${size(host)}, against ${before}`);
+  assert.equal(byText('Fit the shelves', host), undefined,
+    'a fitted grid still offers to fit itself');
 
   // And back to one shelf, which is the same object at a different setting.
   click([...host.querySelectorAll('button')]
     .find((b) => b.getAttribute('aria-pressed') === 'true'));
   act(() => root.unmount());
+});
+
+test('changing the grid\'s shape offers to fit it again', () => {
+  const { host, root } = mount();
+  click(byText('＋ player count', host));
+  click(byText('＋ weight', host));
+  click(byText('Fit the shelves', host));
+  const settled = size(host);
+  assert.equal(byText('Fit the shelves', host), undefined, 'a fitted grid is not settled');
+
+  // Dropping a band packs the same games into fewer shelves, so they end up
+  // *over* what their curves read rather than under. The prompt used to count
+  // only the shortfall, so it went silent exactly here: you could drop a row
+  // and be offered nothing at all.
+  const drop = [...host.querySelectorAll('button')]
+    .find((b) => /^Drop the .* band$/.test(b.getAttribute('aria-label') ?? ''));
+  assert.ok(drop, 'no way to drop a band');
+  click(drop);
+  assert.equal(size(host), settled, 'dropping a band changed what the collection holds');
+
+  const again = byText('Fit the shelves', host);
+  assert.ok(again, 'dropping a band offered no way to fit the grid to its new shape');
+  assert.match(host.textContent, /hold more than they read/);
+  click(again);
+  assert.ok(size(host) < settled, `fitting left ${size(host)} of ${settled} in place`);
+  assert.equal(byText('Fit the shelves', host), undefined, 'still out of shape after fitting');
+  act(() => root.unmount());
+});
+
+/**
+ * jsdom does no layout, so a viewport is a promise about `matchMedia` and
+ * nothing else. That is enough: the reflow is a decision made from a media
+ * query, not from anything measured.
+ */
+function atWidth(px, run) {
+  const real = dom.window.matchMedia;
+  dom.window.matchMedia = (q) => {
+    const m = /max-width:\s*(\d+)px/.exec(q);
+    return { matches: m ? px <= Number(m[1]) : false, media: q,
+             addEventListener() {}, removeEventListener() {},
+             addListener() {}, removeListener() {} };
+  };
+  try { return run(); } finally { dom.window.matchMedia = real; }
+}
+
+test('a narrow window reflows the grid rather than crushing it', () => {
+  // Measured on the seven-column board, the room a game's name gets: 17
+  // characters at 1440px, 13 at 1280, 7 at 1024, 4 at 900, and at 768 and below
+  // the board is narrower than its own row heads and add strip, so the columns
+  // resolve to zero. Four characters of a title is not a smaller title, so the
+  // matrix reflows into a list — reflow before shrinking, and never truncate.
+  const shelvesIn = (host) => [...host.querySelectorAll('[class*="_mini_"]')];
+  const namesIn = (host) => shelvesIn(host)
+    .flatMap((el) => [...el.querySelectorAll('[class*="_compact_"] [class*="_name_"]')])
+    .map((n) => n.textContent.trim());
+
+  for (const [px, wants] of [[1440, 'matrix'], [900, 'matrix'], [768, 'stack'], [390, 'stack']]) {
+    atWidth(px, () => {
+      const { host, root } = mount();
+      click(byText('＋ player count', host));
+      click(byText('＋ weight', host));
+      const fit = byText('Fit the shelves', host);
+      if (fit) click(fit);
+
+      const stacked = !!host.querySelector('[class*="_stack_"]');
+      const matrix = !!host.querySelector('[class*="_board_"]');
+      assert.equal(stacked ? 'stack' : matrix ? 'matrix' : 'neither', wants,
+        `at ${px}px the board should be a ${wants}`);
+
+      // Either way every shelf is still there, and names are never dropped.
+      assert.equal(shelvesIn(host).length, 35, `at ${px}px a shelf went missing`);
+      const names = namesIn(host);
+      assert.ok(names.length > 20, `at ${px}px only ${names.length} games were named`);
+      assert.ok(names.every((n) => n && !n.endsWith('…')),
+        `at ${px}px a name was truncated in the markup`);
+      act(() => root.unmount());
+    });
+  }
 });
 
 test('the drawer opens over the page and closes on Escape', () => {
@@ -153,15 +241,28 @@ test('adding a game reshapes the collection and the radar gains a second shape',
   act(() => root.unmount());
 });
 
+/**
+ * Open a shelf. Its controls are not on the grid any more — a two-axis grid
+ * carried 110 of them, seventy being the same stepper once per cell — so
+ * reaching a shelf's depth means opening the shelf, the way a reader does.
+ */
+function openShelf(host, pick = (els) => els[0]) {
+  const shelves = [...host.querySelectorAll('button[aria-label^="Open "]')];
+  const target = pick(shelves);
+  if (target) click(target);
+  // Portaled onto document.body, so it is outside the app's own subtree.
+  return target && document.querySelector('[role="dialog"]');
+}
+
 test('blocking says what it did, lists what is blocked, and can be undone', () => {
   const { host, root } = mount();
-  const register = () => host.querySelector('table, [class*="list"]')?.textContent
+  const register = () => host.querySelector('[class*="picks"]')?.textContent
     ?? host.textContent;
-  const top = host.querySelector('[class*="entry"] [class*="name"]')?.textContent.trim();
+  const top = host.querySelector('[class*="picks"] [class*="name"]')?.textContent.trim();
   assert.ok(top && register().includes(top), 'nothing to block');
 
-  const block = [...host.querySelectorAll('button[aria-label^="Block"]')][0];
-  assert.ok(block, 'no block control on the register');
+  const block = host.querySelector('[class*="picks"] button[aria-label^="Block"]');
+  assert.ok(block, 'no block control on the shelf');
   click(block);
 
   // Three things have to be true, and only the first used to be.
@@ -314,7 +415,7 @@ test('the radar redraws when the collection changes', () => {
   const before = shape();
   assert.ok(before, 'no radar to begin with');
 
-  click([...host.querySelectorAll('button[aria-label^="Block"]')][0]);
+  click(host.querySelector('[class*="picks"] button[aria-label^="Block"]'));
   assert.notEqual(shape(), before, 'the radar kept the shape of a collection that changed');
   act(() => root.unmount());
 });
@@ -329,10 +430,12 @@ test('a shelf, a column and a row can each be changed where they are drawn', () 
   assert.ok(wasCols > 1, 'no columns to drop');
 
   // One shelf's depth, set on that shelf, without touching its neighbours.
-  const cellCount = () => host.querySelectorAll('button[aria-label="One more here"]').length;
-  assert.ok(cellCount() > 0, 'no per-shelf control');
   const before = host.textContent.match(/(\d+) games/)[1];
-  click(host.querySelector('button[aria-label="One more here"]'));
+  const shelf = openShelf(host);
+  assert.ok(shelf, 'no shelf to open');
+  const cellCount = () => shelf.querySelectorAll('button[aria-label="One more here"]').length;
+  assert.equal(cellCount(), 1, 'a shelf you opened should offer exactly one stepper');
+  click(shelf.querySelector('button[aria-label="One more here"]'));
   const after = host.textContent.match(/(\d+) games/)[1];
   assert.equal(Number(after), Number(before) + 1, 'one more on one shelf is one more game');
 
@@ -444,10 +547,11 @@ test('a depth you set outlives the filter you set it under', () => {
   act(() => root.unmount());
 });
 
-test('held twice is empty until something really is', () => {
+test('doubled up is empty until something really is', () => {
   const { host, root } = mount();
-  // The twelve-game collection has no duplicate in it by construction.
-  assert.ok(!host.textContent.includes('Held twice'),
+  // The twelve-game collection has no duplicate in it by construction: its
+  // closest pair sits at 0.44 similarity, where a real duplicate sits at 0.95.
+  assert.ok(!host.textContent.includes('Doubled up'),
     'a collection built to avoid duplication reported one');
 
   const add = (term, name) => {
@@ -468,7 +572,7 @@ test('held twice is empty until something really is', () => {
 
   click(byText('Collection', host));
   click(byText('Build on mine', host));
-  assert.match(host.textContent, /Held twice/, 'a real duplicate went unreported');
+  assert.match(host.textContent, /Doubled up/, 'a real duplicate went unreported');
   // The more contained side is the one named, not whichever came first.
   assert.match(host.textContent,
     /Jaws of the Lion[^]*?Gloomhaven already covers \d+%/,
@@ -513,24 +617,32 @@ test('games a shelf is a default, on every split, that a shelf can overrule', ()
     field().dispatchEvent(new dom.window.Event('input', { bubbles: true }));
   });
 
+  // Unsplit, the one shelf's own number is the whole collection's size.
   assert.ok(field(), 'no games-a-shelf control unsplit');
   type('4');
   assert.equal(size(host), 4);
 
-  // Still there once the grid is live, and still the default.
+  // Splitting deals those four out rather than choosing again, so the control
+  // that appears is the register default and the collection has not grown.
   click(byText('＋ player count', host));
   click(byText('＋ weight', host));
   assert.ok(field(), 'the control vanished when the grid came up');
-  const flat = size(host);
+  assert.equal(size(host), 4, 'splitting changed what the collection holds');
 
-  // A shelf that has been adjusted keeps its own number; the default does not
-  // reach back over it.
-  click(host.querySelector('button[aria-label="One more here"]'));
-  assert.equal(size(host), flat + 1, 'a shelf could not be adjusted past the default');
+  // A shelf you open takes a number of its own, and keeps it when the default
+  // moves underneath: the register is a guide at every level and a ceiling at
+  // none.
+  const shelf = openShelf(host);
+  const count = () => Number(shelf.textContent.match(/(\d+) games/)[1]);
+  click(shelf.querySelector('button[aria-label="One more here"]'));
+  const mine = count();
+  assert.equal(size(host), 5, 'a shelf could not be adjusted past the default');
+
+  click(shelf.querySelector('button[aria-label="Close"]'));
   type('3');
-  assert.ok(size(host) < flat, 'lowering the default did not take');
-  click(host.querySelector('button[aria-label="One more here"]'));
-  assert.ok(size(host) > 0);
+  const filled = size(host);
+  assert.ok(filled > 5, `the default should fill every other shelf, got ${filled}`);
+  assert.equal(count(), mine, 'the default reached back over a shelf that was set');
   act(() => root.unmount());
 });
 
@@ -538,11 +650,12 @@ test('the shelf default can be handed back to the curve', () => {
   const { host, root } = mount();
   const field = () => host.querySelector('input[aria-label="Games on this shelf"]');
   const tag = () => [...host.querySelectorAll('button')]
-    .find((b) => b.textContent.trim() === 'set ✕');
+    .find((b) => b.textContent.trim() === '↺');
 
-  // Untouched it shows what the shelves are doing, and says so.
+  // Untouched it shows what the shelves are doing, and does not label it: a
+  // number a reader typed and a number the shelf read are the same kind of
+  // thing to look at, and calling one of them "auto" only raised the question.
   assert.equal(field().value, '12');
-  assert.match(host.textContent, /auto/);
   assert.equal(tag(), undefined, 'nothing to clear before anything is set');
 
   act(() => {
@@ -559,32 +672,38 @@ test('the shelf default can be handed back to the curve', () => {
   act(() => root.unmount());
 });
 
-test('picking a shelf scopes the analyses to something small enough to move', () => {
+test('opening a shelf scopes the analyses to something small enough to move', () => {
   const { host, root } = mount();
   click(byText('＋ player count', host));
   click(byText('＋ weight', host));
+  const fit = byText('Fit the shelves', host);
+  if (fit) click(fit);
 
-  const shape = () => {
-    const all = [...host.querySelectorAll('svg polygon')];
+  // The rail describes the page, so it keeps describing the whole collection.
+  const shapeIn = (where) => {
+    const all = [...where.querySelectorAll('svg polygon')];
     return all[all.length - 1]?.getAttribute('points');
   };
-  const whole = shape();
+  const whole = shapeIn(host);
   assert.ok(whole, 'no radar');
   assert.match(host.textContent, /What it reaches/);
 
-  // Click the shelf itself, not a game on it.
-  const cell = [...host.querySelectorAll('[class*="cell"]')]
-    .find((el) => el.querySelectorAll('[class*="compact"]').length >= 4);
-  assert.ok(cell, 'no shelf with enough games to pick');
-  click(cell);
+  // The shelf you open describes that shelf. Both at once, and they disagree —
+  // which is the point: across 272 games every game's unique share reads
+  // 0.0000, and on a shelf of nine it spreads.
+  const shelf = openShelf(host, (els) => els.find((el) => {
+    const mini = el.closest('[class*="_mini_"]');
+    return mini && mini.querySelectorAll('[class*="compact"]').length >= 4;
+  }));
+  assert.ok(shelf, 'no shelf with enough games to open');
+  assert.match(shelf.textContent, /What this shelf reaches/, 'the shelf drew no radar of its own');
+  assert.notEqual(shapeIn(shelf), whole, 'the shelf drew the whole collection shape');
+  assert.match(host.textContent, /What it reaches/, 'the rail followed the shelf');
+  assert.equal(shapeIn(host), whole, 'the rail stopped describing the collection');
 
-  assert.match(host.textContent, /What this shelf reaches/, 'the radar did not follow the shelf');
-  assert.notEqual(shape(), whole, 'the radar kept the whole collection shape');
-
-  // And clicking it again lets go.
-  click(cell);
-  assert.match(host.textContent, /What it reaches/);
-  assert.equal(shape(), whole);
+  // Closing it leaves nothing behind.
+  click(shelf.querySelector('button[aria-label="Close"]'));
+  assert.equal(document.querySelector('[role="dialog"]'), null, 'the shelf did not close');
   act(() => root.unmount());
 });
 
@@ -647,10 +766,12 @@ test('add the next game actually adds it, above the curve as well as below', () 
   click(byText(`＋ Add ${offered()}`, host));
   assert.equal(size(host), before + 2, 'the second press did not add either');
 
-  // And the fill list stops claiming the shelf reads its own curve.
+  // Nothing is overruled any more: the register is a guide that a shelf, a
+  // column or a row can each speak over, so the fill list has no exception to
+  // report and stops reporting one.
   const open = [...host.querySelectorAll('summary')]
     .find((el) => el.textContent.includes('Fill until'));
   act(() => { open.parentElement.open = true; });
-  assert.match(host.textContent, /overruled — you set \d+ a shelf/);
+  assert.ok(!/overruled/.test(host.textContent), 'still claiming something is overruled');
   act(() => root.unmount());
 });

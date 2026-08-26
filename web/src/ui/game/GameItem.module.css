@@ -50,3 +50,25 @@
           font-variant-numeric: tabular-nums; }
 .fact span { font-family: var(--font-mono); font-size: 9px; font-weight: 500;
              letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
+
+/* Arriving and leaving. Two of ninety-eight rows change at a time, so without
+   this a reader has no way to tell which — the list was already stable (96 of
+   98 DOM nodes survive a block, and none are rebuilt), it just said nothing.
+   Reduced motion drops the movement and keeps the wash — the token sheet
+   switches every animation off globally, and the arriving row still reads. */
+@keyframes came {
+  from { background-color: var(--change-wash); opacity: 0; }
+  40%  { background-color: var(--change-wash); opacity: 1; }
+  to   { background-color: transparent; opacity: 1; }
+}
+@keyframes went {
+  from { background-color: var(--change-wash); opacity: 1; }
+  to   { background-color: var(--change-wash); opacity: 0; }
+}
+.came { border-radius: var(--r-sm); animation: came var(--linger) var(--ease-out); }
+.went { border-radius: var(--r-sm); animation: went var(--linger) var(--ease-out) forwards;
+        pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .came { background-color: var(--change-wash); border-radius: var(--r-sm); }
+  .went { display: none; }
+}

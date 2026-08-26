@@ -4,9 +4,10 @@
      border-bottom: 1px dashed var(--line-2); padding: 0 0 1px;
      width: 2.4em; cursor: text; font-variant-numeric: tabular-nums; }
 .n:hover { border-bottom-style: solid; border-color: var(--text-3); }
+/* A number the reader typed is marked on the number itself rather than by a
+   word beside it: the tag that used to sit here said "auto" or "set", which
+   announced two kinds of number where a reader only ever sees one. */
 .set .n { border-bottom-color: var(--mark); color: var(--mark); }
-.tag { font-family: var(--font-mono); font-size: 8.5px; font-weight: 500;
-       letter-spacing: .05em; text-transform: uppercase; color: var(--text-3); }
-.set .tag { color: var(--mark); }
-.clear { border: 0; background: none; padding: 0; cursor: pointer; }
-.clear:hover { text-decoration: underline; text-underline-offset: 2px; }
+.revert { border: 0; background: none; padding: 0; cursor: pointer;
+          font-size: 10px; line-height: 1; color: var(--text-3); }
+.revert:hover { color: var(--mark); }

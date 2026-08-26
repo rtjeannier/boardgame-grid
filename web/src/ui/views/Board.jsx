@@ -1,85 +1,102 @@
+import { useMemo } from 'react';
 import DepthField from '../primitives/DepthField.jsx';
-import GameItem from '../game/GameItem.jsx';
-import { toGameView } from '../game/view.js';
+import { cellLabeller } from './labels.js';
 import { splitWidest, splitWidestBand } from '../axes.js';
+import { useChanges } from '../useChanges.js';
+import Cell from './Cell.jsx';
+import useMedia, { STACKED } from '../useMedia.js';
 import css from './Board.module.css';
 
 /**
  * The collection once it has been split, in one or two directions.
  *
- * Depth belongs on the header of the thing it governs, which is why there is no
- * control anywhere else for it. It is a number you click into and type: the
- * arrows this replaces implied stepping through values one at a time, when the
- * usual move is to disagree with the reading outright.
+ * Layout and nothing else. Every shelf on it is a `Cell` at `mini`, which is the
+ * same component the unsplit screen renders at `full` — so a grid is not a
+ * different way of showing a collection, it is the same one at a smaller size.
+ *
+ * The controls that used to sit on every shelf are gone from here. Counted on
+ * the shipped corpus, a two-axis grid carried 110 controls, seventy of them the
+ * same stepper repeated once per cell. They live in the shelf you open instead.
  */
 
 /** Everything shelved right now, so the next build can be compared against it. */
 export const shelvedNow = (built) =>
   built.grid.flatMap((c) => c.picks.map((p) => p.id));
 
-/** An empty shelf means two different things, so it says which. */
-const empty = (state) =>
-  (state.mineOnly ? 'nothing of yours' : 'nothing reaches here');
-
-const line = (built, game, state) => toGameView(built.ix, game, {
-  owned: state.owned.includes(built.ix.ids[game]),
-  pinned: state.pinned.includes(built.ix.ids[game]),
-  blocked: state.blocked.includes(built.ix.ids[game]),
+/**
+ * The collection, and where each of its games currently sits.
+ *
+ * What a split is handed so it can deal rather than choose again. The placement
+ * travels with the ids because "where does this game belong" and "where did
+ * this game win" are different questions with different answers — dealing by
+ * belonging alone moved 101 of 272 games. A Map, because game ids are numbers.
+ */
+export const collectionOf = (built) => ({
+  ids: shelvedNow(built),
+  at: new Map(built.grid.flatMap((c) => c.picks.map((p) => [p.id, c.key]))),
 });
 
 function Depth({ kind, label, read, actions }) {
   if (!read) return null;
   return (
-    <DepthField value={read.depth} auto={read.read ?? (read.auto ? read.depth : null)}
-                onChange={(v) => actions.setDepth(`${kind}:${label}`, v)} />
+    <DepthField value={read.depth} set={read.set}
+                label={`Games on the ${label} shelf`}
+                onChange={(v) => actions.setDepth(`${kind}:${label}`, v)}
+                onClear={() => actions.setDepth(`${kind}:${label}`, null)} />
   );
 }
 
 /**
- * What did not quite make the shelf.
+ * Every shelf, one per row, when a matrix will not fit.
  *
- * Kept out of the way until asked for, because a shelf of five with six
- * runners-up under it is a list of eleven. Pinning one puts it on: the same verb
- * as everywhere else, doing the obvious thing.
+ * Reflow rather than shrink, which is the style guide's order: at 430px a
+ * seven-column board gives each game name four characters, and four characters
+ * of a title is not a smaller version of the title. Lookup survives because
+ * each shelf still carries its own name — which is exactly the condition under
+ * which the guide prefers reflowing to scrolling sideways.
+ *
+ * The axis controls come with it: dropping a band or a group is still one
+ * control per band or group, and they belong on the thing they govern.
  */
-function OnDeck({ cell, built, state, actions, onOpen }) {
-  const next = cell?.alternates ?? [];
-  const held = cell?.picks?.length ?? 0;
-  const set = (n) => actions.setDepth(`cell:${cell.key}`, Math.max(0, n));
-  if (!cell) return null;
+function Stack({ built, state, actions, onOpen, marks }) {
+  const { grid, depths } = built;
+  const label = cellLabeller(built);
   return (
-    <details className={css.deck}>
-      <summary className={css.deckHead}>
-        {next.length ? `${next.length} on deck` : 'nothing else reaches here'}
-        {/* One shelf's depth, set on that shelf. Grey until the pointer is in
-            the cell, because thirty-five of these would otherwise be the only
-            thing on the screen. */}
-        <span className={css.pm} onClick={(e) => e.preventDefault()}>
-          <button type="button" aria-label="One fewer here" disabled={held === 0}
-                  onClick={() => set(held - 1)}>−</button>
-          <b>{held}</b>
-          <button type="button" aria-label="One more here" disabled={!next.length}
-                  onClick={() => set(held + 1)}>＋</button>
-        </span>
-      </summary>
-      {next.map((a) => {
-        const row = built.ix.rowOf.get(a.id);
-        if (row === undefined) return null;
-        return (
-          <GameItem key={a.id} variant="compact"
-                    game={line(built, row, state)} onOpen={onOpen}
-                    onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
-                    onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
-        );
-      })}
-    </details>
+    <div className={css.stack}>
+      {grid.map((cell) => (
+        <div key={cell.key}
+             className={`${css.stacked} ${state.focus?.key === cell.key ? css.picked : ''}`.trim()}>
+          <Cell cell={cell} built={built} state={state} actions={actions}
+                size="mini" marks={marks} onOpen={onOpen}
+                onFocus={() => actions.focusCell(cell.key)} />
+        </div>
+      ))}
+      {!grid.length && <p className={css.none}>Nothing to show yet.</p>}
+      <p className={css.note}>
+        {grid.length} shelves, listed. {label(grid[0]?.key ?? '')} first — the
+        grid is the same collection, drawn as a matrix when there is room for one.
+      </p>
+    </div>
   );
 }
 
 export default function Board({ built, state, actions, onOpen }) {
-  const { ix, grid, depths, columns, rows, axes } = built;
+  const { grid, depths, columns, rows, axes } = built;
+  const focused = state.focus?.kind === 'cell' ? state.focus.key : null;
+  const stacked = useMedia(STACKED);
   const byKey = new Map(grid.map((c) => [c.key, c]));
+  // Where every game sits right now. The hook compares it against the last one
+  // and reports the difference, which is the whole of "say what changed".
+  const at = useMemo(
+    () => new Map(grid.flatMap((c) => c.picks.map((p) => [p.id, c.key]))), [grid]);
+  const marks = useChanges(at);
   const onlyPlayers = axes.length === 1 && axes[0] === 'players';
+
+  // Below the width where a column can hold a name, the matrix becomes a list.
+  if (stacked) {
+    return <Stack built={built} state={state} actions={actions}
+                  onOpen={onOpen} marks={marks} />;
+  }
 
   if (axes.length === 1) {
     const keys = onlyPlayers
@@ -93,11 +110,7 @@ export default function Board({ built, state, actions, onOpen }) {
           const cell = byKey.get(key);
           return (
             <div key={key}
-                 className={`${css.column} ${state.selected === cell?.key ? css.picked : ''}`.trim()}
-                 onClick={(e) => {
-                   if (e.target.closest('button, [role="button"], summary, input')) return;
-                   if (cell) actions.select(cell.key);
-                 }}>
+                 className={`${css.column} ${focused === cell?.key ? css.picked : ''}`.trim()}>
               <div className={css.head}>
                 <span className={css.headLine}>
                   <b>{label}</b>
@@ -110,28 +123,15 @@ export default function Board({ built, state, actions, onOpen }) {
                             : actions.dropRow(Number(key),
                               rows.slice(0, -1).map((r) => r.hi)))}>✕</button>
                 </span>
-                <div style={{ marginTop: 'var(--s-3)' }}>
+                {/* One depth per axis bucket, not one per shelf. */}
+                <div className={css.headDepth}>
                   <Depth kind={onlyPlayers ? 'column' : 'row'} label={key}
                          read={depthMap?.get(key)} actions={actions} />
                 </div>
-                {cell?.alternates?.[0] && (
-                  <div className={css.next}>next: {cell.alternates[0].name}</div>
-                )}
               </div>
-              <div className={css.picks}>
-                {(cell?.picks ?? []).map((p) => (
-                  <GameItem key={p.id} variant="compact"
-                            game={line(built, ix.rowOf.get(p.id), state)}
-                            onOpen={onOpen}
-                            onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
-                            onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
-                ))}
-                {!cell?.picks?.length && (
-                  <span className={css.empty}>{empty(state)}</span>
-                )}
-                <OnDeck cell={cell} built={built} state={state}
-                        actions={actions} onOpen={onOpen} />
-              </div>
+              <Cell cell={cell} built={built} state={state} actions={actions}
+                    size="mini" marks={marks} onOpen={onOpen} showName={false} dense dense
+                    onFocus={cell && (() => actions.focusCell(cell.key))} />
             </div>
           );
         })}
@@ -179,7 +179,8 @@ export default function Board({ built, state, actions, onOpen }) {
 
       {[...rows].reverse().map((row) => (
         <Row key={row.index} row={row} built={built} state={state}
-             actions={actions} onOpen={onOpen} byKey={byKey} />
+             actions={actions} onOpen={onOpen} byKey={byKey} marks={marks}
+             focused={focused} />
       ))}
 
       <div className={`${css.rowhead} ${css.addStrip}`}>
@@ -194,8 +195,8 @@ export default function Board({ built, state, actions, onOpen }) {
   );
 }
 
-function Row({ row, built, state, actions, onOpen, byKey }) {
-  const { ix, columns, depths } = built;
+function Row({ row, built, state, actions, onOpen, byKey, marks, focused }) {
+  const { columns, depths } = built;
   return (
     <>
       <div className={css.rowhead}>
@@ -216,22 +217,10 @@ function Row({ row, built, state, actions, onOpen, byKey }) {
         const cell = byKey.get(`${c.label}|${row.index}`);
         return (
           <div key={c.label}
-               className={`${css.cell} ${state.selected === cell?.key ? css.picked : ''}`.trim()}
-               onClick={(e) => {
-                 // A click on a game opens that game; a click on the shelf
-                 // itself selects the shelf.
-                 if (e.target.closest('button, [role="button"]')) return;
-                 if (cell) actions.select(cell.key);
-               }}>
-            {(cell?.picks ?? []).map((p) => (
-              <GameItem key={p.id} variant="compact"
-                        game={line(built, ix.rowOf.get(p.id), state)} onOpen={onOpen}
-                        onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
-                        onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
-            ))}
-            {!cell?.picks?.length && <span className={css.empty}>{empty(state)}</span>}
-            <OnDeck cell={cell} built={built} state={state}
-                    actions={actions} onOpen={onOpen} />
+               className={`${css.cell} ${focused === cell?.key ? css.picked : ''}`.trim()}>
+            <Cell cell={cell} built={built} state={state} actions={actions}
+                  size="mini" marks={marks} onOpen={onOpen} showName={false} dense
+                  onFocus={cell && (() => actions.focusCell(cell.key))} />
           </div>
         );
       })}

@@ -164,9 +164,19 @@ test('the split bar reports which axes are on', () => {
   assert.ok(one.includes('aria-pressed="true"'), 'an axis that is on should say so');
 });
 
-test('depth says whether it read the number or was told it', () => {
-  assert.ok(render(h(ui.DepthField, { value: 11, auto: 11 })).includes('auto'));
-  assert.ok(render(h(ui.DepthField, { value: 6, auto: 3 })).includes('set'));
+test('depth is one number, and says so by saying nothing', () => {
+  // The `auto` / `set` tag is gone: it announced two kinds of number where a
+  // reader only ever sees one, and "auto" beside a figure you had just typed
+  // over was the most confusing thing on the screen.
+  const read = render(h(ui.DepthField, { value: 11 }));
+  assert.ok(read.includes('11'), 'the number itself');
+  assert.ok(!/auto|set/i.test(read), `still labelling the number: ${read}`);
+
+  // What is worth offering is the way back, and only once there is one.
+  assert.ok(!render(h(ui.DepthField, { value: 11, onClear: () => {} })).includes('↺'),
+    'offering a way back from a number nobody typed');
+  assert.ok(render(h(ui.DepthField, { value: 6, set: true, onClear: () => {} })).includes('↺'),
+    'no way back from a number that was typed');
 });
 
 test('every page renders, at every split, empty and with games', async () => {
@@ -188,14 +198,15 @@ test('the views render at each split, and with a shelf of your own', async () =>
   const Collection = (await vite.ssrLoadModule('/src/ui/views/Collection.jsx')).default;
   const Mine = (await vite.ssrLoadModule('/src/ui/views/Mine.jsx')).default;
   const AxisPanel = (await vite.ssrLoadModule('/src/ui/views/AxisPanel.jsx')).default;
-  const Drawer = (await vite.ssrLoadModule('/src/ui/views/GameDrawer.jsx')).default;
+  const Game = (await vite.ssrLoadModule('/src/ui/views/Game.jsx')).default;
   const { toGameView } = await vite.ssrLoadModule('/src/ui/game/view.js');
 
   const owned = [...Array(13)].map((_, i) => ix.ids[i * 7]);
   const noop = () => {};
   const actions = {
     toggleAxis: noop, own: noop, ownMany: noop, pin: noop, block: noop,
-    setDepth: noop, setRows: noop, open: noop, reset: noop,
+    setDepth: noop, setRows: noop, reset: noop,
+    focusCell: noop, focusGame: noop, unfocus: noop, back: noop,
   };
 
   for (const axes of [[], ['players'], ['players', 'weight']]) {
@@ -208,7 +219,7 @@ test('the views render at each split, and with a shelf of your own', async () =>
                                { kind: 'count', scope: 'shelf', on: false, value: 5 }] };
       const where = `axes=[${axes}] owned=${mine.length}`;
 
-      const collection = render(h(Collection, { built, state, actions, onOpen: noop }));
+      const collection = render(h(Collection, { built, state, actions }));
       assert.ok(collection.includes('polygon'), `${where}: no radar`);
       assert.ok(!collection.includes('NaN'), `${where}: NaN on the collection view`);
 
@@ -231,16 +242,16 @@ test('the views render at each split, and with a shelf of your own', async () =>
       }
       assert.equal(render(h(AxisPanel, { which: null, built, state, actions })), '');
 
-      // The drawer, on a game that holds a place and on one that does not.
+      // One game, which says nothing about the shelf it landed on — so the same
+      // markup comes out at every split, and that is the assertion.
       const shelved = built.grid.flatMap((c) => c.picks)[0];
       const game = toGameView(ix, ix.rowOf.get(shelved.id), {});
-      const open = render(h(Drawer, { game, built, state, actions, onClose: noop }));
-      assert.ok(open.includes(game.rankLabel.replace('#', '#')),
-        `${where}: drawer lost the game`);
-      assert.ok(open.includes('What it does'), `${where}: drawer lost its body`);
+      const open = render(h(Game, { game, built, state, actions }));
+      assert.ok(open.includes(game.rankLabel.replace('#', '#')), `${where}: lost the game`);
+      assert.ok(open.includes('What it does'), `${where}: lost its body`);
       assert.ok(open.includes('boardgamegeek.com'), `${where}: no BGG link`);
-      assert.ok(!open.includes('NaN'), `${where}: NaN in the drawer`);
-      assert.equal(render(h(Drawer, { game: null, built, state, actions, onClose: noop })), '');
+      assert.ok(!open.includes('NaN'), `${where}: NaN in the game view`);
+      assert.equal(render(h(Game, { game: null, built, state, actions })), '');
     }
   }
 });
