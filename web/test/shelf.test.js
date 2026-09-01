@@ -13,8 +13,8 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import {
-  buildGrid, cellOverrideKey, coverageWeights, covers, indexContract, redundancies,
-  spokeCoverage,
+  buildGrid, cellOverrideKey, coverageOf, coverageWeights, covers, indexContract,
+  redundancies, spokeCoverage, spokeVector,
 } from '../src/engine/index.js';
 import { parseCollectionCsv } from '../src/ui/importCsv.js';
 
@@ -276,31 +276,40 @@ test('a budget spends on the best value first', () => {
   }
 });
 
-test('what a game brings is named from the axes, not from the spokes', () => {
+test('what a set covers is projected from the axes, not measured in the spokes', () => {
   // Regression, and it was mislabelling the one recommendation the rail makes.
-  // Measuring coverage *in* spoke space rather than projecting the axis
-  // measurement into it names a different top family on 7 of 30 shelves — and
-  // the spoke answer is the wrong one: Roll for the Galaxy is a dice game.
+  // `brings` used to multiply a game's spoke vector by what a shelf lacked *in
+  // spoke space*. Measured on the shipped corpus that named a different top
+  // family on 7 of 30 shelves — Roll for the Galaxy read "Area Majority /
+  // Influence" where the axes say "Dice" — so the rail and the radar, which has
+  // always projected, gave two answers to one question.
+  //
+  // Asserted as the property rather than a label, because which family a game
+  // lands in is the clustering's business and changes between corpora.
   const weights = coverageWeights(ix);
-  const top = (row) => {
-    const cover = spokeCoverage(ix, weights, [row]);
-    return ix.groups
-      .map((g, i) => ({ name: g.name.split(' · ')[0], v: cover[i] }))
-      .sort((a, b) => b.v - a.v)[0].name;
+  const n = ix.groups.length;
+  const direct = (rows) => {
+    const covered = coverageOf(rows.map((r) => spokeVector(ix, weights, r, n)), n);
+    return [...covered];
   };
-  const named = (name) => ix.names.findIndex((n) => n.startsWith(name));
-  for (const [game, family] of [['Roll for the Galaxy', 'Dice']]) {
-    const row = named(game);
-    if (row < 0) continue;      // the seed corpus does not carry every game
-    assert.equal(top(row), family, `${game} should read as ${family}`);
-  }
 
-  // And the projection is the radar's, so one question has one answer: a set's
-  // coverage cannot depend on which module asked for it.
-  const rows = [...Array(8)].map((_, i) => i);
-  const once = spokeCoverage(ix, weights, rows);
-  assert.equal(once.length, ix.groups.length);
-  assert.ok(once.every((v) => v >= 0 && v <= 1), 'a spoke read outside 0..1');
+  const shelf = [...Array(10)].map((_, i) => i * 3);
+  const projected = spokeCoverage(ix, weights, shelf);
+  assert.equal(projected.length, n);
+  assert.ok(projected.every((v) => v >= 0 && v <= 1), 'a spoke read outside 0..1');
+
+  // The two spaces are genuinely different answers, so which one is used is not
+  // a cosmetic choice. If this ever stops being true the guard above is moot.
+  const spokes = direct(shelf);
+  const apart = projected.filter((v, i) => Math.abs(v - spokes[i]) > 0.05).length;
+  assert.ok(apart > 0,
+    'the two spaces now agree, so nothing here is protecting anything');
+
+  // Adding a game can only ever raise a spoke, whichever family it lands in —
+  // the property a "what does this bring" reading depends on.
+  const more = spokeCoverage(ix, weights, [...shelf, 101]);
+  assert.ok(more.every((v, i) => v >= projected[i] - 1e-9),
+    'taking a game lowered what the shelf covers');
 });
 
 test('a duplicate is the same game twice, not two games that resemble each other', () => {
