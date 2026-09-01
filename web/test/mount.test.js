@@ -71,9 +71,15 @@ const click = (el) => act(() => el.dispatchEvent(
 test('it opens on the collection, with no grid at all', () => {
   const { host, root } = mount();
   assert.match(host.textContent, /The collection/);
-  // Twelve, read off the curve rather than set by anyone. The names in it
-  // belong to whatever corpus is shipped, so the test does not spell them.
-  assert.equal(size(host), 12);
+  // A size read off the curve rather than set by anyone, so the test does not
+  // spell it — nor the names, which belong to whatever corpus is shipped. What
+  // it checks is that the number on the screen and the games on it agree.
+  const shown = size(host);
+  assert.ok(shown > 0, 'the collection opened empty');
+  // The first `.picks` is the shelf itself; the second is its on-deck list.
+  assert.equal(
+    host.querySelector('[class*="picks"]').querySelectorAll(':scope > [class*="_item_"]').length,
+    shown, 'the count and the games under it disagree');
   assert.match(host.textContent, /the collection/);
   assert.ok(host.querySelector('svg polygon'), 'the radar did not draw');
   act(() => root.unmount());
@@ -186,6 +192,31 @@ test('a narrow window reflows the grid rather than crushing it', () => {
       act(() => root.unmount());
     });
   }
+});
+
+test('it says it is working before it starts working', async () => {
+  const { host, root } = mount();
+  // Deliberately not wrapped in `act`: `act` flushes the transition to
+  // completion, which is exactly the state this is about not being in. The
+  // point of the transition is that React paints the tree it already has, with
+  // the bar on it, *before* it starts the render that blocks the thread —
+  // rebuilding is one synchronous task, so a bar started when the work begins
+  // never gets a frame to appear in.
+  const working = () => {
+    const strip = host.querySelector('[role="status"]');
+    return !!(strip && strip.children.length);
+  };
+  assert.equal(working(), false, 'it claims to be working before anything happened');
+
+  const split = byText('＋ player count', host);
+  split.dispatchEvent(new dom.window.MouseEvent('click', { bubbles: true }));
+  await new Promise((r) => setTimeout(r, 0));
+  assert.equal(working(), true, 'no sign it was working');
+
+  await new Promise((r) => setTimeout(r, 500));
+  assert.equal(working(), false, 'it never stopped saying it was working');
+  assert.match(host.textContent, /One shelf per group/, 'the work did not land');
+  act(() => root.unmount());
 });
 
 test('the drawer opens over the page and closes on Escape', () => {
@@ -547,11 +578,11 @@ test('a depth you set outlives the filter you set it under', () => {
   act(() => root.unmount());
 });
 
-test('doubled up is empty until something really is', () => {
+test('the same game twice is empty until something really is', () => {
   const { host, root } = mount();
-  // The twelve-game collection has no duplicate in it by construction: its
-  // closest pair sits at 0.44 similarity, where a real duplicate sits at 0.95.
-  assert.ok(!host.textContent.includes('Doubled up'),
+  // The twelve-game collection holds no game twice: a duplicate is a reissue
+  // BGG names, and there is none in it.
+  assert.ok(!host.textContent.includes('The same game twice'),
     'a collection built to avoid duplication reported one');
 
   const add = (term, name) => {
@@ -572,10 +603,11 @@ test('doubled up is empty until something really is', () => {
 
   click(byText('Collection', host));
   click(byText('Build on mine', host));
-  assert.match(host.textContent, /Doubled up/, 'a real duplicate went unreported');
-  // The more contained side is the one named, not whichever came first.
+  assert.match(host.textContent, /The same game twice/, 'a real duplicate went unreported');
+  // The sparser record is the one named, not whichever came first, and it says
+  // which of BGG's two relations put it there.
   assert.match(host.textContent,
-    /Jaws of the Lion[^]*?Gloomhaven already covers \d+%/,
+    /Jaws of the Lion[^]*?Gloomhaven is the same game, more fully recorded/,
     'it named the wrong half of the pair');
   act(() => root.unmount());
 });
@@ -655,7 +687,8 @@ test('the shelf default can be handed back to the curve', () => {
   // Untouched it shows what the shelves are doing, and does not label it: a
   // number a reader typed and a number the shelf read are the same kind of
   // thing to look at, and calling one of them "auto" only raised the question.
-  assert.equal(field().value, '12');
+  const read = size(host);
+  assert.equal(field().value, String(read), 'the depth field and the collection disagree');
   assert.equal(tag(), undefined, 'nothing to clear before anything is set');
 
   act(() => {
@@ -668,7 +701,8 @@ test('the shelf default can be handed back to the curve', () => {
   assert.ok(tag(), 'no way back once a number is set');
 
   click(tag());
-  assert.equal(size(host), 12, 'clearing it did not hand the shelf back to its curve');
+  assert.equal(size(host), read,
+    'clearing it did not hand the shelf back to the number it reads');
   act(() => root.unmount());
 });
 
@@ -762,6 +796,14 @@ test('add the next game actually adds it, above the curve as well as below', () 
   click(byText(`＋ Add ${first}`, host));
   assert.equal(size(host), before + 1, 'the button did not add a game');
   assert.notEqual(offered(), first, 'it is still offering the game it just added');
+  // The game it named is the game that arrived. It used to raise a depth by one
+  // and let the next allocation choose who filled the slot, while the label came
+  // from a probe that sees no blocks and no pins and is memoised without them —
+  // so blocking the offered game left it offered and added somebody else.
+  const shelf = host.querySelector('[class*="picks"]');
+  assert.ok([...shelf.querySelectorAll('[class*="_item_"]')]
+    .some((el) => el.textContent.includes(first)),
+  `it offered ${first} and put something else on the shelf`);
 
   click(byText(`＋ Add ${offered()}`, host));
   assert.equal(size(host), before + 2, 'the second press did not add either');
@@ -773,5 +815,259 @@ test('add the next game actually adds it, above the curve as well as below', () 
     .find((el) => el.textContent.includes('Fill until'));
   act(() => { open.parentElement.open = true; });
   assert.ok(!/overruled/.test(host.textContent), 'still claiming something is overruled');
+  act(() => root.unmount());
+});
+
+test('unpinning takes back the game the pin added', () => {
+  const { host, root } = mount();
+  // Split first, so the collection is *dealt*. Undealt, every shelf simply fills
+  // to its depth and a pin picks which games fill it — it swaps rather than
+  // adds, and there is no addition for an unpin to take back.
+  click(byText('＋ player count', host));
+  // The rail offers games that are *not* in the collection — that is what a gap
+  // is — so its pin is the one that adds rather than holds.
+  const rail = host.querySelector('aside');
+  assert.ok(rail, 'no rail to read findings from');
+  const pin = [...rail.querySelectorAll('button[aria-label^="Pin"]')][0];
+  assert.ok(pin, 'the rail offered nothing to pin');
+  const name = pin.getAttribute('aria-label').replace(/^Pin\s+/, '');
+
+  const before = size(host);
+  click(pin);
+  assert.equal(size(host), before + 1, `pinning ${name} did not add it`);
+
+  // `held` is a flat list of ids and could not say *why* a game was in it, so
+  // the unpin had nothing to undo: the game stayed for good, and being seeded it
+  // outranked the selection on every rebuild afterwards.
+  const unpin = [...host.querySelectorAll('button[aria-label^="Unpin"]')]
+    .find((b) => b.getAttribute('aria-label').includes(name));
+  assert.ok(unpin, `nothing to unpin ${name} with`);
+  click(unpin);
+  assert.equal(size(host), before,
+    `unpinning ${name} left it in the collection`);
+  act(() => root.unmount());
+});
+
+test('a finding names the shelf it was measured on', () => {
+  const { host, root } = mount();
+  click(byText('＋ player count', host));
+  const rail = host.querySelector('aside');
+  const gap = [...rail.querySelectorAll('h2')]
+    .find((h) => h.textContent.includes('what is missing'));
+  assert.ok(gap, 'the rail stopped reporting gaps');
+  // A finding rolled up across a grid is measured on one shelf, and the shelf
+  // it was measured on was attached to the finding and then never rendered —
+  // so the reader got a number with no way to know what it was a number about.
+  assert.match(rail.textContent, /, on (solo|\d+ players)\b/,
+    'the gap finding names no shelf');
+  act(() => root.unmount());
+});
+
+test('an analysis registered twice is still drawn once', async () => {
+  // The rail grew a second radar every time an analysis module was evaluated
+  // again — Vite re-running `reach.jsx` on save is the everyday case — because
+  // `register` pushed onto a module-global list that outlives every component.
+  // The rail then rendered the same analysis twice under one React key.
+  const { host, root } = mount();
+  const radars = () => host.querySelectorAll('svg polygon').length;
+  const before = radars();
+  assert.ok(before > 0, 'the radar did not draw at all');
+
+  const { all } = await vite.ssrLoadModule('/src/ui/analysis/registry.js');
+  const listed = all().length;
+  const mod = vite.moduleGraph.getModuleById(join(WEB, 'src/ui/analysis/reach.jsx'));
+  assert.ok(mod, 'could not reach the analysis module to re-evaluate it');
+  vite.moduleGraph.invalidateModule(mod);
+  await vite.ssrLoadModule('/src/ui/analysis/reach.jsx');
+
+  assert.equal(all().length, listed,
+    `re-evaluating one analysis took the registry ${listed} -> ${all().length}`);
+  assert.deepEqual(all().map((a) => a.id), [...new Set(all().map((a) => a.id))],
+    'the registry holds the same analysis twice');
+  act(() => root.unmount());
+});
+
+test('blocking replaces the game, whether or not the collection was dealt', () => {
+  const { host, root } = mount();
+  // Only games actually on a shelf. The rail offers Block on games that are not
+  // in the collection at all — blocking one of those removes nothing, which is
+  // not the question here.
+  const onShelf = () => [...host.querySelectorAll('button[aria-label^="Block"]')]
+    .filter((b) => !b.closest('aside'));
+  const shelved = () => host.querySelector('[class*="picks"]')
+    .querySelectorAll(':scope > [class*="_item_"]').length;
+
+  // Undealt, one shelf: it fills to its depth, so something always took the slot.
+  const before = shelved();
+  assert.ok(onShelf().length, 'no game on a shelf to block');
+  click(onShelf()[0]);
+  assert.equal(shelved(), before, 'blocking shrank the undealt collection');
+
+  // Dealt. This is where it used to differ: the game came out of `held` as well
+  // as being banned, so its shelf asked for one fewer and simply got smaller.
+  // Measured on the shipped corpus, a 50-game split went to 49 while an undealt
+  // one stayed at 50 and a register set stayed at 42 — and nothing on screen
+  // said which you would get.
+  click(byText('＋ player count', host));
+  const dealt = size(host);
+  assert.ok(onShelf().length, 'no game on a shelf to block once split');
+  click(onShelf()[0]);
+  assert.equal(size(host), dealt,
+    `blocking took the dealt collection ${dealt} -> ${size(host)} instead of replacing`);
+  act(() => root.unmount());
+});
+
+test('a game in a grid cell is not its own target; the shelf is', () => {
+  const { host, root } = mount();
+  click(byText('＋ player count', host));
+  click(byText('＋ weight', host));
+
+  // A mini cell used to hold five competing targets — the shelf, and five names
+  // that each swallowed the click and opened a different overlay.
+  const cell = [...host.querySelectorAll('[class*="_cell_"]')]
+    .find((el) => el.querySelector('[class*="_item_"]'));
+  assert.ok(cell, 'no filled cell on the board');
+  const name = cell.querySelector('[class*="_main_"]');
+  assert.ok(name, 'a cell with no game in it');
+  assert.equal(name.getAttribute('role'), null,
+    'a game on the board is still its own click target');
+
+  // Clicking it opens the shelf, not the game.
+  click(name);
+  const dialog = document.querySelector('[role="dialog"]');
+  assert.ok(dialog, 'clicking a game in a cell opened nothing at all');
+  assert.ok(!/^#\d/.test(dialog.textContent.trim()),
+    'clicking a game in a cell opened the game rather than the shelf');
+
+  // On the shelf you have opened, every game is a target again and carries a
+  // way out to BoardGameGeek.
+  const rows = [...dialog.querySelectorAll('[class*="_main_"]')]
+    .filter((el) => el.getAttribute('role') === 'button');
+  assert.ok(rows.length, 'no game is clickable on the shelf you opened');
+  // BoardGameGeek is reached from the board game view and nowhere else — a link
+  // on every row of every shelf is forty ways out of a page nobody asked to
+  // leave.
+  assert.equal(
+    dialog.querySelectorAll('a[href^="https://boardgamegeek.com/boardgame/"]').length, 0,
+    'a shelf row is still carrying a BoardGameGeek link');
+  act(() => root.unmount());
+});
+
+test('a shelf on the board takes one more without being opened', () => {
+  const { host, root } = mount();
+  click(byText('＋ player count', host));
+  const more = [...host.querySelectorAll('button[aria-label="One more here"]')];
+  assert.ok(more.length, 'no stepper on the board');
+  // Deliberately back after being removed — see the note in `Cell.jsx`. It is
+  // the only thing in a mini cell that takes a click of its own.
+  const before = size(host);
+  click(more[0]);
+  assert.equal(size(host), before + 1,
+    `the board stepper took the collection ${before} -> ${size(host)}`);
+  const fewer = [...host.querySelectorAll('button[aria-label="One fewer here"]')];
+  click(fewer[0]);
+  assert.equal(size(host), before, 'the board stepper does not go back down');
+  act(() => root.unmount());
+});
+
+
+test('the board game view is one click further in, and there is a way back', () => {
+  const { host, root } = mount();
+  click(byText('＋ player count', host));
+
+  // Cell → shelf. A game in the cell no longer takes this click.
+  const cell = [...host.querySelectorAll('[class*="_column_"]')]
+    .find((el) => el.querySelector('[class*="_item_"]'));
+  click(cell.querySelector('[class*="_main_"]'));
+  const shelf = document.querySelector('[role="dialog"]');
+  assert.ok(shelf, 'clicking a cell opened nothing');
+
+  // Shelf → game. This is the board game view, and it is what the games on an
+  // opened shelf are clickable *for*.
+  const row = [...shelf.querySelectorAll('[class*="_main_"]')]
+    .find((el) => el.getAttribute('role') === 'button');
+  assert.ok(row, 'no game to open on the shelf');
+  const name = row.querySelector('[class*="_name_"]').textContent.trim();
+  click(row);
+  const game = document.querySelector('[role="dialog"]');
+  assert.match(game.textContent, /BoardGameGeek/, 'the game view has no way out to BGG');
+  assert.match(game.textContent, /best at|length|weight/, 'the game view is missing its facts');
+
+  // …and back to the shelf it was opened from, never two overlays stacked.
+  assert.equal(document.querySelectorAll('[role="dialog"]').length, 1,
+    'the game view stacked a second overlay on the shelf');
+  const back = [...game.querySelectorAll('button')]
+    .find((b) => /back/i.test(b.getAttribute('aria-label') || b.textContent));
+  assert.ok(back, `no way back from ${name}`);
+  click(back);
+  assert.ok(!/BoardGameGeek/.test(document.querySelector('[role="dialog"]').textContent),
+    'going back did not return to the shelf');
+  act(() => root.unmount());
+});
+
+test('an opened shelf is drawn against what its own cell could reach', () => {
+  const { host, root } = mount();
+  click(byText('＋ player count', host));
+  click(byText('＋ weight', host));
+  const cell = [...host.querySelectorAll('[class*="_cell_"]')]
+    .find((el) => el.querySelector('[class*="_item_"]'));
+  click(cell.querySelector('[class*="_main_"]'));
+  const shelf = document.querySelector('[role="dialog"]');
+  assert.ok(shelf, 'no shelf opened');
+
+  // Drawn the way the collection is — one shape, no overlay — over the only
+  // population it could ever hold. Against the whole corpus a shelf of eight
+  // answered 0.069 and drew as a speck inside a ring standing for ground it was
+  // never going to cover.
+  assert.match(shelf.textContent, /out of what the \d+ games that fit here could reach/,
+    'the shelf is not measured against its own eligible population');
+  assert.ok(!/The collection/.test(
+    shelf.querySelector('[class*="_key_"]')?.textContent ?? ''),
+  'the corpus is still the reference on an opened shelf');
+  // One series, like the collection: the outline polygon is the second one.
+  const outline = shelf.querySelectorAll('polygon[class*="outline"]');
+  assert.equal(outline.length, 0, 'the shelf still draws a second series over itself');
+  act(() => root.unmount());
+});
+
+test('a game on the board game view opens as a board game view of its own', () => {
+  const { host, root } = mount();
+  click(byText('＋ player count', host));
+  const cell = [...host.querySelectorAll('[class*="_column_"]')]
+    .find((el) => el.querySelector('[class*="_item_"]'));
+  click(cell.querySelector('[class*="_main_"]'));
+  const row = [...document.querySelector('[role="dialog"]').querySelectorAll('[class*="_main_"]')]
+    .find((el) => el.getAttribute('role') === 'button');
+  click(row);
+
+  const first = document.querySelector('[role="dialog"]');
+  const name = first.querySelector('h2').textContent.trim();
+  // BoardGameGeek is reached from here and only here.
+  assert.equal(first.querySelectorAll(
+    'a[href^="https://boardgamegeek.com/boardgame/"]').length, 1,
+  'the board game view should carry exactly one way out to BoardGameGeek');
+
+  // "Games like it" names other games, and each is a way into its own view
+  // rather than a label you cannot follow.
+  const like = [...first.querySelectorAll('button[class*="_pick_"]')];
+  assert.ok(like.length, 'nothing under "Games like it" can be opened');
+  const wanted = like[0].textContent.trim().split('  #')[0];
+  click(like[0]);
+
+  const second = document.querySelector('[role="dialog"]');
+  assert.equal(second.querySelector('h2').textContent.trim(), wanted,
+    'opening a game like it opened something else');
+  assert.notEqual(second.querySelector('h2').textContent.trim(), name,
+    'it opened the game that was already open');
+  assert.equal(document.querySelectorAll('[role="dialog"]').length, 1,
+    'the second game stacked a third overlay');
+
+  // Back walks the chain that was clicked rather than dropping out of it.
+  const back = [...second.querySelectorAll('button')]
+    .find((b) => /back/i.test(b.getAttribute('aria-label') || b.textContent));
+  assert.ok(back, 'no way back from a game opened from a game');
+  click(back);
+  assert.equal(document.querySelector('[role="dialog"]').querySelector('h2').textContent.trim(),
+    name, 'back did not return to the game it was opened from');
   act(() => root.unmount());
 });

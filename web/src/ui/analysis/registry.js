@@ -30,8 +30,20 @@
 
 const REGISTRY = [];
 
+/**
+ * Registering the same analysis twice replaces it; it does not add it.
+ *
+ * The list outlives every component, so anything that evaluates a module a
+ * second time — Vite re-executing it on save, one module graph reached under
+ * two specifiers — used to append a second copy. The rail then rendered that
+ * analysis twice under the same React key, and the radar grew by one every
+ * save. Keying on `id` makes the list idempotent, which is what an import side
+ * effect has to be.
+ */
 export function register(analysis) {
-  REGISTRY.push(analysis);
+  const at = REGISTRY.findIndex((a) => a.id === analysis.id);
+  if (at >= 0) REGISTRY[at] = analysis;
+  else REGISTRY.push(analysis);
   return analysis;
 }
 

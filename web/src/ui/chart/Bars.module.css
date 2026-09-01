@@ -2,8 +2,19 @@
 .row { display: grid; grid-template-columns: var(--label) minmax(0, 1fr) 34px;
        align-items: center; gap: var(--s-5); }
 .label { font-size: 11.5px; line-height: 1.3; color: var(--text); }
+/* A label that opens something. Underlined on hover rather than always, so a
+   list of six does not read as six links shouting at once. */
+.pick { border: 0; background: none; padding: 0; text-align: left; width: 100%;
+        font: inherit; color: inherit; cursor: pointer; }
+.pick:hover, .pick:focus-visible { text-decoration: underline;
+                                   text-underline-offset: 2px; }
 .track { height: 9px; border-radius: var(--r-sm); background: var(--sunken); }
-.fill { height: 100%; border-radius: var(--r-sm); background: var(--text-2); }
+/* `display` is not decoration here. The track is a grid item and so is
+   blockified; the fill is only its descendant, so without this it stays
+   inline, `width` and `height` do not apply to it, and every bar drew as
+   an empty grey track at every value. */
+.fill { display: block; height: 100%; border-radius: var(--r-sm);
+        background: var(--text-2); }
 .n { font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3);
      text-align: right; font-variant-numeric: tabular-nums; }
 /* A row that is one of the reader's own games. */

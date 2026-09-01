@@ -1,8 +1,10 @@
 import { useMemo } from 'react';
 import { analyse } from '../analysis/index.js';
+import { cellOverrideKey } from '../../engine/index.js';
 import Button from '../primitives/Button.jsx';
 import DepthField from '../primitives/DepthField.jsx';
 import Board from './Board.jsx';
+import { collectionOf } from '../shelved.js';
 import Cell from './Cell.jsx';
 import { cellLabeller } from './labels.js';
 import css from './Collection.module.css';
@@ -100,29 +102,51 @@ function AddNext({ built, state, actions }) {
   const { grid, depths, axes } = built;
   const label = cellLabeller(built);
 
-  const best = axes.length === 0
-    ? (depths?.cell?.nextName
-      // The same key the one shelf's own control writes to. It used to set the
-      // register default instead, which the shelf's own number outranks — so on
-      // a collection you had emptied by hand, "add the next game" did nothing.
-      ? { name: depths.cell.nextName, gain: depths.cell.next,
-          key: 'collection', depth: depths.cell.depth, cell: null }
-      : null)
-    : grid
-      .flatMap((c) => (c.alternates[0]
-        ? [{ name: c.alternates[0].name, gain: c.alternates[0].gain,
-             key: `cell:${c.key}`, depth: c.picks.length, cell: c.key }]
-        : []))
-      .sort((a, b) => (b.gain ?? 0) - (a.gain ?? 0))[0];
+  // Every shelf's own runner-up, unsplit included — and the unsplit collection
+  // is one shelf, so there is no second way to ask the question.
+  //
+  // The name used to come from `depths.cell.nextName` instead, which is read
+  // off `collectionCurve`: a separate allocation that sees no blocks, no pins
+  // and no budget, and is memoised on a key none of those appear in. Block the
+  // game the button offers and it keeps offering it — measured, the label said
+  // "Modern Art" while the rebuild added "Dune: Imperium – Uprising".
+  // `alternates` comes out of the allocation actually on screen, so it cannot
+  // disagree with it.
+  const best = grid
+    .flatMap((c) => (c.alternates[0]
+      ? [{ id: c.alternates[0].id, name: c.alternates[0].name,
+           gain: c.alternates[0].gain, cell: c.key || null }]
+      : []))
+    .sort((a, b) => (b.gain ?? 0) - (a.gain ?? 0))[0];
   if (!best) return null;
 
-  const last = axes.length === 0
-    ? (grid[0]?.picks?.length ? grid[0].picks[grid[0].picks.length - 1].gain : null)
-    : (grid.find((c) => c.key === best.cell)?.gains?.slice(-1)[0] ?? null);
+  const home = grid.find((c) => (c.key || null) === best.cell);
+  const last = home?.gains?.slice(-1)[0] ?? null;
+
+  /**
+   * A shelf that was asked for a number is full at that number.
+   *
+   * Adding a game to `held` is enough for a shelf taking whatever it was dealt,
+   * but a shelf someone typed a number at trims the deal back to it — and the
+   * game just added sits at the end of the deal, so it would be the first
+   * thing trimmed. Pressing "add" on a shelf you asked for five of is asking
+   * for six, so the ask moves with it.
+   */
+  const spoken = axes.length === 0
+    ? (state.depthOverrides.collection != null || state.perShelf != null)
+    : (depths?.cellDepth?.get(best.cell)?.spoken ?? false);
+  const depthKey = best.cell == null
+    ? 'collection' : cellOverrideKey(axes, best.cell);
+  const depth = (best.cell == null
+    ? depths?.cell?.depth : depths?.cellDepth?.get(best.cell)?.depth)
+    ?? home?.picks?.length ?? 0;
 
   return (
     <div className={css.addRow}>
-      <Button onClick={() => actions.setDepth(best.key, best.depth + 1)}>
+      {/* Adds *this* game. Raising a depth and letting the next allocation
+          choose is a different act, and it named one game and added another. */}
+      <Button onClick={() => actions.add(best.id, best.cell, collectionOf(built.grid),
+                                         spoken ? { key: depthKey, value: depth + 1 } : null)}>
         ＋ Add {best.name}
       </Button>
       <span className={css.addNote}>

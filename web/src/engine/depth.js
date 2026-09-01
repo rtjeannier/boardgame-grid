@@ -158,6 +158,34 @@ export function seedInto(cells, keepers) {
 }
 
 /**
+ * Which arrangement a typed depth was typed under.
+ *
+ * Cell keys are only unique *within* an arrangement. With one axis on a cell
+ * key is a bare string — a column label under `players`, a row index under
+ * `weight` — so the 3-players column and weight band 3 are both `"3"`, and an
+ * override typed on one silently became the depth of the other. Measured: type
+ * 25 on the 3-players column, drop players, add weight, and band 3 held 25
+ * games while reading 25, so "fit the shelves" agreed with it and never offered
+ * to trim. That is the 20-game shelf a fit would not touch.
+ *
+ * Naming the key rather than pruning it keeps the property the comment in
+ * `ui/state.js` is about: a depth you set outlives the arrangement you set it
+ * under, and comes back when you return to that arrangement.
+ */
+/**
+ * The `depthOverrides` key for one shelf, and the only place that spells it.
+ *
+ * With both axes on a cell key is `"4|2"`, which names its column and its row
+ * and can be read only one way — and it is the form `pipeline/depth.py` mirrors
+ * and `tests/parity` asserts, so it has to stay exactly that. Only the
+ * single-axis keys are ambiguous, and only those take the axis's name. The
+ * `column:` and `row:` keys need none of this: they are already told apart by
+ * their prefix, and they are the same cross-engine contract.
+ */
+export const cellOverrideKey = (axes = [], key) =>
+  `cell:${axes.length === 1 ? `${axes[0]}:` : ''}${key}`;
+
+/**
  * Depth for every cell of a grid, as the allocator wants it.
  *
  * A cell takes the smaller of its column's answer and its row's — the same rule
@@ -169,6 +197,12 @@ export function gridDepths(ix, weights, { columns, rows, leftover, fallback, pla
   overrides = {}, probe = PROBE, genreWeights = null, include = null,
   perShelfCap = null } = {}) {
   const opts = { leftover, fallback, places, probe, genreWeights, include };
+  // `columns` and `rows` *are* the axis set: either is null when its axis is
+  // off. So the scope a typed depth belongs to needs no extra parameter.
+  // Named `axisKeys`, not `axes`: `resolve` below takes its own `...axes` rest
+  // of depth readings, and the shadowing silently keyed every single-axis
+  // override under `cell:[object Object]:3`.
+  const axisKeys = [...(columns ? ['players'] : []), ...(rows ? ['weight'] : [])];
   // Keyed on what the reading actually depends on. `include` filters the corpus
   // and is rare, so a filtered build simply does not cache.
   const read = (kind, axis, shape) => (include
@@ -228,7 +262,7 @@ export function gridDepths(ix, weights, { columns, rows, leftover, fallback, pla
     // otherwise reimpose the number the reader just typed over.
     const typed = axes.some((a) => a.set);
     const from = Math.min(...axes.map((a) => (typed && !a.set ? a.read : a.depth)));
-    const set = overrides[`cell:${key}`];
+    const set = overrides[cellOverrideKey(axisKeys, key)];
     const depth = set == null ? from : Math.max(0, set);
     capacity.set(key, depth);
     // `spoken` is whether a reader has said anything at all about how deep this

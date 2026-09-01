@@ -1,3 +1,4 @@
+import { shelvedRows } from '../shelved.js';
 import { register } from './registry.js';
 import css from './analysis.module.css';
 
@@ -7,8 +8,7 @@ export default register({
   scope: 'collection',
   run({ built }) {
     const { ix, grid } = built;
-    const rows = grid.flatMap((c) => c.picks.map((p) => ix.rowOf.get(p.id)))
-      .filter((r) => r !== undefined);
+    const rows = shelvedRows(ix, grid);
     if (!rows.length) return null;
 
     const plays = (lo, hi) => rows.filter((r) => {

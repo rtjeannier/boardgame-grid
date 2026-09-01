@@ -53,6 +53,10 @@
      ui/useChanges.js — the timer has to outlast the paint. */
   --ease-out: cubic-bezier(.16, 1, .3, 1);
   --quick: 180ms;
+  /* How long a rebuild may take before the interface admits to it. Under this
+     and nothing appears at all: a dealt grid rebuilds in 24ms, and a bar that
+     flashed for 24ms on every press read as the screen flickering. */
+  --wait: 220ms;
   --linger: 900ms;
   --s-5: 10px; --s-6: 12px; --s-7: 16px; --s-8: 20px;
   --s-9: 26px; --s-10: 36px; --s-11: 44px;

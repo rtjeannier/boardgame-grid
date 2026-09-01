@@ -13,7 +13,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import {
-  buildGrid, coverageWeights, indexContract, redundancies,
+  buildGrid, cellOverrideKey, covers, indexContract, redundancies,
 } from '../src/engine/index.js';
 import { parseCollectionCsv } from '../src/ui/importCsv.js';
 
@@ -173,6 +173,32 @@ test('the register is a guide: a column typed over it keeps its own number', () 
   }
 });
 
+test('a depth typed on one axis does not become a depth on the other', () => {
+  // Regression, and the shelf a fit would not touch. With one axis on, a cell
+  // key is a bare string: the 3-players column and weight band 3 are both "3".
+  // A 25 typed on the column therefore became band 3's depth the moment the
+  // reader dropped players and added weight — and because "fit the shelves"
+  // measures against the resolved depth, band 3 read 25, held 25, and the fit
+  // agreed with it and never offered to trim.
+  const key = cellOverrideKey(['players'], '3');
+  assert.equal(key, 'cell:players:3');
+
+  const typed = buildGrid(ix, { axes: ['players'], depthOverrides: { [key]: 25 } });
+  assert.equal(typed.depths.cellDepth.get('3').depth, 25, 'the column it was typed on');
+
+  const other = buildGrid(ix, { axes: ['weight'], depthOverrides: { [key]: 25 } });
+  assert.equal(other.depths.cellDepth.get('3').set, false,
+    'a number typed on the player column reached weight band 3');
+  assert.ok(other.depths.cellDepth.get('3').depth < 25,
+    `weight band 3 took ${other.depths.cellDepth.get('3').depth} from the other axis`);
+
+  // Two axes keep the unprefixed form, because that is the key `pipeline/depth.py`
+  // resolves and `tests/parity` asserts across both engines.
+  assert.equal(cellOverrideKey(['players', 'weight'], '3|2'), 'cell:3|2');
+  const both = buildGrid(ix, { depthOverrides: { 'cell:3|2': 7 } });
+  assert.equal(both.depths.cellDepth.get('3|2').depth, 7);
+});
+
 test('a header reports the depth it is using, not one it is not', () => {
   // The field used to show the column's own reading while the column held the
   // register's number — nine on screen, five on the shelf. `read` keeps the
@@ -237,31 +263,51 @@ test('a budget is a second ceiling, and the smaller one wins', () => {
 });
 
 test('a budget spends on the best value first', () => {
-  // Ten games under a budget are the ten the unbudgeted collection ranks
-  // highest, not an arbitrary ten: same rule, stopped earlier.
-  const ten = buildGrid(ix, { axes: [], budget: 10 }).grid[0].picks.map((p) => p.name);
+  // Games bought under a budget are the ones the unbudgeted collection ranks
+  // highest, not an arbitrary set: same rule, stopped earlier. The budget is a
+  // ceiling, so it may buy fewer than it allows when the curve stops first.
+  const budgeted = buildGrid(ix, { axes: [], budget: 10 }).grid[0].picks.map((p) => p.name);
   const open = buildGrid(ix, { axes: [] }).grid[0].picks.map((p) => p.name);
-  assert.equal(ten.length, 10);
-  for (const name of ten) assert.ok(open.includes(name), `${name} is not in the open collection`);
+  assert.ok(budgeted.length > 0 && budgeted.length <= 10,
+    `a budget of ten bought ${budgeted.length}`);
+  for (const name of budgeted) {
+    assert.ok(open.includes(name), `${name} is not in the open collection`);
+  }
 });
 
-test('redundancy names the more contained half, and stays quiet otherwise', () => {
-  const weights = coverageWeights(ix, null);
+test('a duplicate is the same game twice, not two games that resemble each other', () => {
   const rows = (names) => names.map((n) => ix.names.indexOf(n)).filter((r) => r >= 0);
+  const names = (out) => out.map((r) => r.name);
 
-  // Two unrelated games duplicate nothing, which is the answer that made the
-  // measure this replaces read backwards: it listed four regardless.
-  assert.deepEqual(redundancies(ix, weights, rows(['Azul', 'Gloomhaven'])), []);
-  assert.deepEqual(redundancies(ix, weights, rows(['Azul'])), []);
+  // Identity, so it is a lookup against what BGG publishes rather than a
+  // threshold on likeness. A threshold cannot do this job in either direction:
+  // 7 Wonders and its second edition score 0.79 on similarity, under any floor
+  // that also excludes Navegador and Orléans — which the measure this replaces
+  // reported as 96% duplicated while the selector put them at 0.00.
+  for (const [a, b, who] of [
+    ['7 Wonders', '7 Wonders (Second Edition)', null],
+    ['Gloomhaven: Jaws of the Lion', 'Gloomhaven', 'Gloomhaven: Jaws of the Lion'],
+    ['Brass: Lancashire', 'Brass: Birmingham', 'Brass: Lancashire'],
+    ['Wyrmspan', 'Wingspan', 'Wyrmspan'],
+  ]) {
+    const pair = rows([a, b]);
+    if (pair.length < 2) continue;
+    const found = redundancies(ix, pair);
+    assert.equal(found.length, 1, `${a} / ${b}: a reissue went unreported`);
+    if (who) {
+      assert.equal(found[0].name, who,
+        `${a} / ${b}: named the better known half`);
+    }
+  }
 
-  const pair = rows(['Gloomhaven', 'Gloomhaven: Jaws of the Lion']);
-  const found = redundancies(ix, weights, pair, { floor: 0.9 });
-  assert.equal(found.length, 1, 'a real duplicate went unreported');
-  // Jaws of the Lion is 95% covered by Gloomhaven and Gloomhaven only 83%
-  // covered by it, so Jaws of the Lion is the redundant one.
-  assert.equal(found[0].name, 'Gloomhaven: Jaws of the Lion');
-  assert.equal(found[0].filledBy.name, 'Gloomhaven');
-  assert.ok(found[0].share > 0.9);
+  // And nothing else is one, however alike two games look.
+  for (const [a, b] of [['Navegador', 'Orléans'], ['Root', 'Blood Rage'],
+                        ['Azul', 'Gloomhaven'], ['Hitster', 'Captain Sonar']]) {
+    const pair = rows([a, b]);
+    if (pair.length < 2) continue;
+    assert.deepEqual(names(redundancies(ix, pair)), [], `${a} / ${b} is not a reissue`);
+  }
+  assert.deepEqual(redundancies(ix, rows(['Azul'])), []);
 });
 
 test('every pinned game holds a place, even when they displace each other', () => {
@@ -372,6 +418,42 @@ test('the expensive getters cannot be reached by spreading the result', () => {
   // ...and asking for them directly still works.
   assert.ok(Array.isArray(built.filled.ids), 'filled stopped working');
   assert.ok(built.data, 'data stopped working at two axes');
+});
+
+test('the collection is not capped at how deep its curve was read', () => {
+  // `COLLECTION_PROBE` is how far the curve is read, and it used to clamp the
+  // answer too: `Math.min(COLLECTION_PROBE, set)`. Asking the unsplit
+  // collection for more than 120 games gave 120, while the control that asked
+  // went on saying the number you typed.
+  for (const ask of [119, 120, 121, 150]) {
+    const held = buildGrid(ix, { axes: [], depthOverrides: { collection: ask } })
+      .grid[0].picks.length;
+    assert.equal(held, ask, `asked for ${ask}, got ${held}`);
+  }
+});
+
+test('a low returns bar deepens the shelves without stalling the rebuild', () => {
+  // Reported as a crash: setting the bar to 5% froze the tab. `repair` rescored
+  // a cell inside the loop over that cell's own picks, and again for every cell
+  // it compared against, so a shelf of twenty rescored itself twenty times over
+  // — 15,161 scoring passes against 452 at the default, and 72 seconds for one
+  // rebuild. Nothing changes between those calls, so they are cached per pass.
+  const at = (leftover) => {
+    const started = Date.now();
+    const built = buildGrid(ix, { axes: ['players', 'weight'], autoDepthLeftover: leftover });
+    return { ms: Date.now() - started,
+             games: built.grid.reduce((n, c) => n + c.picks.length, 0) };
+  };
+  const normal = at(0.45);
+  const deep = at(0.05);
+
+  // The bar is what it is for: a lower one takes more games.
+  assert.ok(deep.games > normal.games,
+    `5% should take more than 45%, got ${deep.games} against ${normal.games}`);
+  // And it stays within reach of the default rather than running away with it.
+  // Measured on the seed corpus this is a handful of times slower, not eighty.
+  assert.ok(deep.ms < normal.ms * 30 + 2000,
+    `5% took ${deep.ms}ms against ${normal.ms}ms at the default`);
 });
 
 test('the shipped contract rebuilds fast enough to be a control surface', () => {

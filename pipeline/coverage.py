@@ -97,6 +97,80 @@ def genre_weights(loadings: dict[int, np.ndarray],
     return {i: scaled[k] for k, i in enumerate(ids)}
 
 
+def axis_reach(loadings: np.ndarray, sel: Selection = DEFAULTS.selection) -> np.ndarray:
+    """Per axis, the share of the corpus that loads on it at all.
+
+    Peak-relative, the same membership test genre quality uses, so "reaches" here
+    means the same thing it means everywhere else.
+    """
+    member = loadings >= sel.genre_floor * loadings.max(axis=1, keepdims=True)
+    return member.mean(axis=0)
+
+
+def axis_weights(spoke_of, reach, places: int | None = None) -> np.ndarray:
+    """What each axis is worth when coverage is summed over all of them.
+
+    Every spoke carries the same share, and within a spoke its axes divide that
+    share in proportion to their reach:
+
+        w(axis) = (1 / spokes) * reach(axis) / sum of reach across its spoke
+
+    Counting each axis as 1 instead hands a spoke influence in proportion to how
+    many pieces the clustering happened to cut it into, which is an artefact of
+    the clustering and not a fact about games. Measured on the live corpus, the
+    say each family had under flat weights against what it has under these:
+
+        axes  spoke                          flat   here
+          15  Area Majority / Influence     19.5%   8.3%
+          12  Card Game                     15.6%   8.3%
+           7  Cooperative Game               9.1%   8.3%
+           5  Economic                       6.5%   8.3%
+           3  Tile Placement                 3.9%   8.3%
+
+    Scarcity is not already inside the loadings -- the correlation between an
+    axis's reach and the mean loading on it is -0.053 -- so this is the first
+    place it is applied and there is nothing to double-count.
+
+    Normalised so the weights *average* 1 rather than summing to 1 — a spoke
+    gets `axes / spokes` between its members, not `1 / spokes`. Ranking cannot
+    see an overall scale, but two things can: `gain_floor` is an absolute
+    threshold, and the gains shown to a reader are absolute numbers. Summing to
+    1 divided every gain by 77 and the parity case that sets a gain floor went
+    from 147 picks to 0, which is the whole corpus falling under the bar.
+
+    `places` rounds to the precision the contract publishes. Both engines must
+    read the *same* number, and the interface reads the rounded one, so the
+    pipeline rounds too rather than scoring against a value it did not publish.
+    """
+    spoke_of = list(spoke_of)
+    spokes = sorted(set(spoke_of))
+    totals = {s: sum(float(reach[a]) for a, g in enumerate(spoke_of) if g == s)
+              for s in spokes}
+    share = len(spoke_of) / len(spokes)
+    out = []
+    for a, g in enumerate(spoke_of):
+        total = totals[g]
+        # A spoke whose axes all reach nothing still gets its share, split evenly
+        # rather than divided by zero.
+        out.append(share * float(reach[a]) / total if total > 0
+                   else share / sum(1 for x in spoke_of if x == g))
+    w = np.array(out, dtype=float)
+    return np.round(w, places) if places is not None else w
+
+
+def space_axis_weights(space, game_ids, sel: Selection = DEFAULTS.selection,
+                       places: int | None = 4) -> np.ndarray:
+    """`axis_weights` for a space and the games actually in it.
+
+    Reach is a property of the corpus, so it is measured over the games being
+    built from rather than over everything the space has ever seen. `places`
+    defaults to the contract's precision: the interface scores against the
+    published number, and the pipeline must score against the same one.
+    """
+    loadings = np.stack([space.loadings[i] for i in game_ids])
+    return axis_weights(space.spoke_of, axis_reach(loadings, sel), places)
+
+
 def axis_coverage(weight_rows: list[np.ndarray], n_axes: int) -> np.ndarray:
     """Per-axis coverage of a set: 1 - ∏(1 - w). Empty set covers nothing."""
     uncovered = np.ones(n_axes)

@@ -2,7 +2,8 @@ import { useMemo } from 'react';
 import * as engine from '../../engine/index.js';
 import Button from '../primitives/Button.jsx';
 import Bars from '../chart/Bars.jsx';
-import { axesOf } from '../game/view.js';
+import { axesOf, toGameView } from '../game/view.js';
+import { shelvedNow } from '../shelved.js';
 import { Block, Pin } from '../icons.jsx';
 import css from './Game.module.css';
 
@@ -51,7 +52,7 @@ export default function Game({ game, built, state, actions }) {
   }, [game, ix, state.owned]);
 
   if (!detail) return null;
-  const shelved = built.grid.flatMap((c) => c.picks.map((p) => p.id));
+  const shelved = shelvedNow(built.grid);
   const pinned = state.pinned.includes(game.id);
   const blocked = state.blocked.includes(game.id);
   const owned = state.owned.includes(game.id);
@@ -62,7 +63,7 @@ export default function Game({ game, built, state, actions }) {
         <h2 className={css.name}>{game.name}</h2>
         <span className={css.sub}>
           {game.rankLabel} · rated {ix.rating[detail.row].toFixed(2)} ·{' '}
-          <a className={css.link} href={`https://boardgamegeek.com/boardgame/${game.id}`}
+          <a className={css.link} href={game.bgg}
              target="_blank" rel="noreferrer">BoardGameGeek ↗</a>
         </span>
         <div className={css.stats}>
@@ -96,7 +97,7 @@ export default function Game({ game, built, state, actions }) {
         {/* Fixed to 1, not to the longest bar. The loadings sum to 1, so
             re-scaling them to the row maximum made every game's top axis full
             width and turned an evenly-spread game into a solid block. */}
-        <Bars items={detail.axes} max={1} percent />
+        <Bars items={detail.axes} percent />
       </section>
 
       <section className={css.sec}>
@@ -105,9 +106,15 @@ export default function Game({ game, built, state, actions }) {
           How much ground each shares with it, whether or not it was chosen.
         </p>
         {detail.near.length ? (
-          <Bars labelWidth={200} max={1} percent
+          /* Each one opens as a game in its own right, on this same surface —
+             `state.focus` goes along as `from`, so back walks the chain you
+             clicked rather than dropping you out of it. */
+          <Bars labelWidth={200} percent
+                onPick={(item) => actions.focusGame(
+                  toGameView(ix, item.row), state.focus)}
                 items={detail.near.map((n) => ({
                   label: `${n.name}  #${n.rank}`, value: n.score, mark: n.mine,
+                  row: n.row,
                 }))} />
         ) : (
           <span className={css.blurb}>Nothing in the corpus is much like it.</span>

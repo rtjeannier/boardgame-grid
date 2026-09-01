@@ -26,14 +26,13 @@ export default function Focus({ built, state, actions }) {
     );
   }
 
-  const cell = focus.kind === 'collection'
-    ? { key: '', picks: built.grid.flatMap((c) => c.picks), alternates: [] }
-    : built.grid.find((c) => c.key === focus.key);
+  const cell = built.grid.find((c) => c.key === focus.key);
   if (!cell) return null;
 
-  // The same analyses the rail runs, told to describe this shelf instead. They
-  // are the reason a shelf is worth opening: at 272 games every game's unique
-  // share reads 0.0000, and on a shelf of nine it spreads 15% down to 4%.
+  // The same analyses the rail runs, told to describe this shelf instead. A
+  // shelf is the scale these measures mean anything at — a figure averaged over
+  // 272 games is a column of zeros — so the rail describes the page and this
+  // describes the shelf, and both render at once.
   const found = analyse({ built, state, subject: { kind: 'cell', cell } });
   const analyses = found.length ? (
     <>

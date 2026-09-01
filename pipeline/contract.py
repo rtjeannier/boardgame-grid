@@ -194,11 +194,15 @@ def build_contract(games, space, results, source: str, generated_at: str,
     lo, hi = coverage.genre_rating_range(loadings, ratings, sel)
 
     spoke_of = list(space.spoke_of)
-    reach = (loadings >= sel.genre_floor * loadings.max(axis=1, keepdims=True)).mean(axis=0)
+    reach = coverage.axis_reach(loadings, sel)
+
+    weight = coverage.axis_weights(spoke_of, reach, PLACES)
 
     dimensions = [
         {"id": a, "name": space.axis_names[a], "group": int(spoke_of[a]),
          "reach": round(float(reach[a]), PLACES),
+         # What this axis is worth when coverage is summed. See `axis_weights`.
+         "weight": round(float(weight[a]), PLACES),
          # Not rounded further: these are the min and max of ratings that are
          # already quantised, so they are exact at this precision — and quality
          # is computed from them on both sides, which makes them the one place a
@@ -266,7 +270,6 @@ def build_contract(games, space, results, source: str, generated_at: str,
             "picksPerCell": coll.picks_per_cell,
             "autoDepth": coll.auto_depth,
             "autoDepthLeftover": coll.auto_depth_leftover,
-            "redundancyFloor": coll.redundancy_floor,
             "representationEnough": coll.representation_enough,
             "weightRows": coll.weight_rows,
             "rowNames": list(params.presentation.row_names),

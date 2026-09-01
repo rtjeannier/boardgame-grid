@@ -12,7 +12,7 @@
  */
 
 /** Interior cut points splitting the population into `count` equal parts. */
-export function weightRowEdges(weights, count) {
+function weightRowEdges(weights, count) {
   const ordered = Float64Array.from(weights).sort();
   const n = ordered.length;
   const edges = [];
@@ -68,7 +68,7 @@ export function buildWeightRows(weights, count, names = [], edges = null) {
  * peak-relative scaling is already in `playerFit`, so nothing is renormalised
  * here — only the floor is applied.
  */
-export function columnMemberships(ix, game, columns, policy) {
+function columnMemberships(ix, game, columns, policy) {
   const out = [];
   const from = ix.playerFit.start[game], to = ix.playerFit.start[game + 1];
   for (let c = 0; c < columns.length; c++) {
@@ -92,7 +92,7 @@ export function columnMemberships(ix, game, columns, policy) {
  * publishes only a mean weight, so a hard cut asserts a precision the data
  * does not have.
  */
-export function rowMemberships(weight, rows, policy) {
+function rowMemberships(weight, rows, policy) {
   const taper = policy.weightTaper;
   const out = [];
   for (const row of rows) {

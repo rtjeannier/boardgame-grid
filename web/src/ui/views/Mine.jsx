@@ -6,7 +6,7 @@ import { toGameView } from '../game/view.js';
 import { parseCollectionCsv } from '../importCsv.js';
 import { Search } from '../icons.jsx';
 import { whyCut } from './labels.js';
-import { shelvedNow } from './Board.jsx';
+import { shelvedNow } from '../shelved.js';
 import css from './Mine.module.css';
 
 /**
@@ -54,7 +54,7 @@ export default function Mine({ built, state, actions, onOpen }) {
 
   const results = useMemo(() => matches(ix, query), [ix, query]);
   const shelved = useMemo(
-    () => new Set(grid.flatMap((c) => c.picks.map((p) => p.id))), [grid]);
+    () => new Set(shelvedNow(grid)), [grid]);
 
   const held = new Map();
   for (const cell of grid) for (const p of cell.picks) held.set(p.id, cell.key);
@@ -177,8 +177,8 @@ export default function Mine({ built, state, actions, onOpen }) {
               <div key={game.id} className={css.entry}>
                 <GameItem game={game} variant={game.reason ? 'reason' : 'row'}
                           onOpen={onOpen}
-                          onPin={(g) => actions.pin(g.id, shelvedNow(built), g.name)}
-                          onBlock={(g) => actions.block(g.id, shelvedNow(built), g.name)} />
+                          onPin={(g) => actions.pin(g.id, shelvedNow(built.grid), g.name)}
+                          onBlock={(g) => actions.block(g.id, shelvedNow(built.grid), g.name)} />
               </div>
             ))}
           </div>

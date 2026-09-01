@@ -50,6 +50,52 @@ test('no component names a colour except through a token', () => {
   }
 });
 
+test('a bar fill is told to be a block, because it is a span', () => {
+  // Regression, and it emptied every bar in the interface. The track is a grid
+  // item and so is blockified; the fill is only the track's descendant, so
+  // without an explicit `display` it stays inline — and `width` and `height` do
+  // not apply to a non-replaced inline element. Both the stylesheet's height and
+  // the width JSX sets inline were discarded, and every bar drew as a grey track
+  // at every value. Nothing caught it because markup was all anyone asserted on.
+  const fills = [];
+  for (const file of stylesheets) {
+    const css = readFileSync(file, 'utf8');
+    for (const [, body] of css.matchAll(/\.fill\s*\{([^}]*)\}/g)) {
+      fills.push([relative(WEB, file), body]);
+    }
+  }
+  assert.ok(fills.length, 'no .fill rule found — has the bar been renamed?');
+  for (const [where, body] of fills) {
+    if (!/\b(?:width|height)\s*:/.test(body)) continue;
+    assert.match(body, /\bdisplay\s*:/,
+      `${where}: .fill sizes itself but never leaves display:inline, so it draws nothing`);
+  }
+});
+
+test('no component positions itself with an inline style', () => {
+  // The style guide's rule is that layout sets spacing with flex or grid `gap`
+  // and a component never adds a margin to place itself. An inline `style` is
+  // where that rule goes to die, because it is invisible to the stylesheet
+  // checks above and cannot be overridden by the thing doing the layout.
+  //
+  // Computed geometry is fine and is why this allows anything else: a grid's
+  // template depends on how many columns there are, and a bar's width is the
+  // number it is drawing. Neither can be a static rule.
+  // Matched on the property name only, and as a prefix, so `marginTop` counts
+  // and `textAlign: 'left'` does not.
+  const banned = /^(margin|padding|position|top|left|right|bottom|inset|zIndex)/i;
+  for (const file of files.filter((f) => f.endsWith('.jsx'))) {
+    const src = readFileSync(file, 'utf8');
+    for (const [, body] of src.matchAll(/style=\{\{([^}]*)\}\}/g)) {
+      const props = body.split(',').map((pair) => pair.split(':')[0].trim())
+        .filter(Boolean);
+      const placed = props.filter((prop) => banned.test(prop.replace(/['"]/g, '')));
+      assert.deepEqual(placed, [],
+        `${relative(WEB, file)} places itself inline: style={{${body.trim()}}}`);
+    }
+  }
+});
+
 test('every var(--x) a component uses is defined in tokens.css', () => {
   for (const file of stylesheets) {
     const css = readFileSync(file, 'utf8');
@@ -69,6 +115,26 @@ test('every var(--x) a component uses is defined in tokens.css', () => {
         `${relative(WEB, file)} uses ${name}, which tokens.css does not define`);
     }
   }
+});
+
+test('the working bar holds itself back for the rebuilds nobody waits for', () => {
+  // The bar has to be *mounted* the moment work starts — the render thread is
+  // about to block, so nothing can mount it later — but it must not be *seen*
+  // for a rebuild that takes 24ms. Showing it every time turned every button
+  // press into a blink. So the delay is a compositor animation on opacity,
+  // which keeps running while the thread is busy, where a timer would not.
+  const css = readFileSync(join(WEB, 'src/ui/App.module.css'), 'utf8');
+  const tokens = readFileSync(join(WEB, 'src/ui/tokens.css'), 'utf8');
+
+  assert.match(css, /\.progress\s*\{[^}]*opacity:\s*0/,
+    'the bar is visible before it has waited');
+  assert.match(css, /\.armed\s*\{[^}]*animation:\s*reveal\s+var\(--wait\)/,
+    'nothing reveals the bar after the wait');
+  assert.match(css, /@keyframes reveal/, 'no reveal to run');
+  assert.match(tokens, /--wait:\s*\d+ms/, '--wait is not a token');
+
+  // And nothing dims the view: what is on screen is still true.
+  assert.ok(!/\.working\b/.test(css), 'the whole view is being dimmed again');
 });
 
 test('every class in a stylesheet is used by its component, and the reverse', () => {
@@ -119,11 +185,11 @@ const h = (...args) => React.createElement(...args);
 test('GameItem renders in every variant, and with nothing to say', () => {
   const row = ix.rowOf.get(ix.ids[0]);
   const full = ui.toGameView(ix, row, {
-    carries: 0.095, shelf: '4 players · Light', owned: true, pinned: true,
+    shelf: '4 players · Light', owned: true, pinned: true,
     reason: 'Lost 3 players · Heavy to Gloomhaven (0.95).',
   });
   const bare = ui.toGameView(ix, row);
-  for (const variant of ['compact', 'row', 'reason', 'expanded']) {
+  for (const variant of ['compact', 'row', 'reason']) {
     for (const game of [full, bare]) {
       const html = render(h(ui.GameItem, { game, variant }));
       assert.ok(html.includes(game.name), `${variant} lost the name`);
@@ -144,9 +210,21 @@ test('the radar draws a set, with and without something to compare against', () 
   // The gap list is the point of an overlay: it names where you are thinnest.
   // In words — it used to print the raw coverage difference, so a shelf holding
   // none of a kind the collection covers fully read "Deduction −1.00".
-  const said = /Reaches no ([^<]*)/.exec(compared);
-  assert.ok(said, 'no gap reported against the reference');
-  assert.ok(!/\d/.test(said[1]), `the gap list is printing numbers again: ${said[1]}`);
+  //
+  // And it says which claim it is making. Every spoke here is at 0.2 or more,
+  // so "reaches no X" would be false: that sentence is for a spoke actually
+  // sitting on the origin, and this one is "thinnest on".
+  const thin = /Thinnest on ([^<.]*)/.exec(compared);
+  assert.ok(thin, 'no gap reported against the reference');
+  assert.ok(!/\d/.test(thin[1]), `the gap list is printing numbers again: ${thin[1]}`);
+  assert.ok(!/Reaches no/.test(compared),
+    'claiming a spoke at 0.2 or more is not reached at all');
+
+  const missing = names.map((_, i) => (i < 2 ? 0 : 0.6));
+  const zeroed = render(h(ui.Radar, { names, values: missing, reference }));
+  const said = /Reaches no ([^<.]*)/.exec(zeroed);
+  assert.ok(said, 'a spoke on the origin is not reported as unreached');
+  assert.equal(said[1].split(/,| or /).length, 2, `named ${said[1]} for two empty spokes`);
   assert.equal(render(h(ui.Radar, { names: [], values: [] })), '');
 });
 

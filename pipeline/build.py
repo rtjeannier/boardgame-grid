@@ -48,12 +48,16 @@ def build(dataset_path, assigner_name, want_report=False, output=None,
             buckets.WeightAxis(weight_rows, sel)]
     cells, memberships = buckets.build_cells(games, axes, sel)
     genre = coverage.genre_weights(space.loadings, ratings, sel)
+    # What each axis is worth. Every spoke an equal share, split within it by
+    # reach — so a family does not get more say for having been cut into more
+    # pieces by the clustering. See `coverage.axis_weights`.
+    room = coll.axis_room(space.dimension_names, space.spoke_of,
+                          coverage.space_axis_weights(space, [g.id for g in games], sel))
 
     scorer = {
         "coverage": lambda: CoverageScorer(space.loadings, space.similarity, ratings,
                                           space.spoke_of, sel,
-                                          coll.axis_room(space.dimension_names,
-                                                         space.spoke_of)),
+                                          room),
         "mmr": lambda: MmrScorer(space.vectors, params.baseline),
         "greedy": lambda: ArchetypeScorer(),
     }[assigner_name]()
@@ -62,8 +66,7 @@ def build(dataset_path, assigner_name, want_report=False, output=None,
     # the smaller of its column's and its row's — the same rule either way.
     if coll.auto_depth:
         capacity = depth.grid_depths(games, space, ratings, sel, coll, weight_rows,
-                                     axis_room=coll.axis_room(space.dimension_names,
-                                                              space.spoke_of))["capacity"]
+                                     axis_room=room)["capacity"]
     else:
         capacity = coll.capacity(cells)
     results = allocate(cells, memberships, scorer, capacity,
@@ -176,7 +179,9 @@ def build(dataset_path, assigner_name, want_report=False, output=None,
             qcells, qmemb,
             CoverageScorer(qspace.loadings, qspace.similarity,
                            {g.id: g.rating for g in qgames}, qspace.spoke_of, sel,
-                           coll.axis_room(space.dimension_names, space.spoke_of)),
+                           coll.axis_room(qspace.dimension_names, qspace.spoke_of,
+                                          coverage.space_axis_weights(
+                                              qspace, [g.id for g in qgames], sel))),
             coll.capacity(qcells), alternates_limit=pres.alternates_per_cell, sel=sel)
         size = write_contract(
             build_contract(qgames, qspace, qresults, source, generated_at, params),

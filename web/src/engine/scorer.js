@@ -65,12 +65,20 @@ export class CoverageScorer {
     this.cells = cells;
     this.primary = primaryGroups(ix);
 
-    // Per-axis space to fill. One entry per axis, taken from its group.
-    this.axisRoom = new Float64Array(ix.nAxes).fill(1);
+    // Per-axis space to fill. Two things multiplied: what the axis is worth,
+    // which every reader shares, and the reader's own per-genre weight on top.
+    //
+    // The first is the model's, not a knob: every spoke carries an equal share
+    // and its axes divide that share by reach, so a family does not get more
+    // say for having been cut into more pieces by the clustering. Counting each
+    // axis as 1 gave Area Majority (15 axes) five times the vote of Tile
+    // Placement (3). See `coverage.axis_weights` in the pipeline, which
+    // computes these and publishes them per dimension.
+    this.axisRoom = Float64Array.from(ix.axisWeight);
     if (genreWeights) {
       for (let a = 0; a < ix.nAxes; a++) {
         const w = genreWeights[ix.groupOf[a]];
-        if (w !== undefined) this.axisRoom[a] = w;
+        if (w !== undefined) this.axisRoom[a] *= w;
       }
     }
 

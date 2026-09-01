@@ -102,8 +102,13 @@ export function indexContract(contract) {
   const ratingLo = new Float64Array(nAxes);
   const ratingHi = new Float64Array(nAxes);
   const axisNames = new Array(nAxes);
+  // What each axis is worth when coverage is summed. Read from the contract
+  // rather than recomputed: the pipeline scores against the published, rounded
+  // number, and the two engines have to read the same one.
+  const axisWeight = new Float64Array(nAxes).fill(1);
   for (const d of contract.dimensions) {
     groupOf[d.id] = d.group;
+    if (d.weight !== undefined) axisWeight[d.id] = d.weight;
     ratingLo[d.id] = d.ratingLo;
     ratingHi[d.id] = d.ratingHi;
     axisNames[d.id] = d.name;
@@ -114,7 +119,7 @@ export function indexContract(contract) {
     ids, rowOf, names, rank, year, rating, usersRated, weight, playtime, xy,
     embedding, sim, playerFit, kin, thin,
     postings: invert(sim, n, simDims),
-    groupOf, ratingLo, ratingHi, axisNames,
+    groupOf, ratingLo, ratingHi, axisNames, axisWeight,
     groups: contract.groups,
     similarityScale: contract.similarityScale ?? null,
     policy: contract.policy,

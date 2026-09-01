@@ -1,5 +1,6 @@
-import { coverageOf, spokeVector } from '../../engine/index.js';
+import { axisVector, coverageOf } from '../../engine/index.js';
 import Radar from '../chart/Radar.jsx';
+import { rowsOfPicks } from '../shelved.js';
 import { register } from './registry.js';
 import css from './analysis.module.css';
 
@@ -16,16 +17,62 @@ function shapes({ built, state, subject }) {
   const { ix, grid, weights } = built;
   const n = ix.groups.length;
   const names = ix.groups.map((g) => g.name.split(' · ')[0]);
-  const rowsOf = (picks) => picks.map((p) => ix.rowOf.get(p.id)).filter((r) => r !== undefined);
-  const shape = (rs) => coverageOf(rs.map((r) => spokeVector(ix, weights, r, n)), n);
+  const rowsOf = (picks) => rowsOfPicks(ix, picks);
+  // A projection of the one measurement, not a second one. Coverage is computed
+  // on the 77 weighted axes — the space everything else uses — and then summed
+  // into the twelve families for drawing, each scaled by what its family is
+  // worth so a full spoke reads 1. Measuring the spokes directly instead is how
+  // Navegador came out 96% duplicated at 0.00 similarity, and how one game read
+  // 0.15% where the selector had it at 1.86%.
+  const shape = (rs) => {
+    const covered = coverageOf(rs.map((r) => axisVector(ix, weights, r)), ix.nAxes);
+    const per = new Array(n).fill(0);
+    const room = new Array(n).fill(0);
+    for (let a = 0; a < ix.nAxes; a += 1) {
+      per[ix.groupOf[a]] += covered[a] * ix.axisWeight[a];
+      room[ix.groupOf[a]] += ix.axisWeight[a];
+    }
+    return per.map((v, i) => (room[i] > 0 ? v / room[i] : 0));
+  };
   const whole = shape(rowsOf(grid.flatMap((c) => c.picks)));
 
   const picked = subject?.kind === 'cell' ? subject.cell : null;
   if (picked) {
+    /**
+     * A shelf is drawn the way the collection is, over a smaller population.
+     *
+     * The collection radar is one shape and no overlay: how far the games it
+     * holds reach into each of the twelve families, out of everything there is
+     * to reach. A shelf asked that same question of the whole corpus answered
+     * 0.069 and drew as a speck — but the corpus is not what a shelf is
+     * reaching into. It can only ever hold games that pass its player-count and
+     * weight constraints, so that pool is what "everything there is to reach"
+     * means here.
+     *
+     * `built.cells` are those pools. Dividing by what the pool covers gives the
+     * same reading the collection gets, over the population the constraints
+     * actually allow: the same shelf reads 0.151, and a full spoke means it
+     * reaches everything reachable under these constraints rather than
+     * everything in the corpus.
+     *
+     * It is still not a full shape, and it should not be — eight games reach
+     * about a seventh of what the two hundred that qualify here do. Costs 10 ms
+     * across all 35 shelves.
+     */
+    // Every shelf comes out of `built.grid`, which comes out of these pools, so
+    // there is always one to divide by.
+    const pool = built.cells.find((c) => c.key === picked.key);
+    const mine = shape(rowsOf(picked.picks));
+    const ceiling = shape([...pool.games]);
     return {
-      names, values: shape(rowsOf(picked.picks)), reference: whole,
-      label: `This shelf · ${picked.picks.length} games`, referenceLabel: 'The collection',
-      heading: 'What this shelf reaches', picked: true,
+      names,
+      values: mine.map((v, i) => (ceiling[i] > 0 ? Math.min(1, v / ceiling[i]) : 0)),
+      reference: null,
+      label: `This shelf · ${picked.picks.length} games`,
+      heading: 'What this shelf reaches',
+      note: 'Twelve kinds of play, and how far this shelf reaches into each — out '
+        + `of what the ${pool.games.length} games that fit here could reach, not the `
+        + 'whole corpus. A full spoke is everything reachable under these constraints.',
     };
   }
   const mine = state.owned.map((id) => ix.rowOf.get(id)).filter((r) => r !== undefined);
@@ -33,12 +80,18 @@ function shapes({ built, state, subject }) {
     return {
       names, values: shape(mine), reference: whole,
       label: 'Yours', referenceLabel: 'The collection',
-      heading: 'Yours against the collection',
+      heading: 'Yours against the collection', note: null,
     };
   }
   return {
     names, values: whole, reference: null, label: 'The collection',
-    heading: 'What it reaches', full: Math.min(...whole) > 0.95,
+    heading: 'What it reaches',
+    note: Math.min(...whole) > 0.95
+      ? 'At this size the collection reaches every kind of play, so the shape is '
+        + 'full and one game cannot move it. Click a shelf, or add your own games, '
+        + 'and this draws something small enough to respond.'
+      : 'Twelve kinds of play, and how far the collection reaches into each. '
+        + 'Add your own games and this draws them against it.',
   };
 }
 
@@ -53,16 +106,10 @@ export default register({
         <Radar names={data.names} values={data.values} reference={data.reference}
                label={data.label} referenceLabel={data.referenceLabel}
                showGaps={!!data.reference} size={272} />
-        {!data.reference && (
-          <p className={css.note}>
-            {data.full
-              ? 'At this size the collection reaches every kind of play, so the shape '
-                + 'is full and one game cannot move it. Click a shelf, or add your own '
-                + 'games, and this draws something small enough to respond.'
-              : 'Twelve kinds of play, and how far the collection reaches into each. '
-                + 'Add your own games and this draws them against it.'}
-          </p>
-        )}
+        {/* The shape says what its own note is. The view used to pick between
+            two sentences about the collection, which were the wrong sentences
+            the moment anything else was being drawn. */}
+        {data.note && <p className={css.note}>{data.note}</p>}
       </div>
     );
   },

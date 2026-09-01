@@ -6,10 +6,8 @@
  * two gives shelves. Nothing else in here knows the difference.
  */
 
-import { useCallback, useMemo, useReducer } from 'react';
-import {
-  DEFAULT_COLUMNS, buildGrid, coverageOf, indexContract, spokeVector,
-} from '../engine/index.js';
+import { useCallback, useMemo, useReducer, useTransition } from 'react';
+import { DEFAULT_COLUMNS, buildGrid, indexContract } from '../engine/index.js';
 
 export const AXES = [
   { key: 'players', label: 'player count' },
@@ -32,6 +30,13 @@ const initial = {
   // rather than recomputing where it "belongs".
   heldAt: null,
   owned: EMPTY, pinned: EMPTY, blocked: EMPTY,
+  // Which held games are held *because* they were pinned, and would not
+  // otherwise be in the collection. `held` is a flat list of ids and cannot say
+  // why a game is in it, so unpinning had nothing to undo: a pin added a game
+  // and the unpin left it behind for good, outranking the selection on every
+  // rebuild. Pinning something already shelved records nothing, because that
+  // game is there on its own merit and unpinning it should change nothing.
+  pinAdded: EMPTY,
   depthOverrides: {},
   columns: DEFAULT_COLUMNS,
   rowCount: 5,
@@ -62,11 +67,11 @@ const initial = {
   // remembers the shelf a game was opened from, so there is somewhere to go
   // back to and never two panels stacked.
   //
-  //   { kind: 'cell' | 'game' | 'collection', key?, game?, from? }
+  //   { kind: 'cell' | 'game', key?, game?, from? }
   //
   // Analyses scope to it when it is a shelf: a five-game shelf moves visibly
-  // when one game changes, where a 272-game collection cannot — every game's
-  // unique share reads 0.0000 there, and no measure can make that four pixels.
+  // when one game changes, where a 272-game collection cannot — one game in 272
+  // is a third of a percent, and no measure can make that four pixels.
   focus: null,
   // What the last block or pin did, so the interface can say so. Blocking a
   // game re-runs the whole selection rather than patching one slot, which is
@@ -102,6 +107,30 @@ function reduce(state, action) {
                // The shelves are different shelves now, so whatever was open
                // names one that may not exist.
                focus: null };
+    /**
+     * Put one named game in, on the shelf it was offered for.
+     *
+     * "Add X" used to raise a depth by one and let the next allocation decide
+     * who filled the new slot, which is a different act: the label named the
+     * runner-up of a probe that ignores blocks and pins, and the rebuild
+     * answered a fresh auction. Adding the id to `held` makes the two the same
+     * thing by construction.
+     *
+     * `bump` is for a shelf that was asked for a number — see `AddNext`. It
+     * goes through the same map as any typed depth, so clearing that shelf's
+     * number afterwards clears this too.
+     */
+    case 'add': {
+      const ids = state.held ?? action.held?.ids ?? [];
+      if (ids.includes(action.id)) return state;
+      const at = new Map(state.held == null
+        ? (action.held?.at ?? []) : (state.heldAt ?? []));
+      if (action.cell != null) at.set(action.id, action.cell);
+      const depthOverrides = action.bump
+        ? { ...state.depthOverrides, [action.bump.key]: action.bump.value }
+        : state.depthOverrides;
+      return { ...state, held: [...ids, action.id], heldAt: at, depthOverrides };
+    }
     // Fill every shelf to the depth it reads, keeping everything already held.
     case 'fill':
       return { ...state,
@@ -117,23 +146,63 @@ function reduce(state, action) {
     // A pin adds a game to the collection, so the collection grows by one.
     // Without this the pinned game landed in a shelf already full to its deal
     // and pushed three others out — a pin is an addition, not a swap.
-    case 'pin':
+    // An unpin undoes the addition a pin made, and only that. `pinned.includes`
+    // is the pre-toggle read, so it is what tells the two directions apart.
+    case 'pin': {
+      const unpinning = state.pinned.includes(action.id);
+      const added = state.pinAdded.includes(action.id);
+      const joins = !unpinning && state.held != null
+        && !state.held.includes(action.id);
+      let held = state.held;
+      let heldAt = state.heldAt;
+      if (joins) held = [...held, action.id];
+      // Only a game the pin itself put there comes back out. One the reader
+      // already had, or one a later fill chose on merit, stays.
+      if (unpinning && added && held != null) {
+        held = held.filter((x) => x !== action.id);
+        if (heldAt?.has(action.id)) {
+          heldAt = new Map(heldAt);
+          heldAt.delete(action.id);
+        }
+      }
       return { ...state,
-               held: state.held == null || state.pinned.includes(action.id)
-                 ? state.held : [...new Set([...state.held, action.id])],
+               held,
+               heldAt,
                pinned: toggle(state.pinned, action.id),
+               pinAdded: joins ? [...state.pinAdded, action.id]
+                 : state.pinAdded.filter((x) => x !== action.id),
                blocked: state.blocked.filter((x) => x !== action.id),
                notice: action.was
-                 ? { kind: state.pinned.includes(action.id) ? 'unpin' : 'pin',
+                 ? { kind: unpinning ? 'unpin' : 'pin',
                      id: action.id, name: action.name, was: action.was }
                  : null };
+    }
+    /**
+     * Blocking takes a game out of the running. The shelf keeps its size.
+     *
+     * `held` is deliberately left alone. It is what the collection is *meant*
+     * to hold, so the shelf goes on asking for the same number and the ban
+     * simply loses that slot to the next game — `allocate` skips a seeded game
+     * that is also rejected ("banned wins"), and the auction fills the gap.
+     *
+     * Filtering it out instead made blocking mean two different things with
+     * nothing on screen to say which. Measured on a split grid: 50 games, block
+     * one, and an undealt collection replaced it (50) while a dealt one shrank
+     * (49) — and setting the register made it replace again (42 → 42). Which
+     * you got depended on whether you had ever split or pressed Fit.
+     *
+     * It also makes unblocking symmetric: the game is still in `held` and still
+     * has its `heldAt`, so it goes back where it was.
+     */
     case 'block':
       return { ...state,
-               held: state.held == null
-                 ? null : state.held.filter((x) => x !== action.id),
+               held: state.held,
                heldAt: state.heldAt,
                blocked: toggle(state.blocked, action.id),
                pinned: state.pinned.filter((x) => x !== action.id),
+               // It is out of `held` and out of `pinned`, so there is no
+               // addition left for an unpin to undo.
+               pinAdded: state.pinAdded.filter((x) => x !== action.id),
                notice: action.was
                  ? { kind: state.blocked.includes(action.id) ? 'unblock' : 'block',
                      id: action.id, name: action.name, was: action.was }
@@ -193,28 +262,13 @@ function reduce(state, action) {
       return state;
     case 'panel':
       return { ...state, panel: state.panel === action.key ? null : action.key };
-    case 'reset':
-      return { ...initial };
     default:
       return state;
   }
 }
 
-/** Each game's share of what its shelf covers — what would be lost without it. */
-export function sharesOf(ix, weights, rows) {
-  const n = ix.groups.length;
-  const vectors = rows.map((r) => spokeVector(ix, weights, r, n));
-  const sum = (v) => v.reduce((a, b) => a + b, 0);
-  const total = sum(coverageOf(vectors, n));
-  if (!(total > 0)) return rows.map(() => 0);
-  return rows.map((_, i) => {
-    const without = sum(coverageOf(vectors.filter((_, j) => j !== i), n));
-    return (total - without) / total;
-  });
-}
-
 /** The limits and the shelf default, as the things `buildGrid` understands. */
-export function limitsFor(limits, perShelf) {
+function limitsFor(limits, perShelf) {
   const live = (kind) => limits.find((l) => l.on && l.kind === kind);
   const returns = live('returns');
   return {
@@ -234,6 +288,23 @@ export function limitsFor(limits, perShelf) {
 
 export function useCollection(contract) {
   const [state, dispatch] = useReducer(reduce, initial);
+
+  /**
+   * Rebuilding is synchronous, so nothing can paint while it runs.
+   *
+   * `buildGrid` is one long task on the render thread — a spinner started when
+   * the work begins never gets a frame to appear in. A transition is the way
+   * round it: React paints the tree it already has, with `pending` true, before
+   * it starts the render that does the work. Measured, what a reader waits for:
+   * 24ms to rebuild a dealt grid, 470ms for a cold two-split, and 4.7s with the
+   * returns bar dragged to 5%.
+   *
+   * Only the things that rebuild go through it. Opening a shelf or a panel
+   * changes no numbers, and making those wait behind a transition would make
+   * the cheap half of the interface feel like the expensive half.
+   */
+  const [pending, startTransition] = useTransition();
+  const slow = useCallback((action) => startTransition(() => dispatch(action)), []);
 
   // Indexed once. `buildGrid` takes either the raw contract or the index, and
   // re-flattening half a megabyte on every click is the difference between a
@@ -271,34 +342,36 @@ export function useCollection(contract) {
     // the split deals the collection instead of choosing a new one. Turning the
     // last axis off passes nothing: one shelf holding everything has no deal to
     // honour, and that is where the collection reads its own depth again.
-    toggleAxis: (key, held) => dispatch({ type: 'axis', key, held }),
-    fill: (held) => dispatch({ type: 'fill', held }),
-    own: (id) => dispatch({ type: 'own', id }),
-    ownMany: (ids) => dispatch({ type: 'ownMany', ids }),
+    toggleAxis: (key, held) => slow({ type: 'axis', key, held }),
+    fill: (held) => slow({ type: 'fill', held }),
+    // The game, the shelf it was offered for, what is on screen now (so an
+    // undealt collection has something to be added *to*), and the ask to raise
+    // if that shelf was given a number.
+    add: (id, cell, held, bump) => slow({ type: 'add', id, cell, held, bump }),
+    own: (id) => slow({ type: 'own', id }),
+    ownMany: (ids) => slow({ type: 'ownMany', ids }),
     // `was` is the set of ids shelved at the moment you pressed the button.
     // Without it the interface can only say what you did, never what happened.
-    pin: (id, was, name) => dispatch({ type: 'pin', id, was, name }),
-    block: (id, was, name) => dispatch({ type: 'block', id, was, name }),
+    pin: (id, was, name) => slow({ type: 'pin', id, was, name }),
+    block: (id, was, name) => slow({ type: 'block', id, was, name }),
     dismiss: () => dispatch({ type: 'dismiss' }),
-    setDepth: (key, value) => dispatch({ type: 'depth', key, value }),
-    setRows: (value) => dispatch({ type: 'rows', value }),
-    setRowEdge: (at, value, current) => dispatch({ type: 'rowEdge', at, value, current }),
-    setColumns: (value) => dispatch({ type: 'columns', value }),
-    addRow: (edges) => dispatch({ type: 'addRow', edges }),
-    dropRow: (at, edges) => dispatch({ type: 'dropRow', at, edges }),
-    toggleMineOnly: () => dispatch({ type: 'mineOnly' }),
+    setDepth: (key, value) => slow({ type: 'depth', key, value }),
+    setRows: (value) => slow({ type: 'rows', value }),
+    setRowEdge: (at, value, current) => slow({ type: 'rowEdge', at, value, current }),
+    setColumns: (value) => slow({ type: 'columns', value }),
+    addRow: (edges) => slow({ type: 'addRow', edges }),
+    dropRow: (at, edges) => slow({ type: 'dropRow', at, edges }),
+    toggleMineOnly: () => slow({ type: 'mineOnly' }),
     togglePanel: (key) => dispatch({ type: 'panel', key }),
     // One surface, and the thing you clicked is its subject.
     focusCell: (key) => dispatch({ type: 'focus', kind: 'cell', key }),
     focusGame: (game, from) => dispatch({ type: 'focus', kind: 'game', game, from }),
-    focusCollection: () => dispatch({ type: 'focus', kind: 'collection' }),
     unfocus: () => dispatch({ type: 'unfocus' }),
     back: () => dispatch({ type: 'back' }),
-    setLimit: (at, value) => dispatch({ type: 'limit', at, value }),
-    setPerShelf: (value) => dispatch({ type: 'perShelf', value }),
-    reset: () => dispatch({ type: 'reset' }),
-  }), []);
+    setLimit: (at, value) => slow({ type: 'limit', at, value }),
+    setPerShelf: (value) => slow({ type: 'perShelf', value }),
+  }), [slow]);
 
   const has = useCallback((list, id) => list.includes(id), []);
-  return { state, built, actions, has };
+  return { state, built, actions, has, pending };
 }

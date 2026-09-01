@@ -20,10 +20,14 @@ What that means in practice, all of it already built and all of it enforced:
   digits line up.
 - **One owner per gap.** Layout sets spacing with flex or grid `gap`; components
   never add margins to position themselves. A `Panel` owns its own padding.
-- **Monochrome by default.** Colour is a quantity or a state, never a category.
-  There is one accent, and it means *how much a game carries*. Genre never gets
-  a colour: six ways of grouping the axes were tried and none held, so hue would
-  be labelling something that is not there.
+  `web/test/ui.test.js` fails any JSX `style={{…}}` that sets a margin, padding
+  or offset — computed geometry is still fine, because a grid's template depends
+  on how many columns there are and a bar's width is the number it is drawing.
+- **Monochrome by default.** Colour is a state, never a category. There is one
+  accent and it means *this is yours*. It used to mean a quantity as well — how
+  much of its shelf a game carried — and that reading went with the share bar it
+  coloured. Genre never gets a colour: six ways of grouping the axes were tried
+  and none held, so hue would be labelling something that is not there.
 - **Direct labels over legends.** Name the thing on the thing.
 - **Reflow before shrinking; never truncate.** The guide is explicit here where
   it is silent on overlays: *"reflow before shrinking, preserve readable type"*,
@@ -38,8 +42,13 @@ What that means in practice, all of it already built and all of it enforced:
 - **Geist and Geist Mono**, from Google Fonts, with real fallback stacks.
 
 `web/src/ui/` is the whole interface: `tokens.css`, `primitives/`, `game/`,
-`chart/`, `views/`. `GameItem` has four variants over one view model
-(`game/view.js`) — do not add a fifth way to draw a game.
+`chart/`, `views/`, plus a few flat helpers — `shelved.js` is the only place
+that answers "what is on the shelves, and where", which was written out
+seven different ways before it existed. `GameItem` has three variants over one view model
+(`game/view.js`) — do not add a fourth way to draw a game. There was a fourth,
+`expanded`, and nothing but its own test ever rendered it: `views/Game.jsx` is
+the detail view it was meant to head, and it builds its own header because it
+needs labelled verbs including "I own this" where a row carries two icons.
 
 **One renderer per idea, at sizes.** `views/Cell.jsx` is the only thing that
 draws a shelf: `mini` in a grid, `full` when you open one. The unsplit screen is
@@ -47,15 +56,35 @@ one `Cell` at `full`, so it *is* a 1×1 grid rather than resembling one. Before
 this, `Collection` branched on `axes.length === 0` and `Board` branched twice
 more — four renderings of "the games on a shelf".
 
-**Controls belong to the thing you opened, not to every thing.** Counted on the
-shipped corpus, a filled two-axis grid carried **110 controls, seventy of them
-the same stepper once per cell**; it is 74 now and none of them are steppers.
-The style guide's line is *"a control owns each variable"* — thirty-five copies
-of one control is one variable shown thirty-five times.
+**Controls belong to the thing you opened — with one exception, asked for.**
+The style guide's line is *"a control owns each variable"*, and the grid once
+broke it badly: a filled two-axis board carried **110 controls, seventy of them
+the same stepper repeated once per cell**. Moving the stepper into the shelf you
+open took that to 65.
+
+The per-cell stepper is **back on the grid on request**, which puts it at 135
+controls, 70 of them the stepper. What makes that survivable is the change that
+came with it: a game in a mini cell is no longer its own click target, so the
+stepper is the only thing in a cell that takes a click of its own and the cell
+itself is one target rather than six. If the board starts reading as a toolbar
+again, this is the first thing to take back out — the note in `views/Cell.jsx`
+says so at the call site.
+
+**A game is its own target only on a shelf you have opened.** `mini` gives the
+click to the shelf; `full` and the rail's `reason` rows give it to the game.
+
+**BoardGameGeek is reached from the board game view and nowhere else.** One link,
+on the one surface that is about a single game — a link on every row of every
+shelf is forty ways out of a page nobody asked to leave. The url is spelled once,
+on the view model (`game/view.js`), never at a call site. The games that view
+names under "Games like it" open as board game views of their own, carrying
+`state.focus` as `from` so back walks the chain that was clicked.
 
 **One overlay, and the thing you clicked is its subject** (`primitives/Overlay`,
-`views/Focus.jsx`). A shelf, a game or the collection — never two stacked, which
-is the guide's *"avoid nested panels"*. Asked directly, the guide says nothing at
+`views/Focus.jsx`). A shelf or a game — never two stacked, which is the guide's
+*"avoid nested panels"*. It used to offer a third subject, the whole collection,
+and nothing ever opened it: the unsplit screen already *is* the collection at
+full size, so the overlay had nothing to add. Asked directly, the guide says nothing at
 all about drawers, modals or sheets; do not attribute a placement rule to it.
 
 ## Two verbs, and they are the same everywhere
@@ -164,29 +193,127 @@ reader may change.
 - **An analysis is scoped by its `subject`, never by reading the state.** The
   rail describes the page, an opened shelf describes that shelf, and both render
   at once. `analyse({ built, state, subject })`.
-- **Shelf scale is the only scale these measures work at.** Across 272 games
-  every game's unique share reads **0.0000** — saturation, the same failure the
-  radar has — while every shelf of three or more spreads 15% down to 4%.
-  Collection-level findings are per-shelf results rolled up and named by shelf.
+- **A finding rolled up across a grid is measured on one shelf, and must name
+  it.** A shelf is the scale a reader can act on and the scale these measures
+  mean anything at; a figure averaged over 272 games is a column of zeros. The
+  shelf used to be attached to the finding and then dropped by the renderer, so
+  the reader got a number with nothing to attach it to.
+- **Do not report a share of the coverage space to a reader.** It is a
+  percentage of something they have never been shown, so there is nothing to do
+  with it. `contributions` and `prunable` said "this game holds 3%" and "these
+  three together hold 12.9% against Final Girl's 11.4%", and both are deleted
+  along with the per-game share bar. The radar is the sanctioned way to show
+  coverage, because it shows a shape and names the kinds in words. See BUGS.md
+  for what the rail still needs to answer.
 - **"Nothing to report" is the right answer on a collection nobody uploaded.**
   The closest pair in the recommended collection sits at **0.44** similarity; a
   real duplicate (Gloomhaven / Jaws of the Lion) sits at **0.95**. The old
-  "held twice" reading 0 findings was correct, not broken — what was missing was
-  the other half, which is why `analysis/gaps.jsx` reports gaps *and*
-  redundancies. It has something to say on 30 of 30 shelves, against 3 of 30.
+  "held twice" reading 0 findings was correct, not broken. `analysis/gaps.jsx`
+  reports gaps *and* duplicates; both name a game, which is the line that module
+  holds to.
 - **`built.data` and `built.filled` are non-enumerable on purpose.** Each is a
   whole extra build behind a getter, and spreading an object *invokes* its
   getters — `{ ...built, mineOnly }` in a standfirst ran a second `buildGrid` on
   every render. Measured: 699 of the 734 scoring passes behind one click came
   from `get filled`, and blocking a game cost 586 ms against 133 ms once it was
   gone. Never re-add a lazy getter as an enumerable property.
-- **A quantity drawn as a bar needs a scale from its own data.** `carries` was
-  drawn at `min(100, share * 1000)%`; at shelf scale a share is 5–25%, so every
-  bar on every shelf clamped to full and the chart said nothing. It scales to
-  the largest share on the same shelf now (`carriesTop`).
+- **A percentage is drawn against 100%, never against the longest bar beside
+  it.** A share already has a length before anybody picks a scale, and the
+  number printed next to the bar has to agree with the bar. `Bars` enforces it:
+  pass `percent` and the scale is 1. A quantity that is *not* already a share
+  still needs a scale from its own data, which is what `max` is for — a game's
+  axis loadings sum to 1, so they take `max={1}`. The shelf's share bar got this
+  wrong twice in opposite directions before it was deleted: first at
+  `min(100, share * 1000)%`, which clamped every bar to full, then normalised to
+  the biggest share on the same shelf, which made the top game of every shelf a
+  full bar labelled 14%.
+- **A shelf is drawn the way the collection is, over a smaller population.**
+  One shape, no overlay — how far the games it holds reach into each of the
+  twelve families, out of everything there is to reach. What changes for a shelf
+  is *what there is to reach*: it can only ever hold games passing its
+  player-count and weight constraints, so that pool is the denominator, not the
+  corpus. `built.cells` are the pools. Measured, the same shelf of eight reads
+  0.069 against the corpus and 0.151 against its own pool — 23% of the radius
+  against 35%. It is still not a full shape and should not be: eight games
+  genuinely reach about a seventh of what the two hundred that qualify there do.
+  Costs 10 ms across all 35 shelves.
+- **A shape carries its own note.** The view used to choose between two
+  sentences about the collection, which were the wrong sentences the moment
+  anything else was being drawn.
+- **The radar says which claim it is making.** "Reaches no Deduction" and
+  "thinnest on Deduction" are different statements; the first was being printed
+  for a spoke sitting at 0.12. A spoke under 0.005 is unreached, anything else
+  is thin.
 - **`size` on the radar is its coordinate space, not its rendered size.** The
   svg is `width: 100%`, so it grows to whatever holds it — 300px in the rail and
   700px in an overlay. Cap the container, do not change `size`.
+- **A spinner cannot be started when the work starts.** `buildGrid` is one long
+  synchronous task on the render thread, so nothing paints while it runs. The
+  rebuild-triggering actions go through `useTransition` in `ui/state.js`, which
+  makes React paint the current tree with `pending` true *before* it begins the
+  render that blocks. Only those actions: opening a shelf or a panel changes no
+  numbers, and putting them behind a transition makes the cheap half of the
+  interface feel like the expensive half. `mount.test.js` asserts the sequence
+  deliberately *outside* `act`, since `act` flushes the transition away.
+- **The bar mounts at once and shows itself after `--wait`.** It has to be
+  mounted the moment work starts, because the thread is about to block and
+  nothing can mount it later — but showing it for a 24 ms rebuild turned every
+  button press into a blink. The delay is a compositor animation on opacity,
+  which keeps running while the render thread is busy; a timer would not, since
+  the thread is exactly what is busy. Nothing dims the view: what is on screen
+  is still true, it is only about to be replaced.
+- **`COLLECTION_PROBE` is how deep the curve is read, not a ceiling.** It used
+  to be both, so asking the unsplit collection for more than 120 games gave 120
+  while the control kept saying the number you typed.
+- **`repair` scores each cell once per pass.** It used to rescore a cell inside
+  the loop over that cell's own picks, and again per cell compared against, so a
+  shelf of twenty rescored itself twenty times over. At a 5% returns bar that was
+  15,161 scoring passes against 452 at the default and **72 seconds** for one
+  rebuild — a frozen tab, reported as a crash. Cached per pass it is 4.7s, and
+  the cache is only safe because a move ends the pass.
+- **One space: the 77 axes, weighted.** Every measurement — picking, gaps,
+  contribution, pruning — runs on the raw axes through `covers`/`totalOf` in
+  `engine/shelf.js`. The 12 spokes survive only to *name families to a reader*
+  and to draw the radar, which projects the axis coverage into twelve places
+  rather than measuring them. Two spaces is how Navegador came out 96%
+  duplicated at 0.00 similarity, and how one game read 0.15% where the selector
+  had it at 1.86%.
+- **An axis is worth `coverage.axis_weights`, not 1.** Every spoke carries an
+  equal share and its axes divide that share by reach, so a family does not get
+  more say for having been cut into more pieces by the clustering — counting
+  each axis as 1 gave Area Majority (15 axes) five times the vote of Tile
+  Placement (3). The weights are computed once in the pipeline and **published
+  per dimension**; the interface reads them rather than recomputing, because
+  both engines must read the same rounded number.
+- **They average 1, they do not sum to 1.** Ranking cannot see an overall scale
+  but `gain_floor` can, and so can the gains shown to a reader. Normalising to
+  sum 1 divided every gain by 77 and the parity case that sets a gain floor went
+  from 147 picks to 0.
+- **A duplicate and a redundancy are different questions.** A duplicate is the
+  same game twice — a lookup against what BGG publishes (`kin` is `reimplements`,
+  `thin` is a same-family subset), binary because identity is. A redundancy is
+  how little of a shelf would be lost without a game — a quantity, reported as a
+  gradient with no threshold — and one nobody could act on, so the measure that
+  reported it is deleted. `redundancies` in `engine/shelf.js` is the duplicate
+  half and stays. **No threshold on likeness can do the duplicate job**:
+  7 Wonders and its second edition score 0.79 on similarity, below any floor that
+  also excludes Navegador / Orléans — which spoke containment read as 96%
+  duplicated and the selector, on the raw axes, correctly reads as 0.00.
+  `REDUNDANCY_FLOOR` is deleted; do not reintroduce one.
+- **Coverage loss is superadditive, so a set must be costed as a set.** Two games
+  covering the same ground each cost almost nothing alone and a great deal
+  together, so summing per-game shares understates it every time. `prunable` did
+  this correctly and was deleted anyway — the maths was never the problem, the
+  sentence it produced was. Anything that costs a set later needs this property
+  back.
+- **The cell is the objective; the collection is a tiebreak.** The scorer applies
+  the shelf's similarity penalty at full strength and the collection's raised to
+  `COLLECTION_WEIGHT = 0.10`. At 0.80 similarity that is a 51% cost on your own
+  shelf against 7% elsewhere, collapsing to zero only at 1.0. This is deliberate.
+- **The radar draws `radius × √coverage`**, so equal coverage covers equal area.
+  Drawing it linearly made a fixed gain invisible near the middle and large near
+  the edge: tracking the model's own gain 0.09 against 0.50, worst distortion 92×
+  against 8.6×. √1 = 1, so full still looks full.
 - **Never show a reader a raw coverage difference.** A shelf holding none of a
   kind the collection covers fully rendered as "Deduction −1.00", a number on a
   scale nobody was shown. The radar names the kinds in words instead.

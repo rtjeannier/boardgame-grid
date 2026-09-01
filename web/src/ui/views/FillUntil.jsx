@@ -32,7 +32,7 @@ function summarise(limits, leftover) {
     .join(' · ');
 }
 
-export default function FillUntil({ limits, onChange, leftover, perShelf = null }) {
+export default function FillUntil({ limits, onChange, leftover }) {
   return (
     <details className={css.wrap}>
       <summary className={css.summary}>

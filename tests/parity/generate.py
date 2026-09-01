@@ -19,7 +19,7 @@ Everything runs on the seed dataset, because a fresh clone can reproduce it.
 import json
 from pathlib import Path
 
-from pipeline import buckets, dataset, depth
+from pipeline import buckets, coverage, dataset, depth
 from pipeline.assign import CoverageScorer, allocate
 from pipeline.contract import PLACES, QuantisedSpace, build_contract, quantise_games
 from pipeline.contract import write as write_contract
@@ -86,7 +86,9 @@ def run(games, space, params, banned=(), keepers=(), budget=None,
                 buckets.WeightAxis(rows, sel)], sel)
     scorer = CoverageScorer(space.loadings, space.similarity,
                             {g.id: g.rating for g in games}, space.spoke_of, sel,
-                            coll.axis_room(space.dimension_names, space.spoke_of))
+                            coll.axis_room(space.dimension_names, space.spoke_of,
+                                           coverage.space_axis_weights(
+                                               space, [g.id for g in games], sel)))
     by_id = {g.id: g for g in games}
     reach = {}
     for (key, gid), degree in memb.items():
@@ -102,7 +104,9 @@ def run(games, space, params, banned=(), keepers=(), budget=None,
     if coll.auto_depth:
         room = depth.grid_depths(
             games, space, {g.id: g.rating for g in games}, sel, coll, rows,
-            axis_room=coll.axis_room(space.dimension_names, space.spoke_of),
+            axis_room=coll.axis_room(space.dimension_names, space.spoke_of,
+                                     coverage.space_axis_weights(
+                                         space, [g.id for g in games], sel)),
             column_axis=buckets.PlayerCountAxis(coll.columns(), sel, places=PLACES),
             row_axis=buckets.WeightAxis(rows, sel),
             overrides=overrides, per_shelf_cap=per_shelf_cap)["capacity"]

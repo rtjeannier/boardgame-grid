@@ -17,3 +17,29 @@
   .top { flex-direction: column; align-items: stretch; gap: var(--s-5); }
   .nav { margin-left: 0; align-self: flex-start; }
 }
+
+/* A thin bar across the top while the collection is being worked out.
+   Neutral, not the accent: the accent means how much a game carries, and this
+   is a state rather than a quantity.
+
+   Held invisible for the first `--wait`, so the rebuilds nobody waits for never
+   show it. Measured: a dealt grid rebuilds in 24ms and a cold two-split in
+   470ms, so flashing it on every press turned every button into a blink. The
+   reveal is a compositor animation on opacity, which keeps running while the
+   render thread is blocked — a timer would not, since the thread is exactly
+   what is busy. */
+.progress { position: fixed; top: 0; left: 0; right: 0; height: 2px; z-index: 20;
+            pointer-events: none; opacity: 0; }
+.armed { animation: reveal var(--wait) steps(1, end) forwards; }
+@keyframes reveal { from { opacity: 0; } to { opacity: 1; } }
+
+.bar { display: block; height: 100%; width: 40%;
+       background: var(--text-3); border-radius: 0 var(--r-sm) var(--r-sm) 0;
+       animation: sweep 1.1s var(--ease-out) infinite; }
+@keyframes sweep {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(250%); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bar { animation: none; width: 100%; opacity: .5; }
+}

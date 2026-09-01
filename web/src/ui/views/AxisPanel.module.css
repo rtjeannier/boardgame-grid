@@ -21,6 +21,12 @@
        border-radius: var(--r-sm); background: var(--surface); color: var(--text);
        font-family: var(--font-mono); font-size: 11px; text-align: right;
        font-variant-numeric: tabular-nums; }
+/* A group's name is text, not a number: it reads from the left and takes the
+   row, where `.num` beside it is a fixed-width figure read from the right. */
+.groupName { width: 100%; padding: var(--s-2) var(--s-3);
+             border: 1px solid var(--line-2); border-radius: var(--r-sm);
+             background: var(--surface); color: var(--text);
+             font-family: var(--font-mono); font-size: 11px; text-align: left; }
 .reading { display: flex; align-items: baseline; gap: var(--s-3);
            font-family: var(--font-mono); font-size: 10.5px; color: var(--text-3);
            font-variant-numeric: tabular-nums; }

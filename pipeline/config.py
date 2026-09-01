@@ -452,21 +452,16 @@ GAIN_FLOOR = 0.0
 AUTO_DEPTH_LEFTOVER = 0.45
 AUTO_DEPTH = True
 
-# How much of a game's own profile another single game must already cover before
-# the collection is holding it twice.
+# REDUNDANCY_FLOOR is gone. It thresholded spoke containment to decide whether
+# the collection was holding a game twice, and containment cannot answer that:
+# it read Navegador as 96% covered by Orleans, two economic games with almost no
+# mechanism in common, which the selector scores at 0.00 on the raw axes.
 #
-# Not "how much coverage vanishes without it" — that measure never penalises a
-# duplicate, because coverage is 1 - prod(1 - w) and two copies of the same thing
-# genuinely raise it. Measured over a sixteen-game shelf, Gloomhaven scored the
-# second-highest on that and is 83% duplicated by Gloomhaven: Jaws of the Lion.
-#
-# Containment of one profile in another is the measure that answers the question
-# asked: whose role is already being filled. At 0.90 over that same shelf it
-# flags Brass: Lancashire (97% covered by Birmingham), Wyrmspan (95% by
-# Wingspan), Jaws of the Lion (95% by Gloomhaven) and Codenames: Duet (94% by
-# Just One), and nothing else. It is asymmetric, and that decides which of a
-# pair to drop: the more contained side is the redundant one.
-REDUNDANCY_FLOOR = 0.90
+# Nor can any threshold on likeness. 7 Wonders and its second edition score 0.79
+# on similarity, below any floor that also excludes Navegador. So a duplicate is
+# now a lookup against what BGG publishes -- `reimplements` links and same-family
+# subsets, both already in the contract -- and there is nothing left to tune.
+# See `redundancies` in web/src/engine/shelf.js.
 
 # How much the rest of the shelf pulls on a cell's choice, as an exponent on
 # how new a game is against everything already placed anywhere. Zero ignores the

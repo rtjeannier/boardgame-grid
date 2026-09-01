@@ -70,16 +70,27 @@ function repair(scorer, cells, capacity, gains, pinned) {
 
   for (let pass = 0; pass < cells.length; pass++) {
     let moved = false;
+    // Scored once per cell per pass. A cell's scores depend only on what it
+    // holds, and nothing here changes that until a move — at which point the
+    // pass ends anyway. Rescoring inside the loops instead made a shelf of
+    // twenty rescore itself twenty times over, and again for every cell it
+    // compared against: at a 15% returns bar this pass ran `scoreAll` 15,161
+    // times against 452 at the default, and a rebuild took 25 seconds.
+    const scored = new Set();
+    const scoresOf = (c) => {
+      if (!scored.has(c.key)) { scorer.scoreAll(c); scored.add(c.key); }
+      return c.scores;
+    };
     for (const cell of cells) {
       for (const i of [...cell.chosen]) {
         const game = cell.games[i];
         if (pinned.has(game)) continue;
-        const here = scorer.scoreAll(cell)[i];
+        const here = scoresOf(cell)[i];
         for (const other of cells) {
           if (other === cell || other.chosen.length >= roomFor(capacity, other.key)) continue;
           const at = other.games.indexOf(game);
           if (at < 0) continue;                 // does not reach that cell
-          const there = scorer.scoreAll(other)[at];
+          const there = scoresOf(other)[at];
           if (there > here + 1e-9) {
             const keep = cell.chosen.filter((x) => x !== i);
             gains.delete(`${cell.key}|${game}`);

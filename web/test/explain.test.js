@@ -15,7 +15,7 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import {
-  analyseShelf, buildGrid, cutSentence, explainCut, howAlike, indexContract,
+  buildGrid, cutSentence, explainCut, howAlike, indexContract,
   similarityBetween,
 } from '../src/engine/index.js';
 

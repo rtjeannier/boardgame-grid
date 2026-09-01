@@ -29,7 +29,7 @@ export function bestAt(ix, row) {
  * Simultaneous Action Selection" — because that is what the cluster is. As a
  * label it is unreadable and, in a bar chart, it squeezes the bar to nothing.
  */
-export const lead = (name) => (name ?? '').split(' · ')[0];
+const lead = (name) => (name ?? '').split(' · ')[0];
 
 /** A game's strongest axes, named. Descriptive only: nothing groups by them. */
 export function axesOf(ix, row, { limit = 3, floor = 0.05 } = {}) {
@@ -49,16 +49,8 @@ export function axesOf(ix, row, { limit = 3, floor = 0.05 } = {}) {
 
 const minutes = (m) => (m >= 120 ? `${Math.round(m / 60)}h` : `${m}m`);
 
-/**
- * `carries` is the share of what its shelf covers that would be lost without it.
- *
- * Not the gain it was picked on: that is what it added *at the moment it was
- * chosen*, so the first pick on every shelf scores near 1.0 and the number says
- * more about ordering than about the game. Callers that know the shelf pass the
- * share in; callers that do not leave it null and the column does not draw.
- */
 export function toGameView(ix, row, {
-  carries = null, carriesTop = null, shelf = null, place = null,
+  shelf = null, place = null,
   pinned = false, blocked = false,
   owned = false, reason = null, axes = null,
 } = {}) {
@@ -68,6 +60,11 @@ export function toGameView(ix, row, {
     name: ix.names[row],
     rank: ix.rank[row],
     rankLabel: `#${ix.rank[row].toLocaleString()}`,
+    // A game's id *is* its BoardGameGeek id — the CSV import is keyed on
+    // `objectid` and the contract carries it through — so the link needs no
+    // lookup. Spelled here and nowhere else; `engine/present.js` builds the
+    // same string for the exported grid.
+    bgg: `https://boardgamegeek.com/boardgame/${ix.ids[row]}`,
     year: ix.year[row],
     rating: ix.rating[row],
     weight: Math.round(ix.weight[row] * 10) / 10,
@@ -76,13 +73,6 @@ export function toGameView(ix, row, {
     players: bestAt(ix, row),
     axes: axes ?? axesOf(ix, row),
     tags: (axes ?? axesOf(ix, row)).map((a) => a.label.toLowerCase()).join(' · '),
-    carries,
-    // The bar is drawn against the biggest share on the same shelf, because
-    // that is what makes the shelf's own spread visible. A fixed scale of
-    // `carries * 1000` put every bar at 100%: at shelf scale a share is 5-25%,
-    // so every single one clamped, and the chart said nothing at all.
-    carriesOf: carries == null || !carriesTop ? null : carries / carriesTop,
-    carriesLabel: carries == null ? null : `${(carries * 100).toFixed(1)}%`,
     shelf, place, reason,
     pinned, blocked, owned,
   };

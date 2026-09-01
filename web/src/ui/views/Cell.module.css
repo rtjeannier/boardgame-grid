@@ -34,6 +34,10 @@
 .mini .name { font-size: 10px; color: var(--text-3); }
 .mini:hover .name { color: var(--text); }
 .mini .count { font-size: 10px; }
+/* Small enough to sit in a 143px cell head beside the count and the expander,
+   and it inherits everything else from `.pm`. */
+.mini .pm { gap: 1px; }
+.mini .pm button { width: 15px; height: 15px; font-size: 10px; }
 .mini .empty { font-size: 10.5px; padding: var(--s-4) 0; }
 
 /* A shelf you are looking at. This is the whole of what the unsplit screen was. */

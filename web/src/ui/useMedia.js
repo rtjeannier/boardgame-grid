@@ -47,5 +47,7 @@ export default function useMedia(query) {
  * away fast — nine characters at 768px, five at 600 — so the matrix reflows into
  * a list rather than truncating, which the guide rejects outright.
  */
+// The rail's own reflow at 1199px is a media query in `Collection.module.css`,
+// where it needs no JavaScript: only the matrix-to-list change does, because
+// that one is a different shape of markup rather than a different layout.
 export const STACKED = '(max-width: 899px)';
-export const NARROW = '(max-width: 1199px)';

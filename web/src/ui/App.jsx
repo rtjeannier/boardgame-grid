@@ -5,7 +5,7 @@ import AxisPanel from './views/AxisPanel.jsx';
 import FillUntil from './views/FillUntil.jsx';
 import { Blocked, Notice } from './views/Notice.jsx';
 import Collection from './views/Collection.jsx';
-import { collectionOf } from './views/Board.jsx';
+import { collectionOf } from './shelved.js';
 import Mine from './views/Mine.jsx';
 import Focus from './views/Focus.jsx';
 import css from './App.module.css';
@@ -65,12 +65,21 @@ function standfirst(page, built, owned, mineOnly) {
 
 export default function App({ contract }) {
   const [page, setPage] = useState('collection');
-  const { state, built, actions } = useCollection(contract);
+  const { state, built, actions, pending } = useCollection(contract);
   const total = built.grid.reduce((n, c) => n + c.picks.length, 0);
 
 
   return (
     <div className={css.app}>
+      {/* Rebuilding is one long synchronous task, so this has to be painted
+          before the work starts rather than while it runs — which is what the
+          transition in `useCollection` is for. It then holds itself invisible
+          for `--wait`, so the rebuilds nobody waits for never show it.
+          Indeterminate: the allocator cannot say how far through it is. */}
+      <div className={`${css.progress} ${pending ? css.armed : ''}`.trim()} role="status"
+           aria-live="polite" aria-label={pending ? 'Working out the collection' : ''}>
+        {pending && <span className={css.bar} />}
+      </div>
       <header className={css.top}>
         <div>
           <h1 className={css.title}>
@@ -92,13 +101,12 @@ export default function App({ contract }) {
       </header>
 
       <SplitBar axes={AXES} active={state.axes} count={total}
-                onToggle={(key) => actions.toggleAxis(key, collectionOf(built))}
+                onToggle={(key) => actions.toggleAxis(key, collectionOf(built.grid))}
                 onOpen={actions.togglePanel}
                 openKey={state.panel} ownedCount={state.owned.length}
                 onlyMine={{ on: state.mineOnly, toggle: actions.toggleMineOnly }}>
         <FillUntil limits={state.limits} onChange={actions.setLimit}
-                   leftover={built.ix.defaults?.autoDepthLeftover}
-                   perShelf={state.perShelf} />
+                   leftover={built.ix.defaults?.autoDepthLeftover} />
         <Blocked state={state} built={built} actions={actions} />
       </SplitBar>
       <AxisPanel which={state.axes.includes(state.panel) ? state.panel : null}

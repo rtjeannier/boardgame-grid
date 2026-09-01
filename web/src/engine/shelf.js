@@ -11,6 +11,7 @@
  * cell holding the whole space.
  */
 
+
 /** Per group, a game's quality-scaled loading. No membership: the shelf is the cell. */
 export function spokeVector(ix, weights, game, nGroups) {
   const out = new Array(nGroups).fill(0);
@@ -20,13 +21,51 @@ export function spokeVector(ix, weights, game, nGroups) {
   return out;
 }
 
-/** A set covers a spoke unless every game in it misses: 1 − ∏(1 − wᵢ). */
+/**
+ * A set covers a place unless every game in it misses: 1 − ∏(1 − wᵢ).
+ *
+ * Per place, unweighted — the caller decides what a place is worth, because the
+ * same function serves the twelve spokes of the radar and the seventy-seven
+ * axes everything is actually measured on.
+ */
 export function coverageOf(vectors, nGroups) {
   const out = new Array(nGroups).fill(1);
   for (const v of vectors) {
     for (let i = 0; i < nGroups; i++) out[i] *= 1 - Math.min(v[i], 1);
   }
   return out.map((v) => 1 - v);
+}
+
+/**
+ * That coverage totalled, with each axis worth what it is worth.
+ *
+ * The one place a per-axis total is taken, so picking and reporting cannot drift
+ * apart the way they did when one summed spokes and the other summed axes.
+ */
+export function totalOf(ix, covered) {
+  let sum = 0;
+  for (let a = 0; a < covered.length; a += 1) sum += covered[a] * ix.axisWeight[a];
+  return sum;
+}
+
+/** A game's own vector across the raw axes, quality already in it. */
+export function axisVector(ix, weights, game, nAxes = ix.axisNames.length) {
+  const out = new Float64Array(nAxes);
+  for (let k = ix.embedding.start[game]; k < ix.embedding.start[game + 1]; k++) {
+    out[ix.embedding.idx[k]] = weights[k];
+  }
+  return out;
+}
+
+/**
+ * What a set of games covers, as one number.
+ *
+ * Every "how much would be lost without this" in the app is a difference of two
+ * of these, so there is one definition of covered and one place it is summed.
+ */
+export function covers(ix, weights, rows) {
+  const n = ix.axisNames.length;
+  return totalOf(ix, coverageOf(rows.map((g) => axisVector(ix, weights, g, n)), n));
 }
 
 /**
@@ -88,62 +127,75 @@ export function analyseShelf(ix, weights, ownedRows, {
 }
 
 /**
- * Which games the collection is holding twice.
+ * The same game twice, under two names.
  *
- * For each shelved game, the share of *its own* profile that a single other
- * shelved game already covers. Not "how much coverage vanishes without it":
- * coverage is 1 − ∏(1 − wᵢ), so two copies of the same thing genuinely raise it
- * and removing either still loses plenty. Measured over a sixteen-game shelf,
- * Gloomhaven scored second-highest on that measure while being 83% duplicated.
+ * Identity, not likeness — so it is a lookup rather than a threshold. BGG
+ * publishes both relations and the contract already carries them: `kin` is its
+ * `reimplements` link (1,840 of them) and `thin` is a same-family pair where one
+ * game's signals are a subset of the other's, which is the same game more fully
+ * recorded.
  *
- * Containment answers the question actually asked — whose role is already being
- * filled — and it is asymmetric, which is what decides who goes: Jaws of the
- * Lion is 95% covered by Gloomhaven and Gloomhaven only 83% covered by Jaws of
- * the Lion, so Jaws of the Lion is the redundant one.
+ * A similarity threshold cannot do this job, measured:
  *
- * Returns nothing when nothing is redundant, which is the honest answer for a
- * two-game shelf and the whole point of not simply listing the weakest few.
+ *     kin? thin?  similarity   pair
+ *       Y    Y     0.79       7 Wonders / 7 Wonders (Second Edition)
+ *       Y    ·     0.97       Brass: Lancashire / Birmingham
+ *       ·    ·     0.00       Navegador / Orléans
+ *
+ * Any floor low enough to catch a second edition at 0.79 also catches games that
+ * merely sit in the same twelve spokes. This used to measure spoke containment
+ * and reported Navegador as 96% covered by Orléans — two economic games with
+ * almost no mechanism in common — while the selector, scoring on the raw axes,
+ * put them at 0.00 and was right.
+ *
+ * Returns nothing when nothing is a reissue of anything, which is the honest
+ * answer for most shelves and the whole point of not listing the weakest few.
  */
-export function redundancies(ix, weights, rows, { floor = 0.9, limit = 8 } = {}) {
-  const nGroups = ix.groups.length;
-  const vectors = rows.map((g) => spokeVector(ix, weights, g, nGroups));
-  const totals = vectors.map((v) => v.reduce((a, b) => a + b, 0));
-
+export function redundancies(ix, rows, { limit = 8 } = {}) {
+  const held = new Set(rows);
   const out = [];
-  for (let i = 0; i < rows.length; i++) {
-    if (!(totals[i] > 0)) continue;
-    let best = -1;
-    let bestShare = 0;
-    for (let j = 0; j < rows.length; j++) {
-      if (i === j) continue;
-      let shared = 0;
-      for (let s = 0; s < nGroups; s++) shared += Math.min(vectors[i][s], vectors[j][s]);
-      const share = shared / totals[i];
-      if (share > bestShare) { bestShare = share; best = j; }
-    }
-    if (best < 0 || bestShare < floor) continue;
 
-    // Both sides of a pair can clear the bar. The more contained one is the
-    // redundant one; where they tie, the less well known goes.
-    let backShare = 0;
-    for (let s = 0; s < nGroups; s++) {
-      backShare += Math.min(vectors[best][s], vectors[i][s]);
-    }
-    backShare /= totals[best] || 1;
-    if (backShare > bestShare
-      || (backShare === bestShare && ix.rank[rows[best]] > ix.rank[rows[i]])) continue;
+  for (const row of rows) {
+    // `thin` already points from the sparser record to the fuller one, so its
+    // direction is the answer. `kin` is undirected, and the rule for it is the
+    // one `rerecordings` in allocate.js applies: the less well known goes.
+    const fuller = [...(ix.thin.get(row) ?? [])].filter((o) => o !== row && held.has(o));
+    const lineage = (ix.kin.get(row) ?? [])
+      .filter((o) => o !== row && held.has(o) && ix.rank[o] < ix.rank[row]);
+    const backLineage = rows.filter((o) => o !== row
+      && (ix.kin.get(o) ?? []).includes(row) && ix.rank[o] < ix.rank[row]);
 
+    const by = fuller[0] ?? lineage[0] ?? backLineage[0];
+    if (by === undefined) continue;
     out.push({
-      id: ix.ids[rows[i]], row: rows[i], name: ix.names[rows[i]], rank: ix.rank[rows[i]],
-      filledBy: {
-        id: ix.ids[rows[best]], row: rows[best],
-        name: ix.names[rows[best]], rank: ix.rank[rows[best]],
-      },
-      share: bestShare,
+      id: ix.ids[row], row, name: ix.names[row], rank: ix.rank[row],
+      filledBy: { id: ix.ids[by], row: by, name: ix.names[by], rank: ix.rank[by] },
+      why: fuller.length ? 'recorded' : 'reissue',
     });
   }
-  return out.sort((a, b) => b.share - a.share).slice(0, limit);
+  return out.sort((a, b) => a.rank - b.rank).slice(0, limit);
 }
+
+/*
+ * `contributions` and `prunable` used to live here.
+ *
+ * Both reported a share of one shelf's weighted-axis coverage — "this game
+ * holds 3%", or "these three together hold 12.9% against Final Girl's 11.4%" —
+ * and a share of a space the reader has never been shown is a number nobody can
+ * act on. Removed on request, along with the two rail findings and the per-game
+ * bar that were their only callers.
+ *
+ * Worth keeping from them, because it cost a measurement: **the two spaces do
+ * not agree, and the axes are the honest one.** Asked over the 12 spokes this
+ * collection's games spread 64x apart — Telestrations 0.15%, Toy Battle 0.99% —
+ * which reads as some games barely earning their place. Asked over the 77 axes
+ * they spread 2x: 1.86% and 1.95%. Every game went in because it added the most
+ * at the time, so of course they contribute alike; the 64x was twelve groups
+ * standing in for seventy-seven and losing what told them apart. Anything built
+ * to replace these runs on `covers` and `totalOf` above, not on the spokes.
+ *
+ * What the rail should answer instead is an open question — see BUGS.md.
+ */
 
 /**
  * Which kinds of play a collection holds more of than it needs.

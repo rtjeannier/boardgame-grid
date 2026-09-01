@@ -1,4 +1,5 @@
 import { howAlike, similarityBetween } from '../../engine/index.js';
+import { shelvedNow } from '../shelved.js';
 import css from './Notice.module.css';
 
 /**
@@ -14,7 +15,7 @@ export function Notice({ state, built, actions }) {
   const { notice } = state;
   if (!notice) return null;
   const { ix, grid } = built;
-  const now = new Set(grid.flatMap((c) => c.picks.map((p) => p.id)));
+  const now = new Set(shelvedNow(grid));
   const was = new Set(notice.was);
   const came = [...now].filter((id) => !was.has(id));
   const went = [...was].filter((id) => !now.has(id) && id !== notice.id);
@@ -83,7 +84,7 @@ export function Notice({ state, built, actions }) {
 export function Blocked({ state, built, actions }) {
   if (!state.blocked.length) return null;
   const { ix, grid } = built;
-  const shelved = grid.flatMap((c) => c.picks.map((p) => p.id));
+  const shelved = shelvedNow(grid);
   const name = (id) => ix.names[ix.rowOf.get(id)] ?? `#${id}`;
   return (
     <details className={css.blocked}>

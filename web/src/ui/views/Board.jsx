@@ -13,27 +13,13 @@ import css from './Board.module.css';
  * same component the unsplit screen renders at `full` — so a grid is not a
  * different way of showing a collection, it is the same one at a smaller size.
  *
- * The controls that used to sit on every shelf are gone from here. Counted on
- * the shipped corpus, a two-axis grid carried 110 controls, seventy of them the
- * same stepper repeated once per cell. They live in the shelf you open instead.
+ * Counted on the shipped corpus, a two-axis board carries 135 controls, seventy
+ * of them the depth stepper once per cell. That stepper was moved into the
+ * opened shelf once — which took the board to 65 — and put back on request. What
+ * makes it bearable is that a game in a mini cell is not a click target, so a
+ * cell is one target plus its stepper rather than six competing ones. If the
+ * board starts reading as a toolbar again, the stepper is the thing to take out.
  */
-
-/** Everything shelved right now, so the next build can be compared against it. */
-export const shelvedNow = (built) =>
-  built.grid.flatMap((c) => c.picks.map((p) => p.id));
-
-/**
- * The collection, and where each of its games currently sits.
- *
- * What a split is handed so it can deal rather than choose again. The placement
- * travels with the ids because "where does this game belong" and "where did
- * this game win" are different questions with different answers — dealing by
- * belonging alone moved 101 of 272 games. A Map, because game ids are numbers.
- */
-export const collectionOf = (built) => ({
-  ids: shelvedNow(built),
-  at: new Map(built.grid.flatMap((c) => c.picks.map((p) => [p.id, c.key]))),
-});
 
 /**
  * Every shelf, one per row, when a matrix will not fit.
@@ -48,7 +34,7 @@ export const collectionOf = (built) => ({
  * control per band or group, and they belong on the thing they govern.
  */
 function Stack({ built, state, actions, onOpen, marks }) {
-  const { grid, depths } = built;
+  const { grid } = built;
   const label = cellLabeller(built);
   return (
     <div className={css.stack}>
@@ -70,7 +56,7 @@ function Stack({ built, state, actions, onOpen, marks }) {
 }
 
 export default function Board({ built, state, actions, onOpen }) {
-  const { grid, depths, columns, rows, axes } = built;
+  const { grid, columns, rows, axes } = built;
   const focused = state.focus?.kind === 'cell' ? state.focus.key : null;
   const stacked = useMedia(STACKED);
   const byKey = new Map(grid.map((c) => [c.key, c]));
@@ -113,7 +99,7 @@ export default function Board({ built, state, actions, onOpen }) {
                 </span>
               </div>
               <Cell cell={cell} built={built} state={state} actions={actions}
-                    size="mini" marks={marks} onOpen={onOpen} showName={false} dense dense
+                    size="mini" marks={marks} onOpen={onOpen} showName={false} dense
                     onFocus={cell && (() => actions.focusCell(cell.key))} />
             </div>
           );
@@ -174,7 +160,7 @@ export default function Board({ built, state, actions, onOpen }) {
 }
 
 function Row({ row, built, state, actions, onOpen, byKey, marks, focused }) {
-  const { columns, depths } = built;
+  const { columns } = built;
   return (
     <>
       <div className={css.rowhead}>

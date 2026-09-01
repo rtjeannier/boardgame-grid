@@ -63,7 +63,6 @@ class Collection:
     auto_depth_leftover: float = config.AUTO_DEPTH_LEFTOVER
     # Reporting only: it decides what is worth saying about a collection,
     # never what gets picked.
-    redundancy_floor: float = config.REDUNDANCY_FLOOR
     representation_enough: float = config.REPRESENTATION_ENOUGH
     collection_size: int = config.COLLECTION_SIZE
     # Depth need not be uniform. The player columns are fixed ranges over a
@@ -110,14 +109,24 @@ class Collection:
             out[key] = min(caps)
         return out
 
-    def axis_room(self, spoke_names: list[str], spoke_of) -> "list[float] | None":
-        """Per axis, how much space its spoke offers. `None` when untouched.
+    def axis_room(self, spoke_names: list[str], spoke_of,
+                  weights=None) -> "list[float] | None":
+        """Per axis, how much space it offers to be covered.
 
-        Weights are set per *spoke* because that is what a reader can reason
-        about — twelve named families, against seventy-seven mined axes.
+        Two things multiplied. `weights` is what an axis is intrinsically worth
+        — every spoke an equal share, split within it by reach, see
+        `coverage.axis_weights` — and is the same for every reader. On top of it,
+        `genre_weights` is the reader's own thumb on the scale, set per *spoke*
+        because that is what a person can reason about: twelve named families,
+        against seventy-seven mined axes.
+
+        `None` only when there is neither, which is the flat space the model had
+        before axis weights existed.
         """
+        room = None if weights is None else [float(w) for w in weights]
         if not self.genre_weights:
-            return None
+            return room
+
         by_index = {i: float(self.genre_weights[name])
                     for i, name in enumerate(spoke_names)
                     if name in self.genre_weights}
@@ -125,7 +134,8 @@ class Collection:
         if unknown:
             raise ValueError(
                 f"unknown genre(s) in genre_weights: {', '.join(sorted(unknown))}")
-        return [by_index.get(int(s), 1.0) for s in spoke_of]
+        mine = [by_index.get(int(s), 1.0) for s in spoke_of]
+        return mine if room is None else [r * m for r, m in zip(room, mine)]
 
     def columns(self) -> list[dict]:
         """Back into the shape `buckets.PlayerCountAxis` expects.

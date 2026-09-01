@@ -55,8 +55,7 @@ function Players({ built, state, actions }) {
         <div className={css.rows}>
           {columns.map((c, i) => (
             <div key={`${c.label}-${i}`} className={css.row}>
-              <input className={css.num} value={c.label} aria-label="Group name"
-                     style={{ textAlign: 'left', width: '100%' }}
+              <input className={css.groupName} value={c.label} aria-label="Group name"
                      onChange={(e) => set(i, 'label', e.target.value)} />
               <span className={css.edge}>
                 <input className={css.num} value={c.lo} aria-label="From"

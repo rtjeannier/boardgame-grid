@@ -31,25 +31,9 @@
 .item[role='button']:hover .name { text-decoration: underline;
                                    text-underline-offset: 2px; }
 .compact .name { font-weight: 400; font-size: 11.5px; }
-.row { grid-template-columns: minmax(0, 1fr) 104px auto; }
+/* Two columns, not three. The middle one held the share bar. */
+.row { grid-template-columns: minmax(0, 1fr) auto; }
 .reason { grid-template-columns: minmax(0, 1fr) auto; }
-.expanded { grid-template-columns: minmax(0, 1fr); align-items: start;
-            border: 1px solid var(--line); border-radius: var(--r); padding: var(--s-7); }
-.expanded .name { font-size: 15px; white-space: normal; }
-
-.carries { display: grid; grid-template-columns: 54px 40px; align-items: center;
-           gap: var(--s-4); }
-.bar { height: 14px; border-radius: var(--r-sm); background: var(--sunken); }
-.fill { height: 100%; border-radius: var(--r-sm); background: var(--mark); }
-.n { font-family: var(--font-mono); font-size: 11px; color: var(--text-2);
-     text-align: right; font-variant-numeric: tabular-nums; }
-
-.facts { display: flex; gap: var(--s-8); margin-top: var(--s-4); }
-.fact { display: flex; flex-direction: column; gap: var(--s-1); }
-.fact b { font-family: var(--font-mono); font-size: 13px; font-weight: 500;
-          font-variant-numeric: tabular-nums; }
-.fact span { font-family: var(--font-mono); font-size: 9px; font-weight: 500;
-             letter-spacing: .06em; text-transform: uppercase; color: var(--text-3); }
 
 /* Arriving and leaving. Two of ninety-eight rows change at a time, so without
    this a reader has no way to tell which — the list was already stable (96 of

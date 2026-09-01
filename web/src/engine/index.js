@@ -9,13 +9,14 @@
 export { indexContract } from './contract.js';
 export { ratingSpans, coverageWeights } from './quality.js';
 export { buildWeightRows, buildCells, playerAxis, weightAxis } from './membership.js';
-export { readDepth, axisDepths, gridDepths, PROBE } from './depth.js';
+export { readDepth, axisDepths, cellOverrideKey, gridDepths, PROBE } from './depth.js';
 export { CoverageScorer } from './scorer.js';
 export { allocate, UNIT_COST } from './allocate.js';
 export { toGridData } from './present.js';
 export { explainCut, cutSentence, howAlike, similarityBetween } from './explain.js';
 export {
-  analyseShelf, coverageOf, overRepresented, redundancies, spokeVector,
+  analyseShelf, axisVector, coverageOf, covers, overRepresented,
+  redundancies, spokeVector, totalOf,
 } from './shelf.js';
 
 import { indexContract } from './contract.js';
@@ -23,7 +24,13 @@ import { ratingSpans, coverageWeights } from './quality.js';
 import { buildWeightRows, buildCells, playerAxis, weightAxis } from './membership.js';
 import { collectionCurve, dealInto, gridDepths, readDepth, seedInto } from './depth.js';
 
-/** Deep enough for the whole-corpus curve to fall; never a cap on the answer. */
+/**
+ * Deep enough for the whole-corpus curve to fall; never a cap on the answer.
+ *
+ * How far the curve is read, not how far the collection may go. It used to be
+ * both — `Math.min(COLLECTION_PROBE, set)` — so asking the unsplit collection
+ * for more than 120 games gave 120 and said nothing about it.
+ */
 export const COLLECTION_PROBE = 120;
 import { CoverageScorer } from './scorer.js';
 import { allocate, roomFor } from './allocate.js';
@@ -35,7 +42,7 @@ export const DEFAULT_COLUMNS = [
   { label: '5', lo: 5, hi: 5 }, { label: '6-8', lo: 6, hi: 8 },
   { label: '8+', lo: 9, hi: null },
 ];
-export const DEFAULT_ROW_NAMES =
+const DEFAULT_ROW_NAMES =
   ['Gateway', 'Light', 'Medium', 'Medium-Heavy', 'Heavy', 'Brain-burner'];
 
 /**
@@ -125,8 +132,12 @@ export function buildGrid(contract, options = {}) {
         { leftover, fallback, places: ix.policy.gainPlaces ?? 3 });
       // The unsplit collection takes an override like any other shelf, under
       // the key `collection` — there is no column or row to name it by.
+      // Not clamped to the probe. The probe is how deep the *curve* was read,
+      // so past it there is no gain to show for the next game — but there is no
+      // reason the collection cannot go there, and clamping made a reader who
+      // asked for 150 games silently get 120 while the control kept saying 150.
       const set = depthOverrides.collection;
-      room = set == null ? read.depth : Math.max(0, Math.min(COLLECTION_PROBE, set));
+      room = set == null ? read.depth : Math.max(0, set);
       // The curve past the cut is kept: showing where it fell is the only
       // honest way to say why the collection is the size it is.
       depths = {
@@ -217,6 +228,7 @@ export function buildGrid(contract, options = {}) {
       ? (depthOverrides.collection != null || perShelfCap != null)
       : (depths?.cellDepth?.get(key)?.spoken ?? (capacity !== 'auto')));
     dealt = new Map();
+    const pins = new Set(keeperRows);
     room = new Map(cells.map((c) => {
       const mine = byCell.get(c.key) ?? [];
       // A shelf keeps what it was dealt, and a shelf that was asked for a
@@ -230,8 +242,16 @@ export function buildGrid(contract, options = {}) {
       // Which two it would have dropped is not arbitrary: `held` arrives in the
       // order the collection chose, best first, and `dealInto` keeps that
       // order, so the first `n` are the ones the shelf has most reason to hold.
-      const room = spokenFor(c.key) ? roomFor(asked, c.key) : mine.length;
-      const keep = mine.slice(0, room);
+      // A pin holds a game whatever the selection would rather do, and that
+      // includes a number the reader typed at it. The trim used to slice the
+      // tail off `mine`, which is in best-first order and knows nothing about
+      // pins — so driving a nine-game shelf down to two pushed both of its
+      // pinned games off it, before any unpinned one.
+      const pinned = mine.filter((g) => pins.has(g));
+      const asked_ = spokenFor(c.key) ? roomFor(asked, c.key) : mine.length;
+      const room = Math.max(asked_, pinned.length);
+      const keep = room >= mine.length ? mine
+        : [...pinned, ...mine.filter((g) => !pins.has(g))].slice(0, room);
       if (keep.length) dealt.set(c.key, keep);
       return [c.key, room];
     }));
