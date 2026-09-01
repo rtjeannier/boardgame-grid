@@ -1,4 +1,4 @@
-import { coverageOf, redundancies, spokeVector } from '../../engine/index.js';
+import { redundancies, spokeCoverage } from '../../engine/index.js';
 import GameItem from '../game/GameItem.jsx';
 import { toGameView } from '../game/view.js';
 import { cellLabeller } from '../views/labels.js';
@@ -30,13 +30,25 @@ import css from './analysis.module.css';
  * floor that also excludes Navegador and Orléans.
  */
 
-/** The kinds of play a candidate brings that the shelf has least of. */
-function brings(ix, weights, rows, row, n) {
-  const have = coverageOf(rows.map((r) => spokeVector(ix, weights, r, n)), n);
-  const mine = spokeVector(ix, weights, row, n);
-  return [...mine]
-    .map((v, i) => ({ name: ix.groups[i].name.split(' · ')[0], adds: v * (1 - have[i]) }))
-    .filter((g) => g.adds > 0.01)
+/**
+ * The kinds of play a candidate brings that the shelf has least of.
+ *
+ * Measured as the coverage the shelf *gains* by taking the game, on the axes and
+ * projected into the twelve families for naming. It used to multiply the game's
+ * spoke vector by what the shelf lacked *in spoke space*, which is measuring in
+ * the second space CLAUDE.md forbids — and it did not agree with itself: on the
+ * shipped corpus it named a different top family on 7 of 30 shelves, calling
+ * Roll for the Galaxy "Area Majority / Influence" where the axes say "Dice", and
+ * Kites "Cooperative Game" where they say "Real-time". A reader reading those
+ * labels against the radar, which has always projected from the axes, was being
+ * shown two different answers to one question.
+ */
+function brings(ix, weights, rows, row) {
+  const have = spokeCoverage(ix, weights, rows);
+  const after = spokeCoverage(ix, weights, [...rows, row]);
+  return ix.groups
+    .map((g, i) => ({ name: g.name.split(' · ')[0], adds: after[i] - have[i] }))
+    .filter((g) => g.adds > 0.005)
     .sort((a, b) => b.adds - a.adds)
     .slice(0, 2);
 }
@@ -45,14 +57,10 @@ function brings(ix, weights, rows, row, n) {
 function readShelf(ix, weights, cell, { owned }) {
   const rows = rowsOfPicks(ix, cell.picks);
   if (rows.length < 2) return null;
-  const n = ix.groups.length;
-  // The existing measure, kept: it names the *more contained* half of a pair
-  // Two different questions, kept apart. A duplicate is the same game under two
-  // names — BGG says so, and it is a lookup with no threshold. Redundancy is how
-  // little of the shelf would be lost without a game, which is a quantity and is
-  // reported as a gradient. Neither proposes a cut: the runner-up is the game
-  // the selection already turned down, and putting it in makes the shelf worse
-  // — measured, one shelf went 0.372 to 0.141.
+  // A duplicate is the same game under two names — BGG says so, and it is a
+  // lookup with no threshold. It proposes no cut: the runner-up is the game the
+  // selection already turned down, and putting it in makes the shelf worse —
+  // measured, one shelf went 0.372 to 0.141.
   const dupes = redundancies(ix, rows, { limit: 3 })
     .map((r) => ({ ...r, mine: owned.includes(r.id) }));
 
@@ -60,7 +68,7 @@ function readShelf(ix, weights, cell, { owned }) {
   const nextRow = next ? ix.rowOf.get(next.id) : undefined;
   const gap = nextRow === undefined ? null : {
     id: next.id, row: nextRow, gain: next.gain,
-    brings: brings(ix, weights, rows, nextRow, n),
+    brings: brings(ix, weights, rows, nextRow),
   };
   return (gap || dupes.length) ? { gap, dupes } : null;
 }

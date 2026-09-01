@@ -16,7 +16,7 @@ export { toGridData } from './present.js';
 export { explainCut, cutSentence, howAlike, similarityBetween } from './explain.js';
 export {
   analyseShelf, axisVector, coverageOf, covers, overRepresented,
-  redundancies, spokeVector, totalOf,
+  redundancies, spokeCoverage, spokeVector, totalOf,
 } from './shelf.js';
 
 import { indexContract } from './contract.js';

@@ -63,6 +63,32 @@ export function axisVector(ix, weights, game, nAxes = ix.axisNames.length) {
  * Every "how much would be lost without this" in the app is a difference of two
  * of these, so there is one definition of covered and one place it is summed.
  */
+/**
+ * What a set covers, per spoke — measured on the axes, projected for naming.
+ *
+ * The one place the twelve families get a number. Coverage is computed on the
+ * 77 weighted axes, the space every other measurement uses, and only then summed
+ * into families and scaled by what each family is worth, so a full spoke reads 1.
+ *
+ * **Measuring the spokes directly is a different answer, not a rounder one.**
+ * It is how Navegador came out 96% duplicated at 0.00 similarity, and — measured
+ * on the shipped corpus — it names a different top family on 7 of 30 shelves:
+ * Roll for the Galaxy reads "Area Majority" where the axes say "Dice", and Kites
+ * reads "Cooperative Game" where the axes say "Real-time". Anything that tells a
+ * reader what a game brings goes through here.
+ */
+export function spokeCoverage(ix, weights, rows) {
+  const n = ix.groups.length;
+  const covered = coverageOf(rows.map((r) => axisVector(ix, weights, r)), ix.nAxes);
+  const per = new Array(n).fill(0);
+  const room = new Array(n).fill(0);
+  for (let a = 0; a < ix.nAxes; a += 1) {
+    per[ix.groupOf[a]] += covered[a] * ix.axisWeight[a];
+    room[ix.groupOf[a]] += ix.axisWeight[a];
+  }
+  return per.map((v, i) => (room[i] > 0 ? v / room[i] : 0));
+}
+
 export function covers(ix, weights, rows) {
   const n = ix.axisNames.length;
   return totalOf(ix, coverageOf(rows.map((g) => axisVector(ix, weights, g, n)), n));

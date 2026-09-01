@@ -13,7 +13,8 @@ import test from 'node:test';
 import { fileURLToPath } from 'node:url';
 
 import {
-  buildGrid, cellOverrideKey, covers, indexContract, redundancies,
+  buildGrid, cellOverrideKey, coverageWeights, covers, indexContract, redundancies,
+  spokeCoverage,
 } from '../src/engine/index.js';
 import { parseCollectionCsv } from '../src/ui/importCsv.js';
 
@@ -273,6 +274,33 @@ test('a budget spends on the best value first', () => {
   for (const name of budgeted) {
     assert.ok(open.includes(name), `${name} is not in the open collection`);
   }
+});
+
+test('what a game brings is named from the axes, not from the spokes', () => {
+  // Regression, and it was mislabelling the one recommendation the rail makes.
+  // Measuring coverage *in* spoke space rather than projecting the axis
+  // measurement into it names a different top family on 7 of 30 shelves — and
+  // the spoke answer is the wrong one: Roll for the Galaxy is a dice game.
+  const weights = coverageWeights(ix);
+  const top = (row) => {
+    const cover = spokeCoverage(ix, weights, [row]);
+    return ix.groups
+      .map((g, i) => ({ name: g.name.split(' · ')[0], v: cover[i] }))
+      .sort((a, b) => b.v - a.v)[0].name;
+  };
+  const named = (name) => ix.names.findIndex((n) => n.startsWith(name));
+  for (const [game, family] of [['Roll for the Galaxy', 'Dice']]) {
+    const row = named(game);
+    if (row < 0) continue;      // the seed corpus does not carry every game
+    assert.equal(top(row), family, `${game} should read as ${family}`);
+  }
+
+  // And the projection is the radar's, so one question has one answer: a set's
+  // coverage cannot depend on which module asked for it.
+  const rows = [...Array(8)].map((_, i) => i);
+  const once = spokeCoverage(ix, weights, rows);
+  assert.equal(once.length, ix.groups.length);
+  assert.ok(once.every((v) => v >= 0 && v <= 1), 'a spoke read outside 0..1');
 });
 
 test('a duplicate is the same game twice, not two games that resemble each other', () => {

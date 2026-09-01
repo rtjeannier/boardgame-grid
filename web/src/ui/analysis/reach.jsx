@@ -1,4 +1,4 @@
-import { axisVector, coverageOf } from '../../engine/index.js';
+import { spokeCoverage } from '../../engine/index.js';
 import Radar from '../chart/Radar.jsx';
 import { rowsOfPicks } from '../shelved.js';
 import { register } from './registry.js';
@@ -18,22 +18,9 @@ function shapes({ built, state, subject }) {
   const n = ix.groups.length;
   const names = ix.groups.map((g) => g.name.split(' · ')[0]);
   const rowsOf = (picks) => rowsOfPicks(ix, picks);
-  // A projection of the one measurement, not a second one. Coverage is computed
-  // on the 77 weighted axes — the space everything else uses — and then summed
-  // into the twelve families for drawing, each scaled by what its family is
-  // worth so a full spoke reads 1. Measuring the spokes directly instead is how
-  // Navegador came out 96% duplicated at 0.00 similarity, and how one game read
-  // 0.15% where the selector had it at 1.86%.
-  const shape = (rs) => {
-    const covered = coverageOf(rs.map((r) => axisVector(ix, weights, r)), ix.nAxes);
-    const per = new Array(n).fill(0);
-    const room = new Array(n).fill(0);
-    for (let a = 0; a < ix.nAxes; a += 1) {
-      per[ix.groupOf[a]] += covered[a] * ix.axisWeight[a];
-      room[ix.groupOf[a]] += ix.axisWeight[a];
-    }
-    return per.map((v, i) => (room[i] > 0 ? v / room[i] : 0));
-  };
+  // One projection, in `engine/shelf.js`, because anything that tells a reader
+  // what a set covers has to give the same answer as everything else that does.
+  const shape = (rs) => spokeCoverage(ix, weights, rs);
   const whole = shape(rowsOf(grid.flatMap((c) => c.picks)));
 
   const picked = subject?.kind === 'cell' ? subject.cell : null;
