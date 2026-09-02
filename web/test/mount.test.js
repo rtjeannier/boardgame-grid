@@ -334,6 +334,73 @@ test('a pin stays visible once it is set, wherever the game is drawn', () => {
   act(() => root.unmount());
 });
 
+test('a shelf carries its controls under it, not in a header over it', () => {
+  const { host, root } = mount();
+  click(byText('＋ player count', host));
+
+  // The stepper comes after the games it counts, in document order — which is
+  // the whole of "no header". A cell's top is its name or nothing.
+  //
+  // Bounded to one shelf. Two looser versions of this were wrong in opposite
+  // directions: matching the first thing that "looked like a game" caught a
+  // rank in the rail and held even with the foot put back on top, and walking
+  // up from the stepper for an ancestor with games in it escaped an empty
+  // column and compared against a game two columns along.
+  const shelf = [...host.querySelectorAll('[class*="_mini_"]')]
+    .find((el) => el.querySelector('button[aria-label="One more here"]')
+      && el.querySelector('[class*="_item_"]'));
+  assert.ok(shelf, 'no shelf with both a stepper and games on it');
+  const plus = shelf.querySelector('button[aria-label="One more here"]');
+  const firstGame = shelf.querySelector('[class*="_item_"]');
+  assert.ok(firstGame.compareDocumentPosition(plus) & 4,
+    'the stepper is still drawn above the games it counts');
+
+  // What it would take next is inline and folded away. Closed it costs one
+  // control; a board of thirty-five shelves cannot afford six named games and
+  // their verbs apiece rendered whether or not anyone asked.
+  const toggle = () => [...host.querySelectorAll('button[aria-expanded]')]
+    .filter((b) => /\d+ next/.test(b.textContent))[0];
+  assert.ok(toggle(), 'a shelf with games in reserve offered no way to see them');
+  assert.equal(toggle().getAttribute('aria-expanded'), 'false', 'on deck starts open');
+  const before = host.querySelectorAll('button').length;
+
+  click(toggle());
+  assert.equal(toggle().getAttribute('aria-expanded'), 'true');
+  assert.ok(host.querySelectorAll('button').length > before,
+    'opening the deck revealed nothing');
+  // And it did not open the shelf: the toggle is its own target, in a cell
+  // where everything else gives its click to the shelf.
+  assert.ok(!host.querySelector('[role="dialog"]'), 'the deck toggle opened the shelf');
+
+  click(toggle());
+  assert.equal(host.querySelectorAll('button').length, before, 'the deck did not fold back');
+  act(() => root.unmount());
+});
+
+test('the − stops at the games pinned to a shelf', () => {
+  const { host, root } = mount();
+  // `PlusMinus` has always taken a pinned floor and nothing ever passed it, so
+  // the note promising it described a control that floored at zero.
+  const pins = [...host.querySelectorAll('button[aria-label^="Pin "]')];
+  const onShelf = pins[pins.length - 1];
+  assert.ok(onShelf, 'nothing on the shelf to pin');
+  click(onShelf);
+  const fewer = host.querySelector('button[aria-label="One fewer here"]');
+  assert.ok(fewer, 'the collection has no stepper');
+  // One game is pinned to the one shelf there is, so the shelf can be trimmed
+  // down to it and no further.
+  const depth = host.querySelector('input[aria-label="Games on this shelf"]');
+  act(() => {
+    const setter = Object.getOwnPropertyDescriptor(
+      dom.window.HTMLInputElement.prototype, 'value').set;
+    setter.call(depth, '1');
+    depth.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+  });
+  assert.ok(host.querySelector('button[aria-label="One fewer here"]').disabled,
+    'the shelf can be emptied out from under a pin');
+  act(() => root.unmount());
+});
+
 test('an axis opens its own settings, in front of the shelves it describes', () => {
   const { host, root } = mount();
   click(byText('＋ player count', host));

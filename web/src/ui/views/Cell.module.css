@@ -1,12 +1,24 @@
 /* One shelf, at two sizes. The sizes differ in what is worth showing, never in
    what a shelf is, so everything here is shared and the two blocks below only
-   change scale and spacing. */
+   change scale and spacing.
+
+   A cell has no header. It has, at most, a name — and under the games, a foot
+   carrying everything that changes the shelf. The rule that used to sit under
+   a head strip sits over the foot instead, so it separates the games from the
+   controls rather than from a label. */
 .cell { display: flex; flex-direction: column; min-width: 0; }
-.head { display: flex; align-items: baseline; justify-content: space-between;
-        gap: var(--s-4); min-width: 0; }
 .name { min-width: 0; text-align: left; border: 0; background: none; padding: 0;
         font-family: var(--font-mono); font-weight: 500; color: var(--text);
-        overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+        display: block; }
+
+/* The foot wraps rather than squeezing: in a 143px column the toggle and the
+   tally do not always share a line, and two readable lines beat one clipped
+   one. */
+.main { flex: 1 1 auto; min-width: 0; }
+.foot { display: flex; flex-direction: column; min-width: 0; }
+.footLine { display: flex; align-items: center; flex-wrap: wrap;
+            gap: var(--s-2); min-width: 0; }
 .tally { display: inline-flex; align-items: center; gap: var(--s-3);
          flex: none; margin-left: auto; }
 .count { font-family: var(--font-mono); font-weight: 500; color: var(--text-3);
@@ -17,7 +29,6 @@
 .open:hover { color: var(--mark); }
 .picks { display: flex; flex-direction: column; min-width: 0; }
 .empty { color: var(--text-3); }
-.depth { display: inline-flex; align-items: center; gap: var(--s-4); flex: none; }
 .pm { display: inline-flex; align-items: center; gap: var(--s-2); }
 .pm button { border: 1px solid var(--line); background: var(--surface);
              color: var(--text-3); width: 17px; height: 17px; line-height: 1;
@@ -26,15 +37,26 @@
 .pm button:hover { border-color: var(--text-3); color: var(--text); }
 .pm button:disabled { opacity: .3; cursor: default; }
 
-/* A cell in a grid: a name, a count, and the games. No controls at all — one
-   variable shown thirty-five times is still one variable, and thirty-five
-   copies of its control was three quarters of the chrome on the screen. */
+/* What the shelf would take next. The same disclosure at both sizes, because
+   it is the same question at both sizes. */
+.deckHead { border: 0; background: none; padding: 0; cursor: pointer;
+            font-family: var(--font-mono); color: var(--text-3);
+            min-width: 0; text-align: left; }
+.deckHead::before { content: '▸ '; }
+.deckHead[aria-expanded='true']::before { content: '▾ '; }
+.deckHead:hover { color: var(--text); }
+.foot > .picks { opacity: .72; }
+.foot > .picks:hover { opacity: 1; }
+
+/* A cell in a grid: the games, and a foot to change how many there are. */
 .mini { padding: var(--s-4) var(--s-4) var(--s-5); gap: var(--s-2); cursor: pointer; }
-.mini .head { padding-bottom: var(--s-2); border-bottom: 1px solid var(--line-2); }
-.mini .name { font-size: 10px; color: var(--text-3); }
+.mini .name { font-size: 10px; color: var(--text-3); padding-bottom: var(--s-2); }
 .mini:hover .name { color: var(--text); }
 .mini .count { font-size: 10px; }
-/* Small enough to sit in a 143px cell head beside the count and the expander,
+.mini .deckHead { font-size: 10px; }
+.mini .foot { padding-top: var(--s-2); border-top: 1px solid var(--line-2); }
+.mini .foot > .picks { padding-top: var(--s-2); }
+/* Small enough to sit in a 143px cell foot beside the count and the expander,
    and it inherits everything else from `.pm`. */
 .mini .pm { gap: 1px; }
 .mini .pm button { width: 15px; height: 15px; font-size: 10px; }
@@ -42,20 +64,13 @@
 
 /* A shelf you are looking at. This is the whole of what the unsplit screen was. */
 .full { gap: var(--s-7); }
-.full .head { padding-bottom: var(--s-5); border-bottom: 1px solid var(--line); }
 .full .name { font-size: 15px; }
 .full .picks { gap: var(--s-2); }
 .full .empty { font-size: 12px; padding: var(--s-6) 0; }
-
-.deck { border-top: 1px dashed var(--line); padding-top: var(--s-5); }
-.deckHead { font-family: var(--font-mono); font-size: 10px; color: var(--text-3);
-            cursor: pointer; list-style: none; }
-.deckHead::-webkit-details-marker { display: none; }
-.deckHead::before { content: '▸ '; }
-.deck[open] .deckHead::before { content: '▾ '; }
-.deckHead:hover { color: var(--text); }
-.deck > .picks { margin-top: var(--s-5); opacity: .72; }
-.deck > .picks:hover { opacity: 1; }
+.full .foot { padding-top: var(--s-5); border-top: 1px solid var(--line); }
+.full .footLine { gap: var(--s-4); }
+.full .deckHead { font-size: 10px; }
+.full .foot > .picks { margin-top: var(--s-5); gap: var(--s-2); }
 
 /* The games beside what describes them. The radar had a whole row to itself and
    filled it — 700px of overlay for a shape that reads at 260. */

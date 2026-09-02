@@ -62,13 +62,31 @@ broke it badly: a filled two-axis board carried **110 controls, seventy of them
 the same stepper repeated once per cell**. Moving the stepper into the shelf you
 open took that to 65.
 
-The per-cell stepper is **back on the grid on request**, which puts it at 135
-controls, 70 of them the stepper. What makes that survivable is the change that
-came with it: a game in a mini cell is no longer its own click target, so the
-stepper is the only thing in a cell that takes a click of its own and the cell
-itself is one target rather than six. If the board starts reading as a toolbar
-again, this is the first thing to take back out — the note in `views/Cell.jsx`
-says so at the call site.
+The per-cell stepper is **back on the grid on request**, and what a shelf would
+take next came with it — also on request, also per cell. Measured on a filled
+two-axis board, counting every button, input and click target on the page: 562
+with the deck folded away, **597 once every cell carries its own toggle**, and
+**1,007 with all thirty-five decks open**. The list is mounted only while it is
+open, which is the whole difference between +35 and +445.
+
+What makes that survivable is the change that came with the stepper: a game in
+a mini cell is no longer its own click target, so a cell is one target plus the
+three things in its foot — stepper, deck toggle, expander — rather than six
+competing ones. If the board starts reading as a toolbar again, the stepper is
+still the first thing to take back out, and the note in `views/Cell.jsx` says so
+at the call site.
+
+**A cell has no header; it has a foot.** Both sizes used to open with a bar
+carrying the name, the count and every control the shelf had. What is left at
+the top is the shelf's *name*, and only where a shelf needs one to be found — a
+stacked list, and a shelf you have opened; in a matrix the row and the column
+already say which shelf a cell is, so `Board` passes `showName={false}` and the
+cell has no top strip at all. Everything that changes the shelf sits under the
+games instead: the count, the stepper, the depth field at `full`, and one
+toggle for what the shelf would take next. The games take the slack
+(`.main { flex: 1 }`) so that a grid row, which stretches every cell to the
+height of its tallest, still lands every foot on one line — the head this
+replaces got that alignment for free and a foot has to earn it.
 
 **A game is its own target only on a shelf you have opened.** `mini` gives the
 click to the shelf; `full` and the rail's `reason` rows give it to the game.
