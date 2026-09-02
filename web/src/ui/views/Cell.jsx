@@ -27,16 +27,18 @@ import css from './Cell.module.css';
  */
 
 /**
- * An empty shelf means two different things, so it says which — and at full
- * size it has room to say what to do about it, which is the whole difference
- * between the two sizes.
+ * An empty shelf says one thing; at full size it has room to say what to do
+ * about it, which is the whole difference between the two sizes.
+ *
+ * It used to have a third answer, "nothing of yours", under the old `mineOnly`
+ * flag — and it was wrong even then: that flag never filtered the corpus to
+ * your games, so an empty shelf under it meant what it always means, that
+ * nothing in the corpus reaches here.
  */
-const empty = (state, full) => {
-  if (state.mineOnly) return 'nothing of yours';
-  if (!full) return 'nothing reaches here';
-  return 'Empty. Add games one at a time and each will be the one that reaches '
-    + 'furthest into what the others leave uncovered.';
-};
+const empty = (full) => (full
+  ? 'Empty. Add games one at a time and each will be the one that reaches '
+    + 'furthest into what the others leave uncovered.'
+  : 'nothing reaches here');
 
 /**
  * The depth override key for a shelf.
@@ -197,7 +199,7 @@ export default function Cell({
         {/* Said even while the last games are still fading out: a shelf that
             holds nothing is empty now, and waiting for the animation to finish
             before admitting it reads as a hang. */}
-        {!held && <span className={css.empty}>{empty(state, full)}</span>}
+        {!held && <span className={css.empty}>{empty(full)}</span>}
         </div>
       </div>
 

@@ -5,7 +5,7 @@ import AxisPanel from './views/AxisPanel.jsx';
 import FillUntil from './views/FillUntil.jsx';
 import { Blocked, Notice } from './views/Notice.jsx';
 import Collection from './views/Collection.jsx';
-import { collectionOf } from './shelved.js';
+import { collectionOf, shelvedNow } from './shelved.js';
 import Mine from './views/Mine.jsx';
 import Focus from './views/Focus.jsx';
 import css from './App.module.css';
@@ -33,17 +33,21 @@ const PAGES = [
  * second `buildGrid` on every single render: measured, 699 of the 734
  * `scoreAll` calls behind one click came from `get filled`, called by `App`.
  */
-function standfirst(page, built, owned, mineOnly) {
+function standfirst(page, built, owned, pinnedMine) {
   if (page === 'mine') {
     return owned
       ? 'Your games compete like any other. Pin one and it holds its place regardless.'
       : 'Nothing yet. Add what you own and the collection fills around it instead.';
   }
   const total = built.grid.reduce((n, c) => n + c.picks.length, 0);
-  if (mineOnly) {
-    return `Every one of your ${owned} games holds a place, and the rest is what `
-      + 'would best complete them. The ones marked as yours are yours; the rest '
-      + 'are what to add.';
+  if (pinnedMine && pinnedMine === owned) {
+    return `All ${owned} of your games are pinned, so each holds a place, and the `
+      + 'rest is what would best complete them. Unpin one and it takes its '
+      + 'chances with everything else.';
+  }
+  if (pinnedMine) {
+    return `${pinnedMine} of your ${owned} games are pinned and hold a place `
+      + 'regardless; the others compete like anything else.';
   }
   if (built.axes.length === 0) {
     if (!total) {
@@ -67,6 +71,11 @@ export default function App({ contract }) {
   const [page, setPage] = useState('collection');
   const { state, built, actions, pending } = useCollection(contract);
   const total = built.grid.reduce((n, c) => n + c.picks.length, 0);
+  // "Build on mine" is pressed when every game you own is pinned, because that
+  // is exactly what it does. Release one from its own pin and the button reads
+  // as not-pressed again, which is true: it is no longer the whole set.
+  const pinnedMine = state.owned.filter((id) => state.pinned.includes(id)).length;
+  const allMinePinned = state.owned.length > 0 && pinnedMine === state.owned.length;
 
 
   return (
@@ -86,7 +95,7 @@ export default function App({ contract }) {
             {page === 'mine' ? 'My games' : 'The collection'}
           </h1>
           <p className={css.standfirst}>
-            {standfirst(page, built, state.owned.length, state.mineOnly)}
+            {standfirst(page, built, state.owned.length, pinnedMine)}
           </p>
         </div>
         <nav className={css.nav}>
@@ -104,7 +113,14 @@ export default function App({ contract }) {
                 onToggle={(key) => actions.toggleAxis(key, collectionOf(built.grid))}
                 onOpen={actions.togglePanel}
                 openKey={state.panel} ownedCount={state.owned.length}
-                onlyMine={{ on: state.mineOnly, toggle: actions.toggleMineOnly }}>
+                buildOnMine={{
+                  on: allMinePinned,
+                  toggle: () => actions.pinMany(
+                    allMinePinned
+                      ? state.owned.filter((id) => state.pinned.includes(id))
+                      : state.owned.filter((id) => !state.pinned.includes(id)),
+                    shelvedNow(built.grid)),
+                }}>
         <FillUntil limits={state.limits} onChange={actions.setLimit}
                    leftover={built.ix.defaults?.autoDepthLeftover} />
         <Blocked state={state} built={built} actions={actions} />

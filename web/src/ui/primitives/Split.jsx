@@ -8,7 +8,7 @@ import css from './Split.module.css';
  * mode but the axis list itself. One on gives columns, two gives a grid.
  */
 export function SplitBar({
-  axes, active, onToggle, onOpen, openKey, count, onlyMine, ownedCount = 0, children,
+  axes, active, onToggle, onOpen, openKey, count, buildOnMine, ownedCount = 0, children,
 }) {
   return (
     <div className={css.bar}>
@@ -44,13 +44,18 @@ export function SplitBar({
         );
       })}
       <span className={css.right}>
-        {onlyMine && (
+        {/* One press of the pin verb per game you own. Pressed means every one
+            of them is pinned, so pressing again releases the set — and any one
+            of them can be released on its own, from its own pin, which is the
+            whole reason this is a pin rather than a mode. */}
+        {buildOnMine && (
           <button type="button" disabled={!ownedCount}
-                  className={`${css.only} ${onlyMine.on ? css.onlyOn : ''}`.trim()}
-                  aria-pressed={!!onlyMine.on} onClick={onlyMine.toggle}
-                  title={ownedCount
-                    ? 'Hold every game you own and fill the rest around them'
-                    : 'Add some of your games first'}>
+                  className={`${css.only} ${buildOnMine.on ? css.onlyOn : ''}`.trim()}
+                  aria-pressed={!!buildOnMine.on} onClick={buildOnMine.toggle}
+                  title={!ownedCount ? 'Add some of your games first'
+                    : buildOnMine.on
+                      ? `Unpin all ${ownedCount} of your games`
+                      : `Pin all ${ownedCount} of your games, and fill the rest around them`}>
             Build on mine
           </button>
         )}

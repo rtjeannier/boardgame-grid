@@ -5,6 +5,7 @@
 import './reach.jsx';
 import './contains.jsx';
 import './gaps.jsx';
+import './byHand.jsx';
 import './overRepresented.jsx';
 
 export { analyse, all, register } from './registry.js';

@@ -30,19 +30,24 @@ const initial = {
   // rather than recomputing where it "belongs".
   heldAt: null,
   owned: EMPTY, pinned: EMPTY, blocked: EMPTY,
-  // Which held games are held *because* they were pinned, and would not
-  // otherwise be in the collection. `held` is a flat list of ids and cannot say
-  // why a game is in it, so unpinning had nothing to undo: a pin added a game
-  // and the unpin left it behind for good, outranking the selection on every
-  // rebuild. Pinning something already shelved records nothing, because that
-  // game is there on its own merit and unpinning it should change nothing.
+  // Which games are in the collection *because* they were pinned, and would
+  // not otherwise be. `held` is a flat list of ids and cannot say why a game is
+  // in it, so unpinning had nothing to undo: a pin added a game and the unpin
+  // left it behind for good, outranking the selection on every rebuild. Pinning
+  // something already shelved records nothing, because that game is there on
+  // its own merit and unpinning it should change nothing.
+  //
+  // It is also the only durable answer to "which of mine is not carrying its
+  // own weight". Asking the build instead does not survive a split: `buildGrid`
+  // forces in whichever pins lost, but a split *deals* the collection out, so
+  // every pick is seeded and the forced ones stop being distinguishable —
+  // measured, 24 of 213 picks were seeded unsplit and 213 of 213 once dealt.
+  // Recorded at the moment of the pin, it survives every later rebuild.
   pinAdded: EMPTY,
   depthOverrides: {},
   columns: DEFAULT_COLUMNS,
   rowCount: 5,
   rowEdges: null,      // null means "quantiles of the corpus", which is the point
-  // Hold every game you own and fill the rest around them.
-  mineOnly: false,
   // What stops the fill. Not a choice between rules — a list of them, each on
   // or off, each saying whether it limits one shelf or the whole collection.
   // Every one that is on binds and the smallest wins, the way a column's depth
@@ -84,6 +89,49 @@ const initial = {
 
 function toggle(list, id) {
   return list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
+}
+
+/**
+ * One game pinned or unpinned, and everything that follows from it.
+ *
+ * Pulled out of the `pin` case so that pinning thirty games is thirty of this
+ * rather than a second implementation — folding it keeps `held` and `pinAdded`
+ * correct game by game, which a set-at-once version got wrong: whether a pin
+ * *adds* a game depends on what the collection holds by the time its turn
+ * comes.
+ *
+ * `before` is what the collection held when the pin was pressed — `held` when
+ * there is a deal, and what was actually on the shelves when there is not.
+ * Reading only `held` meant an unsplit collection recorded nothing at all, so
+ * the one state that knows which pins are load-bearing was empty in exactly the
+ * case a reader starts from.
+ */
+function pinning(state, id, was) {
+  const unpinning = state.pinned.includes(id);
+  const added = state.pinAdded.includes(id);
+  const before = state.held ?? was ?? null;
+  const joins = !unpinning && before != null && !before.includes(id);
+  let held = state.held;
+  let heldAt = state.heldAt;
+  // Only a dealt collection has a list to join. Undealt, the pin reaches the
+  // allocation as a keeper and the game arrives that way.
+  if (joins && held != null) held = [...held, id];
+  // Only a game the pin itself put there comes back out. One the reader already
+  // had, or one a later fill chose on merit, stays.
+  if (unpinning && added && held != null) {
+    held = held.filter((x) => x !== id);
+    if (heldAt?.has(id)) {
+      heldAt = new Map(heldAt);
+      heldAt.delete(id);
+    }
+  }
+  return { ...state,
+           held,
+           heldAt,
+           pinned: toggle(state.pinned, id),
+           pinAdded: joins ? [...state.pinAdded, id]
+             : state.pinAdded.filter((x) => x !== id),
+           blocked: state.blocked.filter((x) => x !== id) };
 }
 
 /**
@@ -148,35 +196,31 @@ function reduce(state, action) {
     // and pushed three others out — a pin is an addition, not a swap.
     // An unpin undoes the addition a pin made, and only that. `pinned.includes`
     // is the pre-toggle read, so it is what tells the two directions apart.
-    case 'pin': {
-      const unpinning = state.pinned.includes(action.id);
-      const added = state.pinAdded.includes(action.id);
-      const joins = !unpinning && state.held != null
-        && !state.held.includes(action.id);
-      let held = state.held;
-      let heldAt = state.heldAt;
-      if (joins) held = [...held, action.id];
-      // Only a game the pin itself put there comes back out. One the reader
-      // already had, or one a later fill chose on merit, stays.
-      if (unpinning && added && held != null) {
-        held = held.filter((x) => x !== action.id);
-        if (heldAt?.has(action.id)) {
-          heldAt = new Map(heldAt);
-          heldAt.delete(action.id);
-        }
-      }
-      return { ...state,
-               held,
-               heldAt,
-               pinned: toggle(state.pinned, action.id),
-               pinAdded: joins ? [...state.pinAdded, action.id]
-                 : state.pinAdded.filter((x) => x !== action.id),
-               blocked: state.blocked.filter((x) => x !== action.id),
+    case 'pin':
+      return { ...pinning(state, action.id, action.was),
                notice: action.was
-                 ? { kind: unpinning ? 'unpin' : 'pin',
+                 ? { kind: state.pinned.includes(action.id) ? 'unpin' : 'pin',
                      id: action.id, name: action.name, was: action.was }
                  : null };
-    }
+    /**
+     * Pin, or unpin, a named set in one act — which is all "build on mine" is.
+     *
+     * It used to be `mineOnly`, a flag of its own that quietly added every owned
+     * game to `keepers` on the way into `buildGrid`. That is the pin verb by
+     * another name and a second mechanism for it: the games it held showed no
+     * pin, so there was no way to release one of them without releasing all
+     * thirty, and nothing on screen said which of your games were being carried.
+     * Folding the same set through `pinning` gives every one of them the icon,
+     * the release, and the record in `pinAdded` that says it is here because you
+     * said so.
+     *
+     * No notice: a notice names one game and one thing that happened to it, and
+     * thirty at once is not that. What replaced what is on the rail instead.
+     */
+    case 'pinMany':
+      return { ...action.ids.reduce((st, id) => pinning(st, id, action.was), state),
+               // And the last one goes with it, or it captions this act.
+               notice: null };
     /**
      * Blocking takes a game out of the running. The shelf keeps its size.
      *
@@ -234,8 +278,6 @@ function reduce(state, action) {
     }
     case 'columns':
       return { ...state, columns: action.value };
-    case 'mineOnly':
-      return { ...state, mineOnly: !state.mineOnly };
     case 'perShelf':
       return { ...state, perShelf: action.value };
     case 'limit':
@@ -311,14 +353,12 @@ export function useCollection(contract) {
   // control that responds and one that stutters.
   const ix = useMemo(() => indexContract(contract), [contract]);
 
-  // "My collection" does not mean "hide everything else". It means every game
-  // you own holds a place, and the rest of the shelf fills from the whole
-  // corpus with things you do not own — so what you are looking at is your
-  // collection and what would best complete it. Filtering the corpus down to
-  // your games could only ever show you what you already knew.
-  const keepers = useMemo(
-    () => (state.mineOnly ? [...new Set([...state.pinned, ...state.owned])] : state.pinned),
-    [state.mineOnly, state.pinned, state.owned]);
+  // What the selection is not allowed to drop. One list, and it is the pins —
+  // "build on mine" is thirty presses of the pin verb, not a second kind of
+  // hold. It never means "hide everything else": the rest of every shelf still
+  // fills from the whole corpus, so what you are looking at is your collection
+  // and what would best complete it.
+  const keepers = state.pinned;
 
   const built = useMemo(() => buildGrid(ix, {
     axes: state.axes,
@@ -353,6 +393,10 @@ export function useCollection(contract) {
     // `was` is the set of ids shelved at the moment you pressed the button.
     // Without it the interface can only say what you did, never what happened.
     pin: (id, was, name) => slow({ type: 'pin', id, was, name }),
+    // Build on mine: the same verb, once per game. `was` is read once, so every
+    // game in the set is judged against the collection as it stood before any
+    // of them were pinned.
+    pinMany: (ids, was) => slow({ type: 'pinMany', ids, was }),
     block: (id, was, name) => slow({ type: 'block', id, was, name }),
     dismiss: () => dispatch({ type: 'dismiss' }),
     setDepth: (key, value) => slow({ type: 'depth', key, value }),
@@ -361,7 +405,6 @@ export function useCollection(contract) {
     setColumns: (value) => slow({ type: 'columns', value }),
     addRow: (edges) => slow({ type: 'addRow', edges }),
     dropRow: (at, edges) => slow({ type: 'dropRow', at, edges }),
-    toggleMineOnly: () => slow({ type: 'mineOnly' }),
     togglePanel: (key) => dispatch({ type: 'panel', key }),
     // One surface, and the thing you clicked is its subject.
     focusCell: (key) => dispatch({ type: 'focus', kind: 'cell', key }),

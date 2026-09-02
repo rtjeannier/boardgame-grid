@@ -315,14 +315,21 @@ test('blocking says what it did, lists what is blocked, and can be undone', () =
   act(() => root.unmount());
 });
 
-test('a pin stays visible once it is set', () => {
+test('a pin stays visible once it is set, wherever the game is drawn', () => {
   const { host, root } = mount();
   const pin = [...host.querySelectorAll('button[aria-label^="Pin"]')][0];
   assert.ok(pin, 'no pin control');
+  const name = pin.getAttribute('aria-label').replace('Pin ', '');
   click(pin);
   const pressed = [...host.querySelectorAll('button[aria-pressed="true"]')]
     .filter((b) => (b.getAttribute('aria-label') || '').startsWith('Unpin'));
-  assert.equal(pressed.length, 1, 'the pin did not stay set');
+  assert.ok(pressed.length >= 1, 'the pin did not stay set');
+  // One game can legitimately be drawn twice — the first pin the rail offers is
+  // the runner-up, which is *not* on a shelf, so pinning it puts it on one and
+  // also lists it under "only here because you pinned it". Both rows are the
+  // same game and both are set; a second *name* would be the bug.
+  assert.deepEqual([...new Set(pressed.map((b) => b.getAttribute('aria-label')))],
+    [`Unpin ${name}`], 'a pin set something other than the game it named');
   assert.match(host.textContent, /Pinned/, 'nothing said what pinning does');
   act(() => root.unmount());
 });
@@ -402,12 +409,64 @@ test('build-on-mine needs games, then holds all of them and fills around', () =>
   assert.ok(!only().disabled, 'still refused with games added');
   const before = size(host);
   click(only());
-  assert.match(host.textContent, /holds a place, and the rest/);
+  assert.match(host.textContent, /are pinned, so each holds a place/);
   // Not a filter: the collection is still a whole collection, with yours in it.
   const after = size(host);
   assert.ok(after >= before,
     `building on ${before} games should not shrink the collection to ${after}`);
   assert.match(host.textContent, /Gloomhaven/, 'a game that was added is not held');
+
+  // It is the pin verb, so it leaves pins: the button reads as pressed, and
+  // every game it held carries its own release. As a mode it held them with
+  // nothing on screen to say so and no way to let one go.
+  assert.equal(only().getAttribute('aria-pressed'), 'true');
+  const releases = () => [...host.querySelectorAll('button[aria-label^="Unpin"]')];
+  assert.ok(releases().length > 0, 'built on games that show no pin to release');
+
+  // And the rail says which of them the selection would not have taken. That
+  // cannot be read back off the build — a split seeds every pick — so it is
+  // recorded when the pin is pressed.
+  assert.match(host.textContent, /Only here because you pinned it/,
+    'nothing said which games are being carried');
+
+  // One game released on its own, which is the whole point of it being a pin.
+  const one = releases()[0].getAttribute('aria-label').replace('Unpin ', '');
+  click(releases()[0]);
+  assert.equal(only().getAttribute('aria-pressed'), 'false',
+    'the set is no longer whole, so the button should not read as pressed');
+  assert.ok(!releases().some((b) => b.getAttribute('aria-label') === `Unpin ${one}`),
+    `${one} was released and is still pinned`);
+  act(() => root.unmount());
+});
+
+test('build-on-mine survives a split, and still says what it is carrying', () => {
+  const { host, root } = mount();
+  click(byText('My games', host));
+  const search = host.querySelector('input[aria-label="Search for a game"]');
+  const add = (term) => {
+    act(() => {
+      const setter = Object.getOwnPropertyDescriptor(
+        dom.window.HTMLInputElement.prototype, 'value').set;
+      setter.call(search, term);
+      search.dispatchEvent(new dom.window.Event('input', { bubbles: true }));
+    });
+    const hit = [...host.querySelectorAll('button')]
+      .find((b) => b.textContent.trim().startsWith(term[0].toUpperCase()));
+    if (hit) click(hit);
+  };
+  for (const term of ['gloomhaven', 'azul', 'wingspan', 'patchwork']) add(term);
+
+  click(byText('Collection', host));
+  click(byText('Build on mine', host));
+  assert.match(host.textContent, /Only here because you pinned it/);
+
+  // A split *deals* the collection out, so every pick is seeded and the build
+  // can no longer tell a forced pin from anything else — measured, 24 of 213
+  // picks read as seeded unsplit and 213 of 213 once dealt. The finding is held
+  // in state, so it survives.
+  click(byText('＋ player count', host));
+  assert.match(host.textContent, /Only here because you pinned it/,
+    'the split lost track of which games are being carried');
   act(() => root.unmount());
 });
 

@@ -296,7 +296,7 @@ test('the views render at each split, and with a shelf of your own', async () =>
       const built = engine.buildGrid(contract, { axes, owned: mine });
       const state = { axes, owned: mine, pinned: [], blocked: [],
                       depthOverrides: {}, columns: built.columns, rowCount: 5,
-                      rowEdges: null, mineOnly: false, panel: null, open: null,
+                      rowEdges: null, panel: null, open: null,
                       limits: [{ kind: 'returns', scope: 'shelf', on: true, value: 45 },
                                { kind: 'count', scope: 'shelf', on: false, value: 5 }] };
       const where = `axes=[${axes}] owned=${mine.length}`;
@@ -345,7 +345,7 @@ test('an analysis with nothing to say renders nothing at all', async () => {
   const built = engine.buildGrid(contract, { axes: ['players', 'weight'] });
   const state = { axes: ['players', 'weight'], owned: [], pinned: [], blocked: [],
                   depthOverrides: {}, columns: built.columns, rowCount: 5, rowEdges: null,
-                  mineOnly: false, panel: null, selected: null, open: null,
+                  panel: null, selected: null, open: null,
                   limits: [{ kind: 'returns', scope: 'shelf', on: true, value: 45 }],
                   perShelf: null };
 
